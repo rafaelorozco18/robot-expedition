@@ -4,6 +4,7 @@
     expedicion escenarios                 genera el dataset de evaluación
     expedicion entrenar                   Q-learning + registro en MLflow
     expedicion evaluar                    métricas por agente y trayectorias
+    expedicion progreso                   evalúa cada checkpoint del entrenamiento
     expedicion ver --agente experto       mira un episodio en la terminal
     expedicion transiciones               tabla de cinco transiciones
     expedicion mapa                       dibuja el mapa en SVG
@@ -70,6 +71,17 @@ def cmd_evaluar(args, p):
               f"{g['bateria_final_exito']:7.1f}% {g['pasos_exito']:6.1f} {g['choques_medios']:8.2f} "
               f"{g['tasa_caida']:7.0%} │ {m['corredor_bloqueado']['tasa_mision']:18.0%}")
     _registrar_evaluacion_mlflow(args.modelos, res, p)
+
+
+def cmd_progreso(args, p):
+    from .evaluar import evaluar_progreso
+    escenarios = json.loads(Path(args.escenarios).read_text())
+    filas = evaluar_progreso(escenarios, p["ambiente"], p["evaluacion"], args.modelos, args.salida)
+    print(f"{'episodio':>9s} {'misión':>7s} {'balizas':>8s} {'batería':>8s} {'choques':>8s} │ {'c/incidente':>11s}")
+    for f in filas:
+        print(f"{f['episodio']:9d} {f['ninguno.tasa_mision']:7.0%} {f['ninguno.balizas_medias']:8.2f} "
+              f"{f['ninguno.bateria_final_exito']:7.1f}% {f['ninguno.choques_medios']:8.2f} │ "
+              f"{f['corredor_bloqueado.tasa_mision']:11.0%}")
 
 
 def _registrar_evaluacion_mlflow(carpeta_modelos, res, p):
@@ -181,6 +193,12 @@ def main(argv=None):
     s.add_argument("--trayectorias", default="data/trayectorias.jsonl")
     s.add_argument("--salida", default="metrics/evaluacion.json")
     s.set_defaults(f=cmd_evaluar)
+
+    s = sub.add_parser("progreso")
+    s.add_argument("--escenarios", default="data/escenarios.json")
+    s.add_argument("--modelos", default="models")
+    s.add_argument("--salida", default="metrics/progreso.json")
+    s.set_defaults(f=cmd_progreso)
 
     s = sub.add_parser("ver")
     condiciones(s)

@@ -30,6 +30,7 @@
     </div>
 
     <div class="resultado" id="resultado" hidden></div>
+    <div class="aviso-recorrido" id="aviso-recorrido" hidden></div>
 
     <div class="linea-tiempo">
       <button id="btn-reiniciar" title="Volver al inicio" aria-label="Volver al inicio"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
@@ -43,6 +44,7 @@
           <option value="1" selected>1×</option>
           <option value="2">2×</option>
           <option value="4">4×</option>
+          <option value="8">8×</option>
         </select>
       </label>
     </div>
@@ -52,6 +54,30 @@
     <section>
       <h2>Versión del robot</h2>
       <div class="agentes" id="agentes"></div>
+    </section>
+
+    <section id="progreso" hidden>
+      <h2>Progreso del entrenamiento</h2>
+      <p class="nota">Todas las versiones salen de un mismo entrenamiento: cada 1&nbsp;200 episodios se guarda una
+        foto de la tabla Q. El aprendiz es la foto del episodio 2&nbsp;400; el experto, la última.
+        Cada foto se evalúa sin exploración en <span id="n-eval">—</span> episodios fijos (18 sin incidente).</p>
+      <div class="leyenda-graf">
+        <span><i style="background:#dd6a24"></i>Evaluación sin exploración (misión completa)</span>
+        <span><i style="background:#1f9fae"></i>Mientras entrena, con exploración ε</span>
+      </div>
+      <div class="grafico">
+        <svg id="grafico-svg" viewBox="0 0 360 200" role="img" aria-label="Tasa de misión completa por episodio de entrenamiento"></svg>
+        <div class="grafico-tip" id="grafico-tip" hidden></div>
+      </div>
+      <input type="range" id="checkpoint" min="0" max="0" value="0" aria-label="Foto del entrenamiento">
+      <p class="cp-info" id="cp-info"></p>
+      <div class="campo fila">
+        <button id="btn-recorrido" class="ancho">Recorrer el progreso (8 fotos)</button>
+      </div>
+      <details class="tabla-detalle">
+        <summary>Ver como tabla</summary>
+        <table id="tabla-progreso"></table>
+      </details>
     </section>
 
     <section>

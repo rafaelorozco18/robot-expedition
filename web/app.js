@@ -2,6 +2,7 @@
 // de Python (/api/episodio) y aquí se reproducen sus cuadros paso a paso.
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/OrbitControls.js";
+import { crearProgreso } from "./progreso.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -461,7 +462,7 @@ function construirPanel() {
     b.disabled = !a.disponible;
     b.setAttribute("aria-pressed", a.id === estado.agente);
     b.innerHTML = `<span class="punto"></span><b>${info.titulo}</b><small>${a.disponible ? a.descripcion : "Sin modelo: ejecuta «expedicion entrenar»."}</small>`;
-    b.onclick = () => { estado.agente = a.id; marcar(contAgentes, b); lanzar(); };
+    b.onclick = () => { detenerRecorrido(); estado.agente = a.id; marcar(contAgentes, b); marcarVersion(); lanzar(); };
     contAgentes.append(b);
   }
   segmentado("clima", Object.keys(m.climas), (v) => v);
@@ -593,7 +594,7 @@ function mostrarResultado() {
   const r = estado.episodio.resumen;
   const el = $("resultado");
   el.className = "resultado " + (r.exito ? "exito" : r.motivo === "tiempo agotado" ? "tiempo" : "fracaso");
-  el.innerHTML = `<b>${r.exito ? "Misión completa" : r.motivo[0].toUpperCase() + r.motivo.slice(1)}</b>
+  el.innerHTML = `<small>${nombreVersion()}</small><b>${r.exito ? "Misión completa" : r.motivo[0].toUpperCase() + r.motivo.slice(1)}</b>
     ${r.pasos} pasos · batería ${r.bateria_final.toFixed(1)}% · balizas ${r.balizas}/2<br>
     recompensa total ${fmt(r.recompensa, 1)} · choques ${r.choques}`;
   el.hidden = false;
@@ -668,7 +669,7 @@ function bucle() {
         estado.k += 1;
         estado.t = 0;
         agregarRastro(estado.episodio.cuadros[estado.k]);
-        if (estado.k >= n - 1) { estado.play = false; botonPlay(false); }
+        if (estado.k >= n - 1) { estado.play = false; botonPlay(false); alTerminarEpisodio(); }
       }
     }
   }
@@ -688,11 +689,66 @@ function mulberry32(a) {
   };
 }
 
+// ---------------------------------------------------- progreso del entrenamiento
+const progreso = crearProgreso({
+  alElegir: (ep) => { detenerRecorrido(); verCheckpoint(ep); },
+});
+let recorrido = null;   // { fotos, i, espera }
+
+function nombreVersion() {
+  const a = estado.agente;
+  if (a.startsWith("ep:")) return `Versión: foto del episodio ${Number(a.slice(3)).toLocaleString("es")}`;
+  return `Versión: ${AGENTES[a].titulo}`;
+}
+function marcarVersion() {
+  if (estado.agente.startsWith("ep:")) {
+    for (const b of $("agentes").children) b.setAttribute("aria-pressed", false);
+  } else {
+    progreso.soltar();
+  }
+}
+function verCheckpoint(ep) {
+  estado.agente = `ep:${ep}`;
+  marcarVersion();
+  return lanzar();
+}
+function alTerminarEpisodio() {
+  if (!recorrido) return;
+  recorrido.espera = setTimeout(siguienteFoto, 1200);
+}
+async function siguienteFoto() {
+  if (!recorrido) return;
+  recorrido.i += 1;
+  if (recorrido.i >= recorrido.fotos.length) return detenerRecorrido();
+  const ep = recorrido.fotos[recorrido.i];
+  progreso.elegir(ep, false);
+  $("aviso-recorrido").innerHTML = `Recorrido ${recorrido.i + 1}/${recorrido.fotos.length} · episodio ${ep.toLocaleString("es")} <button id="btn-parar">Detener</button>`;
+  $("btn-parar").onclick = detenerRecorrido;
+  await verCheckpoint(ep);
+}
+function detenerRecorrido() {
+  if (!recorrido) return;
+  clearTimeout(recorrido.espera);
+  recorrido = null;
+  $("aviso-recorrido").hidden = true;
+  $("btn-recorrido").textContent = "Recorrer el progreso (8 fotos)";
+}
+$("btn-recorrido").onclick = () => {
+  if (recorrido) return detenerRecorrido();
+  recorrido = { fotos: progreso.recorrido(), i: -1, espera: null };
+  if (estado.velocidad < 8) { estado.velocidad = 8; $("velocidad").value = "8"; }
+  $("aviso-recorrido").hidden = false;
+  $("btn-recorrido").textContent = "Detener recorrido";
+  siguienteFoto();
+};
+
 async function iniciar() {
   estado.mundo = await (await fetch("/api/mundo")).json();
   $("mision").textContent = estado.mundo.mision;
   if (!estado.mundo.agentes.find((a) => a.id === "experto")?.disponible) estado.agente = "codicioso";
   construirPanel();
+  await progreso.cargar();
+  progreso.soltar();
   botonPlay(false);
   aplicarAmbiente();
   redimensionar();

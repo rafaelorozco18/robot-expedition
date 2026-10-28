@@ -1,6 +1,7 @@
 # Pipeline del experimento 01. `dvc repro` reconstruye solo lo que cambió.
 #   escenarios ──┐
 #   entrenar ────┴─▶ evaluar
+#                └─▶ progreso
 stages:
   escenarios:
     cmd: python -m expedicion escenarios --salida data/escenarios.json
@@ -26,6 +27,7 @@ stages:
     outs:
       - models/q_experto.npz
       - models/q_aprendiz.npz
+      - models/checkpoints
       - models/modelo.json:
           cache: false
     metrics:
@@ -52,4 +54,18 @@ stages:
       - data/trayectorias.jsonl
     metrics:
       - metrics/evaluacion.json:
+          cache: false
+
+  progreso:
+    cmd: python -m expedicion progreso
+    deps:
+      - data/escenarios.json
+      - models/checkpoints
+      - expedicion/evaluar.py
+      - expedicion/ambiente.py
+    params:
+      - ambiente
+      - evaluacion.semillas_progreso
+    metrics:
+      - metrics/progreso.json:
           cache: false

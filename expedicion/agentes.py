@@ -100,7 +100,21 @@ def cargar_agente(nombre, carpeta_modelos="models", semilla=None):
         if not ruta.exists():
             raise FileNotFoundError(f"No existe {ruta}. Entrena primero: expedicion entrenar")
         return AgenteQ(ruta, nombre, DESCRIPCIONES[nombre])
+    if nombre.startswith("ep:"):
+        try:
+            ep = int(nombre[3:])
+        except ValueError:
+            raise ValueError(f"Checkpoint inválido: {nombre}") from None
+        ruta = Path(carpeta_modelos) / "checkpoints" / f"q_ep{ep:06d}.npz"
+        if not ruta.exists():
+            raise FileNotFoundError(f"No existe el checkpoint del episodio {ep}")
+        return AgenteQ(ruta, nombre, f"Tabla Q tras {ep} episodios de entrenamiento.")
     raise ValueError(f"Agente desconocido: {nombre}")
+
+
+def checkpoints_disponibles(carpeta_modelos="models"):
+    """Episodios con foto guardada de la tabla Q, en orden."""
+    return sorted(int(r.stem[4:]) for r in (Path(carpeta_modelos) / "checkpoints").glob("q_ep*.npz"))
 
 
 def agentes_disponibles(carpeta_modelos="models"):

@@ -14,6 +14,7 @@ entrenamiento:
   epsilon_final: 0.05
   fraccion_exploracion: 0.8   # parte de los episodios en que ε decae linealmente
   fraccion_aprendiz: 0.08     # cuándo se guarda la versión "aprendiz"
+  cada_checkpoint: 1200       # foto de la tabla Q cada N episodios → models/checkpoints/
   ventana_metricas: 500
   semilla: 42
   version_modelo: "0.1.0"
@@ -23,3 +24,4 @@ evaluacion:
   semilla: 2026
   episodios_por_condicion: 10   # 3 climas × 3 gravedades × 2 incidentes × 10 = 180
   agentes: [experto, aprendiz, codicioso, aleatorio]
+  semillas_progreso: 2          # por condición, para evaluar cada checkpoint (36 episodios)

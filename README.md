@@ -20,6 +20,7 @@ pip install -r requirements.txt     # gymnasium, numpy, dvc, mlflow, pytest + es
 expedicion info                                   # espacios de observación y acción
 expedicion entrenar                               # Q-learning (lee params.yaml) + MLflow
 expedicion evaluar                                # métricas por agente → metrics/evaluacion.json
+expedicion progreso                               # evalúa cada checkpoint → metrics/progreso.json
 expedicion ver --agente experto --clima tormenta --gravedad luna    # episodio animado en la terminal
 expedicion transiciones --clima lluvia --gravedad marte --semilla 3 # tabla de transiciones
 expedicion mapa                                   # docs/mapa-v0.1.svg
@@ -45,17 +46,22 @@ obs, recompensa, terminated, truncated, info = env.step(env.action_space.sample(
 (`/api/episodio`) y el navegador solo lo dibuja: física ≠ decoración. El panel derecho muestra
 la versión del robot (experto, aprendiz, codicioso, aleatorio), las condiciones (clima, gravedad,
 incidente, semilla), las acciones con sus valores Q, la batería, la etapa y los sensores, y las
-adversidades del momento. Three.js r160 está incluido en `web/vendor/`, así que no requiere internet.
+adversidades del momento.
+
+**Progreso del entrenamiento:** el panel incluye la curva de aprendizaje. Cada 1 200 episodios el entrenamiento
+guarda una foto de la tabla Q (`models/checkpoints/`) y la etapa `progreso` la evalúa sin exploración.
+Se puede hacer clic en cualquier punto para ver esa versión del robot en 3D, o usar «Recorrer el progreso»
+para ver 8 fotos seguidas, desde la que nunca entrenó hasta el experto. Three.js r160 está incluido en `web/vendor/`, así que no requiere internet.
 
 ## Versionado
 
 | Qué | Herramienta | Dónde |
 |---|---|---|
 | **Código** | git | rama `experimento-01`, tag `exp-01` |
-| **Pipeline** | DVC | `dvc.yaml` (etapas `escenarios → entrenar → evaluar`) + `dvc.lock` (hashes de cada entrada y salida) |
+| **Pipeline** | DVC | `dvc.yaml` (etapas `escenarios → entrenar → evaluar` y `entrenar → progreso`) + `dvc.lock` (hashes de cada entrada y salida) |
 | **Dataset** | DVC | `data/escenarios.json` (180 escenarios de evaluación) y `data/trayectorias.jsonl` (720 episodios grabados), en el caché `.dvc/cache` |
 | **Experimento** | MLflow + `params.yaml` | experimento `robot-expedition` en `mlflow.db`: parámetros, curvas, métricas de evaluación y artefactos por run; `dvc exp show` / `dvc metrics show` comparan entre commits |
-| **Modelo** | DVC + MLflow Model Registry | `models/q_experto.npz`, `models/q_aprendiz.npz`, tarjeta `models/modelo.json`; registrado como `robot-expedition-qlearning` (pyfunc; la v2 corresponde al commit `c1f5815`) |
+| **Modelo** | DVC + MLflow Model Registry | `models/q_experto.npz`, `models/q_aprendiz.npz`, 26 checkpoints en `models/checkpoints/`, tarjeta `models/modelo.json`; registrado como `robot-expedition-qlearning` (pyfunc; la v2 corresponde al commit `c1f5815`) |
 
 ```bash
 dvc repro                    # reconstruye solo las etapas cuyo código, datos o parámetros cambiaron

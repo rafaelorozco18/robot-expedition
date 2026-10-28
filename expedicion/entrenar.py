@@ -35,6 +35,7 @@ def entrenar(p_amb, p_ent, carpeta_modelos="models", carpeta_metricas="metrics",
     eps_ini, eps_fin = p_ent["epsilon_inicial"], p_ent["epsilon_final"]
     fin_decaimiento = int(episodios * p_ent["fraccion_exploracion"])
     guardar_aprendiz = int(episodios * p_ent["fraccion_aprendiz"])
+    cada_checkpoint = p_ent["cada_checkpoint"]
     ventana = p_ent["ventana_metricas"]
 
     rng = np.random.default_rng(p_ent["semilla"])
@@ -44,6 +45,10 @@ def entrenar(p_amb, p_ent, carpeta_modelos="models", carpeta_metricas="metrics",
     modelos = Path(carpeta_modelos)
     metricas = Path(carpeta_metricas)
     modelos.mkdir(parents=True, exist_ok=True)
+    checkpoints = modelos / "checkpoints"
+    checkpoints.mkdir(exist_ok=True)
+    for viejo in checkpoints.glob("q_ep*.npz"):
+        viejo.unlink()
     metricas.mkdir(parents=True, exist_ok=True)
 
     run = None
@@ -61,6 +66,7 @@ def entrenar(p_amb, p_ent, carpeta_modelos="models", carpeta_metricas="metrics",
     recompensas, exitos, pasos_ep = [], [], []
     t0 = time.time()
     semillas = rng.integers(0, 2**31 - 1, size=episodios)
+    np.savez_compressed(checkpoints / "q_ep000000.npz", q=q, episodios=0)
     for ep in range(episodios):
         frac = min(1.0, ep / max(1, fin_decaimiento))
         epsilon = eps_ini + (eps_fin - eps_ini) * frac
@@ -79,6 +85,8 @@ def entrenar(p_amb, p_ent, carpeta_modelos="models", carpeta_metricas="metrics",
         exitos.append(float(info["exito"]))
         pasos_ep.append(info["pasos"])
 
+        if (ep + 1) % cada_checkpoint == 0:
+            np.savez_compressed(checkpoints / f"q_ep{ep + 1:06d}.npz", q=q, episodios=ep + 1)
         if ep + 1 == guardar_aprendiz:
             np.savez_compressed(modelos / "q_aprendiz.npz", q=q, episodios=ep + 1)
         if (ep + 1) % ventana == 0:
@@ -117,7 +125,8 @@ def entrenar(p_amb, p_ent, carpeta_modelos="models", carpeta_metricas="metrics",
     if run:
         mlflow.log_metrics({"segundos": resumen["segundos"],
                             "estados_visitados": resumen["estados_visitados"]})
-        mlflow.log_artifacts(str(modelos), artifact_path="modelos")
+        for ruta in modelos.glob("*.*"):
+            mlflow.log_artifact(str(ruta), artifact_path="modelos")
         mlflow.log_artifact(str(metricas / "curva.csv"))
         registrar_modelo(modelos / "q_experto.npz")
         mlflow.end_run()

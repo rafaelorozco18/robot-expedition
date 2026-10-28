@@ -109,3 +109,30 @@ def evaluar(escenarios, p_amb, p_eval, carpeta_modelos="models",
     with open(salida_metricas, "w") as f:
         json.dump(resultado, f, indent=2)
     return resultado
+
+
+def evaluar_progreso(escenarios, p_amb, p_eval, carpeta_modelos="models",
+                     salida="metrics/progreso.json"):
+    """Evalúa cada checkpoint sin exploración (política voraz) en un subconjunto fijo."""
+    from .agentes import checkpoints_disponibles
+    vistos, subconjunto = defaultdict(int), []
+    for esc in escenarios:
+        clave = (esc["clima"], esc["gravedad"], esc["incidente"])
+        if vistos[clave] < p_eval["semillas_progreso"]:
+            vistos[clave] += 1
+            subconjunto.append(esc)
+    filas = []
+    for ep in checkpoints_disponibles(carpeta_modelos):
+        agente = cargar_agente(f"ep:{ep}", carpeta_modelos)
+        resultados = [correr_episodio(agente, esc, p_amb, registrar_cuadros=False)[0]
+                      for esc in subconjunto]
+        fila = {"episodio": ep}
+        for inc in C.INCIDENTES:
+            m = _metricas([r for r in resultados if r["incidente"] == inc])
+            fila.update({f"{inc}.{k}": v for k, v in m.items() if k != "episodios"})
+        filas.append(fila)
+    Path(salida).parent.mkdir(parents=True, exist_ok=True)
+    with open(salida, "w") as f:
+        json.dump({"episodios_por_checkpoint": len(subconjunto), "checkpoints": filas}, f, indent=1)
+    return filas
+

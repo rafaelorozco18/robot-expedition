@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from . import config as C
-from .agentes import agentes_disponibles, cargar_agente
+from .agentes import agentes_disponibles, cargar_agente, checkpoints_disponibles
 from .evaluar import correr_episodio
 
 WEB = Path(__file__).resolve().parent.parent / "web"
@@ -29,6 +29,29 @@ def mundo(p_amb, carpeta_modelos):
     }
 
 
+def progreso(carpeta_modelos, carpeta_metricas="metrics"):
+    """Curva de entrenamiento (con exploración) + evaluación voraz de cada checkpoint."""
+    curva_csv = Path(carpeta_metricas) / "curva.csv"
+    curva = []
+    if curva_csv.exists():
+        lineas = curva_csv.read_text().strip().splitlines()
+        claves = lineas[0].split(",")
+        curva = [dict(zip(claves, map(float, l.split(",")))) for l in lineas[1:]]
+    evaluacion = Path(carpeta_metricas) / "progreso.json"
+    datos = json.loads(evaluacion.read_text()) if evaluacion.exists() else {"checkpoints": []}
+    aprendiz = Path(carpeta_modelos) / "q_aprendiz.npz"
+    experto = Path(carpeta_modelos) / "q_experto.npz"
+    import numpy as np
+    return {
+        "curva": curva,
+        "evaluacion": datos["checkpoints"],
+        "episodios_por_checkpoint": datos.get("episodios_por_checkpoint"),
+        "checkpoints": checkpoints_disponibles(carpeta_modelos),
+        "aprendiz": int(np.load(aprendiz)["episodios"]) if aprendiz.exists() else None,
+        "experto": int(np.load(experto)["episodios"]) if experto.exists() else None,
+    }
+
+
 def crear_manejador(p_amb, carpeta_modelos):
     class Manejador(BaseHTTPRequestHandler):
         def _json(self, datos, codigo=200):
@@ -43,6 +66,8 @@ def crear_manejador(p_amb, carpeta_modelos):
             url = urlparse(self.path)
             if url.path == "/api/mundo":
                 return self._json(mundo(p_amb, carpeta_modelos))
+            if url.path == "/api/progreso":
+                return self._json(progreso(carpeta_modelos))
             if url.path == "/api/episodio":
                 q = {k: v[0] for k, v in parse_qs(url.query).items()}
                 try:
