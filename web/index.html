@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robot Expedition</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/" } }
+  </script>
+</head>
+<body>
+  <main id="escena">
+    <canvas id="lienzo"></canvas>
+
+    <header class="cabecera">
+      <p class="eyebrow">MLOps Autonomous Lab · Experimento 01 · Ambiente v0.1</p>
+      <h1>Robot<br>Expedition</h1>
+      <p class="mision" id="mision">Visitar dos balizas en orden y volver a la base antes de agotar la batería.</p>
+    </header>
+
+    <div class="leyenda" aria-label="Leyenda del mapa">
+      <span><i style="--c:#d9b98a"></i>suelo</span>
+      <span><i style="--c:#f0d98c"></i>arena</span>
+      <span><i style="--c:#7a5230"></i>barro</span>
+      <span><i style="--c:#bfe3f5"></i>hielo</span>
+      <span><i style="--c:#8a8f96"></i>roca (saltable)</span>
+      <span><i style="--c:#3b4452"></i>muro</span>
+      <span><i style="--c:#1b0f0a"></i>grieta</span>
+    </div>
+
+    <div class="resultado" id="resultado" hidden></div>
+
+    <div class="linea-tiempo">
+      <button id="btn-reiniciar" title="Volver al inicio" aria-label="Volver al inicio"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+      <button id="btn-play" class="primario" title="Reproducir / pausar" aria-label="Reproducir o pausar"></button>
+      <button id="btn-paso" title="Un paso" aria-label="Avanzar un paso"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+      <input type="range" id="barra" min="0" max="0" value="0" aria-label="Paso del episodio">
+      <span class="contador" id="contador">0 / 0</span>
+      <label class="velocidad">vel.
+        <select id="velocidad">
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+          <option value="4">4×</option>
+        </select>
+      </label>
+    </div>
+  </main>
+
+  <aside class="panel">
+    <section>
+      <h2>Versión del robot</h2>
+      <div class="agentes" id="agentes"></div>
+    </section>
+
+    <section>
+      <h2>Condiciones del episodio</h2>
+      <div class="campo">
+        <span class="etiqueta">Clima</span>
+        <div class="segmentado" id="clima"></div>
+      </div>
+      <div class="campo">
+        <span class="etiqueta">Gravedad</span>
+        <div class="segmentado" id="gravedad"></div>
+      </div>
+      <div class="campo">
+        <span class="etiqueta">Incidente</span>
+        <div class="segmentado" id="incidente"></div>
+      </div>
+      <div class="campo fila">
+        <label class="etiqueta" for="semilla">Semilla</label>
+        <input type="number" id="semilla" value="7" min="0">
+        <button id="btn-dado" title="Semilla aleatoria" aria-label="Semilla aleatoria"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="8" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="16" cy="8" r="1.6"/><circle cx="8" cy="16" r="1.6"/></svg></button>
+        <button id="btn-lanzar" class="primario ancho">Lanzar episodio</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Lo que controla el agente</h2>
+      <div class="acciones" id="acciones"></div>
+      <p class="nota" id="nota-q">Brillo = valor Q de cada acción en el estado actual.</p>
+      <div class="medidor">
+        <div class="medidor-cab"><span>Batería</span><b id="v-bateria">100%</b></div>
+        <div class="barra-bat"><div id="bateria"></div></div>
+      </div>
+      <div class="etapas" id="etapas">
+        <span data-e="0">Base</span><i></i>
+        <span data-e="1">Baliza 1</span><i></i>
+        <span data-e="2">Baliza 2</span><i></i>
+        <span data-e="3">Base</span>
+      </div>
+      <dl class="datos">
+        <div><dt>Posición</dt><dd id="v-pos">—</dd></div>
+        <div><dt>Velocidad</dt><dd id="v-vel">—</dd></div>
+        <div><dt>Objetivo (dx, dy)</dt><dd id="v-obj">—</dd></div>
+        <div><dt>Ruta restante</dt><dd id="v-ruta">—</dd></div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>A lo que se enfrenta ahora</h2>
+      <div class="enfrenta">
+        <svg id="radar" viewBox="-60 -60 120 120" aria-label="Rayos de distancia"></svg>
+        <dl class="datos compacto">
+          <div><dt>Terreno</dt><dd id="v-terreno">—</dd></div>
+          <div><dt>Clima</dt><dd id="v-clima">—</dd></div>
+          <div><dt>Gravedad</dt><dd id="v-g">—</dd></div>
+          <div><dt>P(deslizar en hielo)</dt><dd id="v-desl">—</dd></div>
+          <div><dt>P(atasco en barro)</dt><dd id="v-atasco">—</dd></div>
+          <div><dt>Costo de salto</dt><dd id="v-salto">—</dd></div>
+          <div><dt>Ruido de sensores</dt><dd id="v-ruido">—</dd></div>
+          <div><dt>Incidente</dt><dd id="v-incidente">—</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recompensa</h2>
+      <dl class="datos">
+        <div><dt>Último paso</dt><dd id="v-r">—</dd></div>
+        <div><dt>Acumulada</dt><dd id="v-rt">—</dd></div>
+      </dl>
+      <ol class="bitacora" id="bitacora"></ol>
+    </section>
+
+    <footer class="pie" id="pie"></footer>
+  </aside>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

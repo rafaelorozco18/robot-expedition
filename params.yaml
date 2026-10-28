@@ -1,0 +1,25 @@
+# Parámetros del experimento 01 (ambiente v0.1). DVC los rastrea: cambiar uno
+# invalida solo las etapas del pipeline que dependen de él.
+ambiente:
+  bateria_inicial: 100.0   # %
+  max_pasos: 200           # s (1 paso = 1 s)
+  alcance_sensor: 5.0      # m
+  ruido_sensor: 0.1        # m, desviación estándar (se multiplica según el clima)
+
+entrenamiento:
+  episodios: 30000
+  alpha: 0.2
+  gamma: 0.99
+  epsilon_inicial: 1.0
+  epsilon_final: 0.05
+  fraccion_exploracion: 0.8   # parte de los episodios en que ε decae linealmente
+  fraccion_aprendiz: 0.08     # cuándo se guarda la versión "aprendiz"
+  ventana_metricas: 500
+  semilla: 42
+  version_modelo: "0.1.0"
+  mlflow_uri: sqlite:///mlflow.db
+
+evaluacion:
+  semilla: 2026
+  episodios_por_condicion: 10   # 3 climas × 3 gravedades × 2 incidentes × 10 = 180
+  agentes: [experto, aprendiz, codicioso, aleatorio]

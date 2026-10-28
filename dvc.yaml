@@ -1,0 +1,55 @@
+# Pipeline del experimento 01. `dvc repro` reconstruye solo lo que cambió.
+#   escenarios ──┐
+#   entrenar ────┴─▶ evaluar
+stages:
+  escenarios:
+    cmd: python -m expedicion escenarios --salida data/escenarios.json
+    deps:
+      - expedicion/evaluar.py
+      - expedicion/config.py
+    params:
+      - evaluacion.semilla
+      - evaluacion.episodios_por_condicion
+    outs:
+      - data/escenarios.json
+
+  entrenar:
+    cmd: python -m expedicion entrenar
+    deps:
+      - expedicion/ambiente.py
+      - expedicion/config.py
+      - expedicion/agentes.py
+      - expedicion/entrenar.py
+    params:
+      - ambiente
+      - entrenamiento
+    outs:
+      - models/q_experto.npz
+      - models/q_aprendiz.npz
+      - models/modelo.json:
+          cache: false
+    metrics:
+      - metrics/entrenamiento.json:
+          cache: false
+    plots:
+      - metrics/curva.csv:
+          cache: false
+          x: episodio
+          y: tasa_exito
+
+  evaluar:
+    cmd: python -m expedicion evaluar
+    deps:
+      - data/escenarios.json
+      - models/q_experto.npz
+      - models/q_aprendiz.npz
+      - expedicion/evaluar.py
+      - expedicion/ambiente.py
+    params:
+      - ambiente
+      - evaluacion
+    outs:
+      - data/trayectorias.jsonl
+    metrics:
+      - metrics/evaluacion.json:
+          cache: false
