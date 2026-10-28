@@ -66,7 +66,7 @@ stages:
       size: 1841
     - path: metrics/entrenamiento.json
       hash: md5
-      md5: 78e6f385f2a537b8c99b1438ed2d121a
+      md5: 8c8e770640e01c6251a68a897cfe0a7d
       size: 133
     - path: models/checkpoints
       hash: md5
@@ -75,7 +75,7 @@ stages:
       nfiles: 26
     - path: models/modelo.json
       hash: md5
-      md5: 9e963d86b95e81d49ee289d1127eb746
+      md5: 674c4a2bf24eb25363c102ffab83dfa6
       size: 317
     - path: models/q_aprendiz.npz
       hash: md5
