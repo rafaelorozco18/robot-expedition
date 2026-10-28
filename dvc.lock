@@ -1,0 +1,128 @@
+schema: '2.0'
+stages:
+  escenarios:
+    cmd: python -m expedicion escenarios --salida data/escenarios.json
+    deps:
+    - path: expedicion/config.py
+      hash: md5
+      md5: 4614402d5dcaef4933130717d4c67713
+      size: 5887
+    - path: expedicion/evaluar.py
+      hash: md5
+      md5: e0bfb82a48b75f0657becfc831d22148
+      size: 5503
+    params:
+      params.yaml:
+        evaluacion.episodios_por_condicion: 10
+        evaluacion.semilla: 2026
+    outs:
+    - path: data/escenarios.json
+      hash: md5
+      md5: 82eb6433e19b33e5b82b71ac569fde12
+      size: 21606
+  entrenar:
+    cmd: python -m expedicion entrenar
+    deps:
+    - path: expedicion/agentes.py
+      hash: md5
+      md5: 6fdbad305b08aad4aa6cc23ac833863b
+      size: 3983
+    - path: expedicion/ambiente.py
+      hash: md5
+      md5: bb5d31fde0c13f7cc19a01661f40e2fc
+      size: 14653
+    - path: expedicion/config.py
+      hash: md5
+      md5: 4614402d5dcaef4933130717d4c67713
+      size: 5887
+    - path: expedicion/entrenar.py
+      hash: md5
+      md5: 0b09548461d1375f033bc8edc76fbd22
+      size: 6047
+    params:
+      params.yaml:
+        ambiente:
+          bateria_inicial: 100.0
+          max_pasos: 200
+          alcance_sensor: 5.0
+          ruido_sensor: 0.1
+        entrenamiento:
+          episodios: 30000
+          alpha: 0.2
+          gamma: 0.99
+          epsilon_inicial: 1.0
+          epsilon_final: 0.05
+          fraccion_exploracion: 0.8
+          fraccion_aprendiz: 0.08
+          ventana_metricas: 500
+          semilla: 42
+          version_modelo: 0.1.0
+          mlflow_uri: sqlite:///mlflow.db
+    outs:
+    - path: metrics/curva.csv
+      hash: md5
+      md5: 8055e095496abd559e0e6f3f7458e564
+      size: 1841
+    - path: metrics/entrenamiento.json
+      hash: md5
+      md5: 3e1b4d75dd11b60c57202b1b55c15f1a
+      size: 133
+    - path: models/modelo.json
+      hash: md5
+      md5: 81b97dd0212f5bd9388016ab18866825
+      size: 317
+    - path: models/q_aprendiz.npz
+      hash: md5
+      md5: 10f9a8da9e2fe54ff43d71252a9d8edf
+      size: 65855
+    - path: models/q_experto.npz
+      hash: md5
+      md5: bf21996abdb4dd8f6967806a30958ef9
+      size: 161930
+  evaluar:
+    cmd: python -m expedicion evaluar
+    deps:
+    - path: data/escenarios.json
+      hash: md5
+      md5: 82eb6433e19b33e5b82b71ac569fde12
+      size: 21606
+    - path: expedicion/ambiente.py
+      hash: md5
+      md5: bb5d31fde0c13f7cc19a01661f40e2fc
+      size: 14653
+    - path: expedicion/evaluar.py
+      hash: md5
+      md5: e0bfb82a48b75f0657becfc831d22148
+      size: 5503
+    - path: models/q_aprendiz.npz
+      hash: md5
+      md5: 10f9a8da9e2fe54ff43d71252a9d8edf
+      size: 65855
+    - path: models/q_experto.npz
+      hash: md5
+      md5: bf21996abdb4dd8f6967806a30958ef9
+      size: 161930
+    params:
+      params.yaml:
+        ambiente:
+          bateria_inicial: 100.0
+          max_pasos: 200
+          alcance_sensor: 5.0
+          ruido_sensor: 0.1
+        evaluacion:
+          semilla: 2026
+          episodios_por_condicion: 10
+          agentes:
+          - experto
+          - aprendiz
+          - codicioso
+          - aleatorio
+    outs:
+    - path: data/trayectorias.jsonl
+      hash: md5
+      md5: 9a6a0d69d58c5ba0344c95b85acce697
+      size: 3605690
+    - path: metrics/evaluacion.json
+      hash: md5
+      md5: 447ad9a040e5104fb26036493121b1d1
+      size: 6274

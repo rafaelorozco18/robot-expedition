@@ -55,7 +55,7 @@ adversidades del momento. Three.js r160 está incluido en `web/vendor/`, así qu
 | **Pipeline** | DVC | `dvc.yaml` (etapas `escenarios → entrenar → evaluar`) + `dvc.lock` (hashes de cada entrada y salida) |
 | **Dataset** | DVC | `data/escenarios.json` (180 escenarios de evaluación) y `data/trayectorias.jsonl` (720 episodios grabados), en el caché `.dvc/cache` |
 | **Experimento** | MLflow + `params.yaml` | experimento `robot-expedition` en `mlflow.db`: parámetros, curvas, métricas de evaluación y artefactos por run; `dvc exp show` / `dvc metrics show` comparan entre commits |
-| **Modelo** | DVC + MLflow Model Registry | `models/q_experto.npz`, `models/q_aprendiz.npz`, tarjeta `models/modelo.json`; registrado como `robot-expedition-qlearning` v1 (pyfunc) |
+| **Modelo** | DVC + MLflow Model Registry | `models/q_experto.npz`, `models/q_aprendiz.npz`, tarjeta `models/modelo.json`; registrado como `robot-expedition-qlearning` (pyfunc; la v2 corresponde al commit `c1f5815`) |
 
 ```bash
 dvc repro                    # reconstruye solo las etapas cuyo código, datos o parámetros cambiaron

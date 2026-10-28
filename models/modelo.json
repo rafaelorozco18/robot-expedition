@@ -1,0 +1,12 @@
+{
+  "nombre": "robot-expedition-qlearning",
+  "version": "0.1.0",
+  "ambiente": "RobotExpedition-v0.1",
+  "git_commit": "c1f5815",
+  "mlflow_run_id": "a386a1c570e84c7da5f799d126aa758e",
+  "episodios": 30000,
+  "segundos": 162.9,
+  "recompensa_final": 69.619,
+  "tasa_exito_final": 0.918,
+  "estados_visitados": 2806
+}
