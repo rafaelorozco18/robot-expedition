@@ -179,5 +179,6 @@ En t = 3 el consumo de 2.07 % es 1.8 % del barro × 1.15 por la lluvia. En t = 6
 - **Generalización.** La tabla Q ignora los rayos, por eso falla con el incidente. Siguiente experimento: un agente con observación local (DQN/PPO) y entrenamiento con incidentes y mapas aleatorios.
 - **Unidades de batería.** Ahora es un % relativo; falta pasarlo a Wh con un modelo de motor.
 - **Calibrar coeficientes.** Probabilidades de patinar y atascarse, costos por terreno y efectos de la gravedad son propuestas, no medidas.
+- **Clima según el planeta.** El visor muestra cada gravedad como un planeta: polvo y tormenta de polvo en Marte, micrometeoritos y tormenta solar en la Luna, lluvia en la Tierra. Hoy es solo visual: los coeficientes de clima son los mismos en los tres. Falta decidir si cada planeta tendrá su propio modelo de clima (por ejemplo, sin barro ni lluvia en la Luna).
 - **Clima dinámico.** Hoy el clima es fijo en todo el episodio; podría cambiar a mitad de la misión.
 - **Mapas como dataset.** Generar mapas procedimentales versionados con DVC en vez del único mapa fijo.

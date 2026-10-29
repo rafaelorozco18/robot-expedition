@@ -14,20 +14,12 @@
     <canvas id="lienzo"></canvas>
 
     <header class="cabecera">
-      <p class="eyebrow">MLOps Autonomous Lab · Experimento 01 · Ambiente v0.1</p>
+      <p class="eyebrow">MLOps Autonomous Lab · Experimento 01 · Ambiente v0.1 · <span id="planeta-nombre">Marte</span></p>
       <h1>Robot<br>Expedition</h1>
       <p class="mision" id="mision">Visitar dos balizas en orden y volver a la base antes de agotar la batería.</p>
     </header>
 
-    <div class="leyenda" aria-label="Leyenda del mapa">
-      <span><i style="--c:#d9b98a"></i>suelo</span>
-      <span><i style="--c:#f0d98c"></i>arena</span>
-      <span><i style="--c:#7a5230"></i>barro</span>
-      <span><i style="--c:#bfe3f5"></i>hielo</span>
-      <span><i style="--c:#8a8f96"></i>roca (saltable)</span>
-      <span><i style="--c:#3b4452"></i>muro</span>
-      <span><i style="--c:#1b0f0a"></i>grieta</span>
-    </div>
+    <div class="leyenda" id="leyenda" aria-label="Leyenda del mapa"></div>
 
     <div class="resultado" id="resultado" hidden></div>
     <div class="aviso-recorrido" id="aviso-recorrido" hidden></div>
@@ -87,7 +79,7 @@
         <div class="segmentado" id="clima"></div>
       </div>
       <div class="campo">
-        <span class="etiqueta">Gravedad</span>
+        <span class="etiqueta">Planeta · gravedad (m/s²)</span>
         <div class="segmentado" id="gravedad"></div>
       </div>
       <div class="campo">

@@ -3,13 +3,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/OrbitControls.js";
 import { crearProgreso } from "./progreso.js";
+import { crearPlaneta, TEMAS } from "./planetas.js";
 
 const $ = (id) => document.getElementById(id);
 
-const COLOR = {
-  ".": 0xd9b98a, a: 0xf0d98c, b: 0x7a5230, h: 0xbfe3f5, R: 0xd9b98a,
-  "#": 0x3b4452, B: 0x2e8b4a, 1: 0xd9b98a, 2: 0xd9b98a,
-};
 const AGENTES = {
   experto: { titulo: "Experto · Q-learning", color: "#39c16c" },
   aprendiz: { titulo: "Aprendiz · Q-learning temprano", color: "#f2b632" },
@@ -28,12 +25,11 @@ const ICONO = {
 const botonPlay = (jugando) => { $("btn-play").innerHTML = jugando ? ICONO.pausa : ICONO.play; };
 const DIRS = [[0, -1], [0, 1], [1, 0], [-1, 0]]; // N S E O en la rejilla
 const RAYOS = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
-const CIELO = { tierra: 0x24425e, marte: 0x5b2c1f, luna: 0x04060b };
 const ALTURA_SALTO = { luna: 1.5, marte: 0.95, tierra: 0.5 };
 const ETIQUETA_INCIDENTE = { ninguno: "ninguno", corredor_bloqueado: "corredor bloqueado" };
 
 const estado = {
-  mundo: null, agente: "experto", clima: "despejado", gravedad: "tierra", incidente: "ninguno",
+  mundo: null, agente: "experto", clima: "despejado", gravedad: "marte", incidente: "ninguno",
   episodio: null, k: 0, t: 0, play: false, velocidad: 1,
 };
 
@@ -44,20 +40,20 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(CIELO.tierra);
-scene.fog = new THREE.Fog(CIELO.tierra, 30, 70);
 
-const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 300);
+const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 2000);
 const controls = new OrbitControls(camera, lienzo);
 // El objetivo de la cámara va desplazado para dejar el título libre arriba a la izquierda.
-controls.target.set(-2.4, 0, -0.2);
-camera.position.set(5.2, 16.5, 17.8);
+controls.target.set(-2.2, 1.4, -3);
+camera.position.set(4.4, 6.6, 15);
 controls.enableDamping = true;
-controls.maxPolarAngle = Math.PI * 0.46;
+controls.maxPolarAngle = Math.PI * 0.48;
 controls.minDistance = 8;
-controls.maxDistance = 45;
+controls.maxDistance = 70;
 
 const hemi = new THREE.HemisphereLight(0xdfefff, 0x3b2c20, 0.9);
 scene.add(hemi);
@@ -65,8 +61,10 @@ const sol = new THREE.DirectionalLight(0xffffff, 1.8);
 sol.position.set(9, 16, 6);
 sol.castShadow = true;
 sol.shadow.mapSize.set(2048, 2048);
-Object.assign(sol.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10, near: 1, far: 50 });
+Object.assign(sol.shadow.camera, { left: -13, right: 13, top: 13, bottom: -13, near: 1, far: 60 });
+sol.shadow.bias = -0.0005;
 scene.add(sol);
+const planeta = crearPlaneta(scene, { sol, hemi });
 
 function material(color, extra = {}) {
   return new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0.0, ...extra });
@@ -106,16 +104,17 @@ scene.add(grupoMapa);
 let balizas = {};
 let anilloBase = null;
 
+const PROFUNDIDAD = 1.4;  // las columnas bajan hasta aquí: las grietas son huecos de verdad
+
 function construirMapa(mapa, celdasIncidente) {
   grupoMapa.traverse((o) => { o.geometry?.dispose(); });
   grupoMapa.clear();
   balizas = {};
   const alto = mapa.length, ancho = mapa[0].length;
-
-  const plataforma = new THREE.Mesh(new THREE.BoxGeometry(ancho + 0.8, 1.2, alto + 0.8), material(0x27313d));
-  plataforma.position.set(0, -0.7, 0);
-  plataforma.receiveShadow = true;
-  grupoMapa.add(plataforma);
+  const tema = planeta.tema();
+  const estratos = planeta.estratos(estado.gravedad);
+  const matLado = new THREE.MeshStandardMaterial({ map: estratos, roughness: 1 });
+  const matFondo = material(0x070302, { emissive: estado.gravedad === "marte" ? 0x2a0800 : 0x050505, emissiveIntensity: 1 });
 
   const rng = mulberry32(7);
   for (let y = 0; y < alto; y++) {
@@ -123,42 +122,54 @@ function construirMapa(mapa, celdasIncidente) {
       const c = mapa[y][x];
       const p = celda(x, y);
       if (c === "G") {
-        const fondo = new THREE.Mesh(new THREE.BoxGeometry(1, 0.05, 1),
-          material(0x120806, { emissive: 0x3a0c02, emissiveIntensity: 0.9 }));
-        fondo.position.set(p.x, -1.2, p.z);
+        const fondo = new THREE.Mesh(new THREE.BoxGeometry(1, 0.05, 1), matFondo);
+        fondo.position.set(p.x, -PROFUNDIDAD + 0.05, p.z);
         grupoMapa.add(fondo);
         continue;
       }
       const h = c === "b" ? 0.16 : c === "a" ? 0.24 : 0.2;
-      const extra = c === "h" ? { roughness: 0.08, metalness: 0.25, transparent: true, opacity: 0.92 } : {};
-      const tono = new THREE.Color(COLOR[c]).offsetHSL(0, 0, (rng() - 0.5) * 0.04);
-      const baldosa = new THREE.Mesh(new THREE.BoxGeometry(0.98, h, 0.98), material(tono, extra));
-      baldosa.position.set(p.x, SUPERFICIE - h / 2, p.z);
-      baldosa.receiveShadow = true;
-      grupoMapa.add(baldosa);
+      const colorBase = c === "R" ? tema.colores["."] : c === "#" ? tema.muro : tema.colores[c];
+      const tono = new THREE.Color(colorBase).offsetHSL(0, (rng() - 0.5) * 0.04, (rng() - 0.5) * 0.05);
+      const extra = c === "h"
+        ? { roughness: tema.hielo.rugosidad, metalness: tema.hielo.metal, transparent: tema.hielo.opacidad < 1, opacity: tema.hielo.opacidad }
+        : { map: planeta.texRuido };
+      const tapa = material(tono, extra);
+      // columna: caras laterales con estratos de roca, cara superior con el terreno
+      const columna = new THREE.Mesh(new THREE.BoxGeometry(1, PROFUNDIDAD + SUPERFICIE - (0.2 - h), 1),
+        [matLado, matLado, tapa, matLado, matLado, matLado]);
+      columna.position.set(p.x, (SUPERFICIE - (0.2 - h) - PROFUNDIDAD) / 2, p.z);
+      columna.receiveShadow = true;
+      grupoMapa.add(columna);
 
-      if (c === "a") {   // dunas pequeñas
+      if (c === "a") {   // dunas
         for (let i = 0; i < 3; i++) {
-          const duna = new THREE.Mesh(new THREE.SphereGeometry(0.16, 8, 6), material(0xe8cc78));
-          duna.scale.y = 0.25;
-          duna.position.set(p.x + (rng() - 0.5) * 0.6, SUPERFICIE + 0.02, p.z + (rng() - 0.5) * 0.6);
+          const duna = new THREE.Mesh(new THREE.SphereGeometry(0.2, 10, 6), material(tema.duna, { map: planeta.texRuido }));
+          duna.scale.set(1.4, 0.22, 0.7);
+          duna.rotation.y = 0.6;
+          duna.position.set(p.x + (rng() - 0.5) * 0.55, SUPERFICIE + 0.04, p.z + (rng() - 0.5) * 0.55);
+          duna.receiveShadow = true;
           grupoMapa.add(duna);
         }
       }
-      if (c === "b") {   // charco
-        const charco = new THREE.Mesh(new THREE.CircleGeometry(0.28, 16),
-          material(0x4a3018, { roughness: 0.2, metalness: 0.1 }));
+      if (c === "b") {   // charco o polvo suelto
+        const charco = new THREE.Mesh(new THREE.CircleGeometry(0.3, 18),
+          material(tema.charco.color, { roughness: tema.charco.rugosidad, metalness: 0.05 }));
         charco.rotation.x = -Math.PI / 2;
-        charco.position.set(p.x + (rng() - 0.5) * 0.3, SUPERFICIE + 0.005, p.z + (rng() - 0.5) * 0.3);
+        charco.position.set(p.x + (rng() - 0.5) * 0.3, SUPERFICIE - 0.035, p.z + (rng() - 0.5) * 0.3);
         grupoMapa.add(charco);
       }
       if (c === "R") {
-        const roca = new THREE.Mesh(new THREE.DodecahedronGeometry(0.36, 0),
-          material(0x8a8f96, { flatShading: true }));
+        const roca = new THREE.Mesh(new THREE.DodecahedronGeometry(0.36, 1),
+          material(tema.roca, { flatShading: true, roughness: 0.95 }));
+        const pos = roca.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          pos.setXYZ(i, pos.getX(i) * (0.85 + rng() * 0.3), pos.getY(i) * (0.85 + rng() * 0.3), pos.getZ(i) * (0.85 + rng() * 0.3));
+        }
+        roca.geometry.computeVertexNormals();
         roca.scale.set(1 + rng() * 0.2, 0.75 + rng() * 0.25, 1 + rng() * 0.2);
         roca.rotation.set(rng(), rng() * 3, rng());
-        roca.position.set(p.x, SUPERFICIE + 0.22, p.z);
-        roca.castShadow = true;
+        roca.position.set(p.x, SUPERFICIE + 0.2, p.z);
+        roca.castShadow = roca.receiveShadow = true;
         grupoMapa.add(roca);
         if (celdasIncidente.some(([ix, iy]) => ix === x && iy === y)) {
           const aviso = new THREE.Mesh(new THREE.RingGeometry(0.42, 0.5, 4, 1),
@@ -171,14 +182,17 @@ function construirMapa(mapa, celdasIncidente) {
           grupoMapa.add(etiqueta);
         }
       }
-      if (c === "#") {
-        const muro = new THREE.Mesh(new THREE.BoxGeometry(1, 1.1, 1), material(0x3b4452));
+      if (c === "#") {   // acantilado / risco: bloque con estratos y cima irregular
+        const muro = new THREE.Mesh(new THREE.BoxGeometry(1, 1.1, 1), matLado);
         muro.position.set(p.x, SUPERFICIE + 0.55, p.z);
         muro.castShadow = muro.receiveShadow = true;
         grupoMapa.add(muro);
-        const tapa = new THREE.Mesh(new THREE.BoxGeometry(1.001, 0.04, 1.001), material(0x56627a));
-        tapa.position.set(p.x, SUPERFICIE + 1.11, p.z);
-        grupoMapa.add(tapa);
+        const cima = new THREE.Mesh(new THREE.DodecahedronGeometry(0.55, 0), material(tema.muro, { flatShading: true, map: planeta.texRuido }));
+        cima.scale.set(0.95, 0.22, 0.95);
+        cima.rotation.y = rng() * 3;
+        cima.position.set(p.x, SUPERFICIE + 1.12, p.z);
+        cima.castShadow = true;
+        grupoMapa.add(cima);
       }
       if (c === "B") {
         const rotulo = new THREE.Mesh(new THREE.PlaneGeometry(0.92, 0.92), new THREE.MeshBasicMaterial({
@@ -197,8 +211,16 @@ function construirMapa(mapa, celdasIncidente) {
     }
   }
 
-  const norte = sprite("N", 0.8, "#b4c4d2");
-  norte.position.set(0, 0.5, -alto / 2 - 1);
+  // rejilla tenue para leer las celdas de 1 m
+  const lineas = [];
+  for (let i = 0; i <= ancho; i++) lineas.push(i - ancho / 2, SUPERFICIE + 0.004, -alto / 2, i - ancho / 2, SUPERFICIE + 0.004, alto / 2);
+  for (let j = 0; j <= alto; j++) lineas.push(-ancho / 2, SUPERFICIE + 0.004, j - alto / 2, ancho / 2, SUPERFICIE + 0.004, j - alto / 2);
+  const geoRejilla = new THREE.BufferGeometry();
+  geoRejilla.setAttribute("position", new THREE.Float32BufferAttribute(lineas, 3));
+  grupoMapa.add(new THREE.LineSegments(geoRejilla, new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.12 })));
+
+  const norte = sprite("N", 0.8, "#e9eff4");
+  norte.position.set(0, 0.7, -alto / 2 - 1);
   grupoMapa.add(norte);
 }
 
@@ -291,74 +313,20 @@ const geoRastro = new THREE.CircleGeometry(0.06, 10);
 const matRastro = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 });
 
 // -------------------------------------------------------------------- clima
-const N_GOTAS = 3200;
-const gotasXYZ = new Float32Array(N_GOTAS * 3);   // posición de la cabeza de cada gota
-const posGotas = new Float32Array(N_GOTAS * 6);   // segmentos cabeza → cola
-for (let i = 0; i < N_GOTAS; i++) {
-  gotasXYZ.set([(Math.random() - 0.5) * 16, Math.random() * 12, (Math.random() - 0.5) * 16], i * 3);
-}
-const geoGotas = new THREE.BufferGeometry();
-geoGotas.setAttribute("position", new THREE.BufferAttribute(posGotas, 3));
-const gotas = new THREE.LineSegments(geoGotas, new THREE.LineBasicMaterial({
-  color: 0xa9d0ff, transparent: true, opacity: 0.28, depthWrite: false,
-}));
-gotas.frustumCulled = false;
-scene.add(gotas);
-
-const geoEstrellas = new THREE.BufferGeometry();
-const posEstrellas = new Float32Array(1500 * 3);
-for (let i = 0; i < 1500; i++) {
-  const v = new THREE.Vector3().randomDirection().multiplyScalar(120);
-  v.y = Math.abs(v.y) + 5;
-  posEstrellas.set([v.x, v.y, v.z], i * 3);
-}
-geoEstrellas.setAttribute("position", new THREE.BufferAttribute(posEstrellas, 3));
-const estrellas = new THREE.Points(geoEstrellas, new THREE.PointsMaterial({ color: 0xffffff, size: 0.5, fog: false }));
-scene.add(estrellas);
-
-let relampago = 0;
-let nGotas = 0;
 function aplicarAmbiente() {
-  const { clima, gravedad } = estado;
-  const cielo = new THREE.Color(CIELO[gravedad]);
-  if (clima !== "despejado") cielo.lerp(new THREE.Color(0x1a1f26), clima === "lluvia" ? 0.45 : 0.7);
-  scene.background = cielo;
-  scene.fog.color = cielo;
-  scene.fog.near = clima === "tormenta" ? 14 : clima === "lluvia" ? 20 : 30;
-  scene.fog.far = clima === "tormenta" ? 40 : clima === "lluvia" ? 52 : 70;
-  nGotas = clima === "tormenta" ? N_GOTAS : clima === "lluvia" ? 1400 : 0;
-  geoGotas.setDrawRange(0, nGotas * 2);
-  estrellas.visible = gravedad === "luna" && clima === "despejado";
-  sol.intensity = clima === "despejado" ? 1.8 : clima === "lluvia" ? 1.0 : 0.6;
-  sol.color.setHex(gravedad === "marte" ? 0xffd2b0 : 0xffffff);
+  planeta.aplicar(estado.gravedad, estado.clima);
+  const tema = planeta.tema();
+  // etiquetas del clima y la leyenda según el planeta
+  const botones = $("clima").children;
+  Object.keys(estado.mundo.climas).forEach((c, i) => { botones[i].textContent = tema.clima[c]; });
+  const nombres = { ".": "suelo", a: "arena", b: "barro", h: "hielo", R: "roca", "#": "muro", G: "grieta" };
+  const colores = { ...tema.colores, R: tema.roca, "#": tema.muro, G: 0x070302 };
+  $("leyenda").innerHTML = Object.entries(nombres).map(([c, n]) =>
+    `<span><i style="--c:#${colores[c].toString(16).padStart(6, "0")}"></i>${tema.terrenos[n]}${c === "R" ? " (saltable)" : ""}</span>`).join("");
+  $("planeta-nombre").textContent = tema.nombre;
 }
 
-function animarClima(dt) {
-  if (nGotas > 0) {
-    const viento = estado.clima === "tormenta" ? 3.5 : 0.6;
-    const caida = estado.clima === "tormenta" ? 16 : 10;
-    const largo = 0.035;  // segundos de recorrido que dibuja cada trazo
-    for (let i = 0; i < nGotas; i++) {
-      const j = i * 3;
-      gotasXYZ[j] += viento * dt;
-      gotasXYZ[j + 1] -= caida * dt;
-      if (gotasXYZ[j + 1] < 0) {
-        gotasXYZ[j + 1] = 12;
-        gotasXYZ[j] = (Math.random() - 0.5) * 16 - viento;
-      }
-      posGotas.set([gotasXYZ[j], gotasXYZ[j + 1], gotasXYZ[j + 2],
-        gotasXYZ[j] - viento * largo, gotasXYZ[j + 1] + caida * largo, gotasXYZ[j + 2]], i * 6);
-    }
-    geoGotas.attributes.position.needsUpdate = true;
-  }
-  if (estado.clima === "tormenta") {
-    if (relampago <= 0 && Math.random() < dt * 0.25) relampago = 0.18;
-    relampago -= dt;
-    hemi.intensity = relampago > 0 ? 3.2 : 0.7;
-  } else {
-    hemi.intensity = 0.9;
-  }
-}
+const animarClima = (dt) => planeta.animar(dt, reloj.elapsedTime);
 
 // --------------------------------------------------------------- animación
 const suave = (t) => t * t * (3 - 2 * t);
@@ -536,10 +504,11 @@ function mostrar(idx) {
   $("v-ruta").textContent = `${f.ruta_restante.toFixed(0)} m`;
 
   const terreno = $("v-terreno");
-  terreno.textContent = c.terreno;
+  const tema = planeta.tema();
+  terreno.textContent = tema.terrenos[c.terreno] || c.terreno;
   terreno.className = c.terreno === "hielo" || c.terreno === "barro" ? "alerta" : c.terreno === "grieta" ? "peligro" : "";
-  $("v-clima").textContent = c.clima;
-  $("v-g").textContent = `${c.gravedad} · ${c.g} m/s²`;
+  $("v-clima").textContent = tema.clima[c.clima];
+  $("v-g").textContent = `${tema.nombre} · ${c.g} m/s²`;
   const desl = $("v-desl");
   desl.textContent = `${(c.prob_deslizar * 100).toFixed(0)}%`;
   desl.className = c.terreno === "hielo" ? "alerta" : "";

@@ -48,6 +48,8 @@ la versión del robot (experto, aprendiz, codicioso, aleatorio), las condiciones
 incidente, semilla), las acciones con sus valores Q, la batería, la etapa y los sensores, y las
 adversidades del momento.
 
+**Planetas:** la gravedad elige el escenario: Marte (regolito rojizo, cielo color caramelo, Fobos y Deimos, tormentas de polvo), la Luna (cielo negro, estrellas, la Tierra en el cielo, cráteres) o la Tierra (pasto, árboles, lluvia). El mapa y la física son los mismos; solo cambia el aspecto (`web/planetas.js`).
+
 **Progreso del entrenamiento:** el panel incluye la curva de aprendizaje. Cada 1 200 episodios el entrenamiento
 guarda una foto de la tabla Q (`models/checkpoints/`) y la etapa `progreso` la evalúa sin exploración.
 Se puede hacer clic en cualquier punto para ver esa versión del robot en 3D, o usar «Recorrer el progreso»
