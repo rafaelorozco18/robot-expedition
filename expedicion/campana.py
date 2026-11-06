@@ -68,12 +68,15 @@ def correr(i):
     return ev["aprobado"]
 
 
-def campana(ids, hasta=None):
+def campana(ids, hasta=None, seguir=False):
     for i in ids:
         if hasta and datetime.datetime.now().strftime("%H:%M") >= hasta:
             _anotar(f"Hora límite {hasta}: no se inicia {i}")
             return
-        if not correr(i):
+        if correr(i):
+            _anotar(f"{i} aprobado")
+        elif seguir:
+            _anotar(f"{i} no aprobó: la campaña sigue")
+        else:
             _anotar(f"{i} no aprobó: campaña detenida")
             return
-        _anotar(f"{i} aprobado")

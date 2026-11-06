@@ -5,7 +5,7 @@ agrega: Mover un pie y recuperar la postura
 estado: pendiente
 criterio: Lo logra en ≥ 85 %
 tarea: marcha
-parte_de: exp-006
+parte_de: exp-003
 ambiente:
   duracion_s: 4
   altura_minima: 0.75

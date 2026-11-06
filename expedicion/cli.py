@@ -125,7 +125,7 @@ def cmd_documentar(args):
 
 def cmd_campana(args):
     from .campana import campana
-    campana(args.exps, args.hasta)
+    campana(args.exps, args.hasta, args.seguir)
 
 
 def cmd_servir(args):
@@ -172,6 +172,7 @@ def main(argv=None):
     comando("pipeline", cmd_pipeline)
     s = comando("campana", cmd_campana)
     s.add_argument("exps", nargs="+")
+    s.add_argument("--seguir", action="store_true", help="continúa aunque un experimento no apruebe")
     s.add_argument("--hasta", help="hora HH:MM a partir de la cual no se inicia otro experimento")
     comando("servir", cmd_servir).add_argument("--puerto", type=int, default=8765)
 

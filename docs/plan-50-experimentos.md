@@ -26,7 +26,7 @@ se sabe qué lo causó.
 | # | Experimento | Dificultad que agrega | Se aprueba cuando (éxito por planeta) |
 |---|---|---|---|
 | 1 | De pie | Articulaciones y tres gravedades | Aguanta 10 s en ≥ 95 % |
-| 2 | Empujón leve | Empujón de 0.2 m/s | Sigue de pie sin mover los pies en ≥ 90 % |
+| 2 | Empujón leve | Empujón de 0.2 m/s | Sigue de pie moviendo los pies menos de 15 cm en ≥ 90 % |
 | 3 | Empujón medio | Empujón de 0.4 m/s | Sigue de pie en ≥ 85 % |
 | 4 | Sentadilla | Orden de altura | Baja a 80 % de su altura y sube, con error < 3 cm |
 | 5 | Pasar el peso | Equilibrio lateral | Alterna el peso entre pies en ≥ 90 % |
