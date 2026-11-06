@@ -27,3 +27,6 @@
 12:56 exp-007 aprobado
 13:07 exp-008 semilla 0: aprobado=False
 13:09 exp-008: robot-exp-008 v1
+13:09 exp-008 no aprobó: la campaña sigue
+13:13 exp-009 semilla 0: aprobado=True
+13:14 exp-009: robot-exp-009 v1

@@ -2,7 +2,7 @@ id: exp-009
 titulo: Varios pasos
 pregunta: ¿Alterna las piernas durante varios pasos?
 agrega: Alternar las piernas
-estado: pendiente
+estado: activo
 criterio: 3 m sin caer en ≥ 80 %
 tarea: marcha
 parte_de: exp-007
