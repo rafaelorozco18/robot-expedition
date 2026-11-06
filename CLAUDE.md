@@ -23,6 +23,8 @@ muestra la evolución, con un selector para ir de experimento en experimento.
   en esos dos. El entrenamiento, `metrics/` y `docs/resultados.md` siguen incluyendo la Luna.
 - **«Ver su aprendizaje»:** `expedicion/evolucion.py` prueba las fotos de todo el linaje en un escenario fijo y
   guarda las etapas en `metrics/exp-NNN/evolucion.json`. Un experimento nuevo lo genera solo en su campaña.
+- **El visor solo lee `publicado/exp-NNN`** (enlace a una copia autosuficiente, fuera de git). Reentrenar nunca lo rompe:
+  la versión anterior sigue visible hasta que `campana` publique la nueva. Tras clonar: `expedicion publicar`.
 - **Experimento ≠ corrida.** Experimento: una pregunta nueva. Corrida: un intento dentro de ella (semilla o parámetros).
 - Cada experimento es un archivo en `experimentos/`; agregar uno no debe exigir copiar código.
 - Cada modelo nuevo repite las pruebas de los experimentos anteriores (regresión).
@@ -79,7 +81,11 @@ y el registro de modelos; las métricas y parámetros siguen en git.
   detuvieron a mitad de camino sin resultados y siguen como pendientes.
 - El Exp 4 corregido tampoco aprobó: en Luna y Tierra sigue a media altura y en Marte cae a los 3 s.
 
+- Reintentar: Exp 4 (sentadilla continua, error 2,4 a 6,5 cm; probar un periodo más lento porque en la Tierra cae).
+
 ### Lecciones que no hay que volver a aprender
+
+- DVC borra las salidas al reentrenar: nada que se muestre al usuario debe leer `models/` o `metrics/` en vivo.
 
 - Escalar la recompensa (0.05) permitió aprender: sin eso la función de valor satura el optimizador.
 - El i5-1235U rinde más con 4 procesos que con 8. BLAS debe ir a 1 hilo (`expedicion/__init__.py`).

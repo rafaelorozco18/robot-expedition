@@ -382,3 +382,5 @@ button.secundario { margin-top: 6px; background: var(--panel-2); color: var(--ti
 .punto-mapa[aria-pressed=true] { outline: 2px solid var(--tinta); outline-offset: 1px; }
 .punto-mapa:hover { color: var(--tinta); }
 .tarjeta-pendiente p { color: var(--tinta-2); margin: 0; }
+
+.panel { scroll-padding-top: 170px; }
