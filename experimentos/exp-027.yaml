@@ -40,7 +40,7 @@ pisos:
 aprobar:
   tasa_exito: 0.7
 entrenamiento:
-  pasos: 3000000
+  pasos: 2000000
   reintentos: 0
 trampa: 'Memorizar el punto de cambio: el robot no ve el piso.'
 pendiente: El piso se aproxima con fuerzas sobre los pies, sin deformación real del

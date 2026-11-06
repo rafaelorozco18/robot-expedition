@@ -52,7 +52,7 @@ pisos:
 aprobar:
   tasa_exito: 0.6
 entrenamiento:
-  pasos: 3000000
+  pasos: 2500000
   reintentos: 0
 trampa: 'Memorizar la pista: cambia en cada episodio.'
 pendiente: El piso se aproxima con fuerzas sobre los pies, sin deformación real del

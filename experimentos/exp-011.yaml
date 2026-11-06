@@ -34,3 +34,5 @@ entrenamiento:
   pasos: 4000000
   reintentos: 0
 trampa: Caminar siempre a velocidad media. El error se mide contra cada orden.
+pendiente: 'Primer intento detenido a los 2 M de pasos con 0 % de éxito: seguir de
+  0.3 a 1 m/s con error menor a 0.1 m/s exige un criterio por etapas.'
