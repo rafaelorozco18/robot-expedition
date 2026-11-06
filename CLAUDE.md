@@ -70,6 +70,10 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 - Pendientes por orden de prioridad: reintentar 4 (recompensa ya corregida) y 5 (Luna 80 %), luego 2, 3, 6, 8, 11 y 23.
   El Exp 11 necesita un criterio por etapas. El bloque de giro (18 a 21) está configurado y nunca se ha corrido.
 
+- Linaje: el Exp 5 heredó de la primera versión del Exp 4, que luego se reentrenó. Los Exp 11 y 13 se
+  detuvieron a mitad de camino sin resultados y siguen como pendientes.
+- El Exp 4 corregido tampoco aprobó: en Luna y Tierra sigue a media altura y en Marte cae a los 3 s.
+
 ### Lecciones que no hay que volver a aprender
 
 - Escalar la recompensa (0.05) permitió aprender: sin eso la función de valor satura el optimizador.
