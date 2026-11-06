@@ -26,7 +26,7 @@ const NOMBRE_MOTOR = {
 const NOMBRE_RECOMPENSA = {
   vivo: "Sigue en pie", altura: "Conserva la altura", postura: "Conserva la postura", quieto: "Torso quieto",
   esfuerzo: "Costo de torque", suavidad: "Costo de movimientos bruscos", caida: "Caída",
-  peso: "Peso sobre el pie ordenado", levantar: "Levanta el pie", apoyo: "Pie de apoyo firme",
+  pies: "Pies en su sitio", peso: "Peso sobre el pie ordenado", levantar: "Levanta el pie", apoyo: "Pie de apoyo firme",
   velocidad: "Sigue la velocidad", erguido: "Torso erguido", rumbo: "Conserva el rumbo",
   reloj: "Alterna las piernas", paso: "Despega el pie", giro: "Evita giros bruscos",
 };

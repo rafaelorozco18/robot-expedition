@@ -52,17 +52,20 @@ class DePie(Tarea):
         super().iniciar(env)
         self.pies_inicio = [env.posicion_pie(0)[:2].copy(), env.posicion_pie(1)[:2].copy()]
 
+    def desplazamiento(self, env):
+        return max(float(np.linalg.norm(env.posicion_pie(i)[:2] - self.pies_inicio[i])) for i in (0, 1))
+
     def exito(self, env, truncado):
         limite = self.t.get("pies_fijos_m")
-        if truncado and limite:
-            return max(float(np.linalg.norm(env.posicion_pie(i)[:2] - self.pies_inicio[i])) for i in (0, 1)) < limite
-        return truncado
+        return truncado and (not limite or self.desplazamiento(env) < limite)
 
     def recompensa(self, env, accion, previa):
         d = self.comunes(env, accion, previa)
         d["altura"] = self.p["altura"] * np.exp(-(((env.altura_torso() - env.altura_pie) / 0.05) ** 2))
         d["postura"] = self.p["postura"] * np.exp(-np.sum((env.angulos() - env.postura_inicial) ** 2))
         d["quieto"] = self.p["quieto"] * np.exp(-np.sum(env.data.qvel[:3] ** 2) - 0.5 * np.sum(env.data.qvel[3:6] ** 2))
+        if self.t.get("pies_fijos_m"):
+            d["pies"] = self.p["pies"] * np.exp(-((self.desplazamiento(env) / self.t["pies_fijos_m"]) ** 2))
         return d
 
 

@@ -81,7 +81,7 @@ def progreso(exp):
     return {"curva": _archivo_json(corrida / "curva.json") or [], "fotos": fotos,
             "semilla": datos["semilla"], "episodios_por_foto": datos["episodios_por_foto"],
             "planetas": exp["evaluacion"]["planetas"],
-            "aprendiz": min((f["paso"] for f in fotos), key=lambda p: abs(p - objetivo)),
+            "aprendiz": min((f["paso"] for f in fotos if f["paso"]), key=lambda p: abs(p - objetivo)),
             "experto": fotos[-1]["paso"]}
 
 

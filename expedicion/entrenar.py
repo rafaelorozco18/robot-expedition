@@ -52,7 +52,7 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
         mlflow.set_tags({"git_commit": git_commit(), "robot": exp["robot"], "parte_de": str(exp["parte_de"])})
 
     curva = []
-    cada_foto = total // p["fotos"]
+    cada_foto = min(total // p["fotos"], 100000)
 
     class Registro(BaseCallback):
         """Guarda fotos del modelo y la curva con la exploración activa."""

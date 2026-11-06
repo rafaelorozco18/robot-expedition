@@ -2,7 +2,7 @@ id: exp-002
 titulo: Empujón leve
 pregunta: ¿Resiste un empujón leve sin mover los pies?
 agrega: Empujón de 0.2 m/s
-estado: pendiente
+estado: activo
 criterio: Sigue de pie sin mover los pies en ≥ 90 %
 parte_de: exp-001
 ambiente:
@@ -17,3 +17,5 @@ entrenamiento:
   pasos: 1000000
 trampa: Dar un paso para cobrar sin equilibrarse. El éxito exige que los pies se muevan
   menos de 5 cm.
+recompensa:
+  pies: 1.0
