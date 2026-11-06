@@ -1,0 +1,58 @@
+id: exp-001
+titulo: De pie
+pregunta: ¿Puede mantenerse de pie en la Luna, en Marte y en la Tierra?
+agrega: Articulaciones y tres gravedades
+estado: activo
+robot: robots/bipedo-v1.xml
+tarea: de_pie
+parte_de: null           # experimento del que hereda el modelo
+
+control:
+  kp: 0.3                # torque (fracción del máximo) por radián de error
+  kd: 0.03               # torque (fracción del máximo) por rad/s
+  rango: 0.6             # rad, cuánto puede alejarse el objetivo de la postura de pie
+
+ambiente:
+  duracion_s: 10         # truncamiento
+  frame_skip: 5          # 5 × 4 ms = control a 50 Hz
+  ruido_inicial: 0.02    # rad, en cada articulación
+  altura_minima: 0.85    # fracción de la altura de pie; por debajo cuenta como caída
+  inclinacion_maxima: 35 # grados
+  empujon_entrenando: 0.25  # probabilidad de un empujón por episodio al entrenar
+  empujon_ms: 0.4        # m/s que se le suman al torso
+
+recompensa:
+  vivo: 1.0              # por paso erguido
+  altura: 1.0            # por conservar la altura de pie
+  postura: 0.5           # por no separarse de la postura inicial
+  quieto: 0.3            # por no mover el torso
+  esfuerzo: 0.05         # costo por torque
+  suavidad: 0.05         # costo por cambiar la acción bruscamente
+  caida: 50.0            # castigo al caer
+
+entrenamiento:
+  pasos: 1500000
+  entornos: 4
+  semillas: [0, 1, 2]
+  n_steps: 1024
+  batch_size: 1024
+  n_epochs: 5
+  learning_rate: 0.0003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  log_std_init: -1.5
+  red: [128, 128]
+  fotos: 20              # checkpoints repartidos en el entrenamiento
+  aprendiz: 0.15         # fracción del entrenamiento que se muestra como "aprendiz"
+
+evaluacion:
+  semilla: 2026
+  episodios_por_condicion: 20
+  episodios_por_foto: 3
+  planetas: [luna, marte, tierra]
+  perturbaciones: [ninguna, empujon]
+
+aprobar:
+  duracion_s: 10
+  tasa_exito: 0.95       # sin perturbación, en cada planeta

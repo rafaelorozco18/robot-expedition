@@ -1,9 +1,9 @@
 [project]
 name = "robot-expedition"
-version = "0.1.0"
-description = "Robot Expedition: ambiente Gymnasium y agente Q-learning (MLOps Autonomous Lab)"
+version = "0.2.0"
+description = "Robot Expedition: bípedo que aprende por experimentos de dificultad creciente"
 requires-python = ">=3.11"
-dependencies = ["gymnasium>=1.4", "numpy>=2.0", "pyyaml>=6.0"]
+dependencies = ["gymnasium>=1.4", "mujoco>=3.0", "numpy>=2.0", "pyyaml>=6.0", "stable-baselines3>=2.9"]
 
 [project.optional-dependencies]
 mlops = ["dvc>=3.60", "mlflow>=3.0", "pandas"]

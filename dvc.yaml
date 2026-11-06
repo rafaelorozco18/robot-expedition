@@ -1,71 +1,60 @@
-# Pipeline del experimento 01. `dvc repro` reconstruye solo lo que cambió.
-#   escenarios ──┐
-#   entrenar ────┴─▶ evaluar
-#                └─▶ progreso
+# Pipeline por experimento: para agregar uno, súmalo a la lista `exp` de cada etapa.
+#   escenarios ─┐
+#   entrenar ───┴─▶ evaluar ─▶ progreso ─▶ registrar
 stages:
   escenarios:
-    cmd: python -m expedicion escenarios --salida data/escenarios.json
+    matrix:
+      exp: [exp-001]
+    cmd: python -m expedicion escenarios ${item.exp}
     deps:
       - expedicion/evaluar.py
-      - expedicion/config.py
     params:
-      - evaluacion.semilla
-      - evaluacion.episodios_por_condicion
+      - experimentos/${item.exp}-de-pie.yaml:
+          - evaluacion
     outs:
-      - data/escenarios.json
+      - data/${item.exp}/escenarios.json
 
   entrenar:
-    cmd: python -m expedicion entrenar
+    matrix:
+      exp: [exp-001]
+      semilla: [0, 1, 2]
+    cmd: nice -n 10 python -m expedicion entrenar ${item.exp} --semilla ${item.semilla}
     deps:
       - expedicion/ambiente.py
-      - expedicion/config.py
-      - expedicion/agentes.py
+      - expedicion/tareas.py
       - expedicion/entrenar.py
+      - robots/bipedo-v1.xml
     params:
-      - ambiente
-      - entrenamiento
+      - experimentos/${item.exp}-de-pie.yaml:
+          - control
+          - ambiente
+          - recompensa
+          - entrenamiento
     outs:
-      - models/q_experto.npz
-      - models/q_aprendiz.npz
-      - models/checkpoints
-      - models/modelo.json:
-          cache: false
-    metrics:
-      - metrics/entrenamiento.json:
-          cache: false
-    plots:
-      - metrics/curva.csv:
-          cache: false
-          x: episodio
-          y: tasa_exito
+      - models/${item.exp}/semilla-${item.semilla}
 
   evaluar:
-    cmd: python -m expedicion evaluar
+    matrix:
+      exp: [exp-001]
+    cmd: nice -n 10 python -m expedicion evaluar ${item.exp}
     deps:
-      - data/escenarios.json
-      - models/q_experto.npz
-      - models/q_aprendiz.npz
+      - data/${item.exp}/escenarios.json
+      - models/${item.exp}
       - expedicion/evaluar.py
       - expedicion/ambiente.py
-    params:
-      - ambiente
-      - evaluacion
     outs:
-      - data/trayectorias.jsonl
+      - data/${item.exp}/trayectorias.jsonl
     metrics:
-      - metrics/evaluacion.json:
+      - metrics/${item.exp}/evaluacion.json:
           cache: false
 
   progreso:
-    cmd: python -m expedicion progreso
+    matrix:
+      exp: [exp-001]
+    cmd: nice -n 10 python -m expedicion progreso ${item.exp}
     deps:
-      - data/escenarios.json
-      - models/checkpoints
+      - metrics/${item.exp}/evaluacion.json
       - expedicion/evaluar.py
-      - expedicion/ambiente.py
-    params:
-      - ambiente
-      - evaluacion.semillas_progreso
     metrics:
-      - metrics/progreso.json:
+      - metrics/${item.exp}/progreso.json:
           cache: false

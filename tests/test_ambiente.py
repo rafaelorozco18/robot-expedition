@@ -1,89 +1,83 @@
-import gymnasium as gym
 import numpy as np
 from gymnasium.utils.env_checker import check_env
 
-import expedicion  # noqa: F401  (registra RobotExpedition-v0)
-from expedicion import config as C
-from expedicion.ambiente import ExpedicionEnv
+from expedicion import experimentos as X
+from expedicion.ambiente import GRAVEDADES, BipedoEnv
+from expedicion.evaluar import Aleatorio, SinEntrenar, correr_episodio, generar_escenarios
 
 
-def nuevo(**opciones):
-    env = ExpedicionEnv()
-    env.reset(seed=0, options={"clima": "despejado", "gravedad": "tierra", **opciones})
-    return env
+def exp():
+    return X.cargar("exp-001")
 
 
 def test_cumple_api_gymnasium():
-    check_env(gym.make("RobotExpedition-v0").unwrapped, skip_render_check=True)
+    check_env(BipedoEnv(exp()), skip_render_check=True)
 
 
-def test_chocar_con_el_limite_no_mueve_y_penaliza():
-    env = nuevo()
-    _, r, term, trunc, info = env.step(3)  # Oeste desde la base (0, 11): límite del mapa
-    assert info["posicion"] == (0, 11)
-    assert r < 0 and not term and not trunc
-    assert any("choque" in e for e in info["eventos"])
+def test_cada_planeta_aplica_su_gravedad():
+    env = BipedoEnv(exp())
+    for nombre, g in GRAVEDADES.items():
+        obs, _ = env.reset(seed=0, options={"planeta": nombre})
+        assert env.model.opt.gravity[2] == -g
+        assert np.isclose(obs[-1], g / 9.81)
 
 
-def test_agarrar_fuera_de_la_baliza_es_invalido():
-    env = nuevo()
-    _, r, *_ , info = env.step(C.AGARRAR)
-    assert info["etapa"] == 0 and r < 0
+def test_empieza_de_pie_con_los_pies_en_el_piso():
+    env = BipedoEnv(exp())
+    env.reset(seed=0, options={"planeta": "tierra"})
+    assert abs(env.altura_torso() / env.altura_pie - 1) < 0.01
+    assert env.inclinacion_grados() < 5
+    env.step(np.zeros(10))
+    assert any(env.contactos()[:2])
+    assert not env.toca_piso_con_cuerpo()
 
 
-def test_baliza_solo_paga_una_vez_y_en_orden():
-    env = nuevo()
-    env.pos = env.objetivos[1]          # baliza 2 antes que la 1: no cuenta
-    _, r, *_, info = env.step(C.AGARRAR)
-    assert info["etapa"] == 0 and r < 0
-    env.pos = env.objetivos[0]
-    _, r1, *_, info = env.step(C.AGARRAR)
-    assert info["etapa"] == 1 and r1 > 5
-    _, r2, *_, info = env.step(C.AGARRAR)  # repetir: inválido
-    assert info["etapa"] == 1 and r2 < 0
+def test_sin_red_se_cae_antes_en_la_tierra_que_en_la_luna():
+    esc = {"perturbacion": "ninguna", "semilla": 1}
+    tierra = correr_episodio(exp(), SinEntrenar(), {**esc, "planeta": "tierra"})[0]
+    luna = correr_episodio(exp(), SinEntrenar(), {**esc, "planeta": "luna"})[0]
+    assert not tierra["exito"]
+    assert tierra["segundos"] < luna["segundos"]
 
 
-def test_caer_en_grieta_termina():
-    env = nuevo()
-    env.pos = (4, 5)                     # justo al norte de la grieta (4, 6)
-    _, r, term, _, info = env.step(1)
-    assert term and not info["exito"] and r <= C.RECOMPENSAS["caida"] + 1
+def test_caer_castiga_y_termina():
+    env = BipedoEnv(exp())
+    env.reset(seed=0, options={"planeta": "tierra"})
+    env.data.qpos[2] = 0.3                # torso muy por debajo de la altura mínima
+    _, r, term, trunc, info = env.step(np.zeros(10))
+    assert term and not trunc and r < 0 and "caida" in info["desglose"]
 
 
-def test_saltar_por_encima_de_una_roca():
-    env = nuevo()
-    env.pos = (2, 4)                     # roca en (3, 4), suelo en (4, 4)
-    _, _, term, _, info = env.step(6)    # saltar E
-    assert info["posicion"][0] >= 4 and not term
+def test_agacharse_no_cuenta_como_estar_de_pie():
+    env = BipedoEnv(exp())
+    env.reset(seed=0, options={"planeta": "luna"})
+    env.data.qpos[2] = env.altura_pie * 0.8
+    assert env.step(np.zeros(10))[2]
 
 
-def test_dar_vueltas_no_genera_recompensa():
-    env = nuevo()
-    total = 0.0
-    for _ in range(20):                  # ir y volver entre (0,11) y (1,11)
-        for a in (2, 3):
-            total += env.step(a)[1]
-    assert total < 0
+def test_trunca_a_los_diez_segundos():
+    env = BipedoEnv(exp())
+    assert env.max_pasos == 500
+    env.reset(seed=0, options={"planeta": "luna"})
+    env.pasos = env.max_pasos - 1
+    env.step(np.zeros(10))
+    assert env.pasos == env.max_pasos
 
 
-def test_truncamiento_por_tiempo():
-    env = ExpedicionEnv(max_pasos=5)
-    env.reset(seed=0)
-    for _ in range(4):
-        assert not env.step(C.AGARRAR)[3]
-    assert env.step(C.AGARRAR)[3]
+def test_el_empujon_mueve_el_torso():
+    env = BipedoEnv(exp())
+    env.reset(seed=3, options={"planeta": "tierra", "perturbacion": "empujon"})
+    env.pasos = env.paso_empujon
+    env.step(np.zeros(10))
+    assert env.empujado and np.linalg.norm(env.data.qvel[:2]) > 0.2
 
 
-def test_mision_completa_con_ruta_manual():
-    env = nuevo()
-    # base (0,11) → baliza 1 (7,8) por la fila 10; luego subida por x=9/10 y regreso.
-    ruta = "N" + "E" * 7 + "NN" + "A" + "SS" + "EE" + "NNNNN" + "E" + "NNNNN" + "E" + "A"
-    ruta += "O" + "SSSSS" + "O" + "SSSSS" + "OO" + "O" * 7 + "S"
-    idx = {"N": 0, "S": 1, "E": 2, "O": 3, "A": C.AGARRAR}
-    env.clima = "despejado"
-    for paso in ruta:
-        env.np_random = np.random.default_rng(1)  # rng fijo; con suerte no patina
-        *_, term, trunc, info = env.step(idx[paso])
-        if term:
-            break
-    assert term and info["exito"]
+def test_los_escenarios_son_reproducibles():
+    assert generar_escenarios(exp()) == generar_escenarios(exp())
+
+
+def test_episodio_grabado_entrega_cuadros():
+    esc = {"planeta": "marte", "perturbacion": "ninguna", "semilla": 0}
+    resumen, cuadros = correr_episodio(exp(), Aleatorio(0), esc, grabar=True)
+    assert len(cuadros) > 1 and len(cuadros[0]["cuerpos"]) == 7
+    assert cuadros[-1]["t"] == resumen["segundos"]

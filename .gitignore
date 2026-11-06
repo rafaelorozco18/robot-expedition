@@ -8,3 +8,6 @@ __pycache__/
 mlflow.db
 mlruns/
 mlartifacts/
+
+# Artefactos locales de la navegación archivada
+archivo/

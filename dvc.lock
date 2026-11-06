@@ -1,168 +1,27 @@
 schema: '2.0'
 stages:
-  escenarios:
-    cmd: python -m expedicion escenarios --salida data/escenarios.json
+  escenarios@exp-001:
+    cmd: python -m expedicion escenarios exp-001
     deps:
-    - path: expedicion/config.py
-      hash: md5
-      md5: 4614402d5dcaef4933130717d4c67713
-      size: 5887
     - path: expedicion/evaluar.py
       hash: md5
-      md5: 99b4f588c162de6c1402b5d9d169a0a9
-      size: 6765
+      md5: 7a87cb267c4ff9a707c761c8c58efc58
+      size: 7895
     params:
-      params.yaml:
-        evaluacion.episodios_por_condicion: 10
-        evaluacion.semilla: 2026
-    outs:
-    - path: data/escenarios.json
-      hash: md5
-      md5: 82eb6433e19b33e5b82b71ac569fde12
-      size: 21606
-  entrenar:
-    cmd: python -m expedicion entrenar
-    deps:
-    - path: expedicion/agentes.py
-      hash: md5
-      md5: a839ef7ecec557093e085b24c480cdd2
-      size: 4659
-    - path: expedicion/ambiente.py
-      hash: md5
-      md5: bb5d31fde0c13f7cc19a01661f40e2fc
-      size: 14653
-    - path: expedicion/config.py
-      hash: md5
-      md5: 4614402d5dcaef4933130717d4c67713
-      size: 5887
-    - path: expedicion/entrenar.py
-      hash: md5
-      md5: 03f6363e8c283a1b3eec0c282a611b0f
-      size: 6497
-    params:
-      params.yaml:
-        ambiente:
-          bateria_inicial: 100.0
-          max_pasos: 200
-          alcance_sensor: 5.0
-          ruido_sensor: 0.1
-        entrenamiento:
-          episodios: 30000
-          alpha: 0.2
-          gamma: 0.99
-          epsilon_inicial: 1.0
-          epsilon_final: 0.05
-          fraccion_exploracion: 0.8
-          fraccion_aprendiz: 0.08
-          cada_checkpoint: 1200
-          ventana_metricas: 500
-          semilla: 42
-          version_modelo: 0.1.0
-          mlflow_uri: sqlite:///mlflow.db
-    outs:
-    - path: metrics/curva.csv
-      hash: md5
-      md5: 8055e095496abd559e0e6f3f7458e564
-      size: 1841
-    - path: metrics/entrenamiento.json
-      hash: md5
-      md5: 8c8e770640e01c6251a68a897cfe0a7d
-      size: 133
-    - path: models/checkpoints
-      hash: md5
-      md5: b89412c76d5a842f94b6195391531e59.dir
-      size: 3304373
-      nfiles: 26
-    - path: models/modelo.json
-      hash: md5
-      md5: 674c4a2bf24eb25363c102ffab83dfa6
-      size: 317
-    - path: models/q_aprendiz.npz
-      hash: md5
-      md5: 10f9a8da9e2fe54ff43d71252a9d8edf
-      size: 65855
-    - path: models/q_experto.npz
-      hash: md5
-      md5: bf21996abdb4dd8f6967806a30958ef9
-      size: 161930
-  evaluar:
-    cmd: python -m expedicion evaluar
-    deps:
-    - path: data/escenarios.json
-      hash: md5
-      md5: 82eb6433e19b33e5b82b71ac569fde12
-      size: 21606
-    - path: expedicion/ambiente.py
-      hash: md5
-      md5: bb5d31fde0c13f7cc19a01661f40e2fc
-      size: 14653
-    - path: expedicion/evaluar.py
-      hash: md5
-      md5: 99b4f588c162de6c1402b5d9d169a0a9
-      size: 6765
-    - path: models/q_aprendiz.npz
-      hash: md5
-      md5: 10f9a8da9e2fe54ff43d71252a9d8edf
-      size: 65855
-    - path: models/q_experto.npz
-      hash: md5
-      md5: bf21996abdb4dd8f6967806a30958ef9
-      size: 161930
-    params:
-      params.yaml:
-        ambiente:
-          bateria_inicial: 100.0
-          max_pasos: 200
-          alcance_sensor: 5.0
-          ruido_sensor: 0.1
+      experimentos/exp-001-de-pie.yaml:
         evaluacion:
           semilla: 2026
-          episodios_por_condicion: 10
-          agentes:
-          - experto
-          - aprendiz
-          - codicioso
-          - aleatorio
-          semillas_progreso: 2
+          episodios_por_condicion: 20
+          episodios_por_foto: 3
+          planetas:
+          - luna
+          - marte
+          - tierra
+          perturbaciones:
+          - ninguna
+          - empujon
     outs:
-    - path: data/trayectorias.jsonl
+    - path: data/exp-001/escenarios.json
       hash: md5
-      md5: 9a6a0d69d58c5ba0344c95b85acce697
-      size: 3605690
-    - path: metrics/evaluacion.json
-      hash: md5
-      md5: 447ad9a040e5104fb26036493121b1d1
-      size: 6274
-  progreso:
-    cmd: python -m expedicion progreso
-    deps:
-    - path: data/escenarios.json
-      hash: md5
-      md5: 82eb6433e19b33e5b82b71ac569fde12
-      size: 21606
-    - path: expedicion/ambiente.py
-      hash: md5
-      md5: bb5d31fde0c13f7cc19a01661f40e2fc
-      size: 14653
-    - path: expedicion/evaluar.py
-      hash: md5
-      md5: 99b4f588c162de6c1402b5d9d169a0a9
-      size: 6765
-    - path: models/checkpoints
-      hash: md5
-      md5: b89412c76d5a842f94b6195391531e59.dir
-      size: 3304373
-      nfiles: 26
-    params:
-      params.yaml:
-        ambiente:
-          bateria_inicial: 100.0
-          max_pasos: 200
-          alcance_sensor: 5.0
-          ruido_sensor: 0.1
-        evaluacion.semillas_progreso: 2
-    outs:
-    - path: metrics/progreso.json
-      hash: md5
-      md5: 3b2a02f894a9ae2da9da4da7c4cfef3f
-      size: 15404
+      md5: 112ced2f18199b5df1bd5fab9db844f3
+      size: 11226

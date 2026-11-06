@@ -1,158 +1,123 @@
-"""Entrenamiento con Q-learning tabular y registro del experimento en MLflow."""
+"""Entrenamiento con PPO y registro de cada corrida en MLflow."""
 
 import json
 import subprocess
 import time
+from collections import deque
 from pathlib import Path
 
 import numpy as np
 
-from .agentes import N_ESTADOS, discretizar
-from .ambiente import ExpedicionEnv
-from . import config as C
+from .ambiente import BipedoEnv
+from .experimentos import RAIZ, carpeta_metricas, carpeta_modelos
 
-
-def elegir_accion(q, s, epsilon, rng):
-    """ε-greedy con desempate aleatorio."""
-    if rng.random() < epsilon:
-        return int(rng.integers(q.shape[1]))
-    fila = q[s]
-    return int(rng.choice(np.flatnonzero(fila == fila.max())))
+URI_MLFLOW = f"sqlite:///{RAIZ / 'mlflow.db'}"
 
 
 def git_commit():
     try:
-        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"],
+        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=RAIZ,
                                        stderr=subprocess.DEVNULL, text=True).strip()
     except Exception:
         return "sin-commit"
 
 
-def entrenar(p_amb, p_ent, carpeta_modelos="models", carpeta_metricas="metrics",
-             usar_mlflow=True, verbose=True):
-    episodios = p_ent["episodios"]
-    alpha, gamma = p_ent["alpha"], p_ent["gamma"]
-    eps_ini, eps_fin = p_ent["epsilon_inicial"], p_ent["epsilon_final"]
-    fin_decaimiento = int(episodios * p_ent["fraccion_exploracion"])
-    guardar_aprendiz = int(episodios * p_ent["fraccion_aprendiz"])
-    cada_checkpoint = p_ent["cada_checkpoint"]
-    ventana = p_ent["ventana_metricas"]
+def _crear_entorno(exp, semilla):
+    def crear():
+        from stable_baselines3.common.monitor import Monitor
+        env = Monitor(BipedoEnv(exp, entrenando=True))
+        env.reset(seed=semilla)
+        return env
+    return crear
 
-    rng = np.random.default_rng(p_ent["semilla"])
-    env = ExpedicionEnv(**p_amb)
-    q = np.zeros((N_ESTADOS, len(C.ACCIONES)))
 
-    modelos = Path(carpeta_modelos)
-    metricas = Path(carpeta_metricas)
-    modelos.mkdir(parents=True, exist_ok=True)
-    checkpoints = modelos / "checkpoints"
-    checkpoints.mkdir(exist_ok=True)
-    for viejo in checkpoints.glob("q_ep*.npz"):
-        viejo.unlink()
+def entrenar(exp, semilla, pasos=None, usar_mlflow=True, hilos=2):
+    import torch
+    from stable_baselines3 import PPO
+    from stable_baselines3.common.callbacks import BaseCallback
+    from stable_baselines3.common.vec_env import SubprocVecEnv
+
+    torch.set_num_threads(hilos)
+    p = exp["entrenamiento"]
+    total = pasos or p["pasos"]
+    salida = carpeta_modelos(exp) / f"semilla-{semilla}"
+    fotos = salida / "fotos"
+    fotos.mkdir(parents=True, exist_ok=True)
+    for vieja in fotos.glob("*.zip"):
+        vieja.unlink()
+    metricas = carpeta_metricas(exp)
     metricas.mkdir(parents=True, exist_ok=True)
 
     run = None
     if usar_mlflow:
         import mlflow
-        mlflow.set_tracking_uri(p_ent.get("mlflow_uri", "sqlite:///mlflow.db"))
-        mlflow.set_experiment("robot-expedition")
-        run = mlflow.start_run(run_name=f"qlearning-{git_commit()}")
-        mlflow.log_params({f"amb.{k}": v for k, v in p_amb.items()})
-        mlflow.log_params({f"ent.{k}": v for k, v in p_ent.items() if k != "mlflow_uri"})
-        mlflow.set_tags({"git_commit": git_commit(), "ambiente": "RobotExpedition-v0.1",
-                         "algoritmo": "q-learning tabular"})
+        mlflow.set_tracking_uri(URI_MLFLOW)
+        mlflow.set_experiment(f"{exp['id']}-{exp['titulo'].lower().replace(' ', '-')}")
+        run = mlflow.start_run(run_name=f"semilla-{semilla}")
+        mlflow.log_params({f"ent.{k}": v for k, v in p.items() if k != "semillas"})
+        mlflow.log_params({f"amb.{k}": v for k, v in exp["ambiente"].items()})
+        mlflow.log_params({f"rec.{k}": v for k, v in exp["recompensa"].items()})
+        mlflow.log_param("semilla", semilla)
+        mlflow.set_tags({"git_commit": git_commit(), "robot": exp["robot"], "parte_de": str(exp["parte_de"])})
 
     curva = []
-    recompensas, exitos, pasos_ep = [], [], []
+    cada_foto = total // p["fotos"]
+
+    class Registro(BaseCallback):
+        """Guarda fotos del modelo y la curva con la exploración activa."""
+
+        def __init__(self):
+            super().__init__()
+            self.duracion = deque(maxlen=100)
+            self.recompensa = deque(maxlen=100)
+            self.proxima = 0
+
+        def _foto(self):
+            self.model.save(fotos / f"paso-{self.num_timesteps:09d}.zip")
+            self.proxima += cada_foto
+
+        def _on_training_start(self):
+            self._foto()
+
+        def _on_step(self):
+            for info in self.locals["infos"]:
+                if "episode" in info:
+                    self.duracion.append(bool(info.get("TimeLimit.truncated", False) or info.get("truncado")))
+                    self.recompensa.append(info["episode"]["r"])
+            if self.num_timesteps >= self.proxima:
+                self._foto()
+                if self.duracion:
+                    fila = {"paso": self.num_timesteps,
+                            "tasa_exito": round(float(np.mean(self.duracion)), 3),
+                            "recompensa_media": round(float(np.mean(self.recompensa)), 1)}
+                    curva.append(fila)
+                    print(fila, flush=True)
+                    if run:
+                        mlflow.log_metrics({k: v for k, v in fila.items() if k != "paso"},
+                                           step=fila["paso"])
+            return True
+
+    env = SubprocVecEnv([_crear_entorno(exp, semilla * 1000 + i) for i in range(p["entornos"])])
+    modelo = PPO("MlpPolicy", env, device="cpu", seed=semilla, verbose=0,
+                 n_steps=p["n_steps"], batch_size=p["batch_size"], n_epochs=p["n_epochs"],
+                 learning_rate=p["learning_rate"], gamma=p["gamma"], gae_lambda=p["gae_lambda"],
+                 clip_range=p["clip_range"],
+                 policy_kwargs={"net_arch": p["red"], "log_std_init": p["log_std_init"]})
     t0 = time.time()
-    semillas = rng.integers(0, 2**31 - 1, size=episodios)
-    np.savez_compressed(checkpoints / "q_ep000000.npz", q=q, episodios=0)
-    for ep in range(episodios):
-        frac = min(1.0, ep / max(1, fin_decaimiento))
-        epsilon = eps_ini + (eps_fin - eps_ini) * frac
-        obs, info = env.reset(seed=int(semillas[ep]))
-        s = discretizar(obs)
-        total, terminado = 0.0, False
-        while not terminado:
-            a = elegir_accion(q, s, epsilon, rng)
-            obs, r, term, trunc, info = env.step(a)
-            s2 = discretizar(obs)
-            futuro = 0.0 if term else gamma * q[s2].max()
-            q[s, a] += alpha * (r + futuro - q[s, a])
-            s, total = s2, total + r
-            terminado = term or trunc
-        recompensas.append(total)
-        exitos.append(float(info["exito"]))
-        pasos_ep.append(info["pasos"])
+    modelo.learn(total, callback=Registro())
+    segundos = time.time() - t0
+    env.close()
 
-        if (ep + 1) % cada_checkpoint == 0:
-            np.savez_compressed(checkpoints / f"q_ep{ep + 1:06d}.npz", q=q, episodios=ep + 1)
-        if ep + 1 == guardar_aprendiz:
-            np.savez_compressed(modelos / "q_aprendiz.npz", q=q, episodios=ep + 1)
-        if (ep + 1) % ventana == 0:
-            fila = {"episodio": ep + 1, "epsilon": round(epsilon, 4),
-                    "recompensa_media": round(float(np.mean(recompensas[-ventana:])), 3),
-                    "tasa_exito": round(float(np.mean(exitos[-ventana:])), 3),
-                    "pasos_medios": round(float(np.mean(pasos_ep[-ventana:])), 1)}
-            curva.append(fila)
-            if run:
-                mlflow.log_metrics({k: v for k, v in fila.items() if k != "episodio"}, step=ep + 1)
-            if verbose:
-                print(f"ep {ep + 1:6d} · ε {epsilon:.2f} · recompensa {fila['recompensa_media']:7.2f}"
-                      f" · éxito {fila['tasa_exito']:.0%} · pasos {fila['pasos_medios']:.0f}")
-
-    np.savez_compressed(modelos / "q_experto.npz", q=q, episodios=episodios)
-    resumen = {
-        "episodios": episodios,
-        "segundos": round(time.time() - t0, 1),
-        "recompensa_final": curva[-1]["recompensa_media"],
-        "tasa_exito_final": curva[-1]["tasa_exito"],
-        "estados_visitados": int((np.abs(q).sum(axis=1) > 0).sum()),
-    }
-    with open(metricas / "curva.csv", "w") as f:
-        f.write(",".join(curva[0]) + "\n")
-        for fila in curva:
-            f.write(",".join(str(v) for v in fila.values()) + "\n")
-    with open(metricas / "entrenamiento.json", "w") as f:
-        json.dump(resumen, f, indent=2)
-
-    tarjeta = {"nombre": "robot-expedition-qlearning", "version": p_ent["version_modelo"],
-               "ambiente": "RobotExpedition-v0.1", "git_commit": git_commit(),
-               "mlflow_run_id": run.info.run_id if run else None, **resumen}
-    with open(modelos / "modelo.json", "w") as f:
-        json.dump(tarjeta, f, indent=2)
-
+    modelo.save(fotos / f"paso-{modelo.num_timesteps:09d}.zip")
+    modelo.save(salida / "experto.zip")
+    resumen = {"semilla": semilla, "pasos": int(modelo.num_timesteps), "segundos": round(segundos, 1),
+               "pasos_por_segundo": round(modelo.num_timesteps / segundos),
+               "git_commit": git_commit(), "mlflow_run_id": run.info.run_id if run else None}
+    (salida / "corrida.json").write_text(json.dumps(resumen, indent=2))
+    (salida / "curva.json").write_text(json.dumps(curva))
     if run:
         mlflow.log_metrics({"segundos": resumen["segundos"],
-                            "estados_visitados": resumen["estados_visitados"]})
-        for ruta in modelos.glob("*.*"):
-            mlflow.log_artifact(str(ruta), artifact_path="modelos")
-        mlflow.log_artifact(str(metricas / "curva.csv"))
-        registrar_modelo(modelos / "q_experto.npz")
+                            "pasos_por_segundo": resumen["pasos_por_segundo"]})
+        mlflow.log_artifact(str(salida / "experto.zip"), artifact_path="modelo")
         mlflow.end_run()
     return resumen
-
-
-def registrar_modelo(ruta_q):
-    """Registra la tabla Q como modelo pyfunc en el Model Registry de MLflow."""
-    import mlflow
-    import mlflow.pyfunc
-
-    class PoliticaQ(mlflow.pyfunc.PythonModel):
-        def load_context(self, context):
-            self.q = np.load(context.artifacts["q_tabla"])["q"]
-
-        def predict(self, context, model_input, params=None):
-            # Entrada: columna "estado" con índices de discretizar(obs).
-            estados = np.asarray(model_input["estado"], dtype=int)
-            return self.q[estados].argmax(axis=1)
-
-    import pandas as pd
-    ejemplo = pd.DataFrame({"estado": [0, 1]})
-    mlflow.pyfunc.log_model(
-        name="politica",
-        python_model=PoliticaQ(),
-        artifacts={"q_tabla": str(ruta_q)},
-        input_example=ejemplo,
-        registered_model_name="robot-expedition-qlearning",
-    )

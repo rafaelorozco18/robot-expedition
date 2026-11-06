@@ -1,8 +1,11 @@
-# Ambiente y entrenamiento
+# Simulación y entrenamiento
 gymnasium==1.4.0
+mujoco==3.17.0
 numpy==2.5.4
 pyyaml==6.0.3
-# MLOps: versionado de datos/pipeline/modelos y registro de experimentos
+stable-baselines3==2.9.2
+torch==2.15.0
+# MLOps
 dvc==3.67.1
 mlflow==3.17.2
 # Pruebas

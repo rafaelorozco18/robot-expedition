@@ -1,7 +1,7 @@
-"""Robot Expedition: visitar dos balizas en orden y volver a la base antes de agotar la batería."""
+"""Robot Expedition: un bípedo que aprende por experimentos de dificultad creciente."""
 
 import gymnasium as gym
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
-gym.register(id="RobotExpedition-v0", entry_point="expedicion.ambiente:ExpedicionEnv")
+gym.register(id="RobotExpedition-v1", entry_point="expedicion.ambiente:BipedoEnv")

@@ -1,138 +1,189 @@
-"""Escenarios de evaluación, ejecución de episodios y métricas por agente."""
+"""Versiones del robot, escenarios fijos, episodios y métricas."""
 
 import itertools
 import json
-from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
 
-from . import config as C
-from .agentes import AgenteQ, cargar_agente
-from .ambiente import ETAPAS, ExpedicionEnv
+from .ambiente import BipedoEnv
+from .experimentos import carpeta_datos, carpeta_metricas, carpeta_modelos
 
 
-def generar_escenarios(p_eval):
-    """Dataset de evaluación: combinaciones fijas de clima × gravedad × incidente × semilla."""
-    rng = np.random.default_rng(p_eval["semilla"])
+class SinEntrenar:
+    """Sin red: las articulaciones solo intentan conservar la postura inicial."""
+    def actuar(self, obs, env):
+        return np.zeros(env.action_space.shape)
+
+
+class Aleatorio:
+    def __init__(self, semilla):
+        self.rng = np.random.default_rng(semilla)
+
+    def actuar(self, obs, env):
+        return self.rng.uniform(-1, 1, env.action_space.shape)
+
+
+class Politica:
+    """Red entrenada con PPO, sin exploración."""
+    def __init__(self, ruta):
+        from stable_baselines3 import PPO
+        self.modelo = PPO.load(ruta, device="cpu")
+
+    def actuar(self, obs, env):
+        return self.modelo.predict(obs, deterministic=True)[0]
+
+
+def fotos_de(exp, semilla):
+    carpeta = carpeta_modelos(exp) / f"semilla-{semilla}" / "fotos"
+    return sorted(carpeta.glob("paso-*.zip"))
+
+
+def paso_de(ruta):
+    return int(Path(ruta).stem.split("-")[1])
+
+
+def campeon(exp):
+    ruta = carpeta_metricas(exp) / "evaluacion.json"
+    if not ruta.exists():
+        return None
+    return json.loads(ruta.read_text())["campeon"]
+
+
+def generar_escenarios(exp):
+    e = exp["evaluacion"]
+    rng = np.random.default_rng(e["semilla"])
     escenarios = []
-    for clima, grav, inc in itertools.product(C.NOMBRES_CLIMA, C.NOMBRES_GRAVEDAD,
-                                              list(C.INCIDENTES)):
-        for _ in range(p_eval["episodios_por_condicion"]):
-            escenarios.append({"id": len(escenarios), "clima": clima, "gravedad": grav,
-                               "incidente": inc, "semilla": int(rng.integers(0, 2**31 - 1))})
+    for planeta, pert in itertools.product(e["planetas"], e["perturbaciones"]):
+        for _ in range(e["episodios_por_condicion"]):
+            escenarios.append({"id": len(escenarios), "planeta": planeta, "perturbacion": pert,
+                               "semilla": int(rng.integers(0, 2**31 - 1))})
     return escenarios
 
 
-def _lista(v):
-    return [round(float(x), 3) for x in np.asarray(v).ravel()]
+def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
+    env = BipedoEnv(exp)
+    obs, _ = env.reset(seed=escenario["semilla"], options={
+        "planeta": escenario["planeta"], "perturbacion": escenario["perturbacion"]})
+    bodies = range(1, env.model.nbody)
+    total, energia, inclinacion_max = 0.0, 0.0, 0.0
+    cuadros = []
 
+    def cuadro(accion, r, desglose):
+        izq, der, _ = env.contactos()
+        return {
+            "t": round(env.pasos * env.dt, 3),
+            "cuerpos": [[round(float(v), 4) for v in (*env.data.xpos[b], *env.data.xquat[b])] for b in bodies],
+            "torques": [round(float(v), 3) for v in env.data.ctrl],
+            "angulos": [round(float(v), 3) for v in env.angulos()],
+            "altura": round(env.altura_torso(), 3),
+            "altura_rel": round(env.altura_torso() / env.altura_pie, 3),
+            "inclinacion": round(env.inclinacion_grados(), 1),
+            "velocidad": round(float(np.linalg.norm(env.data.qvel[:3])), 3),
+            "pies": [izq, der],
+            "recompensa": round(r, 3), "total": round(total, 2),
+            "desglose": {k: round(float(v), 3) for k, v in desglose.items()},
+            "empujon": bool(env.empujado),
+        }
 
-def correr_episodio(agente, escenario, p_amb, registrar_cuadros=True):
-    """Corre un episodio completo y devuelve resumen + cuadros paso a paso."""
-    env = ExpedicionEnv(**p_amb)
-    obs, info = env.reset(seed=escenario["semilla"], options={
-        "clima": escenario["clima"], "gravedad": escenario["gravedad"],
-        "incidente": escenario["incidente"]})
-
-    def cuadro(accion, recompensa, total, obs, info, term=False, trunc=False, q=None):
-        return {"paso": info["pasos"], "accion": accion,
-                "accion_nombre": C.NOMBRES_ACCION[accion] if accion is not None else None,
-                "posicion": list(info["posicion"]), "etapa": info["etapa"],
-                "objetivo": ETAPAS[min(info["etapa"], 2)],
-                "bateria": round(info["bateria"], 2), "recompensa": round(recompensa, 3),
-                "recompensa_total": round(total, 3), "eventos": info["eventos"],
-                "ruta_restante": info["ruta_restante"], "condiciones": info["condiciones"],
-                "obs": {"rayos": _lista(obs["rayos"]), "objetivo": [int(v) for v in obs["objetivo"]],
-                        "velocidad": float(obs["velocidad"][0]),
-                        "terreno": C.TERRENOS[C.CODIGOS_TERRENO[obs["terreno"]]]["nombre"]},
-                "q": q, "terminado": term, "truncado": trunc}
-
-    es_q = isinstance(agente, AgenteQ)
-    total = 0.0
-    cuadros = [cuadro(None, 0.0, 0.0, obs, info)] if registrar_cuadros else []
-    choques = 0
+    if grabar:
+        cuadros.append(cuadro(np.zeros(env.model.nu), 0.0, {}))
+        env.empujado = False
     terminado = truncado = False
+    hubo_empujon = False
     while not (terminado or truncado):
-        q = _lista(agente.valores(obs)) if es_q and registrar_cuadros else None
-        accion = agente.actuar(obs)
+        accion = agente.actuar(obs, env)
         obs, r, terminado, truncado, info = env.step(accion)
         total += r
-        choques += any(e.startswith("choque") or e == "salto bloqueado" for e in info["eventos"])
-        if registrar_cuadros:
-            cuadros[-1]["q"] = q
-            cuadros.append(cuadro(accion, r, total, obs, info, terminado, truncado))
+        energia += float(np.sum(np.abs(env.data.ctrl * env.data.actuator_velocity *
+                                       env.model.actuator_gear[:, 0]))) * env.dt
+        inclinacion_max = max(inclinacion_max, env.inclinacion_grados())
+        hubo_empujon = hubo_empujon or env.empujado
+        if grabar and (env.pasos % cada == 0 or terminado or truncado or env.empujado):
+            cuadros.append(cuadro(accion, r, info["desglose"]))
 
-    resumen = {"agente": agente.nombre, **escenario, "exito": info["exito"],
-               "motivo": env.motivo, "balizas": min(info["etapa"], 2), "pasos": info["pasos"],
-               "bateria_final": round(info["bateria"], 2), "recompensa": round(total, 3),
-               "choques": choques, "cayo": env.motivo == "cayó en una grieta"}
+    segundos = env.pasos * env.dt
+    resumen = {**escenario, "exito": bool(truncado), "segundos": round(segundos, 2),
+               "motivo": env.motivo or "aguantó de pie", "recompensa": round(total, 1),
+               "energia_j": round(energia, 1), "inclinacion_max": round(inclinacion_max, 1),
+               "altura_final": round(env.altura_torso() / env.altura_pie, 3)}
     return resumen, cuadros
 
 
 def _metricas(filas):
-    exitos = [f for f in filas if f["exito"]]
     return {
         "episodios": len(filas),
-        "tasa_mision": round(np.mean([f["exito"] for f in filas]), 3),
-        "balizas_medias": round(np.mean([f["balizas"] for f in filas]), 3),
-        "bateria_final_exito": round(np.mean([f["bateria_final"] for f in exitos]), 2) if exitos else 0.0,
-        "pasos_exito": round(np.mean([f["pasos"] for f in exitos]), 1) if exitos else 0.0,
-        "choques_medios": round(np.mean([f["choques"] for f in filas]), 2),
-        "tasa_caida": round(np.mean([f["cayo"] for f in filas]), 3),
-        "recompensa_media": round(np.mean([f["recompensa"] for f in filas]), 2),
+        "tasa_exito": round(float(np.mean([f["exito"] for f in filas])), 3),
+        "segundos_medios": round(float(np.mean([f["segundos"] for f in filas])), 2),
+        "energia_media_j": round(float(np.mean([f["energia_j"] for f in filas])), 1),
+        "inclinacion_max_media": round(float(np.mean([f["inclinacion_max"] for f in filas])), 1),
     }
 
 
-def evaluar(escenarios, p_amb, p_eval, carpeta_modelos="models",
-            salida_trayectorias="data/trayectorias.jsonl", salida_metricas="metrics/evaluacion.json"):
-    Path(salida_trayectorias).parent.mkdir(parents=True, exist_ok=True)
-    Path(salida_metricas).parent.mkdir(parents=True, exist_ok=True)
-    por_agente = defaultdict(list)
-    with open(salida_trayectorias, "w") as f:
-        for nombre in p_eval["agentes"]:
-            for esc in escenarios:
-                agente = cargar_agente(nombre, carpeta_modelos, semilla=esc["semilla"])
-                resumen, cuadros = correr_episodio(agente, esc, p_amb)
-                por_agente[nombre].append(resumen)
-                transiciones = [{"a": c["accion"], "pos": c["posicion"], "r": c["recompensa"],
-                                 "bat": c["bateria"], "ev": c["eventos"]} for c in cuadros[1:]]
-                f.write(json.dumps({**resumen, "transiciones": transiciones}) + "\n")
+def resumir(exp, filas):
+    res = {"global": _metricas(filas)}
+    for planeta in exp["evaluacion"]["planetas"]:
+        for pert in exp["evaluacion"]["perturbaciones"]:
+            sub = [f for f in filas if f["planeta"] == planeta and f["perturbacion"] == pert]
+            if sub:
+                res[f"{planeta}.{pert}"] = _metricas(sub)
+    return res
 
-    resultado = {}
-    for nombre, filas in por_agente.items():
-        resultado[nombre] = {"global": _metricas(filas)}
-        for inc in C.INCIDENTES:
-            resultado[nombre][inc] = _metricas([x for x in filas if x["incidente"] == inc])
-        for clima in C.NOMBRES_CLIMA:
-            resultado[nombre][f"clima_{clima}"] = _metricas([x for x in filas if x["clima"] == clima])
-    with open(salida_metricas, "w") as f:
-        json.dump(resultado, f, indent=2)
+
+def aprueba(exp, res):
+    """El criterio se exige sin perturbación y en cada planeta."""
+    return all(res[f"{pl}.ninguna"]["tasa_exito"] >= exp["aprobar"]["tasa_exito"]
+               for pl in exp["evaluacion"]["planetas"])
+
+
+def evaluar(exp):
+    escenarios = json.loads((carpeta_datos(exp) / "escenarios.json").read_text())
+    semillas = exp["entrenamiento"]["semillas"]
+    resultados, por_semilla = {}, {}
+    trayectorias = carpeta_datos(exp) / "trayectorias.jsonl"
+    with open(trayectorias, "w") as f:
+        for nombre, agente in [("sin_entrenar", SinEntrenar()), ("aleatorio", Aleatorio(0))]:
+            filas = [correr_episodio(exp, agente, esc)[0] for esc in escenarios]
+            resultados[nombre] = resumir(exp, filas)
+            for fila in filas:
+                f.write(json.dumps({"agente": nombre, **fila}) + "\n")
+        for semilla in semillas:
+            ruta = carpeta_modelos(exp) / f"semilla-{semilla}" / "experto.zip"
+            if not ruta.exists():
+                continue
+            filas = [correr_episodio(exp, Politica(ruta), esc)[0] for esc in escenarios]
+            por_semilla[str(semilla)] = resumir(exp, filas)
+            for fila in filas:
+                f.write(json.dumps({"agente": f"semilla-{semilla}", **fila}) + "\n")
+
+    # Campeón: mejor tasa global; en empate, menor energía.
+    mejor = max(por_semilla, key=lambda s: (por_semilla[s]["global"]["tasa_exito"],
+                                            -por_semilla[s]["global"]["energia_media_j"]))
+    resultado = {"experimento": exp["id"], "campeon": int(mejor), "agentes": resultados,
+                 "semillas": por_semilla, "aprobado": aprueba(exp, por_semilla[mejor])}
+    carpeta_metricas(exp).mkdir(parents=True, exist_ok=True)
+    (carpeta_metricas(exp) / "evaluacion.json").write_text(json.dumps(resultado, indent=2))
     return resultado
 
 
-def evaluar_progreso(escenarios, p_amb, p_eval, carpeta_modelos="models",
-                     salida="metrics/progreso.json"):
-    """Evalúa cada checkpoint sin exploración (política voraz) en un subconjunto fijo."""
-    from .agentes import checkpoints_disponibles
-    vistos, subconjunto = defaultdict(int), []
+def evaluar_progreso(exp):
+    """Evalúa cada foto del campeón, sin exploración, en un subconjunto fijo de escenarios."""
+    semilla = campeon(exp)
+    escenarios = json.loads((carpeta_datos(exp) / "escenarios.json").read_text())
+    vistos, sub = {}, []
     for esc in escenarios:
-        clave = (esc["clima"], esc["gravedad"], esc["incidente"])
-        if vistos[clave] < p_eval["semillas_progreso"]:
-            vistos[clave] += 1
-            subconjunto.append(esc)
+        clave = (esc["planeta"], esc["perturbacion"])
+        vistos[clave] = vistos.get(clave, 0) + 1
+        if esc["perturbacion"] == "ninguna" and vistos[clave] <= exp["evaluacion"]["episodios_por_foto"]:
+            sub.append(esc)
     filas = []
-    for ep in checkpoints_disponibles(carpeta_modelos):
-        agente = cargar_agente(f"ep:{ep}", carpeta_modelos)
-        resultados = [correr_episodio(agente, esc, p_amb, registrar_cuadros=False)[0]
-                      for esc in subconjunto]
-        fila = {"episodio": ep}
-        for inc in C.INCIDENTES:
-            m = _metricas([r for r in resultados if r["incidente"] == inc])
-            fila.update({f"{inc}.{k}": v for k, v in m.items() if k != "episodios"})
-        filas.append(fila)
-    Path(salida).parent.mkdir(parents=True, exist_ok=True)
-    with open(salida, "w") as f:
-        json.dump({"episodios_por_checkpoint": len(subconjunto), "checkpoints": filas}, f, indent=1)
+    for ruta in fotos_de(exp, semilla):
+        agente = Politica(ruta)
+        res = [correr_episodio(exp, agente, esc)[0] for esc in sub]
+        filas.append({"paso": paso_de(ruta), **_metricas(res), **{
+            f"exito_{pl}": round(float(np.mean([r["exito"] for r in res if r["planeta"] == pl])), 3)
+            for pl in exp["evaluacion"]["planetas"]}})
+        print(filas[-1], flush=True)
+    (carpeta_metricas(exp) / "progreso.json").write_text(json.dumps(
+        {"semilla": semilla, "episodios_por_foto": len(sub), "fotos": filas}, indent=1))
     return filas
-
