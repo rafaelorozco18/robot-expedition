@@ -2,7 +2,7 @@ id: exp-010
 titulo: Caminar recto
 pregunta: ¿Camina 10 m sin caer?
 agrega: Distancia sostenida
-estado: pendiente
+estado: activo
 criterio: 10 m sin caer en ≥ 80 %
 tarea: marcha
 parte_de: exp-009
