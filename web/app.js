@@ -78,12 +78,13 @@ function construirCampo() {
   const tema = planeta.tema();
   const lado = new THREE.MeshStandardMaterial({ color: tema.subsuelo });
   const tapa = new THREE.MeshStandardMaterial({ color: tema.colores["."], map: planeta.texRuido, roughness: 0.95 });
-  const losa = new THREE.Mesh(new THREE.BoxGeometry(12, 3, 12), [lado, lado, tapa, lado, lado, lado]);
-  losa.position.y = -1.5;
+  const losa = new THREE.Mesh(new THREE.BoxGeometry(24, 3, 12), [lado, lado, tapa, lado, lado, lado]);
+  losa.position.set(6, -1.5, 0);  // la pista se extiende hacia +x, por donde camina
   losa.receiveShadow = true;
   grupoCampo.add(losa);
   const lineas = [];
-  for (let i = -6; i <= 6; i++) lineas.push(i, 0.003, -6, i, 0.003, 6, -6, 0.003, i, 6, 0.003, i);
+  for (let i = -6; i <= 18; i++) lineas.push(i, 0.003, -6, i, 0.003, 6);
+  for (let j = -6; j <= 6; j++) lineas.push(-6, 0.003, j, 18, 0.003, j);
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.Float32BufferAttribute(lineas, 3));
   grupoCampo.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.14 })));
@@ -147,10 +148,11 @@ function posarRobot(A, B, f) {
 
 // La cámara sigue al robot si se aleja; hará falta desde que camine.
 const previo = new THREE.Vector3();
-function seguirRobot() {
+function seguirRobot(dt) {
   const t = cuerpos[0]?.position;
   if (!t) return;
-  const delta = new THREE.Vector3(t.x, 0, -t.y).sub(previo).multiplyScalar(0.08);
+  const suavizado = Math.min(1, dt * 4 * Math.max(1, estado.velocidad));
+  const delta = new THREE.Vector3(t.x, 0, -t.y).sub(previo).multiplyScalar(suavizado);
   previo.add(delta);
   controls.target.add(delta);
   camera.position.add(delta);
@@ -448,7 +450,7 @@ function bucle() {
     const A = c[estado.i], B = c[Math.min(estado.i + 1, c.length - 1)];
     const f = B.t > A.t ? Math.min(1, (estado.tiempo - A.t) / (B.t - A.t)) : 0;
     posarRobot(A, B, Math.max(0, f));
-    seguirRobot();
+    seguirRobot(dt);
   }
   planeta.animar(dt, reloj.elapsedTime);
   controls.update();

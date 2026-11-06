@@ -456,7 +456,7 @@ function construirPaisaje(tema, texRuido, semilla) {
   grupo.add(suelo);
 
   // rocas sueltas
-  const zonaLibre = (x, z) => (Math.abs(z) < 3 && x > 0 && x < 16) || Math.max(Math.abs(x), Math.abs(z)) < 7.5 || (x < -6 && x > -12 && z > 1 && z < 8);
+  const zonaLibre = (x, z) => (Math.abs(z) < 7 && x > 0 && x < 19) || Math.max(Math.abs(x), Math.abs(z)) < 7.5 || (x < -6 && x > -12 && z > 1 && z < 8);
   const geoRoca = new THREE.DodecahedronGeometry(1, 0);
   const colorRoca = new THREE.Color(tema.roca).lerp(new THREE.Color(tema.paisaje.base), 0.55);
   const rocas = new THREE.InstancedMesh(geoRoca, new THREE.MeshStandardMaterial({ color: colorRoca, roughness: 0.95, flatShading: true }), R.rocas);

@@ -2,7 +2,7 @@ id: exp-022
 titulo: Arena
 pregunta: ¿Cruza arena?
 agrega: Piso blando con poco empuje
-estado: pendiente
+estado: activo
 criterio: Cruza 5 m en ≥ 80 %
 tarea: marcha
 robot: robots/bipedo-v1.xml
