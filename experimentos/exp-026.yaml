@@ -2,7 +2,7 @@ id: exp-026
 titulo: Hielo
 pregunta: ¿Cruza hielo?
 agrega: Fricción baja y variable
-estado: pendiente
+estado: activo
 criterio: Cruza 5 m en ≥ 70 %
 tarea: marcha
 robot: robots/bipedo-v1.xml

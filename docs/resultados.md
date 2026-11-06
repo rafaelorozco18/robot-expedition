@@ -17,3 +17,4 @@
 | 22 | [Arena](experimentos/exp-022.md) | Aprobado | 90 % · 100 % · 100 % | 80 % | 1.7 M | 11 min |
 | 23 | [Barro blando](experimentos/exp-023.md) | No aprobado | 30 % · 100 % · 100 % | 75 % | 3.0 M | 18 min |
 | 25 | [Grava suelta](experimentos/exp-025.md) | Aprobado | 80 % · 100 % · 100 % | 75 % | 0.4 M | 4 min |
+| 26 | [Hielo](experimentos/exp-026.md) | Aprobado | 80 % · 100 % · 100 % | 70 % | 0.4 M | 3 min |
