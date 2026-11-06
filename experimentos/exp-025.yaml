@@ -2,7 +2,7 @@ id: exp-025
 titulo: Grava suelta
 pregunta: ¿Cruza grava suelta?
 agrega: Apoyo que se desplaza
-estado: pendiente
+estado: activo
 criterio: Cruza 5 m en ≥ 75 %
 tarea: marcha
 robot: robots/bipedo-v1.xml
