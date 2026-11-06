@@ -34,6 +34,7 @@ parametros:
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
-  pasos: 5000000
+  pasos: 3000000
+  reintentos: 0
 trampa: Memorizar tres gravedades. Se entrena con valores continuos y sigue viendo
   g.

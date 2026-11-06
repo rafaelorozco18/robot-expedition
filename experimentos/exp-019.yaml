@@ -33,5 +33,6 @@ parametros:
 aprobar:
   tasa_exito: 0.85
 entrenamiento:
-  pasos: 5000000
+  pasos: 3000000
+  reintentos: 0
 trampa: Caminar en círculo. Se premia velocidad de traslación cero.

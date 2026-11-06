@@ -15,6 +15,7 @@ parametros:
 aprobar:
   tasa_exito: 0.9
 entrenamiento:
-  pasos: 2500000
+  pasos: 2000000
+  reintentos: 0
 trampa: Inclinar el torso sin mover el centro de masa. Se mide el centro de masa del
   cuerpo completo.

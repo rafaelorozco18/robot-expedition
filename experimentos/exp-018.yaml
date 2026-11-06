@@ -32,7 +32,8 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 6000000
+  pasos: 5000000
+  reintentos: 0
 trampa: 'Mantener rígida la cadera nueva. No se castiga: usarla o no lo decide el
   aprendizaje.'
 pendiente: 'El modelo no se puede heredar porque cambia el tamaño de la red: empieza

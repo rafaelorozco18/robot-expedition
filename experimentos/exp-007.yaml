@@ -31,6 +31,7 @@ parametros:
 aprobar:
   tasa_exito: 0.85
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
+  reintentos: 0
 trampa: Lanzarse hacia adelante para sumar distancia. Caer termina el episodio y anula
   el éxito.

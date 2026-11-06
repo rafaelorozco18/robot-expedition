@@ -160,6 +160,9 @@ function seguirRobot() {
 function construirSelector() {
   const cont = $("selector");
   cont.innerHTML = "";
+  const aprobados = estado.catalogo.filter((e) => e.aprobado).length;
+  const intentados = estado.catalogo.filter((e) => e.entrenado).length;
+  $("avance").innerHTML = `<b>${aprobados}</b> de ${estado.catalogo.length} experimentos aprobados · ${intentados} entrenados`;
   estado.catalogo.forEach((e, n) => {
     const b = document.createElement("button");
     b.className = `chip-exp ${e.estado} ${e.aprobado ? "aprobado" : e.entrenado ? "fallido" : ""}`;

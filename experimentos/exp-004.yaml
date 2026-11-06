@@ -19,5 +19,6 @@ aprobar:
   tasa_exito: 0.9
 entrenamiento:
   pasos: 2000000
+  reintentos: 0
 trampa: Quedarse a media altura para no fallar del todo. El error se mide en cada
   orden, arriba y abajo.

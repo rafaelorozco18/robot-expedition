@@ -33,6 +33,7 @@ parametros:
 aprobar:
   tasa_exito: 0.85
 entrenamiento:
-  pasos: 6000000
+  pasos: 4000000
+  reintentos: 0
 trampa: Seguir caminando en el sitio cuando debe detenerse. Con orden cero se premia
   apoyar ambos pies.

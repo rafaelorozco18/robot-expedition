@@ -1,0 +1,213 @@
+{
+  "experimento": "exp-002",
+  "campeon": 0,
+  "agentes": {
+    "sin_entrenar": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.65,
+        "segundos_medios": 7.58,
+        "energia_media_j": 2.0,
+        "inclinacion_max_media": 13.9
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 0.2,
+        "inclinacion_max_media": 0.6
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.9,
+        "segundos_medios": 9.64,
+        "energia_media_j": 0.7,
+        "inclinacion_max_media": 8.8
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 0.3,
+        "inclinacion_max_media": 0.5
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 0.9,
+        "inclinacion_max_media": 2.5
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 2.99,
+        "energia_media_j": 4.8,
+        "inclinacion_max_media": 35.7
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 2.83,
+        "energia_media_j": 5.1,
+        "inclinacion_max_media": 35.5
+      }
+    },
+    "aleatorio": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.44,
+        "energia_media_j": 456.9,
+        "inclinacion_max_media": 35.7
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.61,
+        "energia_media_j": 511.0,
+        "inclinacion_max_media": 36.0
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.54,
+        "energia_media_j": 484.8,
+        "inclinacion_max_media": 36.1
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.46,
+        "energia_media_j": 456.4,
+        "inclinacion_max_media": 34.5
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.71,
+        "energia_media_j": 543.5,
+        "inclinacion_max_media": 36.2
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.13,
+        "energia_media_j": 371.7,
+        "inclinacion_max_media": 35.4
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.16,
+        "energia_media_j": 374.0,
+        "inclinacion_max_media": 36.1
+      }
+    }
+  },
+  "semillas": {
+    "0": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.9,
+        "segundos_medios": 9.82,
+        "energia_media_j": 4.1,
+        "inclinacion_max_media": 6.0
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 4.8,
+        "inclinacion_max_media": 3.4
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.4,
+        "segundos_medios": 8.89,
+        "energia_media_j": 12.2,
+        "inclinacion_max_media": 19.1
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 1.3,
+        "inclinacion_max_media": 2.6
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 2.8,
+        "inclinacion_max_media": 3.5
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 1.4,
+        "inclinacion_max_media": 3.5
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 2.3,
+        "inclinacion_max_media": 3.8
+      }
+    },
+    "1": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.467,
+        "segundos_medios": 7.91,
+        "energia_media_j": 8.2,
+        "inclinacion_max_media": 20.4
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 5.87,
+        "energia_media_j": 14.1,
+        "inclinacion_max_media": 35.2
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.1,
+        "segundos_medios": 6.78,
+        "energia_media_j": 19.5,
+        "inclinacion_max_media": 32.0
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.6,
+        "segundos_medios": 8.36,
+        "energia_media_j": 4.3,
+        "inclinacion_max_media": 16.5
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.1,
+        "segundos_medios": 6.46,
+        "energia_media_j": 6.9,
+        "inclinacion_max_media": 32.4
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 1.6,
+        "inclinacion_max_media": 2.9
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 10.0,
+        "energia_media_j": 2.6,
+        "inclinacion_max_media": 3.1
+      }
+    }
+  },
+  "aprobado": false
+}

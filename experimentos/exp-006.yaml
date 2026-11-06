@@ -15,6 +15,7 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 3000000
+  pasos: 2500000
+  reintentos: 0
 trampa: Dar saltitos con ambos pies en el aire. La racha exige el pie de apoyo en
   contacto.

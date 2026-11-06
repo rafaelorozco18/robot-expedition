@@ -17,5 +17,6 @@ aprobar:
   tasa_exito: 0.8
   perturbacion: empujon
 entrenamiento:
-  pasos: 3000000
+  pasos: 2000000
+  reintentos: 0
 trampa: Agacharse antes del empujón. La altura mínima sigue activa.

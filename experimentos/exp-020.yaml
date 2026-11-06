@@ -37,5 +37,6 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 5000000
+  pasos: 3000000
+  reintentos: 0
 trampa: Caminar recto. El rumbo ordenado cambia varias veces.

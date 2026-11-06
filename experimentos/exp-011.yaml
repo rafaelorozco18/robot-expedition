@@ -31,5 +31,6 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 6000000
+  pasos: 4000000
+  reintentos: 0
 trampa: Caminar siempre a velocidad media. El error se mide contra cada orden.

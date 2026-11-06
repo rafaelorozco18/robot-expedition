@@ -12,5 +12,6 @@ aprobar:
   tasa_exito: 0.85
   perturbacion: empujon
 entrenamiento:
-  pasos: 1500000
+  pasos: 2500000
+  reintentos: 0
 trampa: Separar mucho los pies o agacharse. La altura mínima y la postura lo limitan.

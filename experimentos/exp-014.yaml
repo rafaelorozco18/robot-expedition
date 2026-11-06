@@ -31,5 +31,6 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 5000000
+  pasos: 3000000
+  reintentos: 0
 trampa: Girar y caminar hacia adelante en diagonal. El rumbo se premia.

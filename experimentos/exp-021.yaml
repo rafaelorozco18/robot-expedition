@@ -30,7 +30,8 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
+  reintentos: 0
 trampa: Pasar de largo. Se mide la posición final, no el paso por el destino.
 pendiente: 'El rumbo hacia el destino lo calcula el ambiente: la navegación aprendida
   llega en bloques posteriores.'

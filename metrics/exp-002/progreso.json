@@ -1,0 +1,193 @@
+{
+ "semilla": 0,
+ "episodios_por_foto": 9,
+ "fotos": [
+  {
+   "paso": 0,
+   "episodios": 9,
+   "tasa_exito": 0.556,
+   "segundos_medios": 10.0,
+   "energia_media_j": 11.2,
+   "inclinacion_max_media": 9.4,
+   "exito_luna": 0.333,
+   "exito_marte": 0.333,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 100032,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 9.7,
+   "energia_media_j": 9.6,
+   "inclinacion_max_media": 11.8,
+   "exito_luna": 0.333,
+   "exito_marte": 1.0,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 200000,
+   "episodios": 9,
+   "tasa_exito": 0.778,
+   "segundos_medios": 9.88,
+   "energia_media_j": 11.7,
+   "inclinacion_max_media": 9.1,
+   "exito_luna": 0.333,
+   "exito_marte": 1.0,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 300032,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 9.37,
+   "energia_media_j": 17.8,
+   "inclinacion_max_media": 13.1,
+   "exito_luna": 0.333,
+   "exito_marte": 1.0,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 400000,
+   "episodios": 9,
+   "tasa_exito": 0.556,
+   "segundos_medios": 7.53,
+   "energia_media_j": 11.9,
+   "inclinacion_max_media": 14.9,
+   "exito_luna": 0.667,
+   "exito_marte": 1.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 500032,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 9.73,
+   "energia_media_j": 12.0,
+   "inclinacion_max_media": 14.0,
+   "exito_luna": 0.333,
+   "exito_marte": 1.0,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 600000,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 9.64,
+   "energia_media_j": 9.7,
+   "inclinacion_max_media": 16.4,
+   "exito_luna": 0.333,
+   "exito_marte": 1.0,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 700032,
+   "episodios": 9,
+   "tasa_exito": 0.778,
+   "segundos_medios": 9.53,
+   "energia_media_j": 9.4,
+   "inclinacion_max_media": 14.1,
+   "exito_luna": 1.0,
+   "exito_marte": 0.667,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 800000,
+   "episodios": 9,
+   "tasa_exito": 0.222,
+   "segundos_medios": 5.71,
+   "energia_media_j": 8.3,
+   "inclinacion_max_media": 26.1,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 900032,
+   "episodios": 9,
+   "tasa_exito": 0.333,
+   "segundos_medios": 6.95,
+   "energia_media_j": 9.5,
+   "inclinacion_max_media": 19.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 1000000,
+   "episodios": 9,
+   "tasa_exito": 0.444,
+   "segundos_medios": 8.39,
+   "energia_media_j": 7.0,
+   "inclinacion_max_media": 20.2,
+   "exito_luna": 0.0,
+   "exito_marte": 0.667,
+   "exito_tierra": 0.667
+  },
+  {
+   "paso": 1100032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 5.39,
+   "energia_media_j": 13.9,
+   "inclinacion_max_media": 35.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1200000,
+   "episodios": 9,
+   "tasa_exito": 0.333,
+   "segundos_medios": 6.67,
+   "energia_media_j": 7.2,
+   "inclinacion_max_media": 24.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 1300032,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 8.72,
+   "energia_media_j": 8.0,
+   "inclinacion_max_media": 14.0,
+   "exito_luna": 0.333,
+   "exito_marte": 0.667,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 1400000,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 9.86,
+   "energia_media_j": 17.3,
+   "inclinacion_max_media": 8.3,
+   "exito_luna": 0.0,
+   "exito_marte": 1.0,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 1500032,
+   "episodios": 9,
+   "tasa_exito": 1.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 6.4,
+   "inclinacion_max_media": 5.1,
+   "exito_luna": 1.0,
+   "exito_marte": 1.0,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 1503232,
+   "episodios": 9,
+   "tasa_exito": 1.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 6.3,
+   "inclinacion_max_media": 5.1,
+   "exito_luna": 1.0,
+   "exito_marte": 1.0,
+   "exito_tierra": 1.0
+  }
+ ]
+}

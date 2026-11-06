@@ -31,5 +31,6 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 8000000
+  pasos: 4000000
+  reintentos: 0
 trampa: Avanzar rápido al inicio y caer. Solo cuenta llegar a 10 m de pie.
