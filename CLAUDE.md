@@ -64,11 +64,8 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 
 ## Estado actual (2026-11-06)
 
-- Rama `exp-001-de-pie`. El trabajo del bípedo está **sin commitear** (44 archivos).
-- Listo: robot v1, ambiente MuJoCo, 10 pruebas, CLI, selector y visor 3D (revisado con capturas).
-- **Exp 1 sin terminar y sin aprobar.** Pilotos con PD, 500 mil pasos, sin exploración: Luna 20 %,
-  Marte 0 %, Tierra 0 %. La Luna rindió peor que sin red (100 %).
-- Dos variantes (kp 0.4 y 0.6, rango 1.0, 10 épocas, empujones 10 %) se detuvieron a ~350 mil
-  pasos sin resultados. Sus datos parciales están en `models/exp-001/semilla-91` y `semilla-92`.
-- Siguiente: repetir esas variantes, elegir el control y correr las 3 semillas con `dvc repro`.
-- El usuario pidió avisarle al terminar el Exp 1: **no empezar otros experimentos sin su autorización.**
+- El usuario autorizó trabajar solo de 10:00 a 15:00 (cierre hasta 15:30): hacer todos los experimentos posibles.
+- `expedicion campana exp-NNN ...` entrena, evalúa, reintenta con otra semilla, registra, documenta, hace commit y tag.
+- Rama `exp-001-de-pie`. El avance real está en `metrics/campana.log` y `git tag`.
+- Claves aprendidas: escalar la recompensa (0.05) fue lo que permitió aprender; el i5-1235U rinde más
+  con 4 procesos que con 8; limitar BLAS a 1 hilo es obligatorio; parar solo con prueba sin exploración.

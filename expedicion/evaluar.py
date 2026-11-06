@@ -84,7 +84,7 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
             "recompensa": round(r, 3), "total": round(total, 2),
             "desglose": {k: round(float(v), 3) for k, v in desglose.items()},
             "empujon": bool(env.empujado),
-            "comando": [round(float(v), 2) for v in env.comando],
+            "orden": env.tarea.orden(env),
             "distancia": round(env.distancia(), 2),
             "piso": env.piso_bajo_torso(),
         }

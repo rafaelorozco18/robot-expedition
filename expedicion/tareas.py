@@ -46,6 +46,9 @@ class Tarea:
     def resumen(self, env):
         return ""
 
+    def orden(self, env):
+        return "quedarse de pie"
+
 
 class DePie(Tarea):
     def iniciar(self, env):
@@ -100,6 +103,9 @@ class Sentadilla(Tarea):
     def resumen(self, env):
         return f"error medio {np.mean(self.errores) * 100:.1f} cm" if self.errores else ""
 
+    def orden(self, env):
+        return f"altura {env.comando[2] * 100:.0f} %"
+
 
 class PasarPeso(Tarea):
     """Lleva el centro de masa sobre el pie ordenado, alternando."""
@@ -134,6 +140,9 @@ class PasarPeso(Tarea):
     def resumen(self, env):
         return f"sobre el pie ordenado {np.mean(self.aciertos) * 100:.0f} % del tiempo" if self.aciertos else ""
 
+    def orden(self, env):
+        return f"peso sobre el pie {'izquierdo' if env.comando[3] > 0 else 'derecho'}"
+
 
 class UnPie(Tarea):
     """Levanta el pie ordenado y se sostiene sobre el otro."""
@@ -163,9 +172,12 @@ class UnPie(Tarea):
     def resumen(self, env):
         return f"mejor racha en un pie {self.mejor * env.dt:.1f} s"
 
+    def orden(self, env):
+        return f"levantar el pie {'derecho' if env.comando[3] > 0 else 'izquierdo'}"
+
 
 class Marcha(Tarea):
-    """Sigue una velocidad ordenada con un reloj que alterna las piernas."""
+    """Sigue una velocidad y un rumbo ordenados, con un reloj que alterna las piernas."""
     titulo_exito = "Caminó hasta la meta"
     usa_reloj = True
 
@@ -173,6 +185,7 @@ class Marcha(Tarea):
         vx, vy = self.t.get("vx", [0.5, 0.5]), self.t.get("vy", [0.0, 0.0])
         env.comando[0] = env.np_random.uniform(*vx)
         env.comando[1] = env.np_random.uniform(*vy)
+        env.comando[3] = env.np_random.uniform(*self.t.get("giro", [0.0, 0.0]))
         cero = self.t.get("prob_detenerse", 0.0)
         if cero and env.np_random.random() < cero:
             env.comando[:2] = 0.0
@@ -181,45 +194,109 @@ class Marcha(Tarea):
         super().iniciar(env)
         self._sortear(env)
         self.errores = []
+        self.errores_rumbo = []
 
     def actualizar(self, env):
         cada = self.t.get("cambia_cada_s")
         if cada and env.pasos and env.pasos % int(cada / env.dt) == 0:
             self._sortear(env)
+        env.rumbo_objetivo += env.comando[3] * env.dt
+
+    def _velocidad_objetivo(self, env):
+        c, s = np.cos(env.rumbo_objetivo), np.sin(env.rumbo_objetivo)
+        return np.array([c * env.comando[0] - s * env.comando[1], s * env.comando[0] + c * env.comando[1]])
 
     def recompensa(self, env, accion, previa):
         d = self.comunes(env, accion, previa)
-        v = env.data.qvel[:2]
-        error = float(np.sum((v - env.comando[:2]) ** 2))
+        error = float(np.sum((env.data.qvel[:2] - self._velocidad_objetivo(env)) ** 2))
+        error_rumbo = env.error_rumbo()
         d["velocidad"] = self.p["velocidad"] * np.exp(-error / 0.1)
         d["altura"] = self.p["altura"] * np.exp(-(((env.altura_torso() - 0.97 * env.altura_pie) / 0.08) ** 2))
         d["erguido"] = self.p["erguido"] * env.arriba_del_torso()[2] ** 4
-        d["rumbo"] = self.p["rumbo"] * env.mundo_x_en_torso()[0] ** 2
+        d["rumbo"] = self.p["rumbo"] * np.exp(-((error_rumbo / 0.3) ** 2))
         # Reloj: en cada media fase debe apoyar una pierna y levantar la otra.
         izq, der, _ = env.contactos()
         fase = np.sin(env.fase())
         apoyo_i, apoyo_d = fase >= 0, fase < 0
-        if np.linalg.norm(env.comando[:2]) < 0.05:
+        if np.linalg.norm(env.comando[:2]) < 0.05 and abs(env.comando[3]) < 0.05:
             d["reloj"] = self.p["reloj"] * float(izq and der)
         else:
             d["reloj"] = self.p["reloj"] * 0.5 * (float(izq == apoyo_i) + float(der == apoyo_d))
             alto = env.posicion_pie(1 if apoyo_i else 0)[2]
             d["paso"] = self.p["paso"] * min(1.0, alto / 0.06)
-        d["giro"] = -self.p["giro"] * float(np.sum(env.data.qvel[3:6] ** 2))
+        d["giro"] = -self.p["giro"] * float(np.sum((env.data.qvel[3:5]) ** 2))
         self.errores.append(np.sqrt(error))
+        self.errores_rumbo.append(abs(error_rumbo))
         return d
 
     def exito(self, env, truncado):
         if not truncado:
             return False
-        if "error_ms" in self.t:
-            return float(np.mean(self.errores[50:])) < self.t["error_ms"]
-        if "energia_j" in self.t:
-            return env.recorrido() >= self.t["distancia_m"] and env.energia <= self.t["energia_j"]
-        return env.recorrido() >= self.t["distancia_m"]
+        if "error_ms" in self.t and float(np.mean(self.errores[50:])) >= self.t["error_ms"]:
+            return False
+        if "error_rumbo" in self.t and float(np.mean(self.errores_rumbo[50:])) >= self.t["error_rumbo"]:
+            return False
+        if "energia_j" in self.t and env.energia > self.t["energia_j"]:
+            return False
+        return env.recorrido() >= self.t.get("distancia_m", 0.0)
 
     def resumen(self, env):
         return f"recorrió {env.recorrido():.1f} m · error de velocidad {np.mean(self.errores):.2f} m/s"
+
+    def orden(self, env):
+        partes = []
+        if np.linalg.norm(env.comando[:2]) > 0.01:
+            partes.append(f"ir a {np.linalg.norm(env.comando[:2]):.2f} m/s")
+        if abs(env.comando[3]) > 0.01:
+            partes.append(f"girar {np.degrees(env.comando[3]):.0f}°/s")
+        return " · ".join(partes) or "detenerse"
+
+
+class Girar(Marcha):
+    """Gira un ángulo ordenado sin desplazarse."""
+    titulo_exito = "Giró en el sitio"
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        self.signo = 1.0 if env.np_random.random() < 0.5 else -1.0
+        self.total = 0.0
+
+    def actualizar(self, env):
+        paso = min(self.t["rad_s"] * env.dt, abs(self.t["angulo_rad"]) - self.total)
+        self.total += max(0.0, paso)
+        env.comando[3] = self.signo * self.t["rad_s"] if self.total < abs(self.t["angulo_rad"]) else 0.0
+        env.rumbo_objetivo = self.signo * self.total
+
+    def exito(self, env, truncado):
+        return truncado and abs(env.error_rumbo()) < np.radians(10)
+
+    def resumen(self, env):
+        return f"error final de rumbo {np.degrees(abs(env.error_rumbo())):.0f}°"
+
+
+class IrAPunto(Marcha):
+    """Llega a un destino. El rumbo y la velocidad se derivan de su posición, sin navegación aprendida."""
+    titulo_exito = "Llegó al destino"
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        ang = env.np_random.uniform(-1.2, 1.2)
+        d = self.t["distancia_destino_m"]
+        env.destino = np.array([d * np.cos(ang), d * np.sin(ang)])
+
+    def actualizar(self, env):
+        hacia = env.destino - env.data.qpos[:2]
+        lejos = np.linalg.norm(hacia)
+        deseado = np.arctan2(hacia[1], hacia[0])
+        env.rumbo_objetivo = deseado if lejos > 0.3 else env.rumbo_objetivo
+        env.comando[0] = 0.5 if lejos > 0.3 else 0.0
+        env.comando[3] = 0.0
+
+    def exito(self, env, truncado):
+        return truncado and np.linalg.norm(env.destino - env.data.qpos[:2]) < self.t["radio_m"]
+
+    def resumen(self, env):
+        return f"terminó a {np.linalg.norm(env.destino - env.data.qpos[:2]):.2f} m del destino"
 
 
 class Levantarse(Tarea):
@@ -246,4 +323,4 @@ class Levantarse(Tarea):
 
 
 TAREAS = {"de_pie": DePie, "sentadilla": Sentadilla, "pasar_peso": PasarPeso, "un_pie": UnPie,
-          "marcha": Marcha, "levantarse": Levantarse}
+          "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto}

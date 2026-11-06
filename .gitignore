@@ -11,3 +11,6 @@ mlartifacts/
 
 # Artefactos locales de la navegación archivada
 archivo/
+
+# Corridas piloto, no versionadas
+models/pilotos/

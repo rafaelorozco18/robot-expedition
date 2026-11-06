@@ -1,6 +1,37 @@
 id: exp-019
 titulo: Girar en el sitio
-pregunta: Orden de giro de 90°
+pregunta: ¿Gira 90° sin desplazarse?
 agrega: Orden de giro de 90°
 estado: pendiente
 criterio: Error < 10° en ≥ 85 %
+tarea: girar
+robot: robots/bipedo-v2.xml
+parte_de: exp-018
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 8
+recompensa:
+  velocidad: 1.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 2.0
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+parametros:
+  rad_s: 0.6
+  angulo_rad: 1.57
+  periodo_s: 0.8
+  vx:
+  - 0.0
+  - 0.0
+aprobar:
+  tasa_exito: 0.85
+entrenamiento:
+  pasos: 5000000
+trampa: Caminar en círculo. Se premia velocidad de traslación cero.

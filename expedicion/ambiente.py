@@ -83,6 +83,14 @@ class BipedoEnv(gym.Env):
     def mundo_x_en_torso(self):
         return self.data.xmat[self.id_torso].reshape(3, 3)[0]  # x del mundo en ejes del torso
 
+    def rumbo(self):
+        r = self.data.xmat[self.id_torso]
+        return float(np.arctan2(r[3], r[0]))
+
+    def error_rumbo(self):
+        e = self.rumbo() - self.rumbo_objetivo
+        return float(np.arctan2(np.sin(e), np.cos(e)))
+
     def centro_masa(self):
         return self.data.subtree_com[self.id_torso]
 
@@ -156,6 +164,8 @@ class BipedoEnv(gym.Env):
         self.empujado = False
         self.tramos = self._sortear_tramos() if self.conf_pisos else []
         self.pie_previo = [self.posicion_pie(0).copy(), self.posicion_pie(1).copy()]
+        self.rumbo_objetivo = 0.0
+        self.destino = None
         self.tarea.iniciar(self)
         self.tarea.actualizar(self)
         return self._observar(), self._info()
@@ -231,7 +241,7 @@ class BipedoEnv(gym.Env):
         rot = d.xmat[self.id_torso].reshape(3, 3)
         return np.clip(np.concatenate([
             [self.altura_torso() - self.altura_pie],
-            rot[2], rot[0],
+            rot[2], rot.T @ [np.cos(self.rumbo_objetivo), np.sin(self.rumbo_objetivo), 0.0],
             rot @ d.qvel[:3], d.qvel[3:6] * 0.25,
             self.angulos() - self.postura_inicial,
             d.qvel[self.adr_v] * 0.1,

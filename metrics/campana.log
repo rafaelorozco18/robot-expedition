@@ -2,3 +2,6 @@
 10:59 exp-001 semilla 1: aprobado=True
 10:59 exp-001: robot-exp-001 v1
 10:59 exp-001 aprobado
+11:13 exp-002 semilla 0: aprobado=False
+11:24 exp-002 semilla 1: aprobado=False
+11:26 exp-002: robot-exp-002 v1

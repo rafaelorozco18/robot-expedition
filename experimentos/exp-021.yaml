@@ -1,6 +1,36 @@
 id: exp-021
 titulo: Ir a un punto
-pregunta: Destino a 5 m
+pregunta: ¿Llega a un punto a 5 m?
 agrega: Destino a 5 m
 estado: pendiente
 criterio: Llega a < 0.3 m en ≥ 80 %
+tarea: ir_a_punto
+robot: robots/bipedo-v2.xml
+parte_de: exp-020
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 20
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 1.0
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+parametros:
+  distancia_destino_m: 5
+  radio_m: 0.4
+  periodo_s: 0.8
+aprobar:
+  tasa_exito: 0.8
+entrenamiento:
+  pasos: 4000000
+trampa: Pasar de largo. Se mide la posición final, no el paso por el destino.
+pendiente: 'El rumbo hacia el destino lo calcula el ambiente: la navegación aprendida
+  llega en bloques posteriores.'

@@ -21,7 +21,7 @@ const botonPlay = (jugando) => { $("btn-play").innerHTML = jugando ? ICONO.pausa
 const ETIQUETA_PERTURBACION = { ninguna: "ninguna", empujon: "empujón" };
 const NOMBRE_MOTOR = {
   cadera_roll: "Cadera (lateral)", cadera_pitch: "Cadera (frontal)", rodilla: "Rodilla",
-  tobillo_pitch: "Tobillo (frontal)", tobillo_roll: "Tobillo (lateral)",
+  cadera_yaw: "Cadera (giro)", tobillo_pitch: "Tobillo (frontal)", tobillo_roll: "Tobillo (lateral)",
 };
 const NOMBRE_RECOMPENSA = {
   vivo: "Sigue en pie", altura: "Conserva la altura", postura: "Conserva la postura", quieto: "Torso quieto",
@@ -253,12 +253,7 @@ function mostrar(i) {
   inc.className = f.inclinacion > 20 ? "alerta" : "";
   $("v-velocidad").textContent = `${f.velocidad.toFixed(2)} m/s`;
   $("v-pies").textContent = [f.pies[0] && "izquierdo", f.pies[1] && "derecho"].filter(Boolean).join(" y ") || "ninguno";
-  const [vx, vy, alt, lado] = f.comando;
-  const orden = [];
-  if (vx || vy) orden.push(`ir a ${Math.hypot(vx, vy).toFixed(2)} m/s`);
-  if (alt !== 1) orden.push(`altura ${(alt * 100).toFixed(0)} %`);
-  if (lado) orden.push(`pie ${lado > 0 ? "izquierdo" : "derecho"}`);
-  $("v-comando").textContent = orden.join(" · ") || "quedarse de pie";
+  $("v-comando").textContent = f.orden;
   $("v-distancia").textContent = `${f.distancia.toFixed(2)} m`;
   $("v-piso").textContent = planeta.tema().terrenos[f.piso] || f.piso.replace("_", " ");
   $("v-r").textContent = fmt(f.recompensa, 2);
