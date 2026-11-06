@@ -2,7 +2,7 @@ id: exp-023
 titulo: Barro blando
 pregunta: ¿Cruza barro blando?
 agrega: Viscosidad y hundimiento leve
-estado: pendiente
+estado: activo
 criterio: Cruza 5 m en ≥ 75 %
 tarea: marcha
 robot: robots/bipedo-v1.xml

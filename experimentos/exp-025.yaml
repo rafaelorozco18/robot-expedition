@@ -6,7 +6,7 @@ estado: pendiente
 criterio: Cruza 5 m en ≥ 75 %
 tarea: marcha
 robot: robots/bipedo-v1.xml
-parte_de: exp-024
+parte_de: exp-022
 ambiente:
   altura_minima: 0.72
   inclinacion_maxima: 45
