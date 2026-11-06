@@ -5,7 +5,7 @@ agrega: Marcha lateral
 estado: pendiente
 criterio: 2 m sin caer en ≥ 80 %
 tarea: marcha
-parte_de: exp-011
+parte_de: exp-010
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
