@@ -26,6 +26,9 @@ const NOMBRE_MOTOR = {
 const NOMBRE_RECOMPENSA = {
   vivo: "Sigue en pie", altura: "Conserva la altura", postura: "Conserva la postura", quieto: "Torso quieto",
   esfuerzo: "Costo de torque", suavidad: "Costo de movimientos bruscos", caida: "Caída",
+  peso: "Peso sobre el pie ordenado", levantar: "Levanta el pie", apoyo: "Pie de apoyo firme",
+  velocidad: "Sigue la velocidad", erguido: "Torso erguido", rumbo: "Conserva el rumbo",
+  reloj: "Alterna las piernas", paso: "Despega el pie", giro: "Evita giros bruscos",
 };
 
 const estado = {
@@ -141,12 +144,13 @@ function construirSelector() {
   cont.innerHTML = "";
   estado.catalogo.forEach((e, n) => {
     const b = document.createElement("button");
-    b.className = `chip-exp ${e.estado}`;
+    b.className = `chip-exp ${e.estado} ${e.aprobado ? "aprobado" : e.entrenado ? "fallido" : ""}`;
     b.setAttribute("aria-pressed", e.id === estado.exp);
-    b.innerHTML = `<small>Exp ${n + 1}</small>${e.titulo}${e.aprobado ? " ✓" : ""}`;
+    b.innerHTML = `<small>Exp ${n + 1}</small>${e.titulo}${e.aprobado ? " ✓" : e.entrenado ? " ✗" : ""}`;
     b.title = e.estado === "pendiente" ? `Pendiente: ${e.pregunta}` : e.pregunta;
     b.onclick = () => abrirExperimento(e.id);
     cont.append(b);
+    if (e.id === estado.exp) requestAnimationFrame(() => b.scrollIntoView({ inline: "center", block: "nearest" }));
   });
 }
 
@@ -231,6 +235,13 @@ function mostrar(i) {
   inc.className = f.inclinacion > 20 ? "alerta" : "";
   $("v-velocidad").textContent = `${f.velocidad.toFixed(2)} m/s`;
   $("v-pies").textContent = [f.pies[0] && "izquierdo", f.pies[1] && "derecho"].filter(Boolean).join(" y ") || "ninguno";
+  const [vx, vy, alt, lado] = f.comando;
+  const orden = [];
+  if (vx || vy) orden.push(`ir a ${Math.hypot(vx, vy).toFixed(2)} m/s`);
+  if (alt !== 1) orden.push(`altura ${(alt * 100).toFixed(0)} %`);
+  if (lado) orden.push(`pie ${lado > 0 ? "izquierdo" : "derecho"}`);
+  $("v-comando").textContent = orden.join(" · ") || "quedarse de pie";
+  $("v-distancia").textContent = `${f.distancia.toFixed(2)} m`;
   $("v-r").textContent = fmt(f.recompensa, 2);
   $("v-rt").textContent = fmt(f.total, 1);
   $("desglose").innerHTML = Object.entries(f.desglose).map(([k, v]) =>
@@ -250,8 +261,8 @@ function mostrarResultado() {
   const r = estado.episodio.resumen;
   const el = $("resultado");
   el.className = `resultado ${r.exito ? "exito" : "fracaso"}`;
-  el.innerHTML = `<small>${nombreVersion()}</small><b>${r.exito ? "Se mantuvo de pie" : "Cayó"}</b>
-    ${r.exito ? `${r.segundos.toFixed(0)} s` : `a los ${r.segundos.toFixed(1)} s: ${r.motivo}`}<br>
+  el.innerHTML = `<small>${nombreVersion()}</small><b>${r.exito ? r.titulo_exito : "No lo logró"}</b>
+    ${r.exito ? `${r.segundos.toFixed(0)} s` : `a los ${r.segundos.toFixed(1)} s: ${r.motivo}`}${r.detalle ? `<br>${r.detalle}` : ""}<br>
     inclinación máxima ${r.inclinacion_max.toFixed(1)}° · energía ${r.energia_j.toFixed(0)} J`;
   el.hidden = false;
 }
@@ -299,6 +310,10 @@ async function abrirExperimento(id) {
   segmentado("planeta", Object.keys(estado.mundo.gravedades), (v) => `${TEMAS[v].nombre} · ${estado.mundo.gravedades[v]}`);
   segmentado("perturbacion", estado.mundo.perturbaciones, (v) => ETIQUETA_PERTURBACION[v] || v);
   await progreso.cargar(id);
+  const reg = Object.entries(estado.mundo.regresion || {});
+  $("seccion-regresion").hidden = reg.length < 2;
+  $("regresion").innerHTML = reg.map(([k, v]) => `<div class="reg-fila"><span>${estado.mundo.titulos[k]}</span>
+    <span class="m-barra"><i style="left:0;width:${v * 100}%;background:var(--verde)"></i></span><b>${Math.round(v * 100)}%</b></div>`).join("");
   const ev = estado.mundo.evaluacion;
   $("pie").innerHTML = ev
     ? `Modelo <code>${id}</code> · campeón: semilla ${ev.campeon} · robot <code>${estado.mundo.robot.modelo}</code>`

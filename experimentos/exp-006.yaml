@@ -1,6 +1,20 @@
 id: exp-006
 titulo: Un solo pie
-pregunta: Apoyo mínimo
+pregunta: ¿Se sostiene sobre un solo pie?
 agrega: Apoyo mínimo
 estado: pendiente
 criterio: 3 s sobre un pie en ≥ 80 %
+tarea: un_pie
+parte_de: exp-005
+recompensa:
+  levantar: 1.0
+  apoyo: 0.5
+  peso: 1.5
+parametros:
+  segundos: 3
+aprobar:
+  tasa_exito: 0.8
+entrenamiento:
+  pasos: 3000000
+trampa: Dar saltitos con ambos pies en el aire. La racha exige el pie de apoyo en
+  contacto.

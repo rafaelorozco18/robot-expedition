@@ -1,6 +1,20 @@
 id: exp-005
 titulo: Pasar el peso
-pregunta: Equilibrio lateral
+pregunta: ¿Lleva su peso de un pie al otro?
 agrega: Equilibrio lateral
 estado: pendiente
 criterio: Alterna el peso entre pies en ≥ 90 %
+tarea: pasar_peso
+parte_de: exp-004
+recompensa:
+  peso: 2.0
+parametros:
+  cambio_s: 2.5
+  distancia_m: 0.06
+  tasa_acierto: 0.6
+aprobar:
+  tasa_exito: 0.9
+entrenamiento:
+  pasos: 2500000
+trampa: Inclinar el torso sin mover el centro de masa. Se mide el centro de masa del
+  cuerpo completo.

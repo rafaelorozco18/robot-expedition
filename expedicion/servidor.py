@@ -60,7 +60,9 @@ def mundo(exp):
             "gravedades": GRAVEDADES, "perturbaciones": PERTURBACIONES,
             "ambiente": exp["ambiente"], "recompensa": exp["recompensa"],
             "agentes": agentes(exp), "aprobar": exp["aprobar"],
-            "evaluacion": _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json")}
+            "evaluacion": _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json"),
+            "regresion": _archivo_json(X.carpeta_metricas(exp) / "regresion.json"),
+            "titulos": {e["id"]: e["titulo"] for e in X.listar()}}
 
 
 def agentes(exp):

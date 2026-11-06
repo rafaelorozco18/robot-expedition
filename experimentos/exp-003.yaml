@@ -1,6 +1,17 @@
 id: exp-003
 titulo: Empujón medio
-pregunta: Empujón de 0.4 m/s
+pregunta: ¿Resiste un empujón medio?
 agrega: Empujón de 0.4 m/s
 estado: pendiente
 criterio: Sigue de pie en ≥ 85 %
+parte_de: exp-002
+ambiente:
+  empujon_ms: 0.4
+  empujon_entrenando: 0.7
+aprobar:
+  tasa_exito: 0.85
+  perturbacion: empujon
+entrenamiento:
+  pasos: 1500000
+  parar_en: 0.93
+trampa: Separar mucho los pies o agacharse. La altura mínima y la postura lo limitan.

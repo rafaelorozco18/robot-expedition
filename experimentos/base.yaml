@@ -27,10 +27,11 @@ recompensa:
 
 entrenamiento:
   pasos: 2000000
-  entornos: 16
-  hilos: 2
+  procesos: 4
+  robots_por_proceso: 8
+  hilos: 1
   semillas: [0]
-  n_steps: 256
+  n_steps: 128
   batch_size: 2048
   n_epochs: 5
   learning_rate: 0.0003

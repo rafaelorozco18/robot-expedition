@@ -413,15 +413,15 @@ function construirPaisaje(tema, texRuido, semilla) {
     const d = Math.max(Math.abs(x), Math.abs(z));
     if (d < 6) return -3;              // hueco bajo el mapa jugable
     const dist = Math.hypot(x, z);
-    const k = suave(7, 30, d);
+    const k = suave(18, 45, d);
     let h = -0.02 + k * R.colinas * (fbm(x * 0.035 + 3, z * 0.035 - 7) - 0.45) * 2;
-    h += suave(6, 9, d) * (fbm(x * 0.4, z * 0.4, 3) - 0.5) * 0.12;   // granulado cercano
+    h += suave(6, 9, d) * (fbm(x * 0.4, z * 0.4, 3) - 0.5) * 0.03;   // granulado cercano
     for (const c of crateres) {
       const q = Math.hypot(x - c.x, z - c.z) / c.r;
       if (q < 1.8) {
         const cuenco = q < 1 ? -c.prof * (1 - q * q) : 0;
         const borde = c.borde * Math.exp(-(((q - 1) / 0.28) ** 2));
-        h += (cuenco + borde) * suave(7, 12, d);
+        h += (cuenco + borde) * suave(18, 24, d);
       }
     }
     const cresta = 1 - Math.abs(fbm(x * 0.009 + 11, z * 0.009 - 4, 5) * 2 - 1);
@@ -456,7 +456,7 @@ function construirPaisaje(tema, texRuido, semilla) {
   grupo.add(suelo);
 
   // rocas sueltas
-  const zonaLibre = (x, z) => Math.max(Math.abs(x), Math.abs(z)) < 7.5 || (x < -6 && x > -12 && z > 1 && z < 8);
+  const zonaLibre = (x, z) => (Math.abs(z) < 3 && x > 0 && x < 16) || Math.max(Math.abs(x), Math.abs(z)) < 7.5 || (x < -6 && x > -12 && z > 1 && z < 8);
   const geoRoca = new THREE.DodecahedronGeometry(1, 0);
   const colorRoca = new THREE.Color(tema.roca).lerp(new THREE.Color(tema.paisaje.base), 0.55);
   const rocas = new THREE.InstancedMesh(geoRoca, new THREE.MeshStandardMaterial({ color: colorRoca, roughness: 0.95, flatShading: true }), R.rocas);

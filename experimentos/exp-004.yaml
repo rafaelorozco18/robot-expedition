@@ -1,6 +1,23 @@
 id: exp-004
 titulo: Sentadilla
-pregunta: Orden de altura
+pregunta: ¿Controla su altura a la orden?
 agrega: Orden de altura
 estado: pendiente
 criterio: Baja a 80 % de su altura y sube, con error < 3 cm
+tarea: sentadilla
+parte_de: exp-003
+ambiente:
+  altura_minima: 0.7
+  inclinacion_maxima: 40
+recompensa:
+  altura: 2.0
+parametros:
+  cambio_s: 2.5
+  altura_baja: 0.8
+  error_m: 0.03
+aprobar:
+  tasa_exito: 0.9
+entrenamiento:
+  pasos: 2000000
+trampa: Quedarse a media altura para no fallar del todo. El error se mide en cada
+  orden, arriba y abajo.

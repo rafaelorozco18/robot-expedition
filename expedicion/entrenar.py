@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from .ambiente import BipedoEnv
+from .vectorizado import BloquesVecEnv
 from .experimentos import RAIZ, cargar, carpeta_metricas, carpeta_modelos
 
 URI_MLFLOW = f"sqlite:///{RAIZ / 'mlflow.db'}"
@@ -22,22 +23,10 @@ def git_commit():
         return "sin-commit"
 
 
-def _crear_entorno(exp, semilla):
-    def crear():
-        from gymnasium.wrappers import TransformReward
-        from stable_baselines3.common.monitor import Monitor
-        env = TransformReward(BipedoEnv(exp, entrenando=True), lambda r: r * exp["entrenamiento"]["escala_recompensa"])
-        env = Monitor(env, info_keywords=("exito",))
-        env.reset(seed=semilla)
-        return env
-    return crear
-
-
 def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
     import torch
     from stable_baselines3 import PPO
     from stable_baselines3.common.callbacks import BaseCallback
-    from stable_baselines3.common.vec_env import SubprocVecEnv
 
     p = exp["entrenamiento"]
     torch.set_num_threads(p["hilos"])
@@ -101,8 +90,12 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
             return not (lleno and self.num_timesteps >= p["pasos_minimos"]
                         and np.mean(self.duracion) >= p["parar_en"])
 
-    env = SubprocVecEnv([_crear_entorno(exp, semilla * 1000 + i) for i in range(p["entornos"])],
-                        start_method="fork")
+    def crear(i):
+        env = BipedoEnv(exp, entrenando=True)
+        env.reset(seed=semilla * 1000 + i)
+        return env
+
+    env = BloquesVecEnv(crear, p["procesos"], p["robots_por_proceso"], p["escala_recompensa"])
     ajustes = dict(n_steps=p["n_steps"], batch_size=p["batch_size"], n_epochs=p["n_epochs"],
                    learning_rate=p["learning_rate"], gamma=p["gamma"], gae_lambda=p["gae_lambda"],
                    clip_range=p["clip_range"])

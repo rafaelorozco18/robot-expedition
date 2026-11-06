@@ -1,85 +1,75 @@
 # Robot Expedition
 
-Proyecto final · MLOps Autonomous Lab. Entrenar un agente que se mueva por territorio hostil:
-controla su cuerpo (moverse, saltar, agarrar, gestionar batería) y enfrenta adversidades
-(arena, barro, hielo, grietas, rocas, clima y gravedad variables).
+Proyecto final de MLOps Autonomous Lab. Un robot con articulaciones aprende a controlar su cuerpo
+en mundos hostiles, subiendo la dificultad de a una cosa por experimento: primero sostenerse de pie,
+después caminar, cruzar terrenos difíciles y, al final, completar una misión.
 
-**Misión v0.1:** visitar la baliza 1, luego la baliza 2, y volver a la base antes de agotar la batería.
-Diseño completo del ambiente: [docs/ambiente-v0.1.md](docs/ambiente-v0.1.md).
+- Plan: [docs/plan-50-experimentos.md](docs/plan-50-experimentos.md)
+- Ficha de cada experimento: [docs/experimentos/](docs/experimentos/)
+- Contexto de trabajo: [CLAUDE.md](CLAUDE.md)
 
 ## Instalación
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt     # gymnasium, numpy, dvc, mlflow, pytest + este paquete
+pip install -r requirements.txt
 ```
+
+## Visor 3D
+
+```bash
+expedicion servir        # http://localhost:8765
+```
+
+El selector superior recorre los 50 experimentos. En cada uno se pueden ver las versiones del robot
+(sin entrenar, aleatorio, aprendiz y experto), la curva de aprendizaje con cualquier foto intermedia,
+las condiciones (planeta y perturbación), el torque de cada articulación y si el modelo olvidó pruebas
+anteriores. MuJoCo corre cada episodio en Python y el navegador solo lo dibuja. Three.js está incluido
+en `web/vendor/`, así que no requiere internet.
 
 ## CLI
 
 ```bash
-expedicion info                                   # espacios de observación y acción
-expedicion entrenar                               # Q-learning (lee params.yaml) + MLflow
-expedicion evaluar                                # métricas por agente → metrics/evaluacion.json
-expedicion progreso                               # evalúa cada checkpoint → metrics/progreso.json
-expedicion ver --agente experto --clima tormenta --gravedad luna    # episodio animado en la terminal
-expedicion transiciones --clima lluvia --gravedad marte --semilla 3 # tabla de transiciones
-expedicion mapa                                   # docs/mapa-v0.1.svg
-expedicion servir                                 # visor 3D en http://localhost:8765
+expedicion lista                           # experimentos y su estado
+expedicion info exp-001                    # espacios de observación y acción
+expedicion entrenar exp-001 --semilla 0    # una corrida con PPO
+expedicion evaluar exp-001                 # compara semillas y elige al campeón
+expedicion progreso exp-001                # prueba cada foto del entrenamiento
+expedicion regresion exp-001               # repite las pruebas anteriores
+expedicion ver exp-001 --planeta luna      # imprime un episodio en la terminal
+expedicion campana exp-002 exp-003         # corre, registra, documenta y versiona en cadena
 ```
 
-Opciones de `ver` / `transiciones`: `--agente {experto,aprendiz,codicioso,aleatorio}`,
-`--clima {despejado,lluvia,tormenta}`, `--gravedad {luna,marte,tierra}`,
-`--incidente {ninguno,corredor_bloqueado}`, `--semilla N`.
+## Cómo agregar un experimento
 
-Uso como ambiente Gymnasium:
-
-```python
-import gymnasium as gym, expedicion
-env = gym.make("RobotExpedition-v0", clima="tormenta", gravedad="marte")
-obs, info = env.reset(seed=0)
-obs, recompensa, terminated, truncated, info = env.step(env.action_space.sample())
-```
-
-## Visor 3D (Three.js)
-
-`expedicion servir` levanta un servidor local. Cada episodio lo corre el simulador de Python
-(`/api/episodio`) y el navegador solo lo dibuja: física ≠ decoración. El panel derecho muestra
-la versión del robot (experto, aprendiz, codicioso, aleatorio), las condiciones (clima, gravedad,
-incidente, semilla), las acciones con sus valores Q, la batería, la etapa y los sensores, y las
-adversidades del momento.
-
-**Planetas:** la gravedad elige el escenario: Marte (regolito rojizo, cielo color caramelo, Fobos y Deimos, tormentas de polvo), la Luna (cielo negro, estrellas, la Tierra en el cielo, cráteres) o la Tierra (pasto, árboles, lluvia). El mapa y la física son los mismos; solo cambia el aspecto (`web/planetas.js`).
-
-**Progreso del entrenamiento:** el panel incluye la curva de aprendizaje. Cada 1 200 episodios el entrenamiento
-guarda una foto de la tabla Q (`models/checkpoints/`) y la etapa `progreso` la evalúa sin exploración.
-Se puede hacer clic en cualquier punto para ver esa versión del robot en 3D, o usar «Recorrer el progreso»
-para ver 8 fotos seguidas, desde la que nunca entrenó hasta el experto. Three.js r160 está incluido en `web/vendor/`, así que no requiere internet.
+1. Edita `experimentos/exp-NNN.yaml`. Solo escribe lo que cambia frente a `experimentos/base.yaml`.
+2. Si hace falta una tarea nueva, agrégala en `expedicion/tareas.py`.
+3. Ejecuta `expedicion campana exp-NNN`.
 
 ## Versionado
 
 | Qué | Herramienta | Dónde |
 |---|---|---|
-| **Código** | git | rama `experimento-01`, tag `exp-01` |
-| **Pipeline** | DVC | `dvc.yaml` (etapas `escenarios → entrenar → evaluar` y `entrenar → progreso`) + `dvc.lock` (hashes de cada entrada y salida) |
-| **Dataset** | DVC | `data/escenarios.json` (180 escenarios de evaluación) y `data/trayectorias.jsonl` (720 episodios grabados), en el caché `.dvc/cache` |
-| **Experimento** | MLflow + `params.yaml` | experimento `robot-expedition` en `mlflow.db`: parámetros, curvas, métricas de evaluación y artefactos por run; `dvc exp show` / `dvc metrics show` comparan entre commits |
-| **Modelo** | DVC + MLflow Model Registry | `models/q_experto.npz`, `models/q_aprendiz.npz`, 26 checkpoints en `models/checkpoints/`, tarjeta `models/modelo.json`; registrado como `robot-expedition-qlearning` (pyfunc; la v2 corresponde al commit `c1f5815`) |
+| **Código** | git | Un commit y un tag por experimento: `exp-001`, `exp-002`… |
+| **Pipeline** | DVC | `dvc.yaml`, generado por `expedicion pipeline`, y `dvc.lock` con los hashes |
+| **Dataset** | DVC | `data/exp-NNN/`: escenarios de prueba congelados y trayectorias grabadas |
+| **Experimento** | MLflow | Un experimento por pregunta y una corrida por semilla, en `mlflow.db` |
+| **Modelo** | DVC y MLflow Model Registry | `models/exp-NNN/`, con el alias `campeon` en `robot-exp-NNN` |
+| **Robot** | git | `robots/bipedo-vN.xml`, con versión propia |
 
 ```bash
-dvc repro                    # reconstruye solo las etapas cuyo código, datos o parámetros cambiaron
-dvc metrics show             # métricas de la versión actual
-dvc params diff              # qué parámetros cambiaron respecto al último commit
 mlflow ui --backend-store-uri sqlite:///mlflow.db    # http://localhost:5000
+dvc metrics show
 ```
 
-**Nuevo experimento:** cambia `params.yaml`, ejecuta `dvc repro` y haz commit de `dvc.lock`,
-`metrics/` y `models/modelo.json`. Los binarios viven en el caché de DVC.
+DVC y MLflow son locales: para compartirlos con el equipo falta configurar un remoto (`dvc remote add`)
+y un servidor de MLflow.
 
-**Pendiente para compartir con el equipo:** configurar un remoto de DVC (`dvc remote add -d ...` y luego `dvc push`)
-y un servidor de MLflow compartido. Hoy ambos son locales: `mlflow.db` está en `.gitignore`.
+La navegación en rejilla con Q-learning, primera versión del proyecto, está archivada en el tag
+`legado-navegacion`.
 
 ## Pruebas
 
 ```bash
-pytest -q    # API de Gymnasium, choques, saltos, grietas, orden de balizas, anti-trampas, truncamiento
+pytest -q
 ```

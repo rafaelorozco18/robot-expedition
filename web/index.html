@@ -63,7 +63,7 @@
         <p class="nota">Se guarda una foto de la red a lo largo del entrenamiento. Cada foto se prueba sin
           exploración en <span id="n-eval">—</span> episodios fijos.</p>
         <div class="leyenda-graf">
-          <span><i style="background:#dd6a24"></i>Prueba sin exploración (aguanta de pie)</span>
+          <span><i style="background:#dd6a24"></i>Prueba sin exploración</span>
           <span><i style="background:#1f9fae"></i>Mientras entrena, con exploración</span>
         </div>
         <div class="grafico">
@@ -79,6 +79,12 @@
           <summary>Ver como tabla</summary>
           <table id="tabla-progreso"></table>
         </details>
+      </section>
+
+      <section id="seccion-regresion" hidden>
+        <h2>¿Olvidó lo anterior?</h2>
+        <p class="nota">Este modelo repite las pruebas de los experimentos previos.</p>
+        <div class="regresion" id="regresion"></div>
       </section>
 
       <section>
@@ -114,6 +120,8 @@
           <div><dt>Inclinación</dt><dd id="v-inclinacion">—</dd></div>
           <div><dt>Velocidad del torso</dt><dd id="v-velocidad">—</dd></div>
           <div><dt>Pies apoyados</dt><dd id="v-pies">—</dd></div>
+          <div><dt>Comando</dt><dd id="v-comando">—</dd></div>
+          <div><dt>Distancia</dt><dd id="v-distancia">—</dd></div>
         </dl>
       </section>
 

@@ -1,6 +1,22 @@
 id: exp-008
 titulo: Paso de recuperación
-pregunta: Empujón de 0.8 m/s
+pregunta: ¿Da un paso para no caer ante un empujón fuerte?
 agrega: Empujón de 0.8 m/s
 estado: pendiente
 criterio: Da un paso y no cae en ≥ 80 %
+tarea: de_pie
+parte_de: exp-007
+ambiente:
+  empujon_ms: 0.8
+  empujon_entrenando: 0.8
+  altura_minima: 0.78
+  inclinacion_maxima: 40
+recompensa:
+  postura: 0.2
+aprobar:
+  tasa_exito: 0.8
+  perturbacion: empujon
+entrenamiento:
+  pasos: 3000000
+  parar_en: 0.9
+trampa: Agacharse antes del empujón. La altura mínima sigue activa.
