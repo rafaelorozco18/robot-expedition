@@ -5,8 +5,8 @@ agrega: Piso blando con poco empuje
 estado: pendiente
 criterio: Cruza 5 m en ≥ 80 %
 tarea: marcha
-robot: robots/bipedo-v2.xml
-parte_de: exp-021
+robot: robots/bipedo-v1.xml
+parte_de: exp-010
 ambiente:
   altura_minima: 0.72
   inclinacion_maxima: 45
@@ -38,7 +38,8 @@ pisos:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
+  reintentos: 0
 trampa: 'Detenerse antes de la arena: solo cuenta cruzarla.'
 pendiente: El piso se aproxima con fuerzas sobre los pies, sin deformación real del
   suelo.

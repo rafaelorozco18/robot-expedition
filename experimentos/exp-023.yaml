@@ -5,7 +5,7 @@ agrega: Viscosidad y hundimiento leve
 estado: pendiente
 criterio: Cruza 5 m en ≥ 75 %
 tarea: marcha
-robot: robots/bipedo-v2.xml
+robot: robots/bipedo-v1.xml
 parte_de: exp-022
 ambiente:
   altura_minima: 0.72
@@ -38,7 +38,8 @@ pisos:
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
+  reintentos: 0
 trampa: 'Detenerse antes del barro: solo cuenta cruzarlo.'
 pendiente: El piso se aproxima con fuerzas sobre los pies, sin deformación real del
   suelo.

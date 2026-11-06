@@ -5,7 +5,7 @@ agrega: Apoyo que se desplaza
 estado: pendiente
 criterio: Cruza 5 m en ≥ 75 %
 tarea: marcha
-robot: robots/bipedo-v2.xml
+robot: robots/bipedo-v1.xml
 parte_de: exp-024
 ambiente:
   altura_minima: 0.72
@@ -38,7 +38,8 @@ pisos:
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
+  reintentos: 0
 trampa: 'Rigidizar las piernas: las sacudidas exigen corregir el equilibrio.'
 pendiente: El piso se aproxima con fuerzas sobre los pies, sin deformación real del
   suelo.

@@ -318,7 +318,8 @@ async function abrirExperimento(id) {
     $("resultado").hidden = true;
     return;
   }
-  raizRobot.visible = true;
+  estado.episodio = null;
+  raizRobot.visible = false;
   estado.mundo = await (await fetch(`/api/exp/${id}/mundo`)).json();
   if (!estado.mundo.agentes.find((a) => a.id === estado.agente)?.disponible) estado.agente = "sin_entrenar";
   construirRobot(estado.mundo.robot);
@@ -345,6 +346,7 @@ async function lanzar() {
   const datos = await resp.json();
   if (!resp.ok) { alert(datos.error); return; }
   estado.episodio = datos;
+  raizRobot.visible = true;
   dibujarTramos(datos.resumen.tramos || []);
   estado.i = 0; estado.tiempo = 0; estado.play = true;
   $("barra").max = datos.cuadros.length - 1;

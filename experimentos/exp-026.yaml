@@ -5,7 +5,7 @@ agrega: Fricción baja y variable
 estado: pendiente
 criterio: Cruza 5 m en ≥ 70 %
 tarea: marcha
-robot: robots/bipedo-v2.xml
+robot: robots/bipedo-v1.xml
 parte_de: exp-025
 ambiente:
   altura_minima: 0.72
@@ -38,7 +38,8 @@ pisos:
 aprobar:
   tasa_exito: 0.7
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
+  reintentos: 0
 trampa: 'Frenar en el borde: solo cuenta cruzarlo.'
 pendiente: El piso se aproxima con fuerzas sobre los pies, sin deformación real del
   suelo.

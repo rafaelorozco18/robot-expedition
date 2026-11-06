@@ -2,7 +2,7 @@ id: exp-008
 titulo: Paso de recuperación
 pregunta: ¿Da un paso para no caer ante un empujón fuerte?
 agrega: Empujón de 0.8 m/s
-estado: pendiente
+estado: activo
 criterio: Da un paso y no cae en ≥ 80 %
 tarea: de_pie
 parte_de: exp-007
