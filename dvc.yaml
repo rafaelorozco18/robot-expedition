@@ -172,7 +172,6 @@ stages:
     - experimentos/exp-004.yaml
     - experimentos/base.yaml
     - robots/bipedo-v1.xml
-    - metrics/exp-001/evaluacion.json
     outs:
     - models/exp-004/semilla-0
   evaluar-exp-004:
@@ -219,7 +218,7 @@ stages:
     - experimentos/exp-005.yaml
     - experimentos/base.yaml
     - robots/bipedo-v1.xml
-    - metrics/exp-004/evaluacion.json
+    - metrics/exp-003/evaluacion.json
     outs:
     - models/exp-005/semilla-0
   evaluar-exp-005:
@@ -266,7 +265,7 @@ stages:
     - experimentos/exp-006.yaml
     - experimentos/base.yaml
     - robots/bipedo-v1.xml
-    - metrics/exp-005/evaluacion.json
+    - metrics/exp-009/evaluacion.json
     outs:
     - models/exp-006/semilla-0
   evaluar-exp-006:
@@ -360,7 +359,7 @@ stages:
     - experimentos/exp-008.yaml
     - experimentos/base.yaml
     - robots/bipedo-v1.xml
-    - metrics/exp-007/evaluacion.json
+    - metrics/exp-010/evaluacion.json
     outs:
     - models/exp-008/semilla-0
   evaluar-exp-008:

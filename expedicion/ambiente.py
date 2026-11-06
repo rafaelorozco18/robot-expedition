@@ -56,6 +56,11 @@ class BipedoEnv(gym.Env):
         self.id_piso = m.geom("piso").id
         self.ids_pies = [m.geom("pie_i").id, m.geom("pie_d").id]
 
+        self.adversidad = exp.get("adversidad", {})
+        self.pendiente = np.radians(exp.get("pendiente_grados", 0.0))
+        self.gain_base = m.actuator_gainprm[:, 0].copy()
+        self.bias_base = m.actuator_biasprm[:, :3].copy()
+        self.fuerza_base = m.actuator_forcerange.copy()
         self.ids_cuerpo_pies = [m.body("pie_i").id, m.body("pie_d").id]
         self.conf_pisos = exp.get("pisos")
         if self.conf_pisos:
@@ -141,7 +146,9 @@ class BipedoEnv(gym.Env):
         self.planeta = options.get("planeta") or PLANETAS[self.np_random.integers(len(PLANETAS))]
         rango_g = self.exp.get("parametros", {}).get("gravedad_rango")
         self.g = float(self.np_random.uniform(*rango_g)) if rango_g and self.entrenando else GRAVEDADES[self.planeta]
-        self.model.opt.gravity[2] = -self.g
+        # Una rampa equivale a inclinar la gravedad respecto del piso.
+        self.model.opt.gravity[0] = -self.g * np.sin(self.pendiente)
+        self.model.opt.gravity[2] = -self.g * np.cos(self.pendiente)
 
         ruido = self.exp["ambiente"]["ruido_inicial"]
         self.data.ctrl[:] = self.postura_inicial
@@ -167,6 +174,7 @@ class BipedoEnv(gym.Env):
         self.pie_previo = [self.posicion_pie(0).copy(), self.posicion_pie(1).copy()]
         self.rumbo_objetivo = 0.0
         self.destino = None
+        self._iniciar_adversidad()
         self.tarea.iniciar(self)
         self.tarea.actualizar(self)
         return self._observar(), self._info()
@@ -177,7 +185,14 @@ class BipedoEnv(gym.Env):
         self.empujado = self.pasos == self.paso_empujon
         if self.empujado:
             self.data.qvel[:3] += self.direccion_empujon * self.exp["ambiente"]["empujon_ms"]
-        self.data.ctrl[:] = self.postura_inicial + accion * self.control["rango"]
+        if self.retardo:
+            self.cola_acciones.append(accion)
+            accion_real = self.cola_acciones.pop(0) if len(self.cola_acciones) > self.retardo else np.zeros(self.model.nu)
+        else:
+            accion_real = accion
+        self.data.ctrl[:] = self.postura_inicial + accion_real * self.control["rango"]
+        if self.adversidad:
+            self._aplicar_viento()
         if self.tramos:
             self._aplicar_piso()
         mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
@@ -197,6 +212,41 @@ class BipedoEnv(gym.Env):
         if terminated or truncated:
             info["exito"] = bool(self.tarea.exito(self, truncated))
         return self._observar(), float(recompensa), terminated, truncated, info
+
+    def _iniciar_adversidad(self):
+        a, m = self.adversidad, self.model
+        self.data.xfrc_applied[:] = 0.0
+        self.cola_acciones = []
+        self.retardo = 0
+        if "retardo_ms" in a:
+            self.retardo = int(self.np_random.integers(a["retardo_ms"][0], a["retardo_ms"][1] + 1) / (self.dt * 1000))
+        self.viento = np.zeros(3)
+        if "viento_n" in a:
+            self.viento[1] = self.np_random.uniform(*a["viento_n"]) * self.np_random.choice([-1.0, 1.0])
+        self.rafaga_hasta = -1
+        self.rafaga = np.zeros(3)
+        m.actuator_gainprm[:, 0] = self.gain_base
+        m.actuator_biasprm[:, :3] = self.bias_base
+        m.actuator_forcerange[:] = self.fuerza_base
+        self.motor_debil = None
+        if "motor_debil" in a:
+            j = int(self.np_random.integers(m.nu))
+            self.motor_debil = self.nombres_motor[j]
+            f = a["motor_debil"]
+            m.actuator_gainprm[j, 0] *= f
+            m.actuator_biasprm[j, :3] *= f
+            m.actuator_forcerange[j] *= f
+
+    def _aplicar_viento(self):
+        a = self.adversidad
+        fuerza = self.viento.copy()
+        if "rafaga_n" in a:
+            if self.pasos > self.rafaga_hasta and self.np_random.random() < a.get("prob_rafaga", 0.01):
+                self.rafaga_hasta = self.pasos + int(0.5 / self.dt)
+                self.rafaga = np.array([0.0, self.np_random.uniform(*a["rafaga_n"]) * self.np_random.choice([-1.0, 1.0]), 0.0])
+            if self.pasos <= self.rafaga_hasta:
+                fuerza = fuerza + self.rafaga
+        self.data.xfrc_applied[self.id_torso, :3] = fuerza
 
     def _sortear_tramos(self):
         conf = self.conf_pisos
@@ -239,8 +289,9 @@ class BipedoEnv(gym.Env):
         d = self.data
         izq, der, _ = self.contactos()
         reloj = [np.sin(self.fase()), np.cos(self.fase())] if self.tarea.usa_reloj else [0.0, 0.0]
+        ruido = self.adversidad.get("ruido_obs")
         rot = d.xmat[self.id_torso].reshape(3, 3)
-        return np.clip(np.concatenate([
+        vector = np.concatenate([
             [self.altura_torso() - self.altura_pie],
             rot[2], rot.T @ [np.cos(self.rumbo_objetivo), np.sin(self.rumbo_objetivo), 0.0],
             rot @ d.qvel[:3], d.qvel[3:6] * 0.25,
@@ -250,7 +301,10 @@ class BipedoEnv(gym.Env):
             [float(izq), float(der)],
             [self.g / 9.81],
             self.comando, reloj,
-        ]), -10, 10).astype(np.float32)
+        ])
+        if ruido:
+            vector[:13 + 2 * self.model.nu] += self.np_random.normal(0.0, ruido, 13 + 2 * self.model.nu)
+        return np.clip(vector, -10, 10).astype(np.float32)
 
     def _info(self, desglose=None):
         return {"pasos": self.pasos, "desglose": desglose or {}, "planeta": self.planeta}

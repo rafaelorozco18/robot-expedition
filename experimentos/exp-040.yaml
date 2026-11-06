@@ -1,6 +1,40 @@
 id: exp-040
 titulo: Retardo de control
-pregunta: 20 a 60 ms de demora
+pregunta: ¿Camina cuando sus órdenes llegan tarde?
 agrega: 20 a 60 ms de demora
 estado: pendiente
-criterio: Pierde < 10 % de éxito
+criterio: 10 m en ≥ 70 %, con 20 a 60 ms de demora
+tarea: marcha
+ambiente:
+  altura_minima: 0.72
+  inclinacion_maxima: 45
+  duracion_s: 22
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 0.3
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+parametros:
+  vx:
+  - 0.5
+  - 0.6
+  distancia_m: 10
+  periodo_s: 0.8
+entrenamiento:
+  pasos: 3000000
+  reintentos: 0
+parte_de: exp-039
+adversidad:
+  retardo_ms:
+  - 20
+  - 60
+aprobar:
+  tasa_exito: 0.7
+trampa: 'Moverse más lento para tolerar la demora: la velocidad sigue ordenada.'

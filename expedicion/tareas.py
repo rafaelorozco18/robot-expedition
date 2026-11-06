@@ -297,6 +297,43 @@ class IrAPunto(Marcha):
         return f"terminó a {np.linalg.norm(env.destino - env.data.qpos[:2]):.2f} m del destino"
 
 
+class Salto(Tarea):
+    """Despega ambos pies y aterriza de pie."""
+    titulo_exito = "Saltó y aterrizó de pie"
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        self.aire = self.mejor = 0
+
+    def fin(self, env):
+        a = env.exp["ambiente"]
+        if env.toca_piso_con_cuerpo():
+            return "tocó el piso con el cuerpo"
+        if env.inclinacion_grados() > a["inclinacion_maxima"]:
+            return "se inclinó demasiado"
+        return None
+
+    def recompensa(self, env, accion, previa):
+        d = self.comunes(env, accion, previa)
+        izq, der, _ = env.contactos()
+        self.aire = self.aire + 1 if not (izq or der) else 0
+        self.mejor = max(self.mejor, self.aire)
+        alto = max(0.0, min(env.posicion_pie(0)[2], env.posicion_pie(1)[2]) - 0.04)
+        d["salto"] = self.p["salto"] * min(1.0, alto / 0.1)
+        d["impulso"] = self.p["impulso"] * max(0.0, float(env.data.qvel[2]))
+        d["erguido"] = self.p["erguido"] * env.arriba_del_torso()[2] ** 4
+        return d
+
+    def exito(self, env, truncado):
+        return truncado and self.mejor * env.dt >= self.t["aire_s"] and env.altura_torso() > 0.8 * env.altura_pie
+
+    def resumen(self, env):
+        return f"{self.mejor * env.dt:.2f} s en el aire"
+
+    def orden(self, env):
+        return "saltar"
+
+
 class Levantarse(Tarea):
     """Empieza acostado y debe llegar a la postura de pie."""
     titulo_exito = "Se levantó"
@@ -304,6 +341,11 @@ class Levantarse(Tarea):
     def iniciar(self, env):
         super().iniciar(env)
         self.mejor = 0
+        env.data.qpos[2] = 0.2
+        env.data.qpos[3:7] = [0.7071, 0.0, 0.7071, 0.0]  # boca abajo
+        env.data.qvel[:] = 0.0
+        import mujoco
+        mujoco.mj_forward(env.model, env.data)
 
     def fin(self, env):
         return None
@@ -321,4 +363,4 @@ class Levantarse(Tarea):
 
 
 TAREAS = {"de_pie": DePie, "sentadilla": Sentadilla, "pasar_peso": PasarPeso, "un_pie": UnPie,
-          "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto}
+          "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto, "salto": Salto}

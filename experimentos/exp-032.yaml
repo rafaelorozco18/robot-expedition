@@ -1,6 +1,37 @@
 id: exp-032
 titulo: Pendiente fuerte
-pregunta: Hasta 15°
+pregunta: ¿Sube una pendiente fuerte?
 agrega: Hasta 15°
 estado: pendiente
-criterio: Sube y baja en ≥ 70 %
+criterio: Sube 10 m con 12° en ≥ 70 %
+tarea: marcha
+ambiente:
+  altura_minima: 0.72
+  inclinacion_maxima: 45
+  duracion_s: 22
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 0.3
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+parametros:
+  vx:
+  - 0.5
+  - 0.6
+  distancia_m: 10
+  periodo_s: 0.8
+entrenamiento:
+  pasos: 4000000
+  reintentos: 0
+parte_de: exp-031
+pendiente_grados: 12
+aprobar:
+  tasa_exito: 0.7
+pendiente: Se redujo de 15° a 12° y solo cubre la subida.

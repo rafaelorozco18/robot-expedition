@@ -326,3 +326,48 @@ button.grande { width: 100%; padding: 11px; font-size: 15px; display: flex; alig
 .etapa.logrado { border-left-color: var(--verde); }
 .etapa small { color: var(--apagado); font-size: 12px; }
 .etapa b { font-size: 18px; }
+
+/* ---------------------------------------------------------------- personaje */
+button.secundario { margin-top: 6px; background: var(--panel-2); color: var(--tinta); font-weight: 600; }
+.estrellas { font-style: normal; color: var(--amarillo); letter-spacing: 1px; font-size: 13px; white-space: nowrap; }
+.etapa .estrellas { font-size: 18px; margin-top: 2px; }
+.hito button { align-items: flex-start; }
+.hito .estrellas { margin-left: auto; }
+.h-num { background: var(--c); color: #06121b; }
+.hito.logrado .h-num { background: var(--c); }
+.etapa.entra { animation: entrada .35s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes entrada { from { transform: translateY(14px) scale(.94); opacity: 0; } }
+
+.niveles {
+  position: absolute; top: 20px; right: 24px;
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px 10px; border-radius: 99px;
+  background: #0f1c29cc; pointer-events: none;
+}
+.niveles span {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 12px; font-weight: 800;
+  background: var(--panel-2); color: var(--apagado); border: 2px solid var(--borde);
+}
+.niveles span.pasado { background: var(--c); color: #06121b; border-color: var(--c); }
+.niveles span.actual { border-color: var(--c); color: var(--tinta); transform: scale(1.18); }
+.niveles i { width: 12px; height: 2px; background: var(--borde); }
+
+.burbuja {
+  position: absolute; left: 0; top: 0; pointer-events: none;
+  padding: 6px 12px; border-radius: 14px;
+  background: #fffdf6; color: #14202b; font-weight: 800; font-size: 15px; white-space: nowrap;
+  box-shadow: 0 6px 18px #0006;
+}
+.burbuja::after {
+  content: ""; position: absolute; left: 50%; bottom: -7px; margin-left: -7px;
+  border: 7px solid transparent; border-top-color: #fffdf6; border-bottom: 0;
+}
+.etiqueta-carrera {
+  position: absolute; left: 0; top: 0; pointer-events: none;
+  padding: 2px 8px; border-radius: 99px;
+  background: var(--c); color: #06121b; font-size: 11px; font-weight: 800; white-space: nowrap;
+}
+#btn-sonido.apagado { opacity: .45; }
+
+[hidden] { display: none !important; }

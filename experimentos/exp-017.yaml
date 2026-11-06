@@ -1,6 +1,31 @@
 id: exp-017
 titulo: Levantarse
-pregunta: Empieza en el suelo
+pregunta: ¿Se levanta desde el suelo?
 agrega: Empieza en el suelo
 estado: pendiente
 criterio: Se pone de pie en ≥ 70 %
+tarea: levantarse
+parte_de: null
+ambiente:
+  duracion_s: 8
+  inclinacion_maxima: 180
+  altura_minima: 0.0
+recompensa:
+  vivo: 0.2
+  esfuerzo: 0.02
+  suavidad: 0.02
+  altura: 3.0
+  erguido: 2.0
+  caida: 0
+  postura: 0
+  quieto: 0
+parametros:
+  segundos: 1.5
+aprobar:
+  tasa_exito: 0.7
+entrenamiento:
+  pasos: 4000000
+  reintentos: 0
+control:
+  rango: 1.8
+trampa: 'Arrastrarse sin ponerse de pie: exige 1.5 s erguido.'

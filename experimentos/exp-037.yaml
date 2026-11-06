@@ -1,6 +1,34 @@
 id: exp-037
 titulo: Salto vertical
-pregunta: Separar ambos pies del piso
+pregunta: ¿Puede saltar y aterrizar de pie?
 agrega: Separar ambos pies del piso
 estado: pendiente
 criterio: Salta y aterriza de pie en ≥ 70 %
+tarea: salto
+parte_de: exp-001
+ambiente:
+  duracion_s: 6
+  inclinacion_maxima: 40
+  altura_minima: 0.5
+recompensa:
+  vivo: 0.5
+  esfuerzo: 0.02
+  suavidad: 0.02
+  salto: 4.0
+  impulso: 1.0
+  erguido: 0.5
+  caida: 30.0
+  postura: 0
+  altura: 0
+  quieto: 0
+parametros:
+  aire_s: 0.1
+aprobar:
+  tasa_exito: 0.7
+entrenamiento:
+  pasos: 3000000
+  reintentos: 0
+control:
+  rango: 1.0
+trampa: 'Quedarse en el aire no es posible; sí caer de lado tras el salto: debe terminar
+  de pie.'

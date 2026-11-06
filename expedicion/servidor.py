@@ -53,12 +53,12 @@ def robot(exp):
     for g in range(m.ngeom):
         if m.geom_bodyid[g] == 0:
             continue  # piso
-        geoms.append({"cuerpo": int(m.geom_bodyid[g]) - 1, "tipo": tipos[int(m.geom_type[g])],
+        geoms.append({"cuerpo": int(m.geom_bodyid[g]) - 1, "nombre": m.geom(g).name, "tipo": tipos[int(m.geom_type[g])],
                       "tam": [float(v) for v in m.geom_size[g]],
                       "pos": [float(v) for v in m.geom_pos[g]],
                       "quat": [float(v) for v in m.geom_quat[g]],
                       "rgba": [float(v) for v in m.geom_rgba[g]]})
-    return {"modelo": exp["robot"], "geoms": geoms, "masa": float(m.body_mass.sum()),
+    return {"modelo": exp["robot"], "geoms": geoms, "cuerpos": [m.body(b).name for b in range(1, m.nbody)], "masa": float(m.body_mass.sum()),
             "motores": [m.actuator(i).name for i in range(m.nu)],
             "torque_max": [float(v) for v in m.actuator_forcerange[:, 1]]}
 
@@ -67,6 +67,9 @@ def mundo(exp):
     return {"id": exp["id"], "titulo": exp["titulo"], "pregunta": exp["pregunta"], "robot": robot(exp),
             "gravedades": {p: GRAVEDADES[p] for p in PLANETAS_VISOR}, "perturbaciones": PERTURBACIONES,
             "ambiente": exp["ambiente"], "recompensa": exp["recompensa"],
+            "meta_m": exp.get("parametros", {}).get("distancia_m"),
+            "clima_visual": exp.get("clima_visual", "despejado"),
+            "pendiente_grados": exp.get("pendiente_grados", 0),
             "agentes": agentes(exp), "aprobar": exp["aprobar"],
             "evaluacion": _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json"),
             "regresion": _archivo_json(X.carpeta_metricas(exp) / "regresion.json"),
@@ -156,9 +159,25 @@ def crear_agente(exp, nombre, semilla):
     raise ValueError(f"Agente desconocido: {nombre}")
 
 
+def _version(exp):
+    """Cambia si el experimento se reentrena: invalida los episodios guardados."""
+    ruta = X.carpeta_metricas(exp) / "evaluacion.json"
+    return ruta.stat().st_mtime if ruta.exists() else 0
+
+
+@lru_cache(maxsize=256)
+def episodio(id_exp, agente, planeta, perturbacion, semilla, version):
+    exp = X.cargar(id_exp)
+    esc = {"planeta": planeta, "perturbacion": perturbacion, "semilla": semilla}
+    resumen, cuadros = correr_episodio(exp, crear_agente(exp, agente, semilla), esc, grabar=True)
+    return json.dumps({"resumen": resumen, "cuadros": cuadros}).encode()
+
+
 class Manejador(BaseHTTPRequestHandler):
     def _json(self, datos, codigo=200):
-        cuerpo = json.dumps(datos).encode()
+        self._bytes(json.dumps(datos).encode(), codigo)
+
+    def _bytes(self, cuerpo, codigo=200):
         self.send_response(codigo)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(cuerpo)))
@@ -186,9 +205,8 @@ class Manejador(BaseHTTPRequestHandler):
                    "semilla": int(q.get("semilla", 0))}
             if esc["planeta"] not in PLANETAS_VISOR or esc["perturbacion"] not in PERTURBACIONES:
                 raise ValueError("condición desconocida")
-            agente = crear_agente(exp, q.get("agente", "experto"), esc["semilla"])
-            resumen, cuadros = correr_episodio(exp, agente, esc, grabar=True)
-            return self._json({"resumen": resumen, "cuadros": cuadros})
+            return self._bytes(episodio(exp["id"], q.get("agente", "experto"), esc["planeta"],
+                                        esc["perturbacion"], esc["semilla"], _version(exp)))
         return self._json({"error": "ruta desconocida"}, 404)
 
     def do_GET(self):
