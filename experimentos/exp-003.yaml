@@ -2,7 +2,7 @@ id: exp-003
 titulo: Empujón medio
 pregunta: ¿Resiste un empujón medio?
 agrega: Empujón de 0.4 m/s
-estado: pendiente
+estado: activo
 criterio: Sigue de pie en ≥ 85 %
 parte_de: exp-002
 ambiente:

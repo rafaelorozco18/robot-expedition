@@ -8,6 +8,7 @@ import yaml
 
 from . import experimentos as X
 from .documentar import documentar
+from .informe import informe
 from .pipeline import generar
 from .registro import registrar
 
@@ -59,6 +60,7 @@ def correr(i):
     _repro([f"progreso-{i}", f"regresion-{i}"])
     _anotar(f"{i}: {registrar(exp)}")
     documentar(exp)
+    informe()
     _sh("git", "add", "-A")
     mensaje = (f"{i} {exp['titulo']}: {'aprobado' if ev['aprobado'] else 'no aprobado'}\n\n"
                f"{exp['pregunta']}\nCampeón: semilla {ev['campeon']}.\n\n"

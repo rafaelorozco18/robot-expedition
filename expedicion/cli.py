@@ -128,6 +128,11 @@ def cmd_campana(args):
     campana(args.exps, args.hasta, args.seguir)
 
 
+def cmd_informe(args):
+    from .informe import informe
+    print(informe())
+
+
 def cmd_servir(args):
     from .servidor import servir
     servir(args.puerto)
@@ -170,6 +175,7 @@ def main(argv=None):
     con_exp("regresion", cmd_regresion)
     con_exp("documentar", cmd_documentar)
     comando("pipeline", cmd_pipeline)
+    comando("informe", cmd_informe)
     s = comando("campana", cmd_campana)
     s.add_argument("exps", nargs="+")
     s.add_argument("--seguir", action="store_true", help="continúa aunque un experimento no apruebe")

@@ -9,3 +9,6 @@
 11:36 exp-002 semilla 0: aprobado=False
 11:45 exp-002 semilla 1: aprobado=False
 11:47 exp-002: robot-exp-002 v2
+11:47 exp-002 no aprobó: la campaña sigue
+12:02 exp-003 semilla 0: aprobado=False
+12:04 exp-003: robot-exp-003 v1
