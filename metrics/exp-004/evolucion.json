@@ -20,37 +20,37 @@
      "tasa": null
     },
     {
-     "agente": "foto:exp-001:250048",
-     "paso": 250048,
-     "origen": "exp-001",
+     "agente": "paso:300032",
+     "paso": 300032,
+     "origen": "exp-004",
      "exito": false,
      "segundos": 10.0,
      "distancia": 0.03,
      "avance": 0.95,
-     "texto": "Aguanta, pero no cumple la orden · error medio 8.5 cm",
-     "clip": [
-      0.0,
-      7.0
-     ],
-     "tasa": null
-    },
-    {
-     "agente": "paso:2002944",
-     "paso": 2002944,
-     "origen": "exp-004",
-     "exito": false,
-     "segundos": 10.0,
-     "distancia": -0.01,
-     "avance": 0.95,
-     "texto": "Aguanta, pero no cumple la orden · error medio 8.5 cm",
+     "texto": "Aguanta, pero no cumple la orden · error medio 8.0 cm",
      "clip": [
       0.0,
       7.0
      ],
      "tasa": 0.0
+    },
+    {
+     "agente": "paso:3002368",
+     "paso": 3002368,
+     "origen": "exp-004",
+     "exito": false,
+     "segundos": 1.74,
+     "distancia": 0.79,
+     "avance": 0.174,
+     "texto": "A los 1.7 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      1.74
+     ],
+     "tasa": 0.0
     }
    ],
-   "mejora": 0.582
+   "mejora": -0.194
   },
   "marte": {
    "semilla": 355781144,
@@ -63,7 +63,7 @@
      "segundos": 10.0,
      "distancia": -0.0,
      "avance": 0.95,
-     "texto": "Aguanta, pero no cumple la orden · error medio 8.5 cm",
+     "texto": "Aguanta, pero no cumple la orden · error medio 8.4 cm",
      "clip": [
       0.0,
       7.0
@@ -71,23 +71,23 @@
      "tasa": null
     },
     {
-     "agente": "paso:2002944",
-     "paso": 2002944,
+     "agente": "paso:3002368",
+     "paso": 3002368,
      "origen": "exp-004",
      "exito": false,
-     "segundos": 3.26,
-     "distancia": 0.21,
-     "avance": 0.326,
-     "texto": "A los 3.3 s: se inclinó demasiado",
+     "segundos": 10.0,
+     "distancia": 0.08,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · error medio 6.5 cm",
      "clip": [
       0.0,
-      3.26
+      7.0
      ],
      "tasa": 0.0
     }
    ],
-   "mejora": -0.624
+   "mejora": 0.0
   }
  },
- "recomendado": "tierra"
+ "recomendado": "marte"
 }

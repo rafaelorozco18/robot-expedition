@@ -68,6 +68,7 @@ def mundo(exp):
             "gravedades": {p: GRAVEDADES[p] for p in PLANETAS_VISOR}, "perturbaciones": PERTURBACIONES,
             "ambiente": exp["ambiente"], "recompensa": exp["recompensa"],
             "meta_m": exp.get("parametros", {}).get("distancia_m"),
+            "tarea": exp["tarea"],
             "clima_visual": exp.get("clima_visual", "despejado"),
             "pendiente_grados": exp.get("pendiente_grados", 0),
             "agentes": agentes(exp), "aprobar": exp["aprobar"],

@@ -297,6 +297,17 @@ function construirSelector() {
   const aprobados = estado.catalogo.filter((e) => e.aprobado).length;
   const intentados = estado.catalogo.filter((e) => e.entrenado).length;
   $("avance").innerHTML = `<b>${aprobados}</b> de ${estado.catalogo.length} experimentos aprobados · ${intentados} entrenados`;
+  const mapa = $("mapa");
+  mapa.innerHTML = "";
+  estado.catalogo.forEach((e, n) => {
+    const d = document.createElement("button");
+    d.className = `punto-mapa ${e.aprobado ? "aprobado" : e.entrenado ? "fallido" : ""}`;
+    d.title = `Exp ${n + 1}: ${e.titulo}`;
+    d.textContent = n + 1;
+    d.setAttribute("aria-pressed", e.id === estado.exp);
+    d.onclick = () => abrirExperimento(e.id);
+    mapa.append(d);
+  });
   estado.catalogo.forEach((e, n) => {
     const b = document.createElement("button");
     b.className = `chip-exp ${e.estado} ${e.aprobado ? "aprobado" : e.entrenado ? "fallido" : ""}`;
@@ -421,6 +432,26 @@ function mostrarResultado() {
   el.hidden = false;
 }
 
+// Guía de la orden: anillo a la altura pedida o resaltado del pie que debe cargar el peso.
+const guia = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.012, 10, 64), new THREE.MeshBasicMaterial({ color: 0x3fd0e0, transparent: true, opacity: 0.9 }));
+guia.rotation.x = Math.PI / 2;
+guia.visible = false;
+rampa.add(guia);
+
+function actualizarGuia(f) {
+  const tarea = estado.mundo?.tarea;
+  guia.visible = !estado.carrera && (tarea === "sentadilla" || tarea === "pasar_peso" || tarea === "un_pie");
+  if (!guia.visible) return;
+  if (tarea === "sentadilla") {
+    guia.scale.setScalar(1);
+    guia.position.set(f.cuerpos[0][0], f.altura_orden + 0.22, -f.cuerpos[0][1]);
+  } else {
+    const lado = Math.sign(f.pie_orden) || 1;
+    guia.scale.setScalar(0.5);
+    guia.position.set(f.cuerpos[0][0], 0.03, -(f.cuerpos[0][1] + lado * 0.09));
+  }
+}
+
 function aplicarPlaneta() {
   planeta.aplicar(estado.planeta, estado.mundo?.clima_visual || "despejado");
   sol.target.position.copy(previo);
@@ -450,7 +481,10 @@ async function abrirExperimento(id) {
 
   const pendiente = e.estado === "pendiente";
   $("contenido").hidden = pendiente;
+  $("pendiente").hidden = !pendiente;
+  $("pendiente-texto").textContent = `Este experimento agregará: ${e.agrega}. Se aprueba cuando: ${e.criterio}.`;
   if (pendiente) {
+    guia.visible = false;
     estado.play = false;
     estado.episodio = null;
     if (robot) robot.raiz.visible = false;
@@ -856,6 +890,7 @@ function bucle() {
     const A = c[estado.i], B = c[Math.min(estado.i + 1, c.length - 1)];
     const f = B.t > A.t ? Math.min(1, (estado.tiempo - A.t) / (B.t - A.t)) : 0;
     robot.posar(A, B, Math.max(0, f));
+    actualizarGuia(A);
     seguirRobot(dt);
     if (!$("burbuja").hidden) {
       colocarSobre($("burbuja"), robot.cabeza().add(new THREE.Vector3(0, 0.12, 0)));

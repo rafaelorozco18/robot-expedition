@@ -371,3 +371,14 @@ button.secundario { margin-top: 6px; background: var(--panel-2); color: var(--ti
 #btn-sonido.apagado { opacity: .45; }
 
 [hidden] { display: none !important; }
+
+.mapa { display: grid; grid-template-columns: repeat(25, 1fr); gap: 2px; margin-bottom: 8px; }
+.punto-mapa {
+  aspect-ratio: 1; padding: 0; border-radius: 4px; font-size: 7px; line-height: 1;
+  color: transparent; background: var(--panel-2); border: 1px solid var(--borde);
+}
+.punto-mapa.aprobado { background: var(--verde); border-color: var(--verde); }
+.punto-mapa.fallido { background: #6b2b33; border-color: var(--rojo); }
+.punto-mapa[aria-pressed=true] { outline: 2px solid var(--tinta); outline-offset: 1px; }
+.punto-mapa:hover { color: var(--tinta); }
+.tarjeta-pendiente p { color: var(--tinta-2); margin: 0; }
