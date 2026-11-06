@@ -1,0 +1,39 @@
+{
+ "semilla": 1,
+ "episodios_por_foto": 9,
+ "fotos": [
+  {
+   "paso": 0,
+   "episodios": 9,
+   "tasa_exito": 0.667,
+   "segundos_medios": 7.86,
+   "energia_media_j": 1.7,
+   "inclinacion_max_media": 12.6,
+   "exito_luna": 1.0,
+   "exito_marte": 1.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 250048,
+   "episodios": 9,
+   "tasa_exito": 1.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 4.8,
+   "inclinacion_max_media": 5.4,
+   "exito_luna": 1.0,
+   "exito_marte": 1.0,
+   "exito_tierra": 1.0
+  },
+  {
+   "paso": 500032,
+   "episodios": 9,
+   "tasa_exito": 1.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 12.2,
+   "inclinacion_max_media": 4.6,
+   "exito_luna": 1.0,
+   "exito_marte": 1.0,
+   "exito_tierra": 1.0
+  }
+ ]
+}

@@ -10,3 +10,6 @@ pendiente: Sin red, el servo ya sostiene al robot en la Luna y Marte; la dificul
   real está en la Tierra.
 entrenamiento:
   pasos: 3000000
+  semillas:
+  - 0
+  - 1

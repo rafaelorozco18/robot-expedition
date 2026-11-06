@@ -43,7 +43,7 @@ entrenamiento:
   red: [256, 256]
   fotos: 12
   aprendiz: 0.25
-  pasos_minimos: 200000   # desde aquí puede parar si aprueba dos fotos seguidas
+  pasos_minimos: 200000   # desde aquí puede parar si aprueba tres fotos seguidas
 
 evaluacion:
   semilla: 2026

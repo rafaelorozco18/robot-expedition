@@ -79,7 +79,7 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
 
             for planeta in exp["evaluacion"]["planetas"]:
                 exitos = [correr_episodio(exp, Actual(), {"planeta": planeta, "semilla": s,
-                          "perturbacion": exp["aprobar"]["perturbacion"]})[0]["exito"] for s in range(5)]
+                          "perturbacion": exp["aprobar"]["perturbacion"]})[0]["exito"] for s in range(100, 110)]
                 if np.mean(exitos) < exp["aprobar"]["tasa_exito"]:
                     return False
             return True
@@ -105,7 +105,7 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
                                            step=fila["paso"])
                 if self.num_timesteps >= p["pasos_minimos"]:
                     self.aprobadas = self.aprobadas + 1 if self._aprueba() else 0
-                    return self.aprobadas < 2
+                    return self.aprobadas < 3
             return True
 
     def crear(i):
