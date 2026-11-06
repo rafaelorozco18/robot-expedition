@@ -2,7 +2,7 @@ id: exp-006
 titulo: Un solo pie
 pregunta: ¿Se sostiene sobre un solo pie?
 agrega: Apoyo mínimo
-estado: pendiente
+estado: activo
 criterio: 3 s sobre un pie en ≥ 80 %
 tarea: un_pie
 parte_de: exp-005

@@ -1,0 +1,303 @@
+{
+ "semilla": 0,
+ "episodios_por_foto": 9,
+ "fotos": [
+  {
+   "paso": 0,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 73.5,
+   "inclinacion_max_media": 8.2,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 100032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.93,
+   "energia_media_j": 34.7,
+   "inclinacion_max_media": 12.2,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 200000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 35.1,
+   "inclinacion_max_media": 10.9,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 300032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 33.7,
+   "inclinacion_max_media": 7.9,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 400000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 38.0,
+   "inclinacion_max_media": 8.7,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 500032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 8.54,
+   "energia_media_j": 41.8,
+   "inclinacion_max_media": 13.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 600000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.59,
+   "energia_media_j": 56.6,
+   "inclinacion_max_media": 10.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 700032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 8.35,
+   "energia_media_j": 60.6,
+   "inclinacion_max_media": 17.3,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 800000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.42,
+   "energia_media_j": 67.8,
+   "inclinacion_max_media": 10.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 900032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 7.8,
+   "energia_media_j": 51.5,
+   "inclinacion_max_media": 16.3,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1000000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 59.2,
+   "inclinacion_max_media": 7.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1100032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 8.9,
+   "energia_media_j": 69.3,
+   "inclinacion_max_media": 13.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1200000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.4,
+   "energia_media_j": 93.4,
+   "inclinacion_max_media": 10.8,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1300032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.37,
+   "energia_media_j": 72.6,
+   "inclinacion_max_media": 10.6,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1400000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.43,
+   "energia_media_j": 70.9,
+   "inclinacion_max_media": 10.1,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1500032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 84.2,
+   "inclinacion_max_media": 6.9,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1600000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 56.4,
+   "inclinacion_max_media": 7.2,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1700032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 57.3,
+   "inclinacion_max_media": 7.8,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1800000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.36,
+   "energia_media_j": 56.5,
+   "inclinacion_max_media": 11.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1900032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 60.9,
+   "inclinacion_max_media": 7.7,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2000000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.52,
+   "energia_media_j": 50.8,
+   "inclinacion_max_media": 11.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2100032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.47,
+   "energia_media_j": 73.5,
+   "inclinacion_max_media": 11.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2200000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.84,
+   "energia_media_j": 76.5,
+   "inclinacion_max_media": 11.1,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2300032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.56,
+   "energia_media_j": 67.1,
+   "inclinacion_max_media": 11.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2400000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 7.94,
+   "energia_media_j": 84.7,
+   "inclinacion_max_media": 19.6,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2500032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.27,
+   "energia_media_j": 37.9,
+   "inclinacion_max_media": 11.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2502656,
+   "episodios": 9,
+   "tasa_exito": 0.111,
+   "segundos_medios": 9.29,
+   "energia_media_j": 31.6,
+   "inclinacion_max_media": 11.5,
+   "exito_luna": 0.333,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  }
+ ]
+}
