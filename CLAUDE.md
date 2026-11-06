@@ -62,10 +62,21 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-06)
+## Estado actual (2026-11-06, tras la jornada autónoma)
 
-- El usuario autorizó trabajar solo de 10:00 a 15:00 (cierre hasta 15:30): hacer todos los experimentos posibles.
-- `expedicion campana exp-NNN ...` entrena, evalúa, reintenta con otra semilla, registra, documenta, hace commit y tag.
-- Rama `exp-001-de-pie`. El avance real está en `metrics/campana.log` y `git tag`.
-- Claves aprendidas: escalar la recompensa (0.05) fue lo que permitió aprender; el i5-1235U rinde más
-  con 4 procesos que con 8; limitar BLAS a 1 hilo es obligatorio; parar solo con prueba sin exploración.
+- Rama `exp-001-de-pie`. Un commit y tag por experimento; resultados en `docs/resultados.md` y `metrics/campana.log`.
+- `expedicion campana exp-NNN ... --seguir --hasta HH:MM` entrena, evalúa, registra, documenta y versiona.
+- Los pisos usan el robot v1 y heredan del Exp 10; por eso se corrieron antes que 11 a 21.
+- Pendientes por orden de prioridad: reintentar 4 (recompensa ya corregida) y 5 (Luna 80 %), luego 2, 3, 6, 8, 11 y 23.
+  El Exp 11 necesita un criterio por etapas. El bloque de giro (18 a 21) está configurado y nunca se ha corrido.
+
+### Lecciones que no hay que volver a aprender
+
+- Escalar la recompensa (0.05) permitió aprender: sin eso la función de valor satura el optimizador.
+- El i5-1235U rinde más con 4 procesos que con 8. BLAS debe ir a 1 hilo (`expedicion/__init__.py`).
+- Evaluar siempre sin exploración: con ruido alto (`log_std_init` -1.5) el modelo depende del ruido; -2.2 ayuda en equilibrio.
+- La Luna es la condición más difícil en equilibrio y barro: casi todos los fallos son solo ahí.
+- Sentadilla: lejos de la meta la recompensa debe seguir dando pistas, o el robot se queda a media altura.
+- `pkill -f` coincide con el propio comando si el texto aparece en él: usarlo en una llamada aparte.
+- No matar una campaña antes de que escriba "aprobado" o "no aprobó": se pierde el cierre del experimento.
+- El directorio temporal y el navegador de Playwright pueden desaparecer entre sesiones.

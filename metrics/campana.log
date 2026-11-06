@@ -46,3 +46,6 @@
 14:11 exp-026 aprobado
 14:27 exp-027 semilla 0: aprobado=True
 14:29 exp-027: robot-exp-027 v1
+14:29 exp-027 aprobado
+14:44 exp-028 semilla 0: aprobado=False
+14:48 exp-028: robot-exp-028 v1

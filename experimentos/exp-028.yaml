@@ -2,7 +2,7 @@ id: exp-028
 titulo: Pista mixta
 pregunta: ¿Cruza pistas con orden y largo aleatorios?
 agrega: Pisos en orden y largo aleatorios
-estado: pendiente
+estado: activo
 criterio: Completa la pista en ≥ 60 %
 tarea: marcha
 robot: robots/bipedo-v1.xml
