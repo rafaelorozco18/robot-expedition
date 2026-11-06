@@ -17,5 +17,6 @@ aprobar:
 entrenamiento:
   pasos: 2000000
   reintentos: 0
+  log_std_init: -2.2
 trampa: Inclinar el torso sin mover el centro de masa. Se mide el centro de masa del
   cuerpo completo.

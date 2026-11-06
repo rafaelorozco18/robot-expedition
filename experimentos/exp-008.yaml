@@ -19,4 +19,5 @@ aprobar:
 entrenamiento:
   pasos: 2000000
   reintentos: 0
+  log_std_init: -2.2
 trampa: Agacharse antes del empujón. La altura mínima sigue activa.

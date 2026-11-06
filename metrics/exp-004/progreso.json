@@ -1,0 +1,248 @@
+{
+ "semilla": 0,
+ "episodios_por_foto": 9,
+ "fotos": [
+  {
+   "paso": 0,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 8.63,
+   "energia_media_j": 10.5,
+   "inclinacion_max_media": 11.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 100032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 5.0,
+   "inclinacion_max_media": 2.6,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 200000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.7,
+   "energia_media_j": 4.0,
+   "inclinacion_max_media": 6.7,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 300032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 18.1,
+   "inclinacion_max_media": 6.8,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 400000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.69,
+   "energia_media_j": 6.5,
+   "inclinacion_max_media": 11.1,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 500032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 8.3,
+   "inclinacion_max_media": 6.9,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 600000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 8.8,
+   "energia_media_j": 21.0,
+   "inclinacion_max_media": 23.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 700032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 30.3,
+   "inclinacion_max_media": 11.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 800000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.45,
+   "energia_media_j": 18.6,
+   "inclinacion_max_media": 12.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 900032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 80.8,
+   "inclinacion_max_media": 12.6,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1000000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 181.0,
+   "inclinacion_max_media": 9.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1100032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 54.1,
+   "inclinacion_max_media": 14.2,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1200000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.68,
+   "energia_media_j": 70.1,
+   "inclinacion_max_media": 22.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1300032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.04,
+   "energia_media_j": 125.3,
+   "inclinacion_max_media": 25.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1400000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 127.1,
+   "inclinacion_max_media": 18.6,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1500032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 101.8,
+   "inclinacion_max_media": 18.0,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1600000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 9.68,
+   "energia_media_j": 59.8,
+   "inclinacion_max_media": 28.5,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1700032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 79.5,
+   "inclinacion_max_media": 15.4,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1800000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 68.5,
+   "inclinacion_max_media": 12.7,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 1900032,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 48.6,
+   "inclinacion_max_media": 11.8,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2000000,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 128.6,
+   "inclinacion_max_media": 12.3,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  },
+  {
+   "paso": 2002944,
+   "episodios": 9,
+   "tasa_exito": 0.0,
+   "segundos_medios": 10.0,
+   "energia_media_j": 144.3,
+   "inclinacion_max_media": 12.3,
+   "exito_luna": 0.0,
+   "exito_marte": 0.0,
+   "exito_tierra": 0.0
+  }
+ ]
+}
