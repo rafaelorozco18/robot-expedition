@@ -2,7 +2,7 @@ id: exp-027
 titulo: Cambio de piso
 pregunta: ¿Cambia de piso sin perder el paso?
 agrega: Dos pisos seguidos en orden fijo
-estado: pendiente
+estado: activo
 criterio: Completa la pista en ≥ 70 %
 tarea: marcha
 robot: robots/bipedo-v1.xml
