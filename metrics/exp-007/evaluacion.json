@@ -1,0 +1,162 @@
+{
+  "experimento": "exp-007",
+  "campeon": 0,
+  "agentes": {
+    "sin_entrenar": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.133,
+        "segundos_medios": 3.56,
+        "energia_media_j": 2.2,
+        "inclinacion_max_media": 23.0
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 0.2,
+        "inclinacion_max_media": 0.6
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.4,
+        "segundos_medios": 3.58,
+        "energia_media_j": 0.6,
+        "inclinacion_max_media": 35.6
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 0.3,
+        "inclinacion_max_media": 0.5
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.4,
+        "segundos_medios": 3.95,
+        "energia_media_j": 1.4,
+        "inclinacion_max_media": 22.2
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 3.05,
+        "energia_media_j": 5.1,
+        "inclinacion_max_media": 40.8
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 2.81,
+        "energia_media_j": 5.4,
+        "inclinacion_max_media": 38.6
+      }
+    },
+    "aleatorio": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.5,
+        "energia_media_j": 477.1,
+        "inclinacion_max_media": 41.1
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.52,
+        "energia_media_j": 484.3,
+        "inclinacion_max_media": 41.2
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.52,
+        "energia_media_j": 475.2,
+        "inclinacion_max_media": 41.2
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.72,
+        "energia_media_j": 537.1,
+        "inclinacion_max_media": 40.8
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.47,
+        "energia_media_j": 463.9,
+        "inclinacion_max_media": 41.2
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.29,
+        "energia_media_j": 429.6,
+        "inclinacion_max_media": 41.0
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.0,
+        "segundos_medios": 1.46,
+        "energia_media_j": 472.6,
+        "inclinacion_max_media": 41.5
+      }
+    }
+  },
+  "semillas": {
+    "0": {
+      "global": {
+        "episodios": 60,
+        "tasa_exito": 0.95,
+        "segundos_medios": 3.97,
+        "energia_media_j": 186.6,
+        "inclinacion_max_media": 20.9
+      },
+      "luna.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 198.3,
+        "inclinacion_max_media": 17.9
+      },
+      "luna.empujon": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 210.8,
+        "inclinacion_max_media": 17.3
+      },
+      "marte.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 185.4,
+        "inclinacion_max_media": 20.8
+      },
+      "marte.empujon": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 194.9,
+        "inclinacion_max_media": 23.0
+      },
+      "tierra.ninguna": {
+        "episodios": 10,
+        "tasa_exito": 1.0,
+        "segundos_medios": 4.0,
+        "energia_media_j": 161.0,
+        "inclinacion_max_media": 20.5
+      },
+      "tierra.empujon": {
+        "episodios": 10,
+        "tasa_exito": 0.7,
+        "segundos_medios": 3.81,
+        "energia_media_j": 169.0,
+        "inclinacion_max_media": 25.9
+      }
+    }
+  },
+  "aprobado": true
+}

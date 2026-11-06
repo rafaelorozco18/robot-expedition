@@ -2,7 +2,7 @@ id: exp-007
 titulo: Un paso
 pregunta: ¿Puede dar un paso y recuperar la postura?
 agrega: Mover un pie y recuperar la postura
-estado: pendiente
+estado: activo
 criterio: Lo logra en ≥ 85 %
 tarea: marcha
 parte_de: exp-001
