@@ -475,7 +475,8 @@ async function abrirExperimento(id) {
   const sello = $("exp-sello");
   sello.hidden = false;
   sello.className = `sello ${e.aprobado ? "ok" : ""}`;
-  sello.textContent = e.estado === "pendiente" ? `Pendiente · Para aprobar: ${e.criterio}.`
+  sello.textContent = e.entrenando ? `Entrenando ahora · Para aprobar: ${e.criterio}.`
+    : e.estado === "pendiente" ? `Pendiente · Para aprobar: ${e.criterio}.`
     : !e.entrenado ? "Todavía sin entrenar."
       : e.aprobado ? "Aprobado" : "Entrenado, todavía no aprueba";
 

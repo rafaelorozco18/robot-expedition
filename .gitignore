@@ -14,3 +14,6 @@ archivo/
 
 # Corridas piloto, no versionadas
 models/pilotos/
+
+# Copias que lee el visor; se regeneran con `expedicion publicar`
+publicado/

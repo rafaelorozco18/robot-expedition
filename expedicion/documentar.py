@@ -4,7 +4,7 @@ import json
 
 from . import experimentos as X
 from .ambiente import GRAVEDADES, BipedoEnv
-from .servidor import crear_agente
+from .evaluar import Politica, campeon
 
 
 def _pct(v):
@@ -13,7 +13,7 @@ def _pct(v):
 
 def transiciones(exp, n=5):
     env = BipedoEnv(exp)
-    agente = crear_agente(exp, "experto", 3)
+    agente = Politica(X.carpeta_modelos(exp) / f"semilla-{campeon(exp)}" / "experto.zip")
     obs, _ = env.reset(seed=3, options={"planeta": "marte", "perturbacion": "ninguna"})
     filas = []
     for _ in range(n):

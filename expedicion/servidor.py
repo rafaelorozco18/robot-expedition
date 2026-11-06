@@ -10,9 +10,10 @@ from urllib.parse import parse_qs, urlparse
 import mujoco
 
 from . import experimentos as X
+from . import publicar as P
 from .ambiente import GRAVEDADES, PERTURBACIONES, BipedoEnv
 from .evolucion import PLANETAS_VISOR
-from .evaluar import Aleatorio, Politica, SinEntrenar, campeon, correr_episodio, fotos_de, paso_de
+from .evaluar import Aleatorio, Politica, SinEntrenar, correr_episodio, paso_de
 
 WEB = X.RAIZ / "web"
 DESCRIPCIONES = {
@@ -21,6 +22,11 @@ DESCRIPCIONES = {
     "sin_entrenar": "Sin red: las articulaciones solo intentan conservar la postura inicial.",
     "aleatorio": "Ángulos objetivo al azar en las 10 articulaciones.",
 }
+
+
+def pub(exp):
+    """Carpeta publicada: el visor nunca lee lo que se está entrenando."""
+    return P.carpeta(exp["id"])
 
 
 def _archivo_json(ruta):
@@ -37,11 +43,13 @@ def aprobado_visor(exp, ev):
 def catalogo():
     lista = []
     for exp in X.listar():
-        evaluacion = _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json") \
-            if exp["estado"] != "pendiente" else None
-        lista.append({k: exp.get(k) for k in ("id", "titulo", "pregunta", "agrega", "estado", "criterio")}
-                     | {"aprobado": aprobado_visor(exp, evaluacion) if evaluacion else None,
-                        "entrenado": evaluacion is not None})
+        visible = P.cargar(exp["id"]) or exp
+        ev = _archivo_json(pub(exp) / "evaluacion.json")
+        fila = {k: visible.get(k) for k in ("id", "titulo", "pregunta", "agrega", "criterio")}
+        lista.append(fila | {"estado": "activo" if ev else "pendiente",
+                             "entrenando": exp["estado"] == "activo" and not ev,
+                             "aprobado": aprobado_visor(visible, ev) if ev else None,
+                             "entrenado": ev is not None})
     return lista
 
 
@@ -72,27 +80,25 @@ def mundo(exp):
             "clima_visual": exp.get("clima_visual", "despejado"),
             "pendiente_grados": exp.get("pendiente_grados", 0),
             "agentes": agentes(exp), "aprobar": exp["aprobar"],
-            "evaluacion": _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json"),
-            "regresion": _archivo_json(X.carpeta_metricas(exp) / "regresion.json"),
+            "evaluacion": _archivo_json(pub(exp) / "evaluacion.json"),
+            "regresion": _archivo_json(pub(exp) / "regresion.json"),
             "titulos": {e["id"]: e["titulo"] for e in X.listar()}}
 
 
 def agentes(exp):
-    listo = campeon(exp) is not None
-    return [{"id": n, "descripcion": d, "disponible": listo or n in ("sin_entrenar", "aleatorio")}
+    return [{"id": n, "descripcion": d, "disponible": True}
             for n, d in DESCRIPCIONES.items()]
 
 
 def progreso(exp):
-    datos = _archivo_json(X.carpeta_metricas(exp) / "progreso.json")
+    datos = _archivo_json(pub(exp) / "progreso.json")
     if not datos:
         return None
     fotos = datos["fotos"]
     for f in fotos:
         f["tasa_exito"] = round(sum(f[f"exito_{p}"] for p in PLANETAS_VISOR) / len(PLANETAS_VISOR), 3)
-    corrida = X.carpeta_modelos(exp) / f"semilla-{datos['semilla']}"
     objetivo = exp["entrenamiento"]["aprendiz"] * fotos[-1]["paso"]
-    return {"curva": _archivo_json(corrida / "curva.json") or [], "fotos": fotos,
+    return {"curva": _archivo_json(pub(exp) / "curva.json") or [], "fotos": fotos,
             "semilla": datos["semilla"],
             "episodios_por_foto": exp["evaluacion"]["episodios_por_foto"] * len(PLANETAS_VISOR),
             "planetas": PLANETAS_VISOR,
@@ -107,10 +113,10 @@ def _pasos(n):
 
 
 def evolucion(exp):
-    datos = _archivo_json(X.carpeta_metricas(exp) / "evolucion.json")
+    datos = _archivo_json(pub(exp) / "evolucion.json")
     if not datos:
         return None
-    ev = _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json")
+    ev = _archivo_json(pub(exp) / "evaluacion.json")
     aprobado = aprobado_visor(exp, ev)
     for plan in datos["planetas"].values():
         for n, h in enumerate(plan["hitos"]):
@@ -118,7 +124,7 @@ def evolucion(exp):
             if h["paso"] is None:
                 h["etiqueta"] = "Sin entrenar"
             elif h["origen"] != exp["id"]:
-                previo = X.cargar(h["origen"])
+                previo = P.cargar(h["origen"]) or X.cargar(h["origen"])
                 h["etiqueta"] = f"Exp {int(previo['id'][4:])}, {previo['titulo']} · {pasos}"
             elif n == len(plan["hitos"]) - 1:
                 h["etiqueta"] = f"{'Experto' if aprobado else 'Mejor versión'} · {pasos}"
@@ -137,38 +143,32 @@ def crear_agente(exp, nombre, semilla):
         return SinEntrenar()
     if nombre == "aleatorio":
         return Aleatorio(semilla)
-    c = campeon(exp)
-    if c is None:
-        raise FileNotFoundError("Este experimento todavía no tiene modelos entrenados.")
-    fotos = {paso_de(r): r for r in fotos_de(exp, c)}
+    carpeta = pub(exp)
+    fotos = {paso_de(r): r for r in (carpeta / "fotos").glob("paso-*.zip")}
     if nombre == "experto":
-        return _politica(str(X.carpeta_modelos(exp) / f"semilla-{c}" / "experto.zip"))
-    if nombre == "aprendiz":
-        return _politica(str(fotos[progreso(exp)["aprendiz"]]))
-    if nombre.startswith("foto:"):
+        ruta = carpeta / "experto.zip"
+    elif nombre == "aprendiz":
+        ruta = fotos[progreso(exp)["aprendiz"]]
+    elif nombre.startswith("foto:"):
         _, origen, paso = nombre.split(":")
-        previo = X.cargar(origen)
-        ruta = {paso_de(r): r for r in fotos_de(previo, campeon(previo))}.get(int(paso))
-        if ruta is None:
-            raise FileNotFoundError(f"No existe la foto {nombre}.")
-        return _politica(str(ruta))
-    if nombre.startswith("paso:"):
-        paso = int(nombre[5:])
-        if paso not in fotos:
-            raise FileNotFoundError(f"No existe la foto del paso {paso}.")
-        return _politica(str(fotos[paso]))
-    raise ValueError(f"Agente desconocido: {nombre}")
+        ruta = carpeta / "linaje" / f"{origen}-{paso}.zip"
+    elif nombre.startswith("paso:"):
+        ruta = fotos.get(int(nombre[5:]))
+    else:
+        raise ValueError(f"Agente desconocido: {nombre}")
+    if ruta is None or not ruta.exists():
+        raise FileNotFoundError(f"No existe el modelo {nombre}.")
+    return _politica(str(ruta.resolve()))
 
 
 def _version(exp):
-    """Cambia si el experimento se reentrena: invalida los episodios guardados."""
-    ruta = X.carpeta_metricas(exp) / "evaluacion.json"
-    return ruta.stat().st_mtime if ruta.exists() else 0
+    """Cambia con cada publicación: invalida los episodios guardados."""
+    return str(pub(exp).resolve())
 
 
 @lru_cache(maxsize=256)
 def episodio(id_exp, agente, planeta, perturbacion, semilla, version):
-    exp = X.cargar(id_exp)
+    exp = P.cargar(id_exp)
     esc = {"planeta": planeta, "perturbacion": perturbacion, "semilla": semilla}
     resumen, cuadros = correr_episodio(exp, crear_agente(exp, agente, semilla), esc, grabar=True)
     return json.dumps({"resumen": resumen, "cuadros": cuadros}).encode()
@@ -191,8 +191,8 @@ class Manejador(BaseHTTPRequestHandler):
             return self._json(catalogo())
         if len(partes) != 4 or partes[:2] != ["api", "exp"]:
             return self._json({"error": "ruta desconocida"}, 404)
-        exp = X.cargar(partes[2])
-        if exp["estado"] == "pendiente":
+        exp = P.cargar(partes[2])
+        if exp is None:
             return self._json({"error": "Experimento pendiente."}, 400)
         if partes[3] == "mundo":
             return self._json(mundo(exp))

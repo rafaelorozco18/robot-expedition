@@ -11,6 +11,7 @@
     expedicion registrar exp-001               registra al campeón en MLflow
     expedicion campana exp-002 exp-003         corre experimentos en cadena
     expedicion evolucion [exp-001]             etapas de aprendizaje para el visor
+    expedicion publicar [exp-001]              actualiza la copia que lee el visor
     expedicion servir                          visor 3D en http://localhost:8765
 """
 
@@ -143,6 +144,14 @@ def cmd_evolucion(args):
             print(exp["id"], r["recomendado"], resumen, flush=True)
 
 
+def cmd_publicar(args):
+    from .publicar import publicar
+    for exp in X.listar():
+        listo = (X.carpeta_metricas(exp) / "evolucion.json").exists()
+        if listo and args.exp in (None, exp["id"]):
+            print(publicar(exp))
+
+
 def cmd_servir(args):
     from .servidor import servir
     servir(args.puerto)
@@ -187,6 +196,7 @@ def main(argv=None):
     comando("pipeline", cmd_pipeline)
     comando("evolucion", cmd_evolucion).add_argument("exp", nargs="?")
     comando("informe", cmd_informe)
+    comando("publicar", cmd_publicar).add_argument("exp", nargs="?")
     s = comando("campana", cmd_campana)
     s.add_argument("exps", nargs="+")
     s.add_argument("--seguir", action="store_true", help="continúa aunque un experimento no apruebe")
