@@ -151,7 +151,7 @@ stages:
     - experimentos/exp-004.yaml
     - experimentos/base.yaml
     - robots/bipedo-v1.xml
-    - metrics/exp-003/evaluacion.json
+    - metrics/exp-001/evaluacion.json
     outs:
     - models/exp-004/semilla-0
   evaluar-exp-004:
@@ -177,4 +177,44 @@ stages:
     - metrics/exp-004/evaluacion.json
     metrics:
     - metrics/exp-004/regresion.json:
+        cache: false
+  escenarios-exp-005:
+    cmd: python -m expedicion escenarios exp-005
+    deps:
+    - experimentos/exp-005.yaml
+    - experimentos/base.yaml
+    outs:
+    - data/exp-005/escenarios.json
+  entrenar-exp-005-s0:
+    cmd: nice -n 10 python -m expedicion entrenar exp-005 --semilla 0
+    deps:
+    - experimentos/exp-005.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v1.xml
+    - metrics/exp-004/evaluacion.json
+    outs:
+    - models/exp-005/semilla-0
+  evaluar-exp-005:
+    cmd: nice -n 10 python -m expedicion evaluar exp-005
+    deps:
+    - data/exp-005/escenarios.json
+    - models/exp-005/semilla-0
+    outs:
+    - data/exp-005/trayectorias.jsonl
+    metrics:
+    - metrics/exp-005/evaluacion.json:
+        cache: false
+  progreso-exp-005:
+    cmd: nice -n 10 python -m expedicion progreso exp-005
+    deps:
+    - metrics/exp-005/evaluacion.json
+    metrics:
+    - metrics/exp-005/progreso.json:
+        cache: false
+  regresion-exp-005:
+    cmd: nice -n 10 python -m expedicion regresion exp-005
+    deps:
+    - metrics/exp-005/evaluacion.json
+    metrics:
+    - metrics/exp-005/regresion.json:
         cache: false

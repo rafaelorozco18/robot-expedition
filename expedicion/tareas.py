@@ -91,7 +91,8 @@ class Sentadilla(Tarea):
 
     def recompensa(self, env, accion, previa):
         d = self.comunes(env, accion, previa)
-        d["altura"] = self.p["altura"] * np.exp(-((self.error(env) / 0.04) ** 2))
+        e = self.error(env)
+        d["altura"] = self.p["altura"] * 0.5 * (np.exp(-((e / 0.04) ** 2)) + np.exp(-((e / 0.15) ** 2)))
         d["quieto"] = self.p["quieto"] * np.exp(-np.sum(env.data.qvel[:2] ** 2))
         if env.pasos % int(self.t["cambio_s"] / env.dt) > 50:  # 1 s para llegar
             self.errores.append(self.error(env))
