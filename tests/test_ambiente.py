@@ -81,3 +81,21 @@ def test_episodio_grabado_entrega_cuadros():
     resumen, cuadros = correr_episodio(exp(), Aleatorio(0), esc, grabar=True)
     assert len(cuadros) > 1 and len(cuadros[0]["cuerpos"]) == 7
     assert cuadros[-1]["t"] == resumen["segundos"]
+
+
+def test_hielo_baja_la_friccion_del_pie_sobre_el_tramo():
+    e = {**exp(), "pisos": {"tramos": [{"tipo": "hielo", "largo": 5}], "inicio_m": -1.0}}
+    env = BipedoEnv(e)
+    env.reset(seed=0, options={"planeta": "tierra"})
+    env.step(np.zeros(10))
+    assert env.model.geom_friction[env.ids_pies[0], 0] <= 0.2
+    assert env.piso_bajo_torso() == "hielo"
+
+
+def test_barro_frena_al_pie_que_se_mueve():
+    e = {**exp(), "pisos": {"tramos": [{"tipo": "barro", "largo": 5}], "inicio_m": -1.0}}
+    env = BipedoEnv(e)
+    env.reset(seed=0, options={"planeta": "tierra"})
+    env.pie_previo[0] = env.posicion_pie(0) - np.array([0.01, 0, 0])
+    env._aplicar_piso()
+    assert env.data.xfrc_applied[env.ids_cuerpo_pies[0], 0] < 0

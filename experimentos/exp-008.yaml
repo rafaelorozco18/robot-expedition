@@ -18,5 +18,4 @@ aprobar:
   perturbacion: empujon
 entrenamiento:
   pasos: 3000000
-  parar_en: 0.9
 trampa: Agacharse antes del empujón. La altura mínima sigue activa.

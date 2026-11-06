@@ -86,6 +86,7 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
             "empujon": bool(env.empujado),
             "comando": [round(float(v), 2) for v in env.comando],
             "distancia": round(env.distancia(), 2),
+            "piso": env.piso_bajo_torso(),
         }
 
     if grabar:
@@ -108,6 +109,7 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
                "detalle": env.tarea.resumen(env), "recompensa": round(total, 1),
                "energia_j": round(env.energia, 1), "inclinacion_max": round(inclinacion_max, 1),
                "distancia": round(env.distancia(), 2),
+               "tramos": [[t["x0"], t["x1"], t["tipo"]] for t in env.tramos],
                "altura_final": round(env.altura_torso() / env.altura_pie, 3)}
     return resumen, cuadros
 

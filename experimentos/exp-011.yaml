@@ -1,6 +1,35 @@
 id: exp-011
 titulo: Velocidad ordenada
-pregunta: Velocidad entre 0.3 y 1 m/s
+pregunta: ¿Obedece la velocidad que se le ordena?
 agrega: Velocidad entre 0.3 y 1 m/s
 estado: pendiente
 criterio: Error < 0.1 m/s
+tarea: marcha
+parte_de: exp-010
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 12
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 0.3
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+parametros:
+  vx:
+  - 0.3
+  - 1.0
+  error_ms: 0.1
+  periodo_s: 0.8
+aprobar:
+  tasa_exito: 0.8
+entrenamiento:
+  pasos: 6000000
+trampa: Caminar siempre a velocidad media. El error se mide contra cada orden.

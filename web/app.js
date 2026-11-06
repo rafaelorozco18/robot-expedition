@@ -89,6 +89,24 @@ function construirCampo() {
   grupoCampo.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.14 })));
 }
 
+// Tramos de piso del episodio, tal como los sorteó el simulador (x de MuJoCo = x del visor).
+const grupoTramos = new THREE.Group();
+scene.add(grupoTramos);
+function dibujarTramos(tramos) {
+  grupoTramos.traverse((o) => { o.geometry?.dispose(); });
+  grupoTramos.clear();
+  const tema = planeta.tema();
+  const color = { arena: tema.colores.a, barro: tema.colores.b, barro_profundo: tema.charco.color, hielo: tema.colores.h, grava: tema.roca };
+  for (const [x0, x1, tipo] of tramos) {
+    const malla = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 0.02, 4), new THREE.MeshStandardMaterial({
+      color: color[tipo], map: planeta.texRuido, roughness: tipo === "hielo" ? 0.15 : 0.95,
+    }));
+    malla.position.set((x0 + x1) / 2, 0.0, 0);
+    malla.receiveShadow = true;
+    grupoTramos.add(malla);
+  }
+}
+
 // ------------------------------------------------------------------- robot
 // Se construye desde la geometría que entrega el simulador. MuJoCo usa z arriba:
 // el grupo raíz gira −90° en x para pasar a y arriba.
@@ -242,6 +260,7 @@ function mostrar(i) {
   if (lado) orden.push(`pie ${lado > 0 ? "izquierdo" : "derecho"}`);
   $("v-comando").textContent = orden.join(" · ") || "quedarse de pie";
   $("v-distancia").textContent = `${f.distancia.toFixed(2)} m`;
+  $("v-piso").textContent = planeta.tema().terrenos[f.piso] || f.piso.replace("_", " ");
   $("v-r").textContent = fmt(f.recompensa, 2);
   $("v-rt").textContent = fmt(f.total, 1);
   $("desglose").innerHTML = Object.entries(f.desglose).map(([k, v]) =>
@@ -328,6 +347,7 @@ async function lanzar() {
   const datos = await resp.json();
   if (!resp.ok) { alert(datos.error); return; }
   estado.episodio = datos;
+  dibujarTramos(datos.resumen.tramos || []);
   estado.i = 0; estado.tiempo = 0; estado.play = true;
   $("barra").max = datos.cuadros.length - 1;
   mostrar(0);

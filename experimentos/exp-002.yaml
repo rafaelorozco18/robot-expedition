@@ -15,6 +15,5 @@ aprobar:
   perturbacion: empujon
 entrenamiento:
   pasos: 1000000
-  parar_en: 0.95
 trampa: Dar un paso para cobrar sin equilibrarse. El éxito exige que los pies se muevan
   menos de 5 cm.

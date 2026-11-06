@@ -19,6 +19,16 @@ from .tareas import TAREAS
 GRAVEDADES = {"luna": 1.62, "marte": 3.71, "tierra": 9.81}
 PLANETAS = list(GRAVEDADES)
 PERTURBACIONES = ["ninguna", "empujon"]
+# Propiedades de cada piso. Fricción: rango sorteado por episodio. Arrastre: N por m/s sobre el pie
+# hundido. Sacudida: fuerza horizontal al azar (N). MuJoCo no modela suelos blandos: son aproximaciones.
+PISOS = {
+    "suelo": {"friccion": [0.9, 0.9], "arrastre": [0, 0], "succion": 0, "sacudida": 0},
+    "arena": {"friccion": [0.6, 0.8], "arrastre": [30, 60], "succion": 0, "sacudida": 0},
+    "barro": {"friccion": [0.4, 0.6], "arrastre": [60, 120], "succion": 40, "sacudida": 0},
+    "barro_profundo": {"friccion": [0.35, 0.5], "arrastre": [100, 200], "succion": 90, "sacudida": 0},
+    "grava": {"friccion": [0.5, 0.7], "arrastre": [10, 20], "succion": 0, "sacudida": 25},
+    "hielo": {"friccion": [0.08, 0.2], "arrastre": [0, 0], "succion": 0, "sacudida": 0},
+}
 POSTURA = {"cadera_pitch": -0.15, "rodilla": 0.3, "tobillo_pitch": -0.15}
 
 
@@ -44,6 +54,11 @@ class BipedoEnv(gym.Env):
         self.id_torso = m.body("torso").id
         self.id_piso = m.geom("piso").id
         self.ids_pies = [m.geom("pie_i").id, m.geom("pie_d").id]
+
+        self.ids_cuerpo_pies = [m.body("pie_i").id, m.body("pie_d").id]
+        self.conf_pisos = exp.get("pisos")
+        if self.conf_pisos:
+            m.geom_friction[self.id_piso, 0] = 0.01  # manda la fricción de cada pie, según el piso bajo él
 
         self.postura_inicial = np.array(
             [next((v for k, v in POSTURA.items() if n.startswith(k)), 0.0) for n in self.nombres_motor])
@@ -139,6 +154,8 @@ class BipedoEnv(gym.Env):
         self.y_inicial = float(self.data.qpos[1])
         self.accion_previa = np.zeros(self.model.nu)
         self.empujado = False
+        self.tramos = self._sortear_tramos() if self.conf_pisos else []
+        self.pie_previo = [self.posicion_pie(0).copy(), self.posicion_pie(1).copy()]
         self.tarea.iniciar(self)
         self.tarea.actualizar(self)
         return self._observar(), self._info()
@@ -150,6 +167,8 @@ class BipedoEnv(gym.Env):
         if self.empujado:
             self.data.qvel[:3] += self.direccion_empujon * self.exp["ambiente"]["empujon_ms"]
         self.data.ctrl[:] = self.postura_inicial + accion * self.control["rango"]
+        if self.tramos:
+            self._aplicar_piso()
         mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
         self.pasos += 1
         self.energia += float(np.sum(np.abs(self.data.actuator_force * self.data.actuator_velocity))) * self.dt
@@ -167,6 +186,43 @@ class BipedoEnv(gym.Env):
         if terminated or truncated:
             info["exito"] = bool(self.tarea.exito(self, truncated))
         return self._observar(), float(recompensa), terminated, truncated, info
+
+    def _sortear_tramos(self):
+        conf = self.conf_pisos
+        orden = list(conf["tramos"])
+        if conf.get("mezclar"):
+            self.np_random.shuffle(orden)
+        tramos, x = [], float(conf.get("inicio_m", 2.0))
+        for t in orden:
+            p = PISOS[t["tipo"]]
+            largo = float(self.np_random.uniform(*t["largo"])) if isinstance(t["largo"], list) else float(t["largo"])
+            tramos.append({"x0": x, "x1": x + largo, "tipo": t["tipo"],
+                           "friccion": float(self.np_random.uniform(*p["friccion"])),
+                           "arrastre": float(self.np_random.uniform(*p["arrastre"])),
+                           "succion": p["succion"], "sacudida": p["sacudida"]})
+            x += largo
+        return tramos
+
+    def _aplicar_piso(self):
+        base = PISOS["suelo"]
+        for lado in (0, 1):
+            pos = self.posicion_pie(lado)
+            piso = next((t for t in self.tramos if t["x0"] <= pos[0] < t["x1"]), None)
+            self.model.geom_friction[self.ids_pies[lado], 0] = piso["friccion"] if piso else base["friccion"][0]
+            fuerza = np.zeros(3)
+            if piso and pos[2] < 0.08:
+                v = (pos - self.pie_previo[lado]) / self.dt
+                fuerza = -piso["arrastre"] * v
+                if piso["succion"] and v[2] > 0:
+                    fuerza[2] -= piso["succion"]
+                if piso["sacudida"]:
+                    fuerza[:2] += self.np_random.uniform(-piso["sacudida"], piso["sacudida"], 2)
+            self.data.xfrc_applied[self.ids_cuerpo_pies[lado], :3] = fuerza
+            self.pie_previo[lado] = pos.copy()
+
+    def piso_bajo_torso(self):
+        x = self.data.qpos[0]
+        return next((t["tipo"] for t in self.tramos if t["x0"] <= x < t["x1"]), "suelo")
 
     def _observar(self):
         d = self.data

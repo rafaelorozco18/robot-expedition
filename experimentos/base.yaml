@@ -28,10 +28,10 @@ recompensa:
 entrenamiento:
   pasos: 2000000
   procesos: 4
-  robots_por_proceso: 8
+  robots_por_proceso: 16
   hilos: 1
   semillas: [0]
-  n_steps: 128
+  n_steps: 64
   batch_size: 2048
   n_epochs: 5
   learning_rate: 0.0003
@@ -43,8 +43,7 @@ entrenamiento:
   red: [256, 256]
   fotos: 12
   aprendiz: 0.25
-  parar_en: 0.98          # corta el entrenamiento si el éxito reciente llega aquí
-  pasos_minimos: 200000
+  pasos_minimos: 200000   # desde aquí puede parar si aprueba dos fotos seguidas
 
 evaluacion:
   semilla: 2026

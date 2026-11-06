@@ -62,10 +62,27 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
             self.duracion = deque(maxlen=100)
             self.recompensa = deque(maxlen=100)
             self.proxima = 0
+            self.aprobadas = 0
 
         def _foto(self):
             self.model.save(fotos / f"paso-{self.num_timesteps:09d}.zip")
             self.proxima += cada_foto
+
+        def _aprueba(self):
+            """Mini prueba sin exploración, en las condiciones de aprobación de cada planeta."""
+            from .evaluar import correr_episodio
+            modelo = self.model
+
+            class Actual:
+                def actuar(self, obs, env):
+                    return modelo.predict(obs, deterministic=True)[0]
+
+            for planeta in exp["evaluacion"]["planetas"]:
+                exitos = [correr_episodio(exp, Actual(), {"planeta": planeta, "semilla": s,
+                          "perturbacion": exp["aprobar"]["perturbacion"]})[0]["exito"] for s in range(5)]
+                if np.mean(exitos) < exp["aprobar"]["tasa_exito"]:
+                    return False
+            return True
 
         def _on_training_start(self):
             self._foto()
@@ -86,9 +103,10 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
                     if run:
                         mlflow.log_metrics({k: v for k, v in fila.items() if k != "paso"},
                                            step=fila["paso"])
-            lleno = len(self.duracion) == self.duracion.maxlen
-            return not (lleno and self.num_timesteps >= p["pasos_minimos"]
-                        and np.mean(self.duracion) >= p["parar_en"])
+                if self.num_timesteps >= p["pasos_minimos"]:
+                    self.aprobadas = self.aprobadas + 1 if self._aprueba() else 0
+                    return self.aprobadas < 2
+            return True
 
     def crear(i):
         env = BipedoEnv(exp, entrenando=True)

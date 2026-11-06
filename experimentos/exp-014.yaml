@@ -1,6 +1,35 @@
 id: exp-014
 titulo: Caminar de lado
-pregunta: Marcha lateral
+pregunta: ¿Camina de lado?
 agrega: Marcha lateral
 estado: pendiente
 criterio: 2 m sin caer en ≥ 80 %
+tarea: marcha
+parte_de: exp-011
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 10
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 0.3
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+parametros:
+  vy:
+  - 0.25
+  - 0.35
+  distancia_m: 2
+  periodo_s: 0.8
+aprobar:
+  tasa_exito: 0.8
+entrenamiento:
+  pasos: 5000000
+trampa: Girar y caminar hacia adelante en diagonal. El rumbo se premia.
