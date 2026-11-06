@@ -52,7 +52,7 @@ def robot(exp):
                       "rgba": [float(v) for v in m.geom_rgba[g]]})
     return {"modelo": exp["robot"], "geoms": geoms, "masa": float(m.body_mass.sum()),
             "motores": [m.actuator(i).name for i in range(m.nu)],
-            "torque_max": [float(v) for v in m.actuator_gear[:, 0]]}
+            "torque_max": [float(v) for v in m.actuator_forcerange[:, 1]]}
 
 
 def mundo(exp):

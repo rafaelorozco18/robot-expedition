@@ -1,0 +1,57 @@
+# Valores comunes a todos los experimentos. Cada exp-NNN.yaml sobreescribe solo lo que cambia.
+robot: robots/bipedo-v1.xml
+tarea: de_pie
+parte_de: null            # id del experimento del que hereda el modelo
+
+control:
+  rango: 0.8              # rad, cuánto puede alejarse el objetivo de la postura de pie
+
+ambiente:
+  duracion_s: 10          # truncamiento
+  frame_skip: 5           # 5 × 4 ms = control a 50 Hz
+  ruido_inicial: 0.02     # rad, en cada articulación
+  altura_minima: 0.85     # fracción de la altura de pie; por debajo cuenta como caída
+  inclinacion_maxima: 35  # grados
+  empujon_entrenando: 0.0 # probabilidad de un empujón por episodio al entrenar
+  empujon_ms: 0.4         # m/s que se le suman al torso
+  empujones_por_episodio: 1
+
+recompensa:
+  vivo: 1.0
+  altura: 1.0
+  postura: 0.5
+  quieto: 0.3
+  esfuerzo: 0.05
+  suavidad: 0.05
+  caida: 50.0
+
+entrenamiento:
+  pasos: 2000000
+  entornos: 16
+  hilos: 2
+  semillas: [0]
+  n_steps: 256
+  batch_size: 2048
+  n_epochs: 5
+  learning_rate: 0.0003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  log_std_init: -1.5
+  escala_recompensa: 0.05 # evita que la función de valor sature el optimizador
+  red: [256, 256]
+  fotos: 12
+  aprendiz: 0.25
+  parar_en: 0.98          # corta el entrenamiento si el éxito reciente llega aquí
+  pasos_minimos: 200000
+
+evaluacion:
+  semilla: 2026
+  episodios_por_condicion: 10
+  episodios_por_foto: 3
+  planetas: [luna, marte, tierra]
+  perturbaciones: [ninguna, empujon]
+
+aprobar:
+  tasa_exito: 0.95
+  perturbacion: ninguna

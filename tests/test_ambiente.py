@@ -19,7 +19,7 @@ def test_cada_planeta_aplica_su_gravedad():
     for nombre, g in GRAVEDADES.items():
         obs, _ = env.reset(seed=0, options={"planeta": nombre})
         assert env.model.opt.gravity[2] == -g
-        assert np.isclose(obs[-1], g / 9.81)
+        assert np.isclose(obs[-7], g / 9.81)
 
 
 def test_empieza_de_pie_con_los_pies_en_el_piso():

@@ -1,0 +1,6 @@
+id: exp-021
+titulo: Ir a un punto
+pregunta: Destino a 5 m
+agrega: Destino a 5 m
+estado: pendiente
+criterio: Llega a < 0.3 m en ≥ 80 %

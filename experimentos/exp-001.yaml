@@ -1,0 +1,11 @@
+id: exp-001
+titulo: De pie
+pregunta: ¿Puede mantenerse de pie en la Luna, en Marte y en la Tierra?
+agrega: Articulaciones y tres gravedades
+criterio: Aguanta 10 s en ≥ 95 %
+estado: activo
+trampa: Agacharse para no caer o caer lento en la Luna y cobrar por seguir vivo. Se evita con altura mínima e inclinación máxima iguales en todos los planetas.
+pendiente: Sin red, el servo ya sostiene al robot en la Luna y Marte; la dificultad real está en la Tierra.
+entrenamiento:
+  pasos: 1500000
+  parar_en: 0.95

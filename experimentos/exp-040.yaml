@@ -1,0 +1,6 @@
+id: exp-040
+titulo: Retardo de control
+pregunta: 20 a 60 ms de demora
+agrega: 20 a 60 ms de demora
+estado: pendiente
+criterio: Pierde < 10 % de éxito

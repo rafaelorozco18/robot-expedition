@@ -1,0 +1,6 @@
+id: exp-049
+titulo: Administrar batería
+pregunta: Cada movimiento gasta energía
+agrega: Cada movimiento gasta energía
+estado: pendiente
+criterio: Va a una baliza y vuelve con batería en ≥ 65 %

@@ -2,8 +2,7 @@
 
 Estado del mundo (simulador): posiciones y velocidades completas, contactos, gravedad.
 Acción (agente): ángulo objetivo de cada articulación, relativo a la postura de pie.
-Un controlador PD lo convierte en torque; sus ganancias son bajas a propósito para que
-por sí solo no sostenga al robot con gravedad alta.
+Un servo de posición (robots/*.xml) lo convierte en torque, con límite por articulación.
 Observación (agente): orientación y velocidades del torso, ángulos y velocidades de las
 articulaciones, última acción, contacto de cada pie y gravedad. No ve su posición absoluta
 ni el tipo de piso.
@@ -29,7 +28,7 @@ class BipedoEnv(gym.Env):
     def __init__(self, exp, entrenando=False):
         self.exp = exp
         self.entrenando = entrenando
-        self.tarea = TAREAS[exp["tarea"]]()
+        self.tarea = TAREAS[exp["tarea"]](exp)
         self.model = mujoco.MjModel.from_xml_path(str(RAIZ / exp["robot"]))
         self.data = mujoco.MjData(self.model)
         self.frame_skip = exp["ambiente"]["frame_skip"]
@@ -41,7 +40,7 @@ class BipedoEnv(gym.Env):
         self.adr_q = np.array([m.joint(n).qposadr[0] for n in self.nombres_motor])
         self.adr_v = np.array([m.joint(n).dofadr[0] for n in self.nombres_motor])
         self.control = exp["control"]
-        self.kp, self.kd = self.control["kp"], self.control["kd"]  # fracción del torque máximo por rad
+        self.torque_max = m.actuator_forcerange[:, 1].copy()
         self.id_torso = m.body("torso").id
         self.id_piso = m.geom("piso").id
         self.ids_pies = [m.geom("pie_i").id, m.geom("pie_d").id]
@@ -53,7 +52,7 @@ class BipedoEnv(gym.Env):
         self.qpos_inicial = self.data.qpos.copy()
 
         self.action_space = spaces.Box(-1.0, 1.0, shape=(m.nu,), dtype=np.float32)
-        n_obs = 1 + 3 + 3 + 3 + m.nu * 3 + 2 + 1
+        n_obs = 1 + 6 + 3 + 3 + m.nu * 3 + 2 + 1 + 4 + 2
         self.observation_space = spaces.Box(-10.0, 10.0, shape=(n_obs,), dtype=np.float32)
 
     # ------------------------------------------------------------- mediciones
@@ -66,6 +65,25 @@ class BipedoEnv(gym.Env):
     def arriba_del_torso(self):
         return self.data.xmat[self.id_torso].reshape(3, 3)[2]  # z del mundo en ejes del torso
 
+    def mundo_x_en_torso(self):
+        return self.data.xmat[self.id_torso].reshape(3, 3)[0]  # x del mundo en ejes del torso
+
+    def centro_masa(self):
+        return self.data.subtree_com[self.id_torso]
+
+    def posicion_pie(self, lado):
+        return self.data.geom_xpos[self.ids_pies[lado]]
+
+    def distancia(self):
+        return float(self.data.qpos[0] - self.x_inicial)
+
+    def recorrido(self):
+        return float(np.hypot(self.data.qpos[0] - self.x_inicial, self.data.qpos[1] - self.y_inicial))
+
+    def fase(self):
+        periodo = self.exp.get("parametros", {}).get("periodo_s", 0.8) * np.sqrt(9.81 / self.g)
+        return 2 * np.pi * self.pasos * self.dt / min(periodo, 1.6)
+
     def inclinacion_grados(self):
         return float(np.degrees(np.arccos(np.clip(self.arriba_del_torso()[2], -1, 1))))
 
@@ -77,6 +95,9 @@ class BipedoEnv(gym.Env):
         izq = bool((otros == self.ids_pies[0]).any())
         der = bool((otros == self.ids_pies[1]).any())
         return izq, der, bool(((otros != self.ids_pies[0]) & (otros != self.ids_pies[1])).any())
+
+    def torques_relativos(self):
+        return self.data.actuator_force / self.torque_max
 
     def toca_piso_con_cuerpo(self):
         return self.contactos()[2]
@@ -94,10 +115,12 @@ class BipedoEnv(gym.Env):
         super().reset(seed=seed)
         options = options or {}
         self.planeta = options.get("planeta") or PLANETAS[self.np_random.integers(len(PLANETAS))]
-        self.g = GRAVEDADES[self.planeta]
+        rango_g = self.exp.get("parametros", {}).get("gravedad_rango")
+        self.g = float(self.np_random.uniform(*rango_g)) if rango_g and self.entrenando else GRAVEDADES[self.planeta]
         self.model.opt.gravity[2] = -self.g
 
         ruido = self.exp["ambiente"]["ruido_inicial"]
+        self.data.ctrl[:] = self.postura_inicial
         self._colocar(self.postura_inicial + self.np_random.normal(0, ruido, self.model.nu))
         self.perturbacion = options.get("perturbacion")
         if self.perturbacion is None:
@@ -111,21 +134,25 @@ class BipedoEnv(gym.Env):
             self.direccion_empujon = np.array([np.cos(ang), np.sin(ang), 0.0])
 
         self.pasos = 0
+        self.energia = 0.0
+        self.x_inicial = float(self.data.qpos[0])
+        self.y_inicial = float(self.data.qpos[1])
         self.accion_previa = np.zeros(self.model.nu)
         self.empujado = False
+        self.tarea.iniciar(self)
+        self.tarea.actualizar(self)
         return self._observar(), self._info()
 
     def step(self, action):
         accion = np.clip(np.asarray(action, dtype=np.float64), -1.0, 1.0)
+        self.tarea.actualizar(self)
         self.empujado = self.pasos == self.paso_empujon
         if self.empujado:
             self.data.qvel[:3] += self.direccion_empujon * self.exp["ambiente"]["empujon_ms"]
-        objetivo = self.postura_inicial + accion * self.control["rango"]
-        for _ in range(self.frame_skip):  # controlador PD de cada articulación
-            error = objetivo - self.data.qpos[self.adr_q]
-            self.data.ctrl[:] = np.clip(self.kp * error - self.kd * self.data.qvel[self.adr_v], -1, 1)
-            mujoco.mj_step(self.model, self.data)
+        self.data.ctrl[:] = self.postura_inicial + accion * self.control["rango"]
+        mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
         self.pasos += 1
+        self.energia += float(np.sum(np.abs(self.data.actuator_force * self.data.actuator_velocity))) * self.dt
 
         desglose = self.tarea.recompensa(self, accion, self.accion_previa)
         recompensa = sum(desglose.values())
@@ -136,20 +163,26 @@ class BipedoEnv(gym.Env):
             recompensa -= self.exp["recompensa"]["caida"]
             desglose["caida"] = -self.exp["recompensa"]["caida"]
         truncated = not terminated and self.pasos >= self.max_pasos
-        return self._observar(), float(recompensa), terminated, truncated, self._info(desglose)
+        info = self._info(desglose)
+        if terminated or truncated:
+            info["exito"] = bool(self.tarea.exito(self, truncated))
+        return self._observar(), float(recompensa), terminated, truncated, info
 
     def _observar(self):
         d = self.data
         izq, der, _ = self.contactos()
+        reloj = [np.sin(self.fase()), np.cos(self.fase())] if self.tarea.usa_reloj else [0.0, 0.0]
+        rot = d.xmat[self.id_torso].reshape(3, 3)
         return np.clip(np.concatenate([
             [self.altura_torso() - self.altura_pie],
-            self.arriba_del_torso(),
-            d.qvel[:3], d.qvel[3:6] * 0.25,
+            rot[2], rot[0],
+            rot @ d.qvel[:3], d.qvel[3:6] * 0.25,
             self.angulos() - self.postura_inicial,
             d.qvel[self.adr_v] * 0.1,
             self.accion_previa,
             [float(izq), float(der)],
             [self.g / 9.81],
+            self.comando, reloj,
         ]), -10, 10).astype(np.float32)
 
     def _info(self, desglose=None):

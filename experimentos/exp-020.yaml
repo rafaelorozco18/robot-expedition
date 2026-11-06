@@ -1,0 +1,6 @@
+id: exp-020
+titulo: Seguir un rumbo
+pregunta: Caminar en curva
+agrega: Caminar en curva
+estado: pendiente
+criterio: Se desvía < 0.5 m en ≥ 80 %

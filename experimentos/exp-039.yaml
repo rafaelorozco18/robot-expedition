@@ -1,0 +1,6 @@
+id: exp-039
+titulo: Sensores con ruido
+pregunta: Lecturas imperfectas
+agrega: Lecturas imperfectas
+estado: pendiente
+criterio: Pierde < 10 % de éxito frente al Exp 35

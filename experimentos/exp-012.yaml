@@ -1,0 +1,6 @@
+id: exp-012
+titulo: Arrancar y detenerse
+pregunta: Órdenes en plena marcha
+agrega: Órdenes en plena marcha
+estado: pendiente
+criterio: Responde en < 1 s en ≥ 85 %

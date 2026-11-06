@@ -66,7 +66,7 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
     obs, _ = env.reset(seed=escenario["semilla"], options={
         "planeta": escenario["planeta"], "perturbacion": escenario["perturbacion"]})
     bodies = range(1, env.model.nbody)
-    total, energia, inclinacion_max = 0.0, 0.0, 0.0
+    total, inclinacion_max = 0.0, 0.0
     cuadros = []
 
     def cuadro(accion, r, desglose):
@@ -74,7 +74,7 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
         return {
             "t": round(env.pasos * env.dt, 3),
             "cuerpos": [[round(float(v), 4) for v in (*env.data.xpos[b], *env.data.xquat[b])] for b in bodies],
-            "torques": [round(float(v), 3) for v in env.data.ctrl],
+            "torques": [round(float(v), 3) for v in env.torques_relativos()],
             "angulos": [round(float(v), 3) for v in env.angulos()],
             "altura": round(env.altura_torso(), 3),
             "altura_rel": round(env.altura_torso() / env.altura_pie, 3),
@@ -84,6 +84,8 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
             "recompensa": round(r, 3), "total": round(total, 2),
             "desglose": {k: round(float(v), 3) for k, v in desglose.items()},
             "empujon": bool(env.empujado),
+            "comando": [round(float(v), 2) for v in env.comando],
+            "distancia": round(env.distancia(), 2),
         }
 
     if grabar:
@@ -95,17 +97,17 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
         accion = agente.actuar(obs, env)
         obs, r, terminado, truncado, info = env.step(accion)
         total += r
-        energia += float(np.sum(np.abs(env.data.ctrl * env.data.actuator_velocity *
-                                       env.model.actuator_gear[:, 0]))) * env.dt
         inclinacion_max = max(inclinacion_max, env.inclinacion_grados())
         hubo_empujon = hubo_empujon or env.empujado
         if grabar and (env.pasos % cada == 0 or terminado or truncado or env.empujado):
             cuadros.append(cuadro(accion, r, info["desglose"]))
 
     segundos = env.pasos * env.dt
-    resumen = {**escenario, "exito": bool(truncado), "segundos": round(segundos, 2),
-               "motivo": env.motivo or "aguantó de pie", "recompensa": round(total, 1),
-               "energia_j": round(energia, 1), "inclinacion_max": round(inclinacion_max, 1),
+    resumen = {**escenario, "exito": bool(env.tarea.exito(env, truncado)), "segundos": round(segundos, 2),
+               "motivo": env.motivo or ("cumplió la meta" if env.tarea.exito(env, truncado) else "no cumplió la meta"), "titulo_exito": env.tarea.titulo_exito,
+               "detalle": env.tarea.resumen(env), "recompensa": round(total, 1),
+               "energia_j": round(env.energia, 1), "inclinacion_max": round(inclinacion_max, 1),
+               "distancia": round(env.distancia(), 2),
                "altura_final": round(env.altura_torso() / env.altura_pie, 3)}
     return resumen, cuadros
 
@@ -131,8 +133,9 @@ def resumir(exp, filas):
 
 
 def aprueba(exp, res):
-    """El criterio se exige sin perturbación y en cada planeta."""
-    return all(res[f"{pl}.ninguna"]["tasa_exito"] >= exp["aprobar"]["tasa_exito"]
+    """El criterio se exige en cada planeta, con la perturbación que indique el experimento."""
+    pert = exp["aprobar"]["perturbacion"]
+    return all(res[f"{pl}.{pert}"]["tasa_exito"] >= exp["aprobar"]["tasa_exito"]
                for pl in exp["evaluacion"]["planetas"])
 
 
@@ -174,7 +177,7 @@ def evaluar_progreso(exp):
     for esc in escenarios:
         clave = (esc["planeta"], esc["perturbacion"])
         vistos[clave] = vistos.get(clave, 0) + 1
-        if esc["perturbacion"] == "ninguna" and vistos[clave] <= exp["evaluacion"]["episodios_por_foto"]:
+        if esc["perturbacion"] == exp["aprobar"]["perturbacion"] and vistos[clave] <= exp["evaluacion"]["episodios_por_foto"]:
             sub.append(esc)
     filas = []
     for ruta in fotos_de(exp, semilla):
@@ -187,3 +190,21 @@ def evaluar_progreso(exp):
     (carpeta_metricas(exp) / "progreso.json").write_text(json.dumps(
         {"semilla": semilla, "episodios_por_foto": len(sub), "fotos": filas}, indent=1))
     return filas
+
+
+def regresion(exp):
+    """Prueba al campeón en las pruebas de los experimentos anteriores."""
+    from . import experimentos as X
+    semilla = campeon(exp)
+    agente = Politica(carpeta_modelos(exp) / f"semilla-{semilla}" / "experto.zip")
+    resultado = {}
+    for previo in X.listar():
+        if previo["id"] > exp["id"] or previo["estado"] == "pendiente":
+            continue
+        escenarios = json.loads((carpeta_datos(previo) / "escenarios.json").read_text())
+        pert = previo["aprobar"]["perturbacion"]
+        sub = [e for e in escenarios if e["perturbacion"] == pert][:12]
+        filas = [correr_episodio(previo, agente, e)[0] for e in sub]
+        resultado[previo["id"]] = round(float(np.mean([f["exito"] for f in filas])), 3)
+    (carpeta_metricas(exp) / "regresion.json").write_text(json.dumps(resultado, indent=1))
+    return resultado

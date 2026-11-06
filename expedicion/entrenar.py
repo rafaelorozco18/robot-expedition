@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from .ambiente import BipedoEnv
-from .experimentos import RAIZ, carpeta_metricas, carpeta_modelos
+from .experimentos import RAIZ, cargar, carpeta_metricas, carpeta_modelos
 
 URI_MLFLOW = f"sqlite:///{RAIZ / 'mlflow.db'}"
 
@@ -24,21 +24,23 @@ def git_commit():
 
 def _crear_entorno(exp, semilla):
     def crear():
+        from gymnasium.wrappers import TransformReward
         from stable_baselines3.common.monitor import Monitor
-        env = Monitor(BipedoEnv(exp, entrenando=True))
+        env = TransformReward(BipedoEnv(exp, entrenando=True), lambda r: r * exp["entrenamiento"]["escala_recompensa"])
+        env = Monitor(env, info_keywords=("exito",))
         env.reset(seed=semilla)
         return env
     return crear
 
 
-def entrenar(exp, semilla, pasos=None, usar_mlflow=True, hilos=2):
+def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
     import torch
     from stable_baselines3 import PPO
     from stable_baselines3.common.callbacks import BaseCallback
     from stable_baselines3.common.vec_env import SubprocVecEnv
 
-    torch.set_num_threads(hilos)
     p = exp["entrenamiento"]
+    torch.set_num_threads(p["hilos"])
     total = pasos or p["pasos"]
     salida = carpeta_modelos(exp) / f"semilla-{semilla}"
     fotos = salida / "fotos"
@@ -82,7 +84,7 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True, hilos=2):
         def _on_step(self):
             for info in self.locals["infos"]:
                 if "episode" in info:
-                    self.duracion.append(bool(info.get("TimeLimit.truncated", False) or info.get("truncado")))
+                    self.duracion.append(bool(info.get("exito")))
                     self.recompensa.append(info["episode"]["r"])
             if self.num_timesteps >= self.proxima:
                 self._foto()
@@ -95,16 +97,26 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True, hilos=2):
                     if run:
                         mlflow.log_metrics({k: v for k, v in fila.items() if k != "paso"},
                                            step=fila["paso"])
-            return True
+            lleno = len(self.duracion) == self.duracion.maxlen
+            return not (lleno and self.num_timesteps >= p["pasos_minimos"]
+                        and np.mean(self.duracion) >= p["parar_en"])
 
-    env = SubprocVecEnv([_crear_entorno(exp, semilla * 1000 + i) for i in range(p["entornos"])])
-    modelo = PPO("MlpPolicy", env, device="cpu", seed=semilla, verbose=0,
-                 n_steps=p["n_steps"], batch_size=p["batch_size"], n_epochs=p["n_epochs"],
-                 learning_rate=p["learning_rate"], gamma=p["gamma"], gae_lambda=p["gae_lambda"],
-                 clip_range=p["clip_range"],
-                 policy_kwargs={"net_arch": p["red"], "log_std_init": p["log_std_init"]})
+    env = SubprocVecEnv([_crear_entorno(exp, semilla * 1000 + i) for i in range(p["entornos"])],
+                        start_method="fork")
+    ajustes = dict(n_steps=p["n_steps"], batch_size=p["batch_size"], n_epochs=p["n_epochs"],
+                   learning_rate=p["learning_rate"], gamma=p["gamma"], gae_lambda=p["gae_lambda"],
+                   clip_range=p["clip_range"])
+    if exp["parte_de"]:
+        padre = carpeta_modelos(cargar(exp["parte_de"]))
+        from .evaluar import campeon
+        ruta_padre = padre / f"semilla-{campeon(cargar(exp['parte_de']))}" / "experto.zip"
+        modelo = PPO.load(ruta_padre, env=env, device="cpu", seed=semilla, custom_objects=ajustes)
+        modelo.policy.log_std.data.fill_(p["log_std_init"])
+    else:
+        modelo = PPO("MlpPolicy", env, device="cpu", seed=semilla, verbose=0, **ajustes,
+                     policy_kwargs={"net_arch": p["red"], "log_std_init": p["log_std_init"]})
     t0 = time.time()
-    modelo.learn(total, callback=Registro())
+    modelo.learn(total, callback=Registro(), reset_num_timesteps=True)
     segundos = time.time() - t0
     env.close()
 

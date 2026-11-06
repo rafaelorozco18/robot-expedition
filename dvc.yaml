@@ -1,60 +1,41 @@
-# Pipeline por experimento: para agregar uno, súmalo a la lista `exp` de cada etapa.
-#   escenarios ─┐
-#   entrenar ───┴─▶ evaluar ─▶ progreso ─▶ registrar
+# Generado por `expedicion pipeline`. El código queda fijado por el tag de cada experimento.
 stages:
-  escenarios:
-    matrix:
-      exp: [exp-001]
-    cmd: python -m expedicion escenarios ${item.exp}
+  escenarios-exp-001:
+    cmd: python -m expedicion escenarios exp-001
     deps:
-      - expedicion/evaluar.py
-    params:
-      - experimentos/${item.exp}-de-pie.yaml:
-          - evaluacion
+    - experimentos/exp-001.yaml
+    - experimentos/base.yaml
     outs:
-      - data/${item.exp}/escenarios.json
-
-  entrenar:
-    matrix:
-      exp: [exp-001]
-      semilla: [0, 1, 2]
-    cmd: nice -n 10 python -m expedicion entrenar ${item.exp} --semilla ${item.semilla}
+    - data/exp-001/escenarios.json
+  entrenar-exp-001-s0:
+    cmd: nice -n 10 python -m expedicion entrenar exp-001 --semilla 0
     deps:
-      - expedicion/ambiente.py
-      - expedicion/tareas.py
-      - expedicion/entrenar.py
-      - robots/bipedo-v1.xml
-    params:
-      - experimentos/${item.exp}-de-pie.yaml:
-          - control
-          - ambiente
-          - recompensa
-          - entrenamiento
+    - experimentos/exp-001.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v1.xml
     outs:
-      - models/${item.exp}/semilla-${item.semilla}
-
-  evaluar:
-    matrix:
-      exp: [exp-001]
-    cmd: nice -n 10 python -m expedicion evaluar ${item.exp}
+    - models/exp-001/semilla-0
+  evaluar-exp-001:
+    cmd: nice -n 10 python -m expedicion evaluar exp-001
     deps:
-      - data/${item.exp}/escenarios.json
-      - models/${item.exp}
-      - expedicion/evaluar.py
-      - expedicion/ambiente.py
+    - data/exp-001/escenarios.json
+    - models/exp-001/semilla-0
     outs:
-      - data/${item.exp}/trayectorias.jsonl
+    - data/exp-001/trayectorias.jsonl
     metrics:
-      - metrics/${item.exp}/evaluacion.json:
-          cache: false
-
-  progreso:
-    matrix:
-      exp: [exp-001]
-    cmd: nice -n 10 python -m expedicion progreso ${item.exp}
+    - metrics/exp-001/evaluacion.json:
+        cache: false
+  progreso-exp-001:
+    cmd: nice -n 10 python -m expedicion progreso exp-001
     deps:
-      - metrics/${item.exp}/evaluacion.json
-      - expedicion/evaluar.py
+    - metrics/exp-001/evaluacion.json
     metrics:
-      - metrics/${item.exp}/progreso.json:
-          cache: false
+    - metrics/exp-001/progreso.json:
+        cache: false
+  regresion-exp-001:
+    cmd: nice -n 10 python -m expedicion regresion exp-001
+    deps:
+    - metrics/exp-001/evaluacion.json
+    metrics:
+    - metrics/exp-001/regresion.json:
+        cache: false

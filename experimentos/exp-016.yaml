@@ -1,0 +1,6 @@
+id: exp-016
+titulo: 'Examen: gravedad nueva'
+pregunta: Gravedad al azar entre 1 y 12 m/s²
+agrega: Gravedad al azar entre 1 y 12 m/s²
+estado: pendiente
+criterio: 10 m en ≥ 75 %, con valores nunca vistos

@@ -1,4 +1,4 @@
-<!-- Bípedo v1: torso y dos piernas, 10 articulaciones con motor (el PD vive en el ambiente).
+<!-- Bípedo v1: torso y dos piernas, 10 articulaciones con servo de posición (kp, kv) y torque limitado.
      Unidades SI. z arriba, x adelante, y izquierda. La gravedad la fija el ambiente en cada episodio. -->
 <mujoco model="bipedo-v1">
   <compiler angle="radian" autolimits="true"/>
@@ -7,8 +7,7 @@
   <default>
     <joint type="hinge" damping="1.5" armature="0.03" limited="true"/>
     <geom friction="0.9 0.05 0.01" condim="3"/>
-    <motor ctrllimited="true" ctrlrange="-1 1"/>
-    <default class="hueso"><geom type="capsule" size="0.04" rgba="0.94 0.93 0.9 1"/></default>
+        <default class="hueso"><geom type="capsule" size="0.04" rgba="0.94 0.93 0.9 1"/></default>
     <default class="pie"><geom type="box" size="0.11 0.05 0.02" pos="0.03 0 -0.04" mass="0.5" rgba="0.2 0.24 0.3 1"/></default>
   </default>
 
@@ -55,15 +54,15 @@
   </worldbody>
 
   <actuator>
-    <motor name="cadera_roll_i" joint="cadera_roll_i" gear="80"/>
-    <motor name="cadera_pitch_i" joint="cadera_pitch_i" gear="100"/>
-    <motor name="rodilla_i" joint="rodilla_i" gear="120"/>
-    <motor name="tobillo_pitch_i" joint="tobillo_pitch_i" gear="50"/>
-    <motor name="tobillo_roll_i" joint="tobillo_roll_i" gear="30"/>
-    <motor name="cadera_roll_d" joint="cadera_roll_d" gear="80"/>
-    <motor name="cadera_pitch_d" joint="cadera_pitch_d" gear="100"/>
-    <motor name="rodilla_d" joint="rodilla_d" gear="120"/>
-    <motor name="tobillo_pitch_d" joint="tobillo_pitch_d" gear="50"/>
-    <motor name="tobillo_roll_d" joint="tobillo_roll_d" gear="30"/>
+    <position name="cadera_roll_i" joint="cadera_roll_i" kp="80" kv="8" forcerange="-80 80"/>
+    <position name="cadera_pitch_i" joint="cadera_pitch_i" kp="100" kv="10" forcerange="-100 100"/>
+    <position name="rodilla_i" joint="rodilla_i" kp="120" kv="12" forcerange="-120 120"/>
+    <position name="tobillo_pitch_i" joint="tobillo_pitch_i" kp="50" kv="5" forcerange="-50 50"/>
+    <position name="tobillo_roll_i" joint="tobillo_roll_i" kp="30" kv="3" forcerange="-30 30"/>
+    <position name="cadera_roll_d" joint="cadera_roll_d" kp="80" kv="8" forcerange="-80 80"/>
+    <position name="cadera_pitch_d" joint="cadera_pitch_d" kp="100" kv="10" forcerange="-100 100"/>
+    <position name="rodilla_d" joint="rodilla_d" kp="120" kv="12" forcerange="-120 120"/>
+    <position name="tobillo_pitch_d" joint="tobillo_pitch_d" kp="50" kv="5" forcerange="-50 50"/>
+    <position name="tobillo_roll_d" joint="tobillo_roll_d" kp="30" kv="3" forcerange="-30 30"/>
   </actuator>
 </mujoco>

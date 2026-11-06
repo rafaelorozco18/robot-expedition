@@ -1,0 +1,6 @@
+id: exp-019
+titulo: Girar en el sitio
+pregunta: Orden de giro de 90°
+agrega: Orden de giro de 90°
+estado: pendiente
+criterio: Error < 10° en ≥ 85 %

@@ -9,6 +9,7 @@
     expedicion ver exp-001 --planeta luna      imprime un episodio en la terminal
     expedicion transiciones exp-001            tabla de cinco transiciones
     expedicion registrar exp-001               registra al campeón en MLflow
+    expedicion campana exp-002 exp-003         corre experimentos en cadena
     expedicion servir                          visor 3D en http://localhost:8765
 """
 
@@ -107,6 +108,26 @@ def cmd_registrar(args):
     print(registrar(X.cargar(args.exp)))
 
 
+def cmd_regresion(args):
+    from .evaluar import regresion
+    print(regresion(X.cargar(args.exp)))
+
+
+def cmd_pipeline(args):
+    from .pipeline import generar
+    print(generar())
+
+
+def cmd_documentar(args):
+    from .documentar import documentar
+    print(documentar(X.cargar(args.exp)))
+
+
+def cmd_campana(args):
+    from .campana import campana
+    campana(args.exps, args.hasta)
+
+
 def cmd_servir(args):
     from .servidor import servir
     servir(args.puerto)
@@ -146,6 +167,12 @@ def main(argv=None):
     condiciones(s)
     s.add_argument("-n", type=int, default=5)
     con_exp("registrar", cmd_registrar)
+    con_exp("regresion", cmd_regresion)
+    con_exp("documentar", cmd_documentar)
+    comando("pipeline", cmd_pipeline)
+    s = comando("campana", cmd_campana)
+    s.add_argument("exps", nargs="+")
+    s.add_argument("--hasta", help="hora HH:MM a partir de la cual no se inicia otro experimento")
     comando("servir", cmd_servir).add_argument("--puerto", type=int, default=8765)
 
     args = ap.parse_args(argv)
