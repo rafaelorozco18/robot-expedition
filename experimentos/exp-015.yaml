@@ -1,6 +1,43 @@
 id: exp-015
 titulo: Ahorrar energía
-pregunta: Menor consumo
+pregunta: ¿Camina gastando menos energía?
 agrega: Menor consumo
 estado: pendiente
 criterio: ≥ 20 % menos energía que el Exp 10 con igual éxito
+tarea: marcha
+parte_de: exp-010
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 22
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 0.5
+  rumbo: 0.3
+  reloj: 1.0
+  paso: 0.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+  esfuerzo: 0.4
+parametros:
+  vx:
+  - 0.5
+  - 0.6
+  distancia_m: 10
+  periodo_s: 0.8
+  energia_j:
+    luna: 1826
+    marte: 2484
+    tierra: 3325
+    titan: 9999
+    venus: 9999
+aprobar:
+  tasa_exito: 0.8
+entrenamiento:
+  pasos: 3000000
+  reintentos: 0
+trampa: 'Ahorrar quedándose quieto: también debe recorrer los 10 m.'

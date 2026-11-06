@@ -5,11 +5,11 @@ agrega: Empujón de 0.8 m/s
 estado: activo
 criterio: Da un paso y no cae en ≥ 80 %
 tarea: de_pie
-parte_de: exp-007
+parte_de: exp-010
 ambiente:
   empujon_ms: 0.8
   empujon_entrenando: 0.8
-  altura_minima: 0.78
+  altura_minima: 0.75
   inclinacion_maxima: 40
 recompensa:
   postura: 0.2
@@ -17,7 +17,7 @@ aprobar:
   tasa_exito: 0.8
   perturbacion: empujon
 entrenamiento:
-  pasos: 2000000
+  pasos: 3000000
   reintentos: 0
   log_std_init: -2.2
 trampa: Agacharse antes del empujón. La altura mínima sigue activa.

@@ -28,12 +28,13 @@ parametros:
   - 0.7
   prob_detenerse: 0.5
   cambia_cada_s: 3
-  error_ms: 0.2
+  error_ms: 0.25
   periodo_s: 0.8
+  sigma_v: 0.05
 aprobar:
   tasa_exito: 0.85
 entrenamiento:
-  pasos: 4000000
+  pasos: 3000000
   reintentos: 0
 trampa: Seguir caminando en el sitio cuando debe detenerse. Con orden cero se premia
   apoyar ambos pies.

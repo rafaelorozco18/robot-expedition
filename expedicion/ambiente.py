@@ -16,8 +16,9 @@ from gymnasium import spaces
 from .experimentos import RAIZ
 from .tareas import TAREAS
 
-GRAVEDADES = {"luna": 1.62, "marte": 3.71, "tierra": 9.81}
-PLANETAS = list(GRAVEDADES)
+PLANETAS = ["luna", "marte", "tierra"]
+# Titán y Venus solo se usan como gravedades nunca vistas en el examen del Exp 16.
+GRAVEDADES = {"luna": 1.62, "marte": 3.71, "tierra": 9.81, "titan": 1.35, "venus": 8.87}
 PERTURBACIONES = ["ninguna", "empujon"]
 # Propiedades de cada piso. Fricción: rango sorteado por episodio. Arrastre: N por m/s sobre el pie
 # hundido. Sacudida: fuerza horizontal al azar (N). MuJoCo no modela suelos blandos: son aproximaciones.

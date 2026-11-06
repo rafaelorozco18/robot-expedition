@@ -5,7 +5,7 @@ agrega: Equilibrio lateral
 estado: activo
 criterio: Alterna el peso entre pies en ≥ 90 %
 tarea: pasar_peso
-parte_de: exp-004
+parte_de: exp-003
 recompensa:
   peso: 2.0
 parametros:
@@ -15,12 +15,8 @@ parametros:
 aprobar:
   tasa_exito: 0.9
 entrenamiento:
-  pasos: 2000000
+  pasos: 3000000
   reintentos: 0
   log_std_init: -2.2
 trampa: Inclinar el torso sin mover el centro de masa. Se mide el centro de masa del
   cuerpo completo.
-linaje:
-- exp-001
-- exp-002
-- exp-003

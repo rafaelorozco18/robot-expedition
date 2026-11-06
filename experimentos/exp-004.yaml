@@ -5,7 +5,7 @@ agrega: Orden de altura
 estado: activo
 criterio: Baja a 80 % de su altura y sube, con error < 3 cm
 tarea: sentadilla
-parte_de: exp-001
+parte_de: null
 ambiente:
   altura_minima: 0.7
   inclinacion_maxima: 40
@@ -15,15 +15,16 @@ parametros:
   cambio_s: 2.5
   altura_baja: 0.8
   error_m: 0.03
+  periodo_s: 5.0
 aprobar:
   tasa_exito: 0.9
 entrenamiento:
-  pasos: 2000000
+  pasos: 3000000
   reintentos: 0
-  log_std_init: -2.2
+  log_std_init: -1.5
 trampa: Quedarse a media altura para no fallar del todo. El error se mide en cada
   orden, arriba y abajo.
 control:
   rango: 1.2
-pendiente: En el primer intento se quedó a media altura; se amplió la recompensa y
-  el rango de los servos.
+pendiente: La orden pasó de escalones a un movimiento continuo y parte de cero, porque
+  heredar de estar de pie lo dejaba a media altura.

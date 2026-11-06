@@ -5,7 +5,7 @@ agrega: Marcha lateral
 estado: pendiente
 criterio: 2 m sin caer en ≥ 80 %
 tarea: marcha
-parte_de: exp-010
+parte_de: exp-001
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -31,6 +31,6 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 3000000
+  pasos: 4000000
   reintentos: 0
 trampa: Girar y caminar hacia adelante en diagonal. El rumbo se premia.

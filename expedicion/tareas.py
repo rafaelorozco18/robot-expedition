@@ -73,7 +73,7 @@ class DePie(Tarea):
 
 
 class Sentadilla(Tarea):
-    """Sigue una altura ordenada que cambia durante el episodio."""
+    """Sigue una altura ordenada que sube y baja de forma continua."""
     titulo_exito = "Siguió la altura ordenada"
 
     def iniciar(self, env):
@@ -81,10 +81,8 @@ class Sentadilla(Tarea):
         self.errores = []
 
     def actualizar(self, env):
-        periodo = int(self.t["cambio_s"] / env.dt)
-        if env.pasos % periodo == 0:
-            arriba = (env.pasos // periodo) % 2 == 0
-            env.comando[2] = 1.0 if arriba else self.t["altura_baja"]
+        fase = 2 * np.pi * env.pasos * env.dt / self.t["periodo_s"]
+        env.comando[2] = 1.0 - (1.0 - self.t["altura_baja"]) * (1 - np.cos(fase)) / 2
 
     def error(self, env):
         return abs(env.altura_torso() - env.comando[2] * env.altura_pie)
@@ -92,10 +90,9 @@ class Sentadilla(Tarea):
     def recompensa(self, env, accion, previa):
         d = self.comunes(env, accion, previa)
         e = self.error(env)
-        d["altura"] = self.p["altura"] * 0.5 * (np.exp(-((e / 0.04) ** 2)) + np.exp(-((e / 0.15) ** 2)))
+        d["altura"] = self.p["altura"] * (0.7 * np.exp(-((e / 0.03) ** 2)) + 0.3 * np.exp(-((e / 0.15) ** 2)))
         d["quieto"] = self.p["quieto"] * np.exp(-np.sum(env.data.qvel[:2] ** 2))
-        if env.pasos % int(self.t["cambio_s"] / env.dt) > 50:  # 1 s para llegar
-            self.errores.append(self.error(env))
+        self.errores.append(e)
         return d
 
     def exito(self, env, truncado):
@@ -211,7 +208,7 @@ class Marcha(Tarea):
         d = self.comunes(env, accion, previa)
         error = float(np.sum((env.data.qvel[:2] - self._velocidad_objetivo(env)) ** 2))
         error_rumbo = env.error_rumbo()
-        d["velocidad"] = self.p["velocidad"] * np.exp(-error / 0.1)
+        d["velocidad"] = self.p["velocidad"] * np.exp(-error / self.t.get("sigma_v", 0.1))
         d["altura"] = self.p["altura"] * np.exp(-(((env.altura_torso() - 0.97 * env.altura_pie) / 0.08) ** 2))
         d["erguido"] = self.p["erguido"] * env.arriba_del_torso()[2] ** 4
         d["rumbo"] = self.p["rumbo"] * np.exp(-((error_rumbo / 0.3) ** 2))
@@ -237,7 +234,7 @@ class Marcha(Tarea):
             return False
         if "error_rumbo" in self.t and float(np.mean(self.errores_rumbo[50:])) >= self.t["error_rumbo"]:
             return False
-        if "energia_j" in self.t and env.energia > self.t["energia_j"]:
+        if "energia_j" in self.t and env.energia > self.t["energia_j"][env.planeta]:
             return False
         return env.recorrido() >= self.t.get("distancia_m", 0.0)
 

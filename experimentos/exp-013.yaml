@@ -5,7 +5,7 @@ agrega: Marcha hacia atrás
 estado: pendiente
 criterio: 3 m sin caer en ≥ 80 %
 tarea: marcha
-parte_de: exp-010
+parte_de: exp-001
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -31,7 +31,7 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 3000000
+  pasos: 4000000
   reintentos: 0
 trampa: Girar para caminar de frente. El rumbo se premia y la inclinación se limita.
 pendiente: 'Primer intento detenido a 1.8 M de pasos: heredando del Exp 10 se quedó

@@ -5,7 +5,7 @@ agrega: Apoyo mínimo
 estado: activo
 criterio: 3 s sobre un pie en ≥ 80 %
 tarea: un_pie
-parte_de: exp-005
+parte_de: exp-009
 recompensa:
   levantar: 1.0
   apoyo: 0.5
@@ -15,8 +15,8 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2500000
+  pasos: 3000000
   reintentos: 0
-  log_std_init: -2.2
+  log_std_init: -2.0
 trampa: Dar saltitos con ambos pies en el aire. La racha exige el pie de apoyo en
   contacto.
