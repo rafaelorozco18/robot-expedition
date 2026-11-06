@@ -10,6 +10,7 @@
     expedicion transiciones exp-001            tabla de cinco transiciones
     expedicion registrar exp-001               registra al campeón en MLflow
     expedicion campana exp-002 exp-003         corre experimentos en cadena
+    expedicion evolucion [exp-001]             etapas de aprendizaje para el visor
     expedicion servir                          visor 3D en http://localhost:8765
 """
 
@@ -133,6 +134,15 @@ def cmd_informe(args):
     print(informe())
 
 
+def cmd_evolucion(args):
+    from .evolucion import calcular
+    for exp in X.listar():
+        if (args.exp in (None, exp["id"])) and (X.carpeta_metricas(exp) / "progreso.json").exists():
+            r = calcular(exp)
+            resumen = {p: [h["agente"] for h in d["hitos"]] for p, d in r["planetas"].items()}
+            print(exp["id"], r["recomendado"], resumen, flush=True)
+
+
 def cmd_servir(args):
     from .servidor import servir
     servir(args.puerto)
@@ -175,6 +185,7 @@ def main(argv=None):
     con_exp("regresion", cmd_regresion)
     con_exp("documentar", cmd_documentar)
     comando("pipeline", cmd_pipeline)
+    comando("evolucion", cmd_evolucion).add_argument("exp", nargs="?")
     comando("informe", cmd_informe)
     s = comando("campana", cmd_campana)
     s.add_argument("exps", nargs="+")

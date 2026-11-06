@@ -1,0 +1,108 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "tierra": {
+   "semilla": 1833516012,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-006",
+     "exito": false,
+     "segundos": 3.62,
+     "distancia": 0.48,
+     "avance": 0.362,
+     "texto": "A los 3.6 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      3.62
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-001:250048",
+     "paso": 250048,
+     "origen": "exp-001",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": 0.06,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.0 s",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2502656",
+     "paso": 2502656,
+     "origen": "exp-006",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": 0.03,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.0 s",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": 0.588
+  },
+  "marte": {
+   "semilla": 355781144,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-006",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": -0.0,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.0 s",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-003:1600000",
+     "paso": 1600000,
+     "origen": "exp-003",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -0.03,
+     "avance": 1.0,
+     "texto": "Se sostuvo sobre un pie · mejor racha en un pie 3.2 s",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2502656",
+     "paso": 2502656,
+     "origen": "exp-006",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": -0.04,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.0 s",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": 0.0
+  }
+ },
+ "recomendado": "tierra"
+}

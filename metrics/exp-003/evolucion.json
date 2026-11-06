@@ -1,0 +1,123 @@
+{
+ "perturbacion": "empujon",
+ "planetas": {
+  "tierra": {
+   "semilla": 2127514460,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-003",
+     "exito": false,
+     "segundos": 2.8,
+     "distancia": 0.47,
+     "avance": 0.28,
+     "texto": "A los 2.8 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      2.8
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-001:250048",
+     "paso": 250048,
+     "origen": "exp-001",
+     "exito": false,
+     "segundos": 7.6,
+     "distancia": 0.32,
+     "avance": 0.76,
+     "texto": "A los 7.6 s: se agachó o cayó",
+     "clip": [
+      4.62,
+      7.6
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-001:500032",
+     "paso": 500032,
+     "origen": "exp-001",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.03,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      4.62,
+      10.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2502656",
+     "paso": 2502656,
+     "origen": "exp-003",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.03,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      4.62,
+      10.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.72
+  },
+  "marte": {
+   "semilla": 1384146073,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-003",
+     "exito": false,
+     "segundos": 7.32,
+     "distancia": 0.08,
+     "avance": 0.732,
+     "texto": "A los 7.3 s: se inclinó demasiado",
+     "clip": [
+      3.96,
+      7.32
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-001:250048",
+     "paso": 250048,
+     "origen": "exp-001",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -0.13,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      3.96,
+      10.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2502656",
+     "paso": 2502656,
+     "origen": "exp-003",
+     "exito": false,
+     "segundos": 3.66,
+     "distancia": -0.01,
+     "avance": 0.366,
+     "texto": "A los 3.7 s: se agachó o cayó",
+     "clip": [
+      0.0,
+      3.66
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": -0.366
+  }
+ },
+ "recomendado": "tierra"
+}

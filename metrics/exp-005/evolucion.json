@@ -1,0 +1,123 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "tierra": {
+   "semilla": 1833516012,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-005",
+     "exito": false,
+     "segundos": 3.62,
+     "distancia": 0.48,
+     "avance": 0.362,
+     "texto": "A los 3.6 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      3.62
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-001:250048",
+     "paso": 250048,
+     "origen": "exp-001",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": 0.06,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · sobre el pie ordenado 25 % del tiempo",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:200000",
+     "paso": 200000,
+     "origen": "exp-005",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.04,
+     "avance": 1.0,
+     "texto": "Pasó el peso de un pie a otro · sobre el pie ordenado 74 % del tiempo",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 0.667
+    },
+    {
+     "agente": "paso:2002944",
+     "paso": 2002944,
+     "origen": "exp-005",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.07,
+     "avance": 1.0,
+     "texto": "Pasó el peso de un pie a otro · sobre el pie ordenado 100 % del tiempo",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.638
+  },
+  "marte": {
+   "semilla": 355781144,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-005",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": -0.0,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · sobre el pie ordenado 0 % del tiempo",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:300032",
+     "paso": 300032,
+     "origen": "exp-005",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.03,
+     "avance": 1.0,
+     "texto": "Pasó el peso de un pie a otro · sobre el pie ordenado 71 % del tiempo",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 0.333
+    },
+    {
+     "agente": "paso:2002944",
+     "paso": 2002944,
+     "origen": "exp-005",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.0,
+     "avance": 1.0,
+     "texto": "Pasó el peso de un pie a otro · sobre el pie ordenado 97 % del tiempo",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.05
+  }
+ },
+ "recomendado": "tierra"
+}

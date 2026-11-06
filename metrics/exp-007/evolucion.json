@@ -1,0 +1,123 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "tierra": {
+   "semilla": 1833516012,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 3.68,
+     "distancia": 0.55,
+     "avance": 0.95,
+     "texto": "Avanza 0.6 m y cae a los 3.7 s",
+     "clip": [
+      0.0,
+      3.68
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:300032",
+     "paso": 300032,
+     "origen": "exp-007",
+     "exito": true,
+     "segundos": 4.0,
+     "distancia": 0.17,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 0.3 m · error de velocidad 0.24 m/s",
+     "clip": [
+      0.0,
+      4.0
+     ],
+     "tasa": 0.333
+    },
+    {
+     "agente": "paso:1800000",
+     "paso": 1800000,
+     "origen": "exp-007",
+     "exito": true,
+     "segundos": 4.0,
+     "distancia": 0.65,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 0.6 m · error de velocidad 0.11 m/s",
+     "clip": [
+      0.0,
+      4.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.05
+  },
+  "marte": {
+   "semilla": 355781144,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 4.0,
+     "distancia": -0.0,
+     "avance": -0.0,
+     "texto": "Se queda en su sitio",
+     "clip": [
+      0.0,
+      4.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:100032",
+     "paso": 100032,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 4.0,
+     "distancia": 0.12,
+     "avance": 0.4,
+     "texto": "Se queda en su sitio",
+     "clip": [
+      0.0,
+      4.0
+     ],
+     "tasa": 0.0
+    },
+    {
+     "agente": "paso:200000",
+     "paso": 200000,
+     "origen": "exp-007",
+     "exito": true,
+     "segundos": 4.0,
+     "distancia": 0.2,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 0.3 m · error de velocidad 0.22 m/s",
+     "clip": [
+      0.0,
+      4.0
+     ],
+     "tasa": 1.0
+    },
+    {
+     "agente": "paso:1800000",
+     "paso": 1800000,
+     "origen": "exp-007",
+     "exito": true,
+     "segundos": 4.0,
+     "distancia": 0.99,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 1.0 m · error de velocidad 0.07 m/s",
+     "clip": [
+      0.0,
+      4.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 1.0
+  }
+ },
+ "recomendado": "marte"
+}

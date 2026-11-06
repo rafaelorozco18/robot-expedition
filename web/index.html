@@ -21,7 +21,7 @@
 
     <div class="resultado" id="resultado" hidden></div>
     <div class="aviso-empujon" id="aviso-empujon" hidden>¡Empujón!</div>
-    <div class="aviso-recorrido" id="aviso-recorrido" hidden></div>
+    <div class="etapa" id="etapa" hidden></div>
 
     <div class="linea-tiempo">
       <button id="btn-reiniciar" title="Volver al inicio" aria-label="Volver al inicio"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
@@ -54,6 +54,13 @@
     </section>
 
     <div id="contenido">
+      <section id="aprendizaje" hidden>
+        <h2>Cómo aprendió</h2>
+        <button id="btn-aprendizaje" class="primario grande"></button>
+        <p class="nota" id="aprendizaje-nota"></p>
+        <ol class="hitos" id="hitos"></ol>
+      </section>
+
       <section>
         <h2>Versión del robot</h2>
         <div class="agentes" id="agentes"></div>
@@ -73,9 +80,6 @@
         </div>
         <input type="range" id="checkpoint" min="0" max="0" value="0" aria-label="Foto del entrenamiento">
         <p class="cp-info" id="cp-info"></p>
-        <div class="campo fila">
-          <button id="btn-recorrido" class="ancho">Recorrer el progreso (8 fotos)</button>
-        </div>
         <details class="tabla-detalle">
           <summary>Ver como tabla</summary>
           <table id="tabla-progreso"></table>

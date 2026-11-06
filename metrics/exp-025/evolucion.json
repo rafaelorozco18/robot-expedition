@@ -1,0 +1,183 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "tierra": {
+   "semilla": 1833516012,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-025",
+     "exito": false,
+     "segundos": 3.74,
+     "distancia": 0.63,
+     "avance": 0.09,
+     "texto": "Avanza 0.6 m y cae a los 3.7 s",
+     "clip": [
+      0.0,
+      3.74
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-007:1400000",
+     "paso": 1400000,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 13.06,
+     "distancia": 2.49,
+     "avance": 0.356,
+     "texto": "Avanza 2.5 m y cae a los 13.1 s",
+     "clip": [
+      7.06,
+      13.06
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-007:1800000",
+     "paso": 1800000,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 20.0,
+     "distancia": 3.93,
+     "avance": 0.561,
+     "texto": "Avanza 3.9 m y no llega a la meta",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-009:100032",
+     "paso": 100032,
+     "origen": "exp-009",
+     "exito": false,
+     "segundos": 20.0,
+     "distancia": 6.16,
+     "avance": 0.88,
+     "texto": "Avanza 6.2 m y no llega a la meta",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-009:300032",
+     "paso": 300032,
+     "origen": "exp-009",
+     "exito": true,
+     "segundos": 20.0,
+     "distancia": 8.24,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 8.3 m · error de velocidad 0.21 m/s",
+     "clip": [
+      1.88,
+      10.88
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:400000",
+     "paso": 400000,
+     "origen": "exp-025",
+     "exito": true,
+     "segundos": 20.0,
+     "distancia": 10.63,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 10.6 m · error de velocidad 0.09 m/s",
+     "clip": [
+      1.52,
+      10.52
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.91
+  },
+  "marte": {
+   "semilla": 355781144,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-025",
+     "exito": false,
+     "segundos": 20.0,
+     "distancia": -0.0,
+     "avance": -0.0,
+     "texto": "Se queda en su sitio",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-007:1100032",
+     "paso": 1100032,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 14.38,
+     "distancia": 4.58,
+     "avance": 0.654,
+     "texto": "Avanza 4.6 m y cae a los 14.4 s",
+     "clip": [
+      8.38,
+      14.38
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-007:1400000",
+     "paso": 1400000,
+     "origen": "exp-007",
+     "exito": false,
+     "segundos": 17.62,
+     "distancia": 5.51,
+     "avance": 0.787,
+     "texto": "Avanza 5.5 m y cae a los 17.6 s",
+     "clip": [
+      11.62,
+      17.62
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-009:300032",
+     "paso": 300032,
+     "origen": "exp-009",
+     "exito": true,
+     "segundos": 20.0,
+     "distancia": 7.26,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 7.3 m · error de velocidad 0.18 m/s",
+     "clip": [
+      2.2,
+      11.2
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:400000",
+     "paso": 400000,
+     "origen": "exp-025",
+     "exito": true,
+     "segundos": 20.0,
+     "distancia": 11.16,
+     "avance": 1.0,
+     "texto": "Caminó hasta la meta · recorrió 11.2 m · error de velocidad 0.10 m/s",
+     "clip": [
+      1.8,
+      10.8
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 1.0
+  }
+ },
+ "recomendado": "tierra"
+}

@@ -1,0 +1,93 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "tierra": {
+   "semilla": 1833516012,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-001",
+     "exito": false,
+     "segundos": 3.62,
+     "distancia": 0.48,
+     "avance": 0.362,
+     "texto": "A los 3.6 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      3.62
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:250048",
+     "paso": 250048,
+     "origen": "exp-001",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.06,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 1.0
+    },
+    {
+     "agente": "paso:500032",
+     "paso": 500032,
+     "origen": "exp-001",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.05,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.638
+  },
+  "marte": {
+   "semilla": 355781144,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-001",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -0.0,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:500032",
+     "paso": 500032,
+     "origen": "exp-001",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.03,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 1.0
+    }
+   ],
+   "mejora": 0.0
+  }
+ },
+ "recomendado": "tierra"
+}

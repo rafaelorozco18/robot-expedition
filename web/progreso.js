@@ -87,7 +87,7 @@ export function crearProgreso({ alElegir }) {
   function describir(p) {
     const f = fotoDe(p);
     const planetas = datos.planetas.map((n) => `${n} ${pct(f[`exito_${n}`])}`).join(" · ");
-    return `<b>${miles(p)} pasos${etiqueta(p)}</b> · aguanta ${f.segundos_medios.toFixed(1)} s de media · ${planetas}`;
+    return `<b>${miles(p)} pasos${etiqueta(p)}</b> · ${planetas}`;
   }
 
   function elegir(p, lanzar) {
@@ -101,9 +101,9 @@ export function crearProgreso({ alElegir }) {
   function tabla() {
     const cab = datos.planetas.map((n) => `<th>${n}</th>`).join("");
     const filas = datos.fotos.map((f) => `<tr><td>${miles(f.paso)}${etiqueta(f.paso)}</td>
-      <td>${pct(f.tasa_exito)}</td><td>${f.segundos_medios.toFixed(1)}</td>
+      <td>${pct(f.tasa_exito)}</td>
       ${datos.planetas.map((n) => `<td>${pct(f[`exito_${n}`])}</td>`).join("")}</tr>`).join("");
-    $("tabla-progreso").innerHTML = `<thead><tr><th>Pasos</th><th>Éxito</th><th>Seg.</th>${cab}</tr></thead><tbody>${filas}</tbody>`;
+    $("tabla-progreso").innerHTML = `<thead><tr><th>Pasos</th><th>Éxito</th>${cab}</tr></thead><tbody>${filas}</tbody>`;
   }
 
   return {
@@ -127,11 +127,6 @@ export function crearProgreso({ alElegir }) {
       elegido = null;
       $("cp-info").textContent = "Elige un punto del gráfico o mueve el control para ver esa versión.";
       dibujar();
-    },
-    recorrido() {
-      const ps = pasos();
-      const n = Math.min(8, ps.length);
-      return [...new Set(Array.from({ length: n }, (_, i) => ps[Math.round((i * (ps.length - 1)) / (n - 1))]))];
     },
   };
 }

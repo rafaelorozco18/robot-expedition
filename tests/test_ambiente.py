@@ -99,3 +99,15 @@ def test_barro_frena_al_pie_que_se_mueve():
     env.pie_previo[0] = env.posicion_pie(0) - np.array([0.01, 0, 0])
     env._aplicar_piso()
     assert env.data.xfrc_applied[env.ids_cuerpo_pies[0], 0] < 0
+
+
+def test_las_etapas_incluyen_extremos_y_cuartos_de_la_mejora():
+    from expedicion.evolucion import _elegir
+    filas = [{"avance": v} for v in (0.1, 0.1, 0.2, 0.5, 0.7, 1.0, 1.0)]
+    avances = [f["avance"] for f in _elegir(filas)]
+    assert avances[0] == 0.1 and avances[-1] == 1.0 and 0.5 in avances and len(avances) >= 4
+
+
+def test_el_linaje_recorre_los_antecesores_desde_la_raiz():
+    from expedicion.evolucion import linaje
+    assert [e["id"] for e in linaje(X.cargar("exp-010"))] == ["exp-001", "exp-007", "exp-009"]

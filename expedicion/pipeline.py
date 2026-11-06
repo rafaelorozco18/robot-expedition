@@ -36,6 +36,10 @@ def generar():
             "cmd": f"nice -n 10 python -m expedicion regresion {i}",
             "deps": [f"metrics/{i}/evaluacion.json"],
             "metrics": [{f"metrics/{i}/regresion.json": {"cache": False}}]}
+        etapas[f"evolucion-{i}"] = {
+            "cmd": f"nice -n 10 python -m expedicion evolucion {i}",
+            "deps": [f"metrics/{i}/progreso.json"],
+            "metrics": [{f"metrics/{i}/evolucion.json": {"cache": False}}]}
     encabezado = "# Generado por `expedicion pipeline`. El código queda fijado por el tag de cada experimento.\n"
     (X.RAIZ / "dvc.yaml").write_text(encabezado + yaml.safe_dump({"stages": etapas}, sort_keys=False, allow_unicode=True))
     return list(etapas)

@@ -11,6 +11,7 @@ import mujoco
 
 from . import experimentos as X
 from .ambiente import GRAVEDADES, PERTURBACIONES, BipedoEnv
+from .evolucion import PLANETAS_VISOR
 from .evaluar import Aleatorio, Politica, SinEntrenar, campeon, correr_episodio, fotos_de, paso_de
 
 WEB = X.RAIZ / "web"
@@ -26,13 +27,20 @@ def _archivo_json(ruta):
     return json.loads(ruta.read_text()) if ruta.exists() else None
 
 
+def aprobado_visor(exp, ev):
+    """El visor solo muestra Tierra y Marte: el criterio se exige en esos planetas."""
+    m = ev["semillas"][str(ev["campeon"])]
+    pert = exp["aprobar"]["perturbacion"]
+    return all(m[f"{p}.{pert}"]["tasa_exito"] >= exp["aprobar"]["tasa_exito"] for p in PLANETAS_VISOR)
+
+
 def catalogo():
     lista = []
     for exp in X.listar():
         evaluacion = _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json") \
             if exp["estado"] != "pendiente" else None
         lista.append({k: exp.get(k) for k in ("id", "titulo", "pregunta", "agrega", "estado", "criterio")}
-                     | {"aprobado": evaluacion["aprobado"] if evaluacion else None,
+                     | {"aprobado": aprobado_visor(exp, evaluacion) if evaluacion else None,
                         "entrenado": evaluacion is not None})
     return lista
 
@@ -57,7 +65,7 @@ def robot(exp):
 
 def mundo(exp):
     return {"id": exp["id"], "titulo": exp["titulo"], "pregunta": exp["pregunta"], "robot": robot(exp),
-            "gravedades": GRAVEDADES, "perturbaciones": PERTURBACIONES,
+            "gravedades": {p: GRAVEDADES[p] for p in PLANETAS_VISOR}, "perturbaciones": PERTURBACIONES,
             "ambiente": exp["ambiente"], "recompensa": exp["recompensa"],
             "agentes": agentes(exp), "aprobar": exp["aprobar"],
             "evaluacion": _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json"),
@@ -76,13 +84,43 @@ def progreso(exp):
     if not datos:
         return None
     fotos = datos["fotos"]
+    for f in fotos:
+        f["tasa_exito"] = round(sum(f[f"exito_{p}"] for p in PLANETAS_VISOR) / len(PLANETAS_VISOR), 3)
     corrida = X.carpeta_modelos(exp) / f"semilla-{datos['semilla']}"
     objetivo = exp["entrenamiento"]["aprendiz"] * fotos[-1]["paso"]
     return {"curva": _archivo_json(corrida / "curva.json") or [], "fotos": fotos,
-            "semilla": datos["semilla"], "episodios_por_foto": datos["episodios_por_foto"],
-            "planetas": exp["evaluacion"]["planetas"],
+            "semilla": datos["semilla"],
+            "episodios_por_foto": exp["evaluacion"]["episodios_por_foto"] * len(PLANETAS_VISOR),
+            "planetas": PLANETAS_VISOR,
             "aprendiz": min((f["paso"] for f in fotos if f["paso"]), key=lambda p: abs(p - objetivo)),
             "experto": fotos[-1]["paso"]}
+
+
+def _pasos(n):
+    if not n:
+        return "al empezar"
+    return f"{n / 1e6:.1f} millones de pasos".replace(".", ",") if n >= 1e6 else f"{round(n / 1000)} mil pasos"
+
+
+def evolucion(exp):
+    datos = _archivo_json(X.carpeta_metricas(exp) / "evolucion.json")
+    if not datos:
+        return None
+    ev = _archivo_json(X.carpeta_metricas(exp) / "evaluacion.json")
+    aprobado = aprobado_visor(exp, ev)
+    for plan in datos["planetas"].values():
+        for n, h in enumerate(plan["hitos"]):
+            pasos = _pasos(h["paso"])
+            if h["paso"] is None:
+                h["etiqueta"] = "Sin entrenar"
+            elif h["origen"] != exp["id"]:
+                previo = X.cargar(h["origen"])
+                h["etiqueta"] = f"Exp {int(previo['id'][4:])}, {previo['titulo']} · {pasos}"
+            elif n == len(plan["hitos"]) - 1:
+                h["etiqueta"] = f"{'Experto' if aprobado else 'Mejor versión'} · {pasos}"
+            else:
+                h["etiqueta"] = f"Este experimento · {pasos}"
+    return {**datos, "aprobado": aprobado}
 
 
 @lru_cache(maxsize=32)
@@ -103,6 +141,13 @@ def crear_agente(exp, nombre, semilla):
         return _politica(str(X.carpeta_modelos(exp) / f"semilla-{c}" / "experto.zip"))
     if nombre == "aprendiz":
         return _politica(str(fotos[progreso(exp)["aprendiz"]]))
+    if nombre.startswith("foto:"):
+        _, origen, paso = nombre.split(":")
+        previo = X.cargar(origen)
+        ruta = {paso_de(r): r for r in fotos_de(previo, campeon(previo))}.get(int(paso))
+        if ruta is None:
+            raise FileNotFoundError(f"No existe la foto {nombre}.")
+        return _politica(str(ruta))
     if nombre.startswith("paso:"):
         paso = int(nombre[5:])
         if paso not in fotos:
@@ -133,11 +178,13 @@ class Manejador(BaseHTTPRequestHandler):
             return self._json(mundo(exp))
         if partes[3] == "progreso":
             return self._json(progreso(exp))
+        if partes[3] == "evolucion":
+            return self._json(evolucion(exp))
         if partes[3] == "episodio":
             q = {k: v[0] for k, v in parse_qs(url.query).items()}
-            esc = {"planeta": q.get("planeta", "marte"), "perturbacion": q.get("perturbacion", "ninguna"),
+            esc = {"planeta": q.get("planeta", "tierra"), "perturbacion": q.get("perturbacion", "ninguna"),
                    "semilla": int(q.get("semilla", 0))}
-            if esc["planeta"] not in GRAVEDADES or esc["perturbacion"] not in PERTURBACIONES:
+            if esc["planeta"] not in PLANETAS_VISOR or esc["perturbacion"] not in PERTURBACIONES:
                 raise ValueError("condición desconocida")
             agente = crear_agente(exp, q.get("agente", "experto"), esc["semilla"])
             resumen, cuadros = correr_episodio(exp, agente, esc, grabar=True)

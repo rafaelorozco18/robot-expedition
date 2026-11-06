@@ -48,6 +48,13 @@ stages:
     metrics:
     - metrics/exp-001/regresion.json:
         cache: false
+  evolucion-exp-001:
+    cmd: nice -n 10 python -m expedicion evolucion exp-001
+    deps:
+    - metrics/exp-001/progreso.json
+    metrics:
+    - metrics/exp-001/evolucion.json:
+        cache: false
   escenarios-exp-002:
     cmd: python -m expedicion escenarios exp-002
     deps:
@@ -98,6 +105,13 @@ stages:
     metrics:
     - metrics/exp-002/regresion.json:
         cache: false
+  evolucion-exp-002:
+    cmd: nice -n 10 python -m expedicion evolucion exp-002
+    deps:
+    - metrics/exp-002/progreso.json
+    metrics:
+    - metrics/exp-002/evolucion.json:
+        cache: false
   escenarios-exp-003:
     cmd: python -m expedicion escenarios exp-003
     deps:
@@ -137,6 +151,13 @@ stages:
     - metrics/exp-003/evaluacion.json
     metrics:
     - metrics/exp-003/regresion.json:
+        cache: false
+  evolucion-exp-003:
+    cmd: nice -n 10 python -m expedicion evolucion exp-003
+    deps:
+    - metrics/exp-003/progreso.json
+    metrics:
+    - metrics/exp-003/evolucion.json:
         cache: false
   escenarios-exp-004:
     cmd: python -m expedicion escenarios exp-004
@@ -178,6 +199,13 @@ stages:
     metrics:
     - metrics/exp-004/regresion.json:
         cache: false
+  evolucion-exp-004:
+    cmd: nice -n 10 python -m expedicion evolucion exp-004
+    deps:
+    - metrics/exp-004/progreso.json
+    metrics:
+    - metrics/exp-004/evolucion.json:
+        cache: false
   escenarios-exp-005:
     cmd: python -m expedicion escenarios exp-005
     deps:
@@ -217,6 +245,13 @@ stages:
     - metrics/exp-005/evaluacion.json
     metrics:
     - metrics/exp-005/regresion.json:
+        cache: false
+  evolucion-exp-005:
+    cmd: nice -n 10 python -m expedicion evolucion exp-005
+    deps:
+    - metrics/exp-005/progreso.json
+    metrics:
+    - metrics/exp-005/evolucion.json:
         cache: false
   escenarios-exp-006:
     cmd: python -m expedicion escenarios exp-006
@@ -258,6 +293,13 @@ stages:
     metrics:
     - metrics/exp-006/regresion.json:
         cache: false
+  evolucion-exp-006:
+    cmd: nice -n 10 python -m expedicion evolucion exp-006
+    deps:
+    - metrics/exp-006/progreso.json
+    metrics:
+    - metrics/exp-006/evolucion.json:
+        cache: false
   escenarios-exp-007:
     cmd: python -m expedicion escenarios exp-007
     deps:
@@ -297,6 +339,13 @@ stages:
     - metrics/exp-007/evaluacion.json
     metrics:
     - metrics/exp-007/regresion.json:
+        cache: false
+  evolucion-exp-007:
+    cmd: nice -n 10 python -m expedicion evolucion exp-007
+    deps:
+    - metrics/exp-007/progreso.json
+    metrics:
+    - metrics/exp-007/evolucion.json:
         cache: false
   escenarios-exp-008:
     cmd: python -m expedicion escenarios exp-008
@@ -338,6 +387,13 @@ stages:
     metrics:
     - metrics/exp-008/regresion.json:
         cache: false
+  evolucion-exp-008:
+    cmd: nice -n 10 python -m expedicion evolucion exp-008
+    deps:
+    - metrics/exp-008/progreso.json
+    metrics:
+    - metrics/exp-008/evolucion.json:
+        cache: false
   escenarios-exp-009:
     cmd: python -m expedicion escenarios exp-009
     deps:
@@ -377,6 +433,13 @@ stages:
     - metrics/exp-009/evaluacion.json
     metrics:
     - metrics/exp-009/regresion.json:
+        cache: false
+  evolucion-exp-009:
+    cmd: nice -n 10 python -m expedicion evolucion exp-009
+    deps:
+    - metrics/exp-009/progreso.json
+    metrics:
+    - metrics/exp-009/evolucion.json:
         cache: false
   escenarios-exp-010:
     cmd: python -m expedicion escenarios exp-010
@@ -418,6 +481,13 @@ stages:
     metrics:
     - metrics/exp-010/regresion.json:
         cache: false
+  evolucion-exp-010:
+    cmd: nice -n 10 python -m expedicion evolucion exp-010
+    deps:
+    - metrics/exp-010/progreso.json
+    metrics:
+    - metrics/exp-010/evolucion.json:
+        cache: false
   escenarios-exp-022:
     cmd: python -m expedicion escenarios exp-022
     deps:
@@ -457,6 +527,13 @@ stages:
     - metrics/exp-022/evaluacion.json
     metrics:
     - metrics/exp-022/regresion.json:
+        cache: false
+  evolucion-exp-022:
+    cmd: nice -n 10 python -m expedicion evolucion exp-022
+    deps:
+    - metrics/exp-022/progreso.json
+    metrics:
+    - metrics/exp-022/evolucion.json:
         cache: false
   escenarios-exp-023:
     cmd: python -m expedicion escenarios exp-023
@@ -498,6 +575,13 @@ stages:
     metrics:
     - metrics/exp-023/regresion.json:
         cache: false
+  evolucion-exp-023:
+    cmd: nice -n 10 python -m expedicion evolucion exp-023
+    deps:
+    - metrics/exp-023/progreso.json
+    metrics:
+    - metrics/exp-023/evolucion.json:
+        cache: false
   escenarios-exp-025:
     cmd: python -m expedicion escenarios exp-025
     deps:
@@ -537,6 +621,13 @@ stages:
     - metrics/exp-025/evaluacion.json
     metrics:
     - metrics/exp-025/regresion.json:
+        cache: false
+  evolucion-exp-025:
+    cmd: nice -n 10 python -m expedicion evolucion exp-025
+    deps:
+    - metrics/exp-025/progreso.json
+    metrics:
+    - metrics/exp-025/evolucion.json:
         cache: false
   escenarios-exp-026:
     cmd: python -m expedicion escenarios exp-026
@@ -578,6 +669,13 @@ stages:
     metrics:
     - metrics/exp-026/regresion.json:
         cache: false
+  evolucion-exp-026:
+    cmd: nice -n 10 python -m expedicion evolucion exp-026
+    deps:
+    - metrics/exp-026/progreso.json
+    metrics:
+    - metrics/exp-026/evolucion.json:
+        cache: false
   escenarios-exp-027:
     cmd: python -m expedicion escenarios exp-027
     deps:
@@ -618,6 +716,13 @@ stages:
     metrics:
     - metrics/exp-027/regresion.json:
         cache: false
+  evolucion-exp-027:
+    cmd: nice -n 10 python -m expedicion evolucion exp-027
+    deps:
+    - metrics/exp-027/progreso.json
+    metrics:
+    - metrics/exp-027/evolucion.json:
+        cache: false
   escenarios-exp-028:
     cmd: python -m expedicion escenarios exp-028
     deps:
@@ -657,4 +762,11 @@ stages:
     - metrics/exp-028/evaluacion.json
     metrics:
     - metrics/exp-028/regresion.json:
+        cache: false
+  evolucion-exp-028:
+    cmd: nice -n 10 python -m expedicion evolucion exp-028
+    deps:
+    - metrics/exp-028/progreso.json
+    metrics:
+    - metrics/exp-028/evolucion.json:
         cache: false

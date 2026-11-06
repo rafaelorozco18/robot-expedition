@@ -1,0 +1,93 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "tierra": {
+   "semilla": 1833516012,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-004",
+     "exito": false,
+     "segundos": 3.68,
+     "distancia": 0.55,
+     "avance": 0.368,
+     "texto": "A los 3.7 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      3.68
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-001:250048",
+     "paso": 250048,
+     "origen": "exp-001",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": 0.03,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · error medio 8.5 cm",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2002944",
+     "paso": 2002944,
+     "origen": "exp-004",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": -0.01,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · error medio 8.5 cm",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": 0.582
+  },
+  "marte": {
+   "semilla": 355781144,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-004",
+     "exito": false,
+     "segundos": 10.0,
+     "distancia": -0.0,
+     "avance": 0.95,
+     "texto": "Aguanta, pero no cumple la orden · error medio 8.5 cm",
+     "clip": [
+      0.0,
+      7.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2002944",
+     "paso": 2002944,
+     "origen": "exp-004",
+     "exito": false,
+     "segundos": 3.26,
+     "distancia": 0.21,
+     "avance": 0.326,
+     "texto": "A los 3.3 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      3.26
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": -0.624
+  }
+ },
+ "recomendado": "tierra"
+}

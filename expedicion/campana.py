@@ -57,7 +57,7 @@ def correr(i):
             break
         _editar(i, entrenamiento={"semillas": [*semillas, s + 1]})
     exp = X.cargar(i)
-    _repro([f"progreso-{i}", f"regresion-{i}"])
+    _repro([f"progreso-{i}", f"regresion-{i}", f"evolucion-{i}"])
     _anotar(f"{i}: {registrar(exp)}")
     documentar(exp)
     informe()

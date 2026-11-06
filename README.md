@@ -21,11 +21,17 @@ pip install -r requirements.txt
 expedicion servir        # http://localhost:8765
 ```
 
-El selector superior recorre los 50 experimentos. En cada uno se pueden ver las versiones del robot
-(sin entrenar, aleatorio, aprendiz y experto), la curva de aprendizaje con cualquier foto intermedia,
-las condiciones (planeta y perturbación), el torque de cada articulación y si el modelo olvidó pruebas
-anteriores. MuJoCo corre cada episodio en Python y el navegador solo lo dibuja. Three.js está incluido
-en `web/vendor/`, así que no requiere internet.
+El selector superior recorre los 50 experimentos. El botón **Ver su aprendizaje** reproduce, en cada
+experimento, cómo el robot pasó de no saber nada a cumplir la tarea: prueba en un mismo escenario las fotos
+del experimento y de todo su linaje, elige las etapas donde realmente mejoró y muestra el tramo relevante
+de cada una (la caída, el cruce del piso o la reacción al empujón). También se puede tocar cualquier etapa.
+
+El visor muestra la Tierra y Marte, y exige los criterios de aprobación en esos dos planetas. Las métricas
+y fichas de `docs/` conservan además la Luna, que sigue siendo parte del entrenamiento.
+
+Además se ven las versiones del robot, la curva de aprendizaje, el torque de cada articulación y si el
+modelo olvidó pruebas anteriores. MuJoCo corre cada episodio en Python y el navegador solo lo dibuja.
+Three.js está incluido en `web/vendor/`, así que no requiere internet.
 
 ## CLI
 
@@ -36,6 +42,7 @@ expedicion entrenar exp-001 --semilla 0    # una corrida con PPO
 expedicion evaluar exp-001                 # compara semillas y elige al campeón
 expedicion progreso exp-001                # prueba cada foto del entrenamiento
 expedicion regresion exp-001               # repite las pruebas anteriores
+expedicion evolucion exp-001               # calcula las etapas de aprendizaje del visor
 expedicion ver exp-001 --planeta luna      # imprime un episodio en la terminal
 expedicion campana exp-002 exp-003         # corre, registra, documenta y versiona en cadena
 ```

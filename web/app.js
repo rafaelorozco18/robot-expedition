@@ -33,8 +33,8 @@ const NOMBRE_RECOMPENSA = {
 
 const estado = {
   catalogo: [], exp: null, mundo: null,
-  agente: "experto", planeta: "marte", perturbacion: "ninguna",
-  episodio: null, i: 0, tiempo: 0, play: false, velocidad: 1,
+  agente: "experto", planeta: "tierra", perturbacion: "ninguna",
+  episodio: null, i: 0, tiempo: 0, play: false, velocidad: 1, finClip: null,
 };
 
 // ------------------------------------------------------------------ escena
@@ -184,10 +184,12 @@ function segmentado(id, valores, etiqueta) {
     const b = document.createElement("button");
     b.textContent = etiqueta(v);
     b.setAttribute("aria-pressed", estado[id] === v);
+    b.dataset.valor = v;
     b.onclick = () => {
+      detenerAprendizaje();
       estado[id] = v;
       for (const o of cont.children) o.setAttribute("aria-pressed", o === b);
-      if (id === "planeta") aplicarPlaneta();
+      if (id === "planeta") { aplicarPlaneta(); dibujarHitos(); }
       lanzar();
     };
     cont.append(b);
@@ -206,7 +208,7 @@ function construirAgentes() {
     b.disabled = !a.disponible;
     b.setAttribute("aria-pressed", a.id === estado.agente);
     b.innerHTML = `<span class="punto"></span><b>${info.titulo}</b><small>${a.disponible ? a.descripcion : "Este experimento todavía no tiene modelo entrenado."}</small>`;
-    b.onclick = () => { detenerRecorrido(); estado.agente = a.id; marcarVersion(); lanzar(); };
+    b.onclick = () => { detenerAprendizaje(); estado.agente = a.id; marcarVersion(); lanzar(); };
     cont.append(b);
   }
 }
@@ -228,12 +230,13 @@ function construirMotores() {
 
 function marcarVersion() {
   for (const b of $("agentes").children) b.setAttribute("aria-pressed", b.dataset.id === estado.agente);
-  if (!estado.agente.startsWith("paso:")) progreso.soltar();
+  if (!estado.agente.includes(":")) progreso.soltar();
 }
 
 function nombreVersion() {
   const a = estado.agente;
   if (a.startsWith("paso:")) return `Foto en ${Number(a.slice(5)).toLocaleString("es")} pasos`;
+  if (a.startsWith("foto:")) return `Foto de un experimento anterior`;
   return AGENTES[a].titulo;
 }
 
@@ -294,7 +297,7 @@ function aplicarPlaneta() {
 
 // ------------------------------------------------------------- experimentos
 async function abrirExperimento(id) {
-  detenerRecorrido();
+  detenerAprendizaje();
   estado.exp = id;
   const e = estado.catalogo.find((x) => x.id === id);
   const n = estado.catalogo.indexOf(e) + 1;
@@ -327,6 +330,7 @@ async function abrirExperimento(id) {
   construirRobot(estado.mundo.robot);
   construirAgentes();
   construirMotores();
+  await cargarAprendizaje(id);
   segmentado("planeta", Object.keys(estado.mundo.gravedades), (v) => `${TEMAS[v].nombre} · ${estado.mundo.gravedades[v]}`);
   segmentado("perturbacion", estado.mundo.perturbaciones, (v) => ETIQUETA_PERTURBACION[v] || v);
   await progreso.cargar(id);
@@ -341,7 +345,8 @@ async function abrirExperimento(id) {
   await lanzar();
 }
 
-async function lanzar() {
+async function lanzar(clip = null) {
+  estado.finClip = null;
   const semilla = Number($("semilla").value) || 0;
   const q = new URLSearchParams({ agente: estado.agente, planeta: estado.planeta, perturbacion: estado.perturbacion, semilla });
   const resp = await fetch(`/api/exp/${estado.exp}/episodio?${q}`);
@@ -352,7 +357,12 @@ async function lanzar() {
   dibujarTramos(datos.resumen.tramos || []);
   estado.i = 0; estado.tiempo = 0; estado.play = true;
   $("barra").max = datos.cuadros.length - 1;
-  mostrar(0);
+  if (clip) {
+    estado.tiempo = clip[0];
+    estado.finClip = clip[1];
+    estado.i = Math.max(0, datos.cuadros.findIndex((c) => c.t >= clip[0]));
+  }
+  mostrar(estado.i);
   botonPlay(true);
 }
 
@@ -369,13 +379,13 @@ function alternarPlay() {
   botonPlay(estado.play);
 }
 
-$("btn-play").onclick = alternarPlay;
-$("btn-reiniciar").onclick = () => { if (estado.episodio) irA(0); };
-$("barra").oninput = (e) => { estado.play = false; botonPlay(false); irA(Number(e.target.value)); };
+$("btn-play").onclick = () => { detenerAprendizaje(); alternarPlay(); };
+$("btn-reiniciar").onclick = () => { if (estado.episodio) { detenerAprendizaje(); irA(0); } };
+$("barra").oninput = (e) => { detenerAprendizaje(); estado.play = false; botonPlay(false); irA(Number(e.target.value)); };
 $("velocidad").onchange = (e) => { estado.velocidad = Number(e.target.value); };
-$("btn-lanzar").onclick = lanzar;
-$("btn-dado").onclick = () => { $("semilla").value = Math.floor(Math.random() * 10000); lanzar(); };
-$("semilla").onchange = lanzar;
+$("btn-lanzar").onclick = () => { detenerAprendizaje(); lanzar(); };
+$("btn-dado").onclick = () => { detenerAprendizaje(); $("semilla").value = Math.floor(Math.random() * 10000); lanzar(); };
+$("semilla").onchange = () => { detenerAprendizaje(); lanzar(); };
 window.addEventListener("keydown", (e) => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
   if (e.code === "Space") { e.preventDefault(); alternarPlay(); }
@@ -383,42 +393,101 @@ window.addEventListener("keydown", (e) => {
 
 // ---------------------------------------------------- progreso del entrenamiento
 const progreso = crearProgreso({
-  alElegir: (p) => { detenerRecorrido(); verFoto(p); },
+  alElegir: (p) => { detenerAprendizaje(); verFoto(p); },
 });
-let recorrido = null;   // { fotos, i, espera }
-
 function verFoto(p) {
   estado.agente = `paso:${p}`;
   marcarVersion();
   return lanzar();
 }
+
+// ------------------------------------------------------- cómo aprendió, por etapas
+let aprendizaje = null;  // etapas calculadas por el simulador (metrics/exp-NNN/evolucion.json)
+let reel = null;         // { plan, i, espera } mientras se reproduce la secuencia
+const ICONO_VER = '<svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>';
+
+async function cargarAprendizaje(id) {
+  const r = await fetch(`/api/exp/${id}/evolucion`);
+  aprendizaje = r.ok ? await r.json() : null;
+  $("aprendizaje").hidden = !aprendizaje;
+  if (!aprendizaje) return;
+  estado.planeta = aprendizaje.recomendado;
+  aplicarPlaneta();
+  dibujarHitos();
+}
+
+function textoBoton(activo) {
+  $("btn-aprendizaje").innerHTML = activo ? "Detener" : `${ICONO_VER}<span>Ver su aprendizaje</span>`;
+}
+
+function dibujarHitos(activo = -1) {
+  if (!aprendizaje) return;
+  const plan = aprendizaje.planetas[estado.planeta];
+  textoBoton(Boolean(reel));
+  const cont = $("hitos");
+  cont.innerHTML = "";
+  plan.hitos.forEach((h, i) => {
+    const li = document.createElement("li");
+    li.className = `hito ${h.exito ? "logrado" : ""} ${i === activo ? "activo" : ""}`;
+    const tasa = h.tasa === null ? "" : `<small>En las pruebas: ${Math.round(h.tasa * 100)} %</small>`;
+    li.innerHTML = `<button><span class="h-num">${i + 1}</span><span class="h-cuerpo"><b>${h.etiqueta}</b><span>${h.texto}</span>${tasa}</span></button>`;
+    li.querySelector("button").onclick = () => { detenerAprendizaje(); reproducirEtapa(plan, i, false); };
+    cont.append(li);
+  });
+  $("aprendizaje-nota").textContent = plan.mejora < 0.05
+    ? `En ${planeta.tema().nombre} ya lo lograba desde el inicio: el contraste está en ${TEMAS[otroPlaneta()].nombre}.`
+    : `${plan.hitos.length} etapas en ${planeta.tema().nombre}, desde que no sabía nada, todas en la misma prueba de este experimento.`;
+}
+
+const otroPlaneta = () => Object.keys(aprendizaje.planetas).find((p) => p !== estado.planeta);
+
+async function reproducirEtapa(plan, i, seguir) {
+  const h = plan.hitos[i];
+  estado.agente = h.agente;
+  estado.perturbacion = aprendizaje.perturbacion;
+  for (const b of $("perturbacion").children) b.setAttribute("aria-pressed", b.dataset.valor === estado.perturbacion);
+  $("semilla").value = plan.semilla;
+  marcarVersion();
+  dibujarHitos(i);
+  const aviso = $("etapa");
+  aviso.className = `etapa ${h.exito ? "logrado" : ""}`;
+  aviso.innerHTML = `<small>Etapa ${i + 1} de ${plan.hitos.length}</small><b>${h.etiqueta}</b><span>${h.texto}</span>`;
+  aviso.hidden = false;
+  $("resultado").hidden = true;
+  estado.velocidad = 1;
+  $("velocidad").value = "1";
+  await lanzar(h.clip);
+  if (seguir && reel) reel.i = i;
+}
+
 function alTerminarEpisodio() {
-  if (recorrido) recorrido.espera = setTimeout(siguienteFoto, 1200);
+  if (!reel) return;
+  reel.espera = setTimeout(() => {
+    if (!reel) return;
+    const { plan, i } = reel;
+    if (i + 1 < plan.hitos.length) { reproducirEtapa(plan, i + 1, true); return; }
+    const a = plan.hitos[0], z = plan.hitos[plan.hitos.length - 1];
+    const aviso = $("etapa");
+    aviso.className = `etapa ${z.exito ? "logrado" : ""}`;
+    aviso.innerHTML = `<small>De principio a fin</small><b>${a.texto}</b><span>→ ${z.texto}</span>`;
+    reel = null;
+    dibujarHitos();
+  }, 1300);
 }
-async function siguienteFoto() {
-  if (!recorrido) return;
-  recorrido.i += 1;
-  if (recorrido.i >= recorrido.fotos.length) return detenerRecorrido();
-  const p = recorrido.fotos[recorrido.i];
-  progreso.elegir(p, false);
-  $("aviso-recorrido").innerHTML = `Recorrido ${recorrido.i + 1}/${recorrido.fotos.length} · ${p.toLocaleString("es")} pasos <button id="btn-parar">Detener</button>`;
-  $("btn-parar").onclick = detenerRecorrido;
-  await verFoto(p);
+
+function detenerAprendizaje() {
+  if (reel) clearTimeout(reel.espera);
+  reel = null;
+  estado.finClip = null;
+  $("etapa").hidden = true;
+  if (aprendizaje) textoBoton(false);
 }
-function detenerRecorrido() {
-  if (!recorrido) return;
-  clearTimeout(recorrido.espera);
-  recorrido = null;
-  $("aviso-recorrido").hidden = true;
-  $("btn-recorrido").textContent = "Recorrer el progreso (8 fotos)";
-}
-$("btn-recorrido").onclick = () => {
-  if (recorrido) return detenerRecorrido();
-  recorrido = { fotos: progreso.recorrido(), i: -1, espera: null };
-  if (estado.velocidad < 2) { estado.velocidad = 2; $("velocidad").value = "2"; }
-  $("aviso-recorrido").hidden = false;
-  $("btn-recorrido").textContent = "Detener recorrido";
-  siguienteFoto();
+
+$("btn-aprendizaje").onclick = () => {
+  if (reel) { detenerAprendizaje(); dibujarHitos(); return; }
+  const plan = aprendizaje.planetas[estado.planeta];
+  reel = { plan, i: 0, espera: null };
+  reproducirEtapa(plan, 0, true);
 };
 
 // ------------------------------------------------------------------ bucle
@@ -441,7 +510,8 @@ function bucle() {
         estado.i += 1;
         mostrar(estado.i);
       }
-      if (estado.i >= c.length - 1) {
+      if (estado.i >= c.length - 1 || (estado.finClip !== null && estado.tiempo >= estado.finClip)) {
+        estado.finClip = null;
         estado.play = false;
         botonPlay(false);
         alTerminarEpisodio();

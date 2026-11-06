@@ -1,0 +1,123 @@
+{
+ "perturbacion": "empujon",
+ "planetas": {
+  "tierra": {
+   "semilla": 419613150,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-008",
+     "exito": false,
+     "segundos": 2.9,
+     "distancia": 0.51,
+     "avance": 0.29,
+     "texto": "A los 2.9 s: se inclinó demasiado",
+     "clip": [
+      1.34,
+      2.9
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:1500032",
+     "paso": 1500032,
+     "origen": "exp-008",
+     "exito": false,
+     "segundos": 7.4,
+     "distancia": 0.03,
+     "avance": 0.74,
+     "texto": "A los 7.4 s: se inclinó demasiado",
+     "clip": [
+      1.34,
+      7.4
+     ],
+     "tasa": 0.0
+    },
+    {
+     "agente": "paso:1700032",
+     "paso": 1700032,
+     "origen": "exp-008",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -0.01,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      1.34,
+      8.34
+     ],
+     "tasa": 0.0
+    },
+    {
+     "agente": "paso:2002944",
+     "paso": 2002944,
+     "origen": "exp-008",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -0.03,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      1.34,
+      8.34
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": 0.71
+  },
+  "marte": {
+   "semilla": 596784020,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-008",
+     "exito": false,
+     "segundos": 7.92,
+     "distancia": 0.2,
+     "avance": 0.792,
+     "texto": "A los 7.9 s: se inclinó demasiado",
+     "clip": [
+      5.5,
+      7.92
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "foto:exp-007:1100032",
+     "paso": 1100032,
+     "origen": "exp-007",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 2.61,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      5.5,
+      10.0
+     ],
+     "tasa": null
+    },
+    {
+     "agente": "paso:2002944",
+     "paso": 2002944,
+     "origen": "exp-008",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 1.46,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
+     "clip": [
+      5.5,
+      10.0
+     ],
+     "tasa": 0.0
+    }
+   ],
+   "mejora": 0.208
+  }
+ },
+ "recomendado": "tierra"
+}

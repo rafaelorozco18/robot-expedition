@@ -19,6 +19,10 @@ muestra la evolución, con un selector para ir de experimento en experimento.
 - **Exp 1 usa Luna, Marte y Tierra a la vez**, sorteados por episodio.
 - **El robot ve la gravedad, pero no el piso:** el terreno lo descubre por cómo responden sus pies.
 - **Física ≠ decoración:** el simulador corre en Python y el visor Three.js solo reproduce cuadros.
+- **Visor sin Luna (pedido del usuario):** muestra Tierra y Marte, y `servidor.aprobado_visor` exige el criterio
+  en esos dos. El entrenamiento, `metrics/` y `docs/resultados.md` siguen incluyendo la Luna.
+- **«Ver su aprendizaje»:** `expedicion/evolucion.py` prueba las fotos de todo el linaje en un escenario fijo y
+  guarda las etapas en `metrics/exp-NNN/evolucion.json`. Un experimento nuevo lo genera solo en su campaña.
 - **Experimento ≠ corrida.** Experimento: una pregunta nueva. Corrida: un intento dentro de ella (semilla o parámetros).
 - Cada experimento es un archivo en `experimentos/`; agregar uno no debe exigir copiar código.
 - Cada modelo nuevo repite las pruebas de los experimentos anteriores (regresión).
@@ -64,6 +68,7 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 
 ## Estado actual (2026-11-06, tras la jornada autónoma)
 
+- Con el criterio del visor (Tierra y Marte) hay 12 aprobados; con los 3 planetas, 8.
 - Rama `exp-001-de-pie`. Un commit y tag por experimento; resultados en `docs/resultados.md` y `metrics/campana.log`.
 - `expedicion campana exp-NNN ... --seguir --hasta HH:MM` entrena, evalúa, registra, documenta y versiona.
 - Los pisos usan el robot v1 y heredan del Exp 10; por eso se corrieron antes que 11 a 21.
