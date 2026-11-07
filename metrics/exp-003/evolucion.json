@@ -50,12 +50,12 @@
      "tasa": null
     },
     {
-     "agente": "paso:2502656",
-     "paso": 2502656,
+     "agente": "paso:3002368",
+     "paso": 3002368,
      "origen": "exp-003",
      "exito": true,
      "segundos": 10.0,
-     "distancia": 0.03,
+     "distancia": 0.01,
      "avance": 1.0,
      "texto": "Se mantuvo de pie",
      "clip": [
@@ -101,22 +101,22 @@
      "tasa": null
     },
     {
-     "agente": "paso:2502656",
-     "paso": 2502656,
+     "agente": "paso:3002368",
+     "paso": 3002368,
      "origen": "exp-003",
-     "exito": false,
-     "segundos": 3.66,
-     "distancia": -0.01,
-     "avance": 0.366,
-     "texto": "A los 3.7 s: se agachó o cayó",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.15,
+     "avance": 1.0,
+     "texto": "Se mantuvo de pie",
      "clip": [
-      0.0,
-      3.66
+      3.96,
+      10.0
      ],
-     "tasa": 0.0
+     "tasa": 0.667
     }
    ],
-   "mejora": -0.366
+   "mejora": 0.268
   }
  },
  "recomendado": "tierra"
