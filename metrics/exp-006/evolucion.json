@@ -35,14 +35,14 @@
      "tasa": null
     },
     {
-     "agente": "paso:2502656",
-     "paso": 2502656,
+     "agente": "paso:3002368",
+     "paso": 3002368,
      "origen": "exp-006",
      "exito": false,
      "segundos": 10.0,
-     "distancia": 0.03,
+     "distancia": 0.31,
      "avance": 0.95,
-     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.0 s",
+     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.1 s",
      "clip": [
       0.0,
       7.0
@@ -71,29 +71,14 @@
      "tasa": null
     },
     {
-     "agente": "foto:exp-003:1600000",
-     "paso": 1600000,
-     "origen": "exp-003",
-     "exito": true,
-     "segundos": 10.0,
-     "distancia": -0.03,
-     "avance": 1.0,
-     "texto": "Se sostuvo sobre un pie · mejor racha en un pie 3.2 s",
-     "clip": [
-      0.0,
-      7.0
-     ],
-     "tasa": null
-    },
-    {
-     "agente": "paso:2502656",
-     "paso": 2502656,
+     "agente": "paso:3002368",
+     "paso": 3002368,
      "origen": "exp-006",
      "exito": false,
      "segundos": 10.0,
-     "distancia": -0.04,
+     "distancia": 0.14,
      "avance": 0.95,
-     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.0 s",
+     "texto": "Aguanta, pero no cumple la orden · mejor racha en un pie 0.1 s",
      "clip": [
       0.0,
       7.0

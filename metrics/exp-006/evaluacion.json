@@ -109,52 +109,52 @@
     "0": {
       "global": {
         "episodios": 60,
-        "tasa_exito": 0.017,
-        "segundos_medios": 8.15,
-        "energia_media_j": 33.9,
-        "inclinacion_max_media": 21.2
+        "tasa_exito": 0.0,
+        "segundos_medios": 9.4,
+        "energia_media_j": 1680.4,
+        "inclinacion_max_media": 17.4
       },
       "luna.ninguna": {
         "episodios": 10,
-        "tasa_exito": 0.1,
-        "segundos_medios": 10.0,
-        "energia_media_j": 31.6,
-        "inclinacion_max_media": 8.6
+        "tasa_exito": 0.0,
+        "segundos_medios": 9.41,
+        "energia_media_j": 1569.9,
+        "inclinacion_max_media": 16.2
       },
       "luna.empujon": {
         "episodios": 10,
         "tasa_exito": 0.0,
-        "segundos_medios": 6.11,
-        "energia_media_j": 40.0,
-        "inclinacion_max_media": 35.4
+        "segundos_medios": 8.55,
+        "energia_media_j": 1438.7,
+        "inclinacion_max_media": 22.6
       },
       "marte.ninguna": {
         "episodios": 10,
         "tasa_exito": 0.0,
         "segundos_medios": 10.0,
-        "energia_media_j": 27.1,
-        "inclinacion_max_media": 8.4
+        "energia_media_j": 1803.8,
+        "inclinacion_max_media": 12.2
       },
       "marte.empujon": {
         "episodios": 10,
         "tasa_exito": 0.0,
-        "segundos_medios": 7.64,
-        "energia_media_j": 38.0,
-        "inclinacion_max_media": 35.7
+        "segundos_medios": 8.77,
+        "energia_media_j": 1584.2,
+        "inclinacion_max_media": 26.2
       },
       "tierra.ninguna": {
         "episodios": 10,
         "tasa_exito": 0.0,
-        "segundos_medios": 9.36,
-        "energia_media_j": 24.7,
-        "inclinacion_max_media": 8.5
+        "segundos_medios": 10.0,
+        "energia_media_j": 1866.1,
+        "inclinacion_max_media": 12.0
       },
       "tierra.empujon": {
         "episodios": 10,
         "tasa_exito": 0.0,
-        "segundos_medios": 5.79,
-        "energia_media_j": 42.1,
-        "inclinacion_max_media": 30.3
+        "segundos_medios": 9.66,
+        "energia_media_j": 1819.9,
+        "inclinacion_max_media": 15.2
       }
     }
   },
