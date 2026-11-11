@@ -11,3 +11,4 @@
 | 105 | [Caminar bien](experimentos/exp-105.md) | No aprobado | 0 % | 80 % | 2.0 M | 20 min |
 | 106 | [Caminar en terreno difícil](experimentos/exp-106.md) | No aprobado | 25 % | 75 % | 1.3 M | 15 min |
 | 107 | [Girar en la esquina](experimentos/exp-107.md) | No aprobado | 0 % | 80 % | 1.6 M | 14 min |
+| 108 | [Caminar en curva](experimentos/exp-108.md) | No aprobado | 0 % | 75 % | 1.9 M | 18 min |
