@@ -206,7 +206,7 @@ function construirMeta(x) {
     grupoCampo.add(m);
   }
   const banda = new THREE.Mesh(new THREE.PlaneGeometry(5.3, 0.62), new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide }));
-  banda.rotation.y = Math.PI / 2;
+  banda.rotation.y = -Math.PI / 2;  // el texto se lee desde la salida
   banda.position.set(x, 2.45, 0);
   grupoCampo.add(banda);
   const linea = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 5.2), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 }));
@@ -706,6 +706,8 @@ const estrellas = (h) => "★".repeat(ESTRELLAS[h.etiqueta] || 1).padEnd(5, "☆
 
 async function reproducirEtapa(plan, i, seguir) {
   const h = plan.hitos[i];
+  if (robot) robot.raiz.visible = false;  // no mostrar el final de la etapa anterior con el rótulo nuevo
+  estado.play = false;
   estado.agente = h.agente;
   estado.perturbacion = aprendizaje.perturbacion;
   for (const b of $("perturbacion").children) b.setAttribute("aria-pressed", b.dataset.valor === estado.perturbacion);
