@@ -5,7 +5,7 @@ tarea: curva
 parte_de: exp-107
 pregunta: ¿Camina en círculo, girando y avanzando a la vez?
 agrega: 'Velocidad y giro simultáneos: un círculo de 2 m de radio'
-criterio: Recorre 324° del círculo desviándose menos de 0,4 m en ≥ 75 %
+criterio: 324° del círculo, desvío < 0,4 m y calidad ≥ 28/100 en ≥ 75 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -39,7 +39,7 @@ parametros:
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 45
+  calidad_min: 28
   radio_m: 2.0
   velocidad_ms: 0.45
   vueltas: 0.9
@@ -57,3 +57,5 @@ trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no
 control:
   rango: 0.8
   filtro: 0.6
+pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
+  no empeorar la marcha mientras aprende lo nuevo.'

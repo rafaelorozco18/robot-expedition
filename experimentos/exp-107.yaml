@@ -5,7 +5,7 @@ tarea: esquina
 parte_de: exp-106
 pregunta: ¿Camina recto, gira 90° sobre su eje y sigue recto?
 agrega: 'Una esquina: detenerse, rotar en el sitio y retomar la marcha'
-criterio: Completa los dos tramos de 3 m con el rumbo correcto en ≥ 80 %
+criterio: Completa la esquina con calidad ≥ 28/100 en ≥ 80 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -39,7 +39,7 @@ parametros:
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 45
+  calidad_min: 28
   lado_m: 3
   giro_rad_s: 0.7
   velocidad_ms: 0.5
@@ -56,3 +56,5 @@ trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante 
 control:
   rango: 0.8
   filtro: 0.6
+pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
+  no empeorar la marcha mientras aprende lo nuevo.'

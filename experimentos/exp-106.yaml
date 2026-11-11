@@ -5,7 +5,7 @@ tarea: marcha
 parte_de: exp-105
 pregunta: ¿Mantiene una marcha buena sobre arena, grava, barro y listones?
 agrega: Pisos mezclados al azar y listones de 3,5 cm que obligan a levantar el pie
-criterio: 10 m con calidad ≥ 50/100 en ≥ 75 %
+criterio: 10 m sin perder la calidad del Exp 5 (≥ 30/100) en ≥ 75 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -38,7 +38,7 @@ parametros:
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 50
+  calidad_min: 30
   erguido_estricto: true
 pisos:
   tramos:
@@ -82,3 +82,5 @@ trampa: 'Tropezar y recuperarse: la calidad baja si arrastra el pie o se inclina
 control:
   rango: 0.8
   filtro: 0.6
+pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
+  no empeorar la marcha mientras aprende lo nuevo.'

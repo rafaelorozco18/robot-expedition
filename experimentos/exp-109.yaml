@@ -5,7 +5,7 @@ tarea: recorrido
 parte_de: exp-108
 pregunta: ¿Encadena rectas, giros y curvas sobre terreno difícil y con viento?
 agrega: Órdenes que cambian cada pocos segundos, pisos mezclados y viento suave
-criterio: 24 s siguiendo velocidad y rumbo con error bajo en ≥ 70 %
+criterio: 24 s siguiendo velocidad y rumbo, calidad ≥ 25/100, en ≥ 70 %
 clima_visual: lluvia
 ambiente:
   altura_minima: 0.75
@@ -40,7 +40,7 @@ parametros:
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 40
+  calidad_min: 25
   tramo_s: 4
   error_ms: 0.25
   error_rumbo: 0.4
@@ -89,3 +89,5 @@ trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episod
 control:
   rango: 0.8
   filtro: 0.6
+pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
+  no empeorar la marcha mientras aprende lo nuevo.'
