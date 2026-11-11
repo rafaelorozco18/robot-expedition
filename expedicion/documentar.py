@@ -27,6 +27,27 @@ def transiciones(exp, n=5):
     return "\n".join(filas)
 
 
+def _entorno(exp):
+    lineas = []
+    p = exp.get("parametros", {})
+    if exp["tarea"] == "marcha" and p.get("distancia_m"):
+        lineas.append(f"- Meta a {p['distancia_m']} m en línea recta.")
+    if exp["tarea"] == "esquina":
+        lineas.append(f"- Esquina: {p['lado_m']} m hacia +x, giro de 90° sobre su eje y {p['lado_m']} m hacia +y.")
+    if exp["tarea"] == "curva":
+        lineas.append(f"- Círculo de {p['radio_m']} m de radio con centro a la izquierda del inicio.")
+    if exp.get("pisos"):
+        tipos = sorted({t["tipo"] for t in exp["pisos"]["tramos"]})
+        lineas.append(f"- Tramos de {', '.join(tipos)} en orden y largo aleatorios.")
+    if exp.get("listones"):
+        l = exp["listones"]
+        lineas.append(f"- {l['cantidad']} listones de {l['alto_m'] * 100:.1f} cm separados {l['separacion_m'][0]} a {l['separacion_m'][1]} m.")
+    a = exp.get("adversidad", {})
+    if a.get("viento_n"):
+        lineas.append(f"- Viento de {a['viento_n'][0]} a {a['viento_n'][1]} N sobre el torso" + (f", con ráfagas de {a['rafaga_n'][0]} a {a['rafaga_n'][1]} N." if a.get("rafaga_n") else "."))
+    return "\n".join(lineas)
+
+
 def documentar(exp):
     ev = json.loads((X.carpeta_metricas(exp) / "evaluacion.json").read_text())
     campeon = ev["semillas"][str(ev["campeon"])]
@@ -49,8 +70,9 @@ def documentar(exp):
 
 ## 1. Mapa
 
-Campo plano de MuJoCo de 60 m × 60 m (el visor dibuja 12 m × 12 m). Inicio en el origen, de pie.
-Gravedad: {', '.join(f'{k} {v} m/s²' for k, v in GRAVEDADES.items())}.
+Campo plano de MuJoCo de 60 m × 60 m. Inicio en el origen, de pie.
+Gravedad: {', '.join(f'{k} {GRAVEDADES[k]} m/s²' for k in exp['evaluacion']['planetas'])}.
+{_entorno(exp)}
 
 ## 2. Estado y observación
 
