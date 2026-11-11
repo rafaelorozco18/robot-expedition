@@ -79,9 +79,11 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
             from .evaluar import correr_episodio
             modelo = self.model
 
+            from .evaluar import _ActorEstocastico
+
             class Actual:
-                def actuar(self, obs, env):
-                    return modelo.predict(obs, deterministic=True)[0]
+                def para_episodio(self, semilla):
+                    return _ActorEstocastico(modelo.policy, np.random.default_rng(semilla))
 
             for planeta in exp["evaluacion"]["planetas"]:
                 exitos = [correr_episodio(exp, Actual(), {"planeta": planeta, "semilla": s,

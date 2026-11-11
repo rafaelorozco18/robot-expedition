@@ -1,12 +1,14 @@
 # Robot Expedition
 
-Proyecto final de MLOps Autonomous Lab. Un robot con articulaciones aprende a controlar su cuerpo
-en mundos hostiles, subiendo la dificultad de a una cosa por experimento: primero sostenerse de pie,
-después caminar, cruzar terrenos difíciles y, al final, completar una misión.
+Proyecto final de MLOps Autonomous Lab. Un robot bípedo de 12 articulaciones aprende a moverse en Marte,
+subiendo la dificultad de a una cosa por experimento: sostenerse, caminar, resistir el viento, caminar con
+buena técnica, girar en una esquina, caminar en curva y dominar todo eso en terreno difícil.
 
-- Plan: [docs/plan-50-experimentos.md](docs/plan-50-experimentos.md)
+- Serie vigente: [docs/serie-marte.md](docs/serie-marte.md) (experimentos `exp-101` a `exp-109`)
 - Ficha de cada experimento: [docs/experimentos/](docs/experimentos/)
+- Resultados: [docs/resultados.md](docs/resultados.md)
 - Contexto de trabajo: [CLAUDE.md](CLAUDE.md)
+- Serie anterior (plan de 50, tres planetas): [docs/plan-50-experimentos.md](docs/plan-50-experimentos.md)
 
 ## Instalación
 
@@ -19,15 +21,13 @@ pip install -r requirements.txt
 
 ```bash
 expedicion servir        # http://localhost:8765
+expedicion exportar      # versión estática en exportado/, para compartir sin servidor
 ```
 
-El selector superior recorre los 50 experimentos. El botón **Ver su aprendizaje** reproduce, en cada
-experimento, cómo el robot pasó de no saber nada a cumplir la tarea: prueba en un mismo escenario las fotos
-del experimento y de todo su linaje, elige las etapas donde realmente mejoró y muestra el tramo relevante
-de cada una (la caída, el cruce del piso o la reacción al empujón). También se puede tocar cualquier etapa.
-
-El visor muestra la Tierra y Marte, y exige los criterios de aprobación en esos dos planetas. Las métricas
-y fichas de `docs/` conservan además la Luna, que sigue siendo parte del entrenamiento.
+El selector superior recorre los experimentos de la serie. El botón **Ver cómo aprendió** reproduce cinco
+etapas de cada uno: fracaso absoluto, fracaso pero mejor, punto de inflexión, cumplido y perfeccionado, todas
+en el mismo escenario de Marte. En los experimentos con viento se ven las estelas de polvo y una manga de viento
+que siguen la fuerza que aplica el simulador.
 
 Además se ven las versiones del robot, la curva de aprendizaje, el torque de cada articulación y si el
 modelo olvidó pruebas anteriores. MuJoCo corre cada episodio en Python y el navegador solo lo dibuja.

@@ -25,13 +25,31 @@ class Aleatorio:
 
 
 class Politica:
-    """Red entrenada con PPO, sin exploración."""
+    """Red entrenada con PPO. Actúa con su propio ruido (es una política estocástica), sembrado
+    por episodio para que cada episodio se pueda repetir idéntico. En la Serie Marte la media sola,
+    sin ruido, no se sostiene: el ruido forma parte de lo que aprendió."""
     def __init__(self, ruta):
         from stable_baselines3 import PPO
         self.modelo = PPO.load(ruta, device="cpu")
 
+    def para_episodio(self, semilla):
+        """Actor con su propio generador: episodios simultáneos (servidor) no se mezclan."""
+        return _ActorEstocastico(self.modelo.policy, np.random.default_rng(semilla))
+
     def actuar(self, obs, env):
-        return self.modelo.predict(obs, deterministic=True)[0]
+        return self.modelo.predict(obs, deterministic=False)[0]
+
+
+class _ActorEstocastico:
+    def __init__(self, politica, rng):
+        self.politica, self.rng = politica, rng
+
+    def actuar(self, obs, env):
+        import torch
+        with torch.no_grad():
+            dist = self.politica.get_distribution(self.politica.obs_to_tensor(obs)[0]).distribution
+            media, desvio = dist.mean.numpy()[0], dist.stddev.numpy()[0]
+        return np.clip(media + desvio * self.rng.standard_normal(media.shape), -1.0, 1.0)
 
 
 def fotos_de(exp, semilla):
@@ -65,6 +83,8 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
     env = BipedoEnv(exp)
     obs, _ = env.reset(seed=escenario["semilla"], options={
         "planeta": escenario["planeta"], "perturbacion": escenario["perturbacion"]})
+    if hasattr(agente, "para_episodio"):
+        agente = agente.para_episodio(escenario["semilla"])
     bodies = range(1, env.model.nbody)
     total, inclinacion_max = 0.0, 0.0
     cuadros = []
