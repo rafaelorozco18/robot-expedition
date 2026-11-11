@@ -701,7 +701,7 @@ function dibujarHitos(activo = -1) {
 
 const otroPlaneta = () => Object.keys(aprendizaje.planetas).find((p) => p !== estado.planeta);
 
-const ESTRELLAS = { "Fracaso absoluto": 1, "Fracaso, pero mejor": 2, "Punto de inflexión": 3, "Cumplido": 4, "Perfeccionado": 5 };
+const ESTRELLAS = { "Fracaso absoluto": 1, "Fracaso, pero mejor": 2, "Punto de inflexión": 3, "Casi lo logra": 4, "Mejor intento (aún no cumple)": 4, "Cumplido": 4, "Perfeccionado": 5 };
 const estrellas = (h) => "★".repeat(ESTRELLAS[h.etiqueta] || 1).padEnd(5, "☆");
 
 async function reproducirEtapa(plan, i, seguir) {

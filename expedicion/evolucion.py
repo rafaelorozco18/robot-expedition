@@ -78,33 +78,40 @@ def _texto(exp, r):
     return f"No cumple el objetivo{calidad}" + (f" · {r['detalle']}" if r["detalle"] else "")
 
 
+ETAPAS_SIN_CUMPLIR = ["Fracaso absoluto", "Fracaso, pero mejor", "Punto de inflexión", "Casi lo logra",
+                      "Mejor intento (aún no cumple)"]
+
+
+def _repartir(filas, indices, n):
+    """n intentos de indices: el peor, el mejor posterior y los que mejor reparten la mejora entre ambos."""
+    peor = min(indices, key=lambda i: (filas[i]["puntaje"], i))
+    tras = [i for i in indices if i > peor] or indices
+    mejor = max(tras, key=lambda i: (filas[i]["puntaje"], i))
+    elegidos = [peor]
+    for k in range(1, n - 1):
+        meta = filas[peor]["puntaje"] + k / (n - 1) * (filas[mejor]["puntaje"] - filas[peor]["puntaje"])
+        entre = [i for i in indices if elegidos[-1] < i < mejor and i not in elegidos]
+        if entre:
+            elegidos.append(min(entre, key=lambda i: abs(filas[i]["puntaje"] - meta)))
+    elegidos.append(mejor)
+    return list(dict.fromkeys(elegidos))
+
+
 def _elegir(filas):
-    """Devuelve las cinco etapas (o menos si el experimento no llegó a cumplirse)."""
+    """Cinco etapas. Si nunca cumple, cinco intentos fallidos del peor al mejor, con nombres que lo dicen."""
     exitos = [i for i, f in enumerate(filas) if f["exito"]]
-    if exitos:
-        cumplido = exitos[0]
-        posteriores = [i for i in exitos if i != cumplido]
-        perfecto = max(posteriores, key=lambda i: (filas[i]["puntaje"], i)) if posteriores else None
-        fallos = [i for i, f in enumerate(filas[:cumplido]) if not f["exito"]]
-    else:
-        cumplido = perfecto = None
-        fallos = [i for i, f in enumerate(filas)]
-    if not fallos:
-        fallos = [0]
-    peor = min(fallos, key=lambda i: (filas[i]["puntaje"], i))
-    tras_peor = [i for i in fallos if i > peor] or fallos
-    inflexion = max(tras_peor, key=lambda i: (filas[i]["puntaje"], i))
-    medio = (filas[peor]["puntaje"] + filas[inflexion]["puntaje"]) / 2
-    entre = [i for i in fallos if peor < i < inflexion] or [i for i in fallos if i not in (peor, inflexion)]
-    intermedio = min(entre, key=lambda i: abs(filas[i]["puntaje"] - medio)) if entre else None
-    elegidos = [peor, intermedio, inflexion, cumplido, perfecto]
-    etapas = []
-    for nombre, i in zip(ETAPAS, elegidos):
-        if i is not None and all(i != e["indice"] for e in etapas):
-            etapas.append({**filas[i], "indice": i, "etapa": nombre})
-    if cumplido is None:
-        etapas[-1]["etapa"] = "Mejor intento (aún no cumple)"
-    return etapas
+    if not exitos:
+        elegidos = _repartir(filas, list(range(len(filas))), 5)
+        nombres = ETAPAS_SIN_CUMPLIR[:len(elegidos) - 1] + [ETAPAS_SIN_CUMPLIR[-1]]
+        return [{**filas[i], "indice": i, "etapa": e} for i, e in zip(elegidos, nombres)]
+    cumplido = exitos[0]
+    posteriores = [i for i in exitos if i != cumplido]
+    perfecto = max(posteriores, key=lambda i: (filas[i]["puntaje"], i)) if posteriores else None
+    fallos = [i for i, f in enumerate(filas[:cumplido]) if not f["exito"]] or [0]
+    previos = _repartir(filas, fallos, 3)
+    elegidos = previos + [cumplido] + ([perfecto] if perfecto is not None else [])
+    nombres = ETAPAS[:len(previos) - 1] + ["Punto de inflexión", "Cumplido", "Perfeccionado"][:len(elegidos) - len(previos) + 1]
+    return [{**filas[i], "indice": i, "etapa": e} for i, e in zip(elegidos, nombres)]
 
 
 def _tasas(exp):
