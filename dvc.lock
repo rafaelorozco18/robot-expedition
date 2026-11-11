@@ -450,3 +450,39 @@ stages:
       hash: md5
       md5: a0401116c2b631163311e93e0047fe36
       size: 2154
+  progreso-exp-105:
+    cmd: nice -n 10 python -m expedicion progreso exp-105
+    deps:
+    - path: metrics/exp-105/evaluacion.json
+      hash: md5
+      md5: a0401116c2b631163311e93e0047fe36
+      size: 2154
+    outs:
+    - path: metrics/exp-105/progreso.json
+      hash: md5
+      md5: ab0a335c83ed8b7d1ae639381a31b325
+      size: 5495
+  regresion-exp-105:
+    cmd: nice -n 10 python -m expedicion regresion exp-105
+    deps:
+    - path: metrics/exp-105/evaluacion.json
+      hash: md5
+      md5: a0401116c2b631163311e93e0047fe36
+      size: 2154
+    outs:
+    - path: metrics/exp-105/regresion.json
+      hash: md5
+      md5: 4bdd028d692567ca5dbf282d041113f8
+      size: 92
+  evolucion-exp-105:
+    cmd: nice -n 10 python -m expedicion evolucion exp-105
+    deps:
+    - path: metrics/exp-105/progreso.json
+      hash: md5
+      md5: ab0a335c83ed8b7d1ae639381a31b325
+      size: 5495
+    outs:
+    - path: metrics/exp-105/evolucion.json
+      hash: md5
+      md5: 0f99bf7d663a5fd8e0743ca9e9cb679b
+      size: 2330

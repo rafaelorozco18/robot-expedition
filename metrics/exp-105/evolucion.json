@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1829338324,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 26.0,
+     "distancia": -0.02,
+     "calidad": 39.9,
+     "avance": 0.002,
+     "puntaje": 0.0016,
+     "texto": "Se queda en su sitio · calidad 40/100",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "foto:exp-102:1555648",
+     "paso": 1555648,
+     "origen": "exp-102",
+     "exito": false,
+     "segundos": 6.42,
+     "distancia": 3.09,
+     "calidad": 31.1,
+     "avance": 0.313,
+     "puntaje": 0.2327,
+     "texto": "A los 6.4 s: se agachó o cayó · recorrió 3.1 m · error de velocidad 0.22 m/s",
+     "clip": [
+      0.42,
+      6.42,
+      1
+     ],
+     "tasa": null,
+     "indice": 8,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "foto:exp-104:752640",
+     "paso": 752640,
+     "origen": "exp-104",
+     "exito": false,
+     "segundos": 9.9,
+     "distancia": 5.23,
+     "calidad": 33.9,
+     "avance": 0.525,
+     "puntaje": 0.4031,
+     "texto": "A los 9.9 s: se agachó o cayó · recorrió 5.2 m · error de velocidad 0.14 m/s",
+     "clip": [
+      3.9,
+      9.9,
+      1
+     ],
+     "tasa": null,
+     "indice": 11,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:125040",
+     "paso": 125040,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 26.0,
+     "distancia": 14.04,
+     "calidad": 21.6,
+     "avance": 1.0,
+     "puntaje": 0.6615,
+     "texto": "Llega, pero sin la calidad pedida: 22/100 de 55",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 0.0,
+     "indice": 19,
+     "etapa": "Casi lo logra"
+    },
+    {
+     "agente": "paso:1531280",
+     "paso": 1531280,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 26.0,
+     "distancia": 14.16,
+     "calidad": 31.8,
+     "avance": 1.0,
+     "puntaje": 0.7496,
+     "texto": "Llega, pero sin la calidad pedida: 32/100 de 55",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 0.0,
+     "indice": 34,
+     "etapa": "Mejor intento (aún no cumple)"
+    }
+   ],
+   "mejora": 0.748
+  }
+ },
+ "recomendado": "marte"
+}
