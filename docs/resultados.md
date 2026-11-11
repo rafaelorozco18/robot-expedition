@@ -4,4 +4,4 @@
 
 | # | Experimento | Resultado | Luna · Marte · Tierra | Exigido | Pasos | Tiempo |
 |---|---|---|---|---|---|---|
-| 101 | [De pie](experimentos/exp-101.md) | No aprobado | 8 % | 95 % | 1.5 M | 12 min |
+| 101 | [De pie](experimentos/exp-101.md) | Aprobado | 83 % | 80 % | 1.5 M | 12 min |

@@ -20,7 +20,7 @@
       1.42,
       1
      ],
-     "tasa": 0.0,
+     "tasa": 0.667,
      "indice": 13,
      "etapa": "Fracaso absoluto"
     },
@@ -60,7 +60,7 @@
       3.44,
       1
      ],
-     "tasa": 0.333,
+     "tasa": 0.667,
      "indice": 16,
      "etapa": "Punto de inflexión"
     },
@@ -80,7 +80,7 @@
       8.0,
       1
      ],
-     "tasa": 0.0,
+     "tasa": 1.0,
      "indice": 17,
      "etapa": "Cumplido"
     },
@@ -100,7 +100,7 @@
       8.0,
       1
      ],
-     "tasa": 0.333,
+     "tasa": 1.0,
      "indice": 26,
      "etapa": "Perfeccionado"
     }

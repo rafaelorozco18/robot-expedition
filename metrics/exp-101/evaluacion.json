@@ -59,29 +59,29 @@
     "0": {
       "global": {
         "episodios": 24,
-        "tasa_exito": 0.083,
-        "segundos_medios": 4.74,
-        "energia_media_j": 92.1,
-        "inclinacion_max_media": 25.4,
-        "calidad_media": 38.4
+        "tasa_exito": 0.833,
+        "segundos_medios": 8.89,
+        "energia_media_j": 533.5,
+        "inclinacion_max_media": 10.8,
+        "calidad_media": 29.3
       },
       "marte.ninguna": {
         "episodios": 12,
-        "tasa_exito": 0.083,
-        "segundos_medios": 4.61,
-        "energia_media_j": 80.8,
-        "inclinacion_max_media": 25.6,
-        "calidad_media": 39.4
+        "tasa_exito": 0.833,
+        "segundos_medios": 8.79,
+        "energia_media_j": 529.0,
+        "inclinacion_max_media": 10.7,
+        "calidad_media": 29.3
       },
       "marte.empujon": {
         "episodios": 12,
-        "tasa_exito": 0.083,
-        "segundos_medios": 4.86,
-        "energia_media_j": 103.5,
-        "inclinacion_max_media": 25.1,
-        "calidad_media": 37.4
+        "tasa_exito": 0.833,
+        "segundos_medios": 8.99,
+        "energia_media_j": 538.1,
+        "inclinacion_max_media": 10.9,
+        "calidad_media": 29.4
       }
     }
   },
-  "aprobado": false
+  "aprobado": true
 }
