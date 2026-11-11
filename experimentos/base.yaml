@@ -1,21 +1,21 @@
-# Valores comunes a todos los experimentos. Cada exp-NNN.yaml sobreescribe solo lo que cambia.
-robot: robots/bipedo-v1.xml
+# Serie Marte: valores comunes. Cada exp-1NN.yaml sobreescribe solo lo que cambia.
+# La serie anterior (plan de 50) está en experimentos/plan-50/ y en los tags exp-001…exp-028.
+robot: robots/bipedo-v2.xml
 tarea: de_pie
-parte_de: null            # id del experimento del que hereda el modelo
-
+parte_de: null
 control:
-  rango: 0.8              # rad, cuánto puede alejarse el objetivo de la postura de pie
-
+  rango: 0.8
+  filtro: 0.3
 ambiente:
-  duracion_s: 10          # truncamiento
-  frame_skip: 5           # 5 × 4 ms = control a 50 Hz
-  ruido_inicial: 0.02     # rad, en cada articulación
-  altura_minima: 0.85     # fracción de la altura de pie; por debajo cuenta como caída
-  inclinacion_maxima: 35  # grados
-  empujon_entrenando: 0.0 # probabilidad de un empujón por episodio al entrenar
-  empujon_ms: 0.4         # m/s que se le suman al torso
+  duracion_s: 10
+  frame_skip: 5
+  ruido_inicial: 0.12
+  altura_minima: 0.85
+  inclinacion_maxima: 35
+  empujon_entrenando: 0.0
+  empujon_ms: 0.4
   empujones_por_episodio: 1
-
+  velocidad_inicial: 0.35
 recompensa:
   vivo: 1.0
   altura: 1.0
@@ -24,13 +24,13 @@ recompensa:
   esfuerzo: 0.05
   suavidad: 0.05
   caida: 50.0
-
 entrenamiento:
   pasos: 2000000
   procesos: 4
   robots_por_proceso: 16
   hilos: 1
-  semillas: [0]
+  semillas:
+  - 0
   n_steps: 64
   batch_size: 2048
   n_epochs: 5
@@ -39,19 +39,25 @@ entrenamiento:
   gae_lambda: 0.95
   clip_range: 0.2
   log_std_init: -1.5
-  escala_recompensa: 0.05 # evita que la función de valor sature el optimizador
-  red: [256, 256]
-  fotos: 12
+  escala_recompensa: 0.05
+  red:
+  - 256
+  - 256
+  fotos: 24
   aprendiz: 0.25
-  pasos_minimos: 200000   # desde aquí puede parar si aprueba tres fotos seguidas
-
+  pasos_minimos: 1000000000000
+  fotos_cuadraticas: true
 evaluacion:
   semilla: 2026
-  episodios_por_condicion: 10
+  episodios_por_condicion: 12
   episodios_por_foto: 3
-  planetas: [luna, marte, tierra]
-  perturbaciones: [ninguna, empujon]
-
+  planetas:
+  - marte
+  perturbaciones:
+  - ninguna
+  - empujon
 aprobar:
   tasa_exito: 0.95
   perturbacion: ninguna
+planetas_entrenamiento:
+- marte

@@ -143,7 +143,8 @@ class BipedoEnv(gym.Env):
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         options = options or {}
-        self.planeta = options.get("planeta") or PLANETAS[self.np_random.integers(len(PLANETAS))]
+        sorteables = self.exp.get("planetas_entrenamiento", PLANETAS)
+        self.planeta = options.get("planeta") or sorteables[self.np_random.integers(len(sorteables))]
         rango_g = self.exp.get("parametros", {}).get("gravedad_rango")
         self.g = float(self.np_random.uniform(*rango_g)) if rango_g and self.entrenando else GRAVEDADES[self.planeta]
         # Una rampa equivale a inclinar la gravedad respecto del piso.
@@ -153,6 +154,10 @@ class BipedoEnv(gym.Env):
         ruido = self.exp["ambiente"]["ruido_inicial"]
         self.data.ctrl[:] = self.postura_inicial
         self._colocar(self.postura_inicial + self.np_random.normal(0, ruido, self.model.nu))
+        v0 = self.exp["ambiente"].get("velocidad_inicial", 0.0)
+        if v0:  # arranca desequilibrado: debe recuperar el equilibrio desde el primer instante
+            ang = self.np_random.uniform(0, 2 * np.pi)
+            self.data.qvel[:2] = v0 * np.array([np.cos(ang), np.sin(ang)])
         self.perturbacion = options.get("perturbacion")
         if self.perturbacion is None:
             prob = self.exp["ambiente"]["empujon_entrenando"] if self.entrenando else 0.0
@@ -169,7 +174,9 @@ class BipedoEnv(gym.Env):
         self.x_inicial = float(self.data.qpos[0])
         self.y_inicial = float(self.data.qpos[1])
         self.accion_previa = np.zeros(self.model.nu)
+        self.accion_aplicada = np.zeros(self.model.nu)
         self.empujado = False
+        self._iniciar_estadisticas()
         self.tramos = self._sortear_tramos() if self.conf_pisos else []
         self.pie_previo = [self.posicion_pie(0).copy(), self.posicion_pie(1).copy()]
         self.rumbo_objetivo = 0.0
@@ -190,6 +197,10 @@ class BipedoEnv(gym.Env):
             accion_real = self.cola_acciones.pop(0) if len(self.cola_acciones) > self.retardo else np.zeros(self.model.nu)
         else:
             accion_real = accion
+        # Filtro de primer orden: los servos no saltan de golpe a cada orden (marcha más suave).
+        f = self.control.get("filtro", 0.0)
+        self.accion_aplicada = (1 - f) * accion_real + f * self.accion_aplicada
+        accion_real = self.accion_aplicada
         self.data.ctrl[:] = self.postura_inicial + accion_real * self.control["rango"]
         if self.adversidad:
             self._aplicar_viento()
@@ -199,6 +210,7 @@ class BipedoEnv(gym.Env):
         self.pasos += 1
         self.energia += float(np.sum(np.abs(self.data.actuator_force * self.data.actuator_velocity))) * self.dt
 
+        self._acumular_estadisticas(accion)
         desglose = self.tarea.recompensa(self, accion, self.accion_previa)
         recompensa = sum(desglose.values())
         self.accion_previa = accion
@@ -222,7 +234,13 @@ class BipedoEnv(gym.Env):
             self.retardo = int(self.np_random.integers(a["retardo_ms"][0], a["retardo_ms"][1] + 1) / (self.dt * 1000))
         self.viento = np.zeros(3)
         if "viento_n" in a:
-            self.viento[1] = self.np_random.uniform(*a["viento_n"]) * self.np_random.choice([-1.0, 1.0])
+            fuerza = self.np_random.uniform(*a["viento_n"])
+            if a.get("viento_libre"):
+                ang = self.np_random.uniform(0, 2 * np.pi)
+                self.viento[:2] = fuerza * np.array([np.cos(ang), np.sin(ang)])
+            else:
+                self.viento[1] = fuerza * self.np_random.choice([-1.0, 1.0])
+        self.viento_actual = self.viento.copy()
         self.rafaga_hasta = -1
         self.rafaga = np.zeros(3)
         m.actuator_gainprm[:, 0] = self.gain_base
@@ -243,10 +261,64 @@ class BipedoEnv(gym.Env):
         if "rafaga_n" in a:
             if self.pasos > self.rafaga_hasta and self.np_random.random() < a.get("prob_rafaga", 0.01):
                 self.rafaga_hasta = self.pasos + int(0.5 / self.dt)
-                self.rafaga = np.array([0.0, self.np_random.uniform(*a["rafaga_n"]) * self.np_random.choice([-1.0, 1.0]), 0.0])
+                f = self.np_random.uniform(*a["rafaga_n"])
+                base = self.viento[:2] / (np.linalg.norm(self.viento[:2]) + 1e-9) if np.any(self.viento) else np.array([0.0, 1.0])
+                # la ráfaga sopla en la dirección del viento, a veces cruzada
+                ang = self.np_random.normal(0, 0.5)
+                c, sn = np.cos(ang), np.sin(ang)
+                self.rafaga = np.array([f * (c * base[0] - sn * base[1]), f * (sn * base[0] + c * base[1]), 0.0])
             if self.pasos <= self.rafaga_hasta:
                 fuerza = fuerza + self.rafaga
+        self.viento_actual = fuerza
         self.data.xfrc_applied[self.id_torso, :3] = fuerza
+
+    # --------------------------------------------------- calidad del movimiento
+    def _iniciar_estadisticas(self):
+        self.est = {"pasos": [], "despejes": [], "cambios": [], "inclinaciones": [], "vel_torso": [],
+                    "apoyo_previo": [True, True], "altura_vuelo": [0.0, 0.0], "ultimo_apoyo": None}
+
+    def _acumular_estadisticas(self, accion):
+        e = self.est
+        izq, der, _ = self.contactos()
+        apoyos = [izq, der]
+        for lado in (0, 1):
+            pos = self.posicion_pie(lado)
+            if not apoyos[lado]:
+                e["altura_vuelo"][lado] = max(e["altura_vuelo"][lado], float(pos[2]) - 0.04)
+            elif not e["apoyo_previo"][lado]:  # aterrizaje: termina un paso
+                e["despejes"].append(e["altura_vuelo"][lado])
+                e["altura_vuelo"][lado] = 0.0
+                if e["ultimo_apoyo"] is not None and e["ultimo_apoyo"][0] != lado:
+                    e["pasos"].append(float(np.linalg.norm(pos[:2] - e["ultimo_apoyo"][1])))
+                e["ultimo_apoyo"] = (lado, pos[:2].copy())
+        e["apoyo_previo"] = apoyos
+        e["cambios"].append(float(np.mean(np.abs(accion - self.accion_previa))))
+        e["inclinaciones"].append(self.inclinacion_grados())
+        e["vel_torso"].append(float(np.linalg.norm(self.data.qvel[:2])))
+
+    def estadisticas(self):
+        """Indicadores de cómo se mueve, de 0 a 100. Ver docs/serie-marte.md."""
+        e = self.est
+        segundos = max(self.pasos * self.dt, 1e-6)
+        largo = float(np.median(e["pasos"])) if e["pasos"] else 0.0
+        despeje = float(np.median(e["despejes"])) if e["despejes"] else 0.0
+        cambio = float(np.mean(e["cambios"])) if e["cambios"] else 0.0
+        inclinacion = float(np.mean(e["inclinaciones"])) if e["inclinaciones"] else 0.0
+        suavidad = float(np.exp(-cambio / 0.08))
+        erguido = float(np.clip(1 - inclinacion / 20, 0, 1))
+        if self.tarea.usa_reloj:
+            zancada = float(np.exp(-(((largo - 0.3) / 0.12) ** 2)))
+            elevacion = float(np.clip(despeje / 0.05, 0, 1))
+            cadencia = len(e["pasos"]) / segundos
+            ritmo = float(np.exp(-(((cadencia - 1.6) / 0.7) ** 2)))  # pasos por segundo
+            partes = [suavidad, erguido, zancada, elevacion, ritmo]
+        else:
+            quietud = float(np.exp(-float(np.mean(e["vel_torso"])) / 0.05)) if e["vel_torso"] else 0.0
+            cadencia = 0.0
+            partes = [suavidad, erguido, quietud]
+        return {"calidad": round(100 * float(np.mean(partes)), 1), "largo_paso_m": round(largo, 3),
+                "despeje_m": round(despeje, 3), "pasos_por_s": round(cadencia, 2),
+                "inclinacion_media": round(inclinacion, 1), "suavidad": round(100 * suavidad, 1)}
 
     def _sortear_tramos(self):
         conf = self.conf_pisos

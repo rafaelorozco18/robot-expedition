@@ -53,6 +53,11 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
 
     curva = []
     cada_foto = min(total // p["fotos"], 100000)
+    if p.get("fotos_cuadraticas"):
+        # Fotos densas al inicio, donde cambia casi todo, y más espaciadas al final.
+        marcas = sorted({int(total * (k / p["fotos"]) ** 2) for k in range(1, p["fotos"] + 1)})
+    else:
+        marcas = list(range(cada_foto, total + cada_foto, cada_foto))
 
     class Registro(BaseCallback):
         """Guarda fotos del modelo y la curva con la exploración activa."""
@@ -66,7 +71,7 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
 
         def _foto(self):
             self.model.save(fotos / f"paso-{self.num_timesteps:09d}.zip")
-            self.proxima += cada_foto
+            self.proxima = next((m for m in marcas if m > self.num_timesteps), 10**12)
 
         def _aprueba(self):
             """Mini prueba sin exploración, en las condiciones de aprobación de cada planeta."""
