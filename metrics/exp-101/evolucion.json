@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1829338324,
+   "hitos": [
+    {
+     "agente": "paso:375040",
+     "paso": 375040,
+     "origen": "exp-101",
+     "exito": false,
+     "segundos": 1.42,
+     "distancia": 0.54,
+     "calidad": 7.2,
+     "avance": 0.142,
+     "puntaje": 0.1349,
+     "texto": "A los 1.4 s: se agachó o cayó",
+     "clip": [
+      0.0,
+      1.42,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 13,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "paso:440128",
+     "paso": 440128,
+     "origen": "exp-101",
+     "exito": false,
+     "segundos": 1.56,
+     "distancia": 0.55,
+     "calidad": 8.5,
+     "avance": 0.156,
+     "puntaje": 0.1482,
+     "texto": "A los 1.6 s: se agachó o cayó",
+     "clip": [
+      0.0,
+      1.56,
+      1
+     ],
+     "tasa": 0.667,
+     "indice": 14,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:585984",
+     "paso": 585984,
+     "origen": "exp-101",
+     "exito": false,
+     "segundos": 3.44,
+     "distancia": 1.03,
+     "calidad": 13.7,
+     "avance": 0.344,
+     "puntaje": 0.3268,
+     "texto": "A los 3.4 s: se agachó o cayó",
+     "clip": [
+      0.0,
+      3.44,
+      1
+     ],
+     "tasa": 0.333,
+     "indice": 16,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:666688",
+     "paso": 666688,
+     "origen": "exp-101",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.65,
+     "calidad": 28.4,
+     "avance": 1.0,
+     "puntaje": 1.0284,
+     "texto": "Se mantuvo de pie · calidad 28/100",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 17,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:1503232",
+     "paso": 1503232,
+     "origen": "exp-101",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": 0.34,
+     "calidad": 33.2,
+     "avance": 1.0,
+     "puntaje": 1.0332,
+     "texto": "Se mantuvo de pie · calidad 33/100",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": 0.333,
+     "indice": 26,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 0.898
+  }
+ },
+ "recomendado": "marte"
+}
