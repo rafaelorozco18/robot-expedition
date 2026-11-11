@@ -12,6 +12,7 @@
     expedicion campana exp-002 exp-003         corre experimentos en cadena
     expedicion evolucion [exp-001]             etapas de aprendizaje para el visor
     expedicion publicar [exp-001]              actualiza la copia que lee el visor
+    expedicion exportar                        visor estático en exportado/, para compartir
     expedicion servir                          visor 3D en http://localhost:8765
 """
 
@@ -152,6 +153,12 @@ def cmd_publicar(args):
             print(publicar(exp))
 
 
+def cmd_exportar(args):
+    from .exportar import exportar
+    destino, n = exportar()
+    print(f"{n} episodios en {destino}")
+
+
 def cmd_servir(args):
     from .servidor import servir
     servir(args.puerto)
@@ -196,6 +203,7 @@ def main(argv=None):
     comando("pipeline", cmd_pipeline)
     comando("evolucion", cmd_evolucion).add_argument("exp", nargs="?")
     comando("informe", cmd_informe)
+    comando("exportar", cmd_exportar)
     comando("publicar", cmd_publicar).add_argument("exp", nargs="?")
     s = comando("campana", cmd_campana)
     s.add_argument("exps", nargs="+")

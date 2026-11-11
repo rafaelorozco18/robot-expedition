@@ -7,6 +7,7 @@ import { crearPlaneta, TEMAS } from "./planetas.js";
 import { crearRobot, gestoDe } from "./robot3d.js";
 import { crearEfectos, crearSonido } from "./efectos.js";
 import { crearViento } from "./viento.js";
+import { api, ESTATICO } from "./api.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -548,7 +549,7 @@ async function abrirExperimento(id) {
   }
   estado.episodio = null;
   if (robot) robot.raiz.visible = false;
-  estado.mundo = await (await fetch(`/api/exp/${id}/mundo`)).json();
+  estado.mundo = await (await api(`/api/exp/${id}/mundo`)).json();
   if (!estado.mundo.agentes.find((a) => a.id === estado.agente)?.disponible) estado.agente = "sin_entrenar";
   construirRobot(estado.mundo.robot);
   robot.raiz.visible = false;
@@ -560,6 +561,10 @@ async function abrirExperimento(id) {
   construirAgentes();
   construirMotores();
   $("planeta").closest(".campo").hidden = true;  // la serie se trabaja solo en Marte
+  if (ESTATICO) {
+    $("perturbacion").closest(".campo").hidden = true;
+    $("semilla").closest(".campo").hidden = true;
+  }
   await cargarAprendizaje(id);
   segmentado("planeta", Object.keys(estado.mundo.gravedades), (v) => `${TEMAS[v].nombre} · ${estado.mundo.gravedades[v]}`);
   segmentado("perturbacion", estado.mundo.perturbaciones, (v) => ETIQUETA_PERTURBACION[v] || v);
@@ -579,7 +584,7 @@ async function lanzar(clip = null) {
   estado.finClip = null;
   const semilla = Number($("semilla").value) || 0;
   const q = new URLSearchParams({ agente: estado.agente, planeta: estado.planeta, perturbacion: estado.perturbacion, semilla });
-  const resp = await fetch(`/api/exp/${estado.exp}/episodio?${q}`);
+  const resp = await api(`/api/exp/${estado.exp}/episodio?${q}`);
   const datos = await resp.json();
   if (!resp.ok) { alert(datos.error); return; }
   estado.episodio = datos;
@@ -652,11 +657,14 @@ let reel = null;         // { plan, i, espera } mientras se reproduce la secuenc
 const ICONO_VER = '<svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>';
 
 async function cargarAprendizaje(id) {
-  const r = await fetch(`/api/exp/${id}/evolucion`);
+  const r = await api(`/api/exp/${id}/evolucion`);
   aprendizaje = r.ok ? await r.json() : null;
   $("aprendizaje").hidden = !aprendizaje;
   if (!aprendizaje) return;
   estado.planeta = aprendizaje.recomendado;
+  // Por defecto se ve el mismo escenario de las etapas (en la versión estática es el único calculado).
+  $("semilla").value = aprendizaje.planetas[estado.planeta].semilla;
+  estado.perturbacion = aprendizaje.perturbacion;
   aplicarPlaneta();
   dibujarHitos();
 }
@@ -837,7 +845,7 @@ async function iniciarCarrera(plan) {
   mostrarEtapa("Carrera de versiones", "Preparando los carriles…", "Cada carril es un momento del aprendizaje, en la misma prueba.", true);
   const episodios = await Promise.all(hitos.map(async (h) => {
     const q = new URLSearchParams({ agente: h.agente, planeta: estado.planeta, perturbacion: aprendizaje.perturbacion, semilla: plan.semilla });
-    return (await fetch(`/api/exp/${estado.exp}/episodio?${q}`)).json();
+    return (await api(`/api/exp/${estado.exp}/episodio?${q}`)).json();
   }));
   if (episodios.some((e) => e.error) || !aprendizaje) { $("etapa").hidden = true; return; }
   estado.play = false;
@@ -971,7 +979,7 @@ function bucle() {
 }
 
 async function iniciar() {
-  estado.catalogo = await (await fetch("/api/experimentos")).json();
+  estado.catalogo = await (await api("/api/experimentos")).json();
   botonPlay(false);
   aplicarPlaneta();
   redimensionar();

@@ -19,8 +19,8 @@ muestra la evolución, con un selector para ir de experimento en experimento.
 - **Exp 1 usa Luna, Marte y Tierra a la vez**, sorteados por episodio.
 - **El robot ve la gravedad, pero no el piso:** el terreno lo descubre por cómo responden sus pies.
 - **Física ≠ decoración:** el simulador corre en Python y el visor Three.js solo reproduce cuadros.
-- **Visor sin Luna (pedido del usuario):** muestra Tierra y Marte, y `servidor.aprobado_visor` exige el criterio
-  en esos dos. El entrenamiento, `metrics/` y `docs/resultados.md` siguen incluyendo la Luna.
+- **Solo Marte (pedido del usuario, 2026-11-11):** la Serie Marte entrena y se evalúa solo en Marte, y el visor
+  oculta el selector de planeta. La serie anterior usó Luna, Marte y Tierra.
 - **«Ver su aprendizaje»:** `expedicion/evolucion.py` prueba las fotos de todo el linaje en un escenario fijo y
   guarda las etapas en `metrics/exp-NNN/evolucion.json`. Un experimento nuevo lo genera solo en su campaña.
 - **El visor solo lee `publicado/exp-NNN`** (enlace a una copia autosuficiente, fuera de git). Reentrenar nunca lo rompe:
@@ -31,9 +31,14 @@ muestra la evolución, con un selector para ir de experimento en experimento.
 
 ## Hoja de ruta
 
-El plan vigente son los 50 experimentos de `docs/plan-50-experimentos.md` (definido el 2026-11-06).
-Reemplaza la lista corta anterior: Caminar pasó a ser el Exp 10 y Barro el 23. Los archivos
-`experimentos/exp-002` a `exp-005` todavía tienen la numeración vieja y deben regenerarse.
+**Vigente desde 2026-11-11: la Serie Marte** (`docs/serie-marte.md`, `experimentos/exp-101` a `exp-109`):
+de pie, caminar, de pie con viento, caminar con viento, caminar bien, terreno difícil, esquina, curva y
+dominio en terreno duro. Solo Marte, robot v2 (12 articulaciones). El usuario pidió 5 etapas por
+experimento en «Ver cómo aprendió»: fracaso absoluto, fracaso pero mejor, punto de inflexión, cumplido y
+perfeccionado.
+
+El plan de 50 experimentos y sus resultados quedaron archivados en `experimentos/plan-50/` y en los
+tags `exp-001` a `exp-028`.
 
 ## Versionado (exigido por el profesor)
 
@@ -68,22 +73,17 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-06, tras la jornada autónoma)
+## Estado actual (2026-11-11)
 
-- Con el criterio del visor (Tierra y Marte) hay 12 aprobados; con los 3 planetas, 8.
-- Rama `exp-001-de-pie`. Un commit y tag por experimento; resultados en `docs/resultados.md` y `metrics/campana.log`.
-- `expedicion campana exp-NNN ... --seguir --hasta HH:MM` entrena, evalúa, registra, documenta y versiona.
-- Los pisos usan el robot v1 y heredan del Exp 10; por eso se corrieron antes que 11 a 21.
-- Pendientes por orden de prioridad: reintentar 4 (recompensa ya corregida) y 5 (Luna 80 %), luego 2, 3, 6, 8, 11 y 23.
-  El Exp 11 necesita un criterio por etapas. El bloque de giro (18 a 21) está configurado y nunca se ha corrido.
-
-- Linaje: el Exp 5 heredó de la primera versión del Exp 4, que luego se reentrenó. Los Exp 11 y 13 se
-  detuvieron a mitad de camino sin resultados y siguen como pendientes.
-- El Exp 4 corregido tampoco aprobó: en Luna y Tierra sigue a media altura y en Marte cae a los 3 s.
-
-- Reintentar: Exp 4 (sentadilla continua, error 2,4 a 6,5 cm; probar un periodo más lento porque en la Tierra cae).
+- Rama `exp-001-de-pie`. Campaña de la Serie Marte en curso; avance en `metrics/campana.log`.
+- Para compartir sin servidor: `expedicion exportar` genera `exportado/` (sitio estático) y se publica como artifact.
+- La calidad de movimiento (0 a 100) está en `BipedoEnv.estadisticas`; el Exp 5 la exige.
 
 ### Lecciones que no hay que volver a aprender
+
+- No hacer `git add -A` mientras DVC entrena: si git toma las salidas, DVC se niega a guardarlas.
+  Por eso `/models/exp-1*/semilla-*` está en `.gitignore`.
+- En Marte el servo solo ya sostiene al robot: el Exp 101 arranca desequilibrado para que haya algo que aprender.
 
 - DVC borra las salidas al reentrenar: nada que se muestre al usuario debe leer `models/` o `metrics/` en vivo.
 
