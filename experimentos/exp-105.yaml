@@ -42,7 +42,7 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2800000
+  pasos: 2500000
   reintentos: 0
 trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
   y despeje del pie.'

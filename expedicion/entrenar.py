@@ -68,6 +68,7 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
             self.recompensa = deque(maxlen=100)
             self.proxima = 0
             self.aprobadas = 0
+            self.limite = None
 
         def _foto(self):
             self.model.save(fotos / f"paso-{self.num_timesteps:09d}.zip")
@@ -108,9 +109,14 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
                     if run:
                         mlflow.log_metrics({k: v for k, v in fila.items() if k != "paso"},
                                            step=fila["paso"])
-                if self.num_timesteps >= p["pasos_minimos"]:
+                if self.num_timesteps >= p["pasos_minimos"] and self.limite is None:
                     self.aprobadas = self.aprobadas + 1 if self._aprueba() else 0
-                    return self.aprobadas < 3
+                    if self.aprobadas >= 3:
+                        # Ya cumple: sigue un tramo más para perfeccionarse y luego para.
+                        extra = p.get("perfeccionar", 0.0)
+                        self.limite = self.num_timesteps + max(300000, int(self.num_timesteps * extra)) if extra else 0
+            if self.limite is not None and self.num_timesteps >= self.limite:
+                return False
             return True
 
     def crear(i):

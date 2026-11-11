@@ -19,7 +19,7 @@ adversidad:
 aprobar:
   tasa_exito: 0.9
 entrenamiento:
-  pasos: 1200000
+  pasos: 1000000
   reintentos: 0
 trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
   episodio.'

@@ -43,7 +43,7 @@ adversidad:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2000000
+  pasos: 1500000
   reintentos: 0
 trampa: 'Caminar de lado para presentar menos superficie: la velocidad y el rumbo
   ordenados se siguen exigiendo.'

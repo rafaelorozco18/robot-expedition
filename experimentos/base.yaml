@@ -45,7 +45,8 @@ entrenamiento:
   - 256
   fotos: 24
   aprendiz: 0.25
-  pasos_minimos: 1000000000000
+  pasos_minimos: 300000
+  perfeccionar: 0.4       # al aprobar 3 fotos seguidas entrena un 40 % más (mínimo 300 mil pasos) y para
   fotos_cuadraticas: true
 evaluacion:
   semilla: 2026

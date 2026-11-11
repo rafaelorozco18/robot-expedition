@@ -45,7 +45,7 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 3000000
+  pasos: 2500000
   reintentos: 0
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
