@@ -1,6 +1,6 @@
 {
   "experimento": "exp-102",
-  "campeon": 0,
+  "campeon": 1,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -81,7 +81,33 @@
         "inclinacion_max_media": 24.7,
         "calidad_media": 33.0
       }
+    },
+    "1": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.917,
+        "segundos_medios": 21.08,
+        "energia_media_j": 2009.0,
+        "inclinacion_max_media": 24.3,
+        "calidad_media": 26.3
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 1.0,
+        "segundos_medios": 22.0,
+        "energia_media_j": 2103.3,
+        "inclinacion_max_media": 22.9,
+        "calidad_media": 26.1
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.833,
+        "segundos_medios": 20.16,
+        "energia_media_j": 1914.7,
+        "inclinacion_max_media": 25.8,
+        "calidad_media": 26.5
+      }
     }
   },
-  "aprobado": false
+  "aprobado": true
 }

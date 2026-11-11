@@ -2,7 +2,7 @@
  "perturbacion": "ninguna",
  "planetas": {
   "marte": {
-   "semilla": 1374203058,
+   "semilla": 56731231,
    "hitos": [
     {
      "agente": "sin_entrenar",
@@ -10,10 +10,10 @@
      "origen": "exp-102",
      "exito": false,
      "segundos": 22.0,
-     "distancia": -0.0,
-     "calidad": 39.9,
-     "avance": 0.0,
-     "puntaje": 0.0,
+     "distancia": 0.01,
+     "calidad": 40.0,
+     "avance": 0.001,
+     "puntaje": 0.0009,
      "texto": "Se queda en su sitio · calidad 40/100",
      "clip": [
       0.0,
@@ -25,87 +25,87 @@
      "etapa": "Fracaso absoluto"
     },
     {
-     "agente": "paso:277824",
-     "paso": 277824,
+     "agente": "paso:156320",
+     "paso": 156320,
      "origen": "exp-102",
      "exito": false,
      "segundos": 22.0,
-     "distancia": 5.26,
-     "calidad": 29.4,
-     "avance": 0.538,
-     "puntaje": 0.5111,
-     "texto": "Avanza 5.3 m pero no llega a la meta · calidad 29/100",
+     "distancia": 3.45,
+     "calidad": 30.4,
+     "avance": 0.362,
+     "puntaje": 0.3439,
+     "texto": "Avanza 3.5 m pero no llega a la meta · calidad 30/100",
      "clip": [
       0.0,
       14.0,
       1.5
      ],
      "tasa": 0.0,
-     "indice": 13,
+     "indice": 11,
      "etapa": "Fracaso, pero mejor"
     },
     {
-     "agente": "paso:525184",
-     "paso": 525184,
+     "agente": "paso:351600",
+     "paso": 351600,
      "origen": "exp-102",
      "exito": false,
      "segundos": 22.0,
-     "distancia": 9.93,
-     "calidad": 28.3,
-     "avance": 0.993,
-     "puntaje": 0.9433,
-     "texto": "Avanza 9.9 m pero no llega a la meta · calidad 28/100",
+     "distancia": 8.14,
+     "calidad": 26.2,
+     "avance": 0.814,
+     "puntaje": 0.7733,
+     "texto": "Avanza 8.1 m pero no llega a la meta · calidad 26/100",
      "clip": [
       0.0,
       14.0,
       1.5
      ],
-     "tasa": 0.333,
-     "indice": 16,
+     "tasa": 0.0,
+     "indice": 14,
      "etapa": "Punto de inflexión"
     },
     {
-     "agente": "paso:625024",
-     "paso": 625024,
+     "agente": "paso:625040",
+     "paso": 625040,
      "origen": "exp-102",
      "exito": true,
      "segundos": 22.0,
-     "distancia": 10.72,
-     "calidad": 24.8,
+     "distancia": 10.25,
+     "calidad": 25.5,
      "avance": 1.0,
-     "puntaje": 1.5248,
-     "texto": "Caminó hasta la meta · calidad 25/100 · recorrió 10.7 m · error de velocidad 0.20 m/s",
-     "clip": [
-      0.0,
-      14.0,
-      1.5
-     ],
-     "tasa": 1.0,
-     "indice": 17,
-     "etapa": "Cumplido"
-    },
-    {
-     "agente": "paso:850752",
-     "paso": 850752,
-     "origen": "exp-102",
-     "exito": true,
-     "segundos": 22.0,
-     "distancia": 11.47,
-     "calidad": 26.4,
-     "avance": 1.0,
-     "puntaje": 1.3599,
-     "texto": "Caminó hasta la meta · calidad 26/100 · recorrió 11.5 m · error de velocidad 0.16 m/s",
+     "puntaje": 1.359,
+     "texto": "Caminó hasta la meta · calidad 26/100 · recorrió 10.3 m · error de velocidad 0.19 m/s",
      "clip": [
       0.0,
       14.0,
       1.5
      ],
      "tasa": 0.667,
-     "indice": 19,
+     "indice": 17,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:733520",
+     "paso": 733520,
+     "origen": "exp-102",
+     "exito": true,
+     "segundos": 22.0,
+     "distancia": 11.3,
+     "calidad": 28.8,
+     "avance": 1.0,
+     "puntaje": 1.5288,
+     "texto": "Caminó hasta la meta · calidad 29/100 · recorrió 11.3 m · error de velocidad 0.16 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 1.0,
+     "indice": 18,
      "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 1.36
+   "mejora": 1.528
   }
  },
  "recomendado": "marte"
