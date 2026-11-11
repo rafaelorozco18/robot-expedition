@@ -34,5 +34,11 @@ aprobar:
   tasa_exito: 0.8
 entrenamiento:
   pasos: 2500000
-  reintentos: 0
+  reintentos: 1
+  semillas:
+  - 0
+  - 1
+  procesos: 5
 trampa: 'Lanzarse hacia adelante: caer termina el episodio y anula el éxito.'
+pendiente: La semilla 0 paró a 1,6 M de pasos con 58 %; la semilla 1 se entrenó con
+  2,5 M y la regla de corte más exigente. Se queda la mejor.

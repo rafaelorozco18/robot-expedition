@@ -73,16 +73,24 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-11)
+## Estado actual (2026-11-11, cierre de la jornada)
 
-- Rama `exp-001-de-pie`. Campaña de la Serie Marte en curso; avance en `metrics/campana.log`.
-- Para compartir sin servidor: `expedicion exportar` genera `exportado/` (sitio estático) y se publica como artifact.
-- La calidad de movimiento (0 a 100) está en `BipedoEnv.estadisticas`; el Exp 5 la exige.
+- Serie Marte entrenada completa una vez (resultados en `docs/resultados.md`, decisiones en `docs/serie-marte.md`).
+  Solo el Exp 1 aprueba. La marcha mejoró en calidad (22 → 37/100) pero no llegó a los umbrales.
+  Girar (Exps 7 a 9) es el cuello de botella: el robot cae durante el giro.
+- Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
+  Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
+- Próximos pasos sugeridos: más pasos de entrenamiento para caminar (Exp 2 quedó en 58 %), giro más lento o
+  entrenamiento de giro aparte antes de la esquina, y recompensa de erguido suave desde el Exp 5.
 
 ### Lecciones que no hay que volver a aprender
 
 - No hacer `git add -A` mientras DVC entrena: si git toma las salidas, DVC se niega a guardarlas.
   Por eso `/models/exp-1*/semilla-*` está en `.gitignore`.
+- Evaluar con el ruido de la política, sembrado por episodio (`Politica.para_episodio`): en la Serie Marte la
+  media sola no se sostiene. Nunca usar el generador global de torch: el servidor atiende episodios en paralelo.
+- `dvc repro` puede reponer resultados viejos desde su caché aunque se borren: para recalcular, correr el
+  comando de la etapa directamente y después `dvc commit -f`.
 - En Marte el servo solo ya sostiene al robot: el Exp 101 arranca desequilibrado para que haya algo que aprender.
 
 - DVC borra las salidas al reentrenar: nada que se muestre al usuario debe leer `models/` o `metrics/` en vivo.

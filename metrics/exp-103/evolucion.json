@@ -2,42 +2,42 @@
  "perturbacion": "ninguna",
  "planetas": {
   "marte": {
-   "semilla": 1829338324,
+   "semilla": 784857332,
    "hitos": [
     {
-     "agente": "sin_entrenar",
-     "paso": null,
-     "origen": "exp-103",
+     "agente": "foto:exp-101:0",
+     "paso": 0,
+     "origen": "exp-101",
      "exito": false,
-     "segundos": 1.08,
-     "distancia": 0.44,
-     "calidad": 40.2,
-     "avance": 0.108,
-     "puntaje": 0.1026,
-     "texto": "A los 1.1 s: se inclinó demasiado",
+     "segundos": 0.92,
+     "distancia": -0.02,
+     "calidad": 9.6,
+     "avance": 0.092,
+     "puntaje": 0.0874,
+     "texto": "A los 0.9 s: se inclinó demasiado",
      "clip": [
       0.0,
-      1.08,
+      0.92,
       1
      ],
      "tasa": null,
-     "indice": 0,
+     "indice": 1,
      "etapa": "Fracaso absoluto"
     },
     {
-     "agente": "paso:147120",
-     "paso": 147120,
+     "agente": "paso:210080",
+     "paso": 210080,
      "origen": "exp-103",
      "exito": false,
-     "segundos": 2.06,
-     "distancia": 0.98,
-     "calidad": 21.3,
-     "avance": 0.206,
-     "puntaje": 0.1957,
-     "texto": "A los 2.1 s: se agachó o cayó",
+     "segundos": 3.92,
+     "distancia": -1.65,
+     "calidad": 23.9,
+     "avance": 0.392,
+     "puntaje": 0.3724,
+     "texto": "A los 3.9 s: se agachó o cayó",
      "clip": [
       0.0,
-      2.06,
+      3.92,
       1
      ],
      "tasa": 0.0,
@@ -45,27 +45,67 @@
      "etapa": "Fracaso, pero mejor"
     },
     {
-     "agente": "paso:642960",
-     "paso": 642960,
+     "agente": "paso:250000",
+     "paso": 250000,
      "origen": "exp-103",
      "exito": false,
-     "segundos": 3.14,
-     "distancia": 2.62,
-     "calidad": 22.5,
-     "avance": 0.314,
-     "puntaje": 0.2983,
-     "texto": "A los 3.1 s: se inclinó demasiado",
+     "segundos": 7.68,
+     "distancia": -3.7,
+     "calidad": 25.9,
+     "avance": 0.768,
+     "puntaje": 0.7296,
+     "texto": "A los 7.7 s: se agachó o cayó",
      "clip": [
-      0.0,
-      3.14,
+      1.68,
+      7.68,
       1
      ],
-     "tasa": 0.0,
-     "indice": 28,
-     "etapa": "Mejor intento (aún no cumple)"
+     "tasa": 0.333,
+     "indice": 17,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:1000000",
+     "paso": 1000000,
+     "origen": "exp-103",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -1.27,
+     "calidad": 21.3,
+     "avance": 1.0,
+     "puntaje": 1.3548,
+     "texto": "Se mantuvo de pie · calidad 21/100",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": 0.667,
+     "indice": 29,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:1003520",
+     "paso": 1003520,
+     "origen": "exp-103",
+     "exito": true,
+     "segundos": 10.0,
+     "distancia": -0.74,
+     "calidad": 23.2,
+     "avance": 1.0,
+     "puntaje": 1.3567,
+     "texto": "Se mantuvo de pie · calidad 23/100",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": 0.667,
+     "indice": 30,
+     "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 0.196
+   "mejora": 1.269
   }
  },
  "recomendado": "marte"
