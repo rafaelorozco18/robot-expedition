@@ -305,6 +305,7 @@ class BipedoEnv(gym.Env):
                 e["altura_vuelo"][lado] = max(e["altura_vuelo"][lado], float(pos[2]) - 0.04)
             else:
                 if e["aire"][lado] * self.dt >= 0.1 and e["altura_vuelo"][lado] >= 0.015:
+                    e["ultimo_vuelo"] = e["aire"][lado] * self.dt
                     e["pasos"].append(float(np.linalg.norm(pos[:2] - e["despegue"][lado])))
                     e["despejes"].append(e["altura_vuelo"][lado])
                 e["aire"][lado], e["altura_vuelo"][lado] = 0, 0.0

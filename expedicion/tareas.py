@@ -246,8 +246,12 @@ class Marcha(Tarea):
             n = len(env.est["pasos"])
             if n > getattr(self, "pasos_vistos", 0):
                 largo = env.est["pasos"][-1]
-                d["zancada"] = p["zancada"] * np.exp(-(((largo - self.t.get("zancada_m", 0.3)) / 0.08) ** 2))
+                d["zancada"] = p["zancada"] * np.exp(-(((largo - self.t.get("zancada_m", 0.3)) / 0.2) ** 2))
+                if p.get("vuelo"):  # pie en el aire ~0,45 s por paso: ritmo humano, no temblor
+                    d["vuelo"] = p["vuelo"] * np.exp(-(((env.est["ultimo_vuelo"] - 0.45) / 0.15) ** 2))
             self.pasos_vistos = n
+        if self.t.get("erguido_estricto"):
+            d["erguido"] = p["erguido"] * np.exp(-((env.inclinacion_grados() / 6) ** 2))
         if p.get("vel_articular"):
             d["vel_articular"] = -p["vel_articular"] * float(np.mean((env.data.qvel[env.adr_v] * 0.1) ** 2))
         if p.get("deslizamiento"):

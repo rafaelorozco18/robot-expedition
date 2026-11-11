@@ -18,7 +18,7 @@ recompensa:
   altura: 0.5
   erguido: 1.5
   rumbo: 0.3
-  reloj: 1.0
+  reloj: 2.0
   paso: 0.8
   giro: 0.02
   vivo: 0.3
@@ -29,6 +29,7 @@ recompensa:
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
+  vuelo: 15.0
 parametros:
   vx:
   - 0.45
@@ -39,10 +40,11 @@ parametros:
   zancada_m: 0.5
   sigma_v: 0.05
   calidad_min: 55
+  erguido_estricto: true
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 1600000
+  pasos: 2000000
   reintentos: 0
   procesos: 5
   log_std_init: -2.5
