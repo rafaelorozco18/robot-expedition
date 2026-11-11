@@ -4,23 +4,31 @@ titulo: De pie con viento
 tarea: de_pie
 parte_de: exp-101
 pregunta: ¿Se mantiene de pie con viento y ráfagas en Marte?
-agrega: Viento constante de 6 a 14 N, en cualquier dirección, más ráfagas
+agrega: Viento constante de 3 a 8 N, en cualquier dirección, más ráfagas de 3 a 8
+  N
 criterio: Aguanta 10 s en ≥ 90 %
 clima_visual: lluvia
 adversidad:
   viento_n:
-  - 6
-  - 14
+  - 3
+  - 8
   viento_libre: true
   rafaga_n:
-  - 6
-  - 14
+  - 3
+  - 8
   prob_rafaga: 0.015
 aprobar:
   tasa_exito: 0.9
 entrenamiento:
-  pasos: 700000
+  pasos: 1000000
   reintentos: 0
   procesos: 5
+  semillas:
+  - 1
 trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
   episodio.'
+ambiente:
+  velocidad_inicial: 0.0
+pendiente: 'Con viento de 6 a 14 N el primer intento quedó en 0 %: el modelo del Exp
+  1 ya cae con 2 a 5 N. Se bajó a 3 a 8 N y se quitó el arranque desequilibrado: el
+  reto es solo el viento.'

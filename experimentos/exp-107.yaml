@@ -45,7 +45,7 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2000000
+  pasos: 1600000
   reintentos: 0
   procesos: 5
   log_std_init: -2.5

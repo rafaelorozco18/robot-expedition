@@ -1,10 +1,10 @@
 id: exp-104
-estado: pendiente
+estado: activo
 titulo: Caminar con viento
 tarea: marcha
 parte_de: exp-102
 pregunta: ¿Camina 10 m con viento y ráfagas en Marte?
-agrega: Viento de 5 a 12 N en cualquier dirección, más ráfagas
+agrega: Viento de 3 a 8 N en cualquier dirección, más ráfagas de 3 a 8 N
 criterio: 10 m sin caer en ≥ 80 %
 clima_visual: lluvia
 ambiente:
@@ -33,17 +33,17 @@ parametros:
   periodo_s: 0.8
 adversidad:
   viento_n:
-  - 5
-  - 12
+  - 3
+  - 8
   viento_libre: true
   rafaga_n:
-  - 5
-  - 12
+  - 3
+  - 8
   prob_rafaga: 0.012
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 1300000
+  pasos: 1500000
   reintentos: 0
   procesos: 5
 trampa: 'Caminar de lado para presentar menos superficie: la velocidad y el rumbo

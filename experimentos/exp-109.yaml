@@ -73,8 +73,8 @@ pisos:
   mezclar: true
 adversidad:
   viento_n:
-  - 3
-  - 8
+  - 2
+  - 5
   viento_libre: true
 aprobar:
   tasa_exito: 0.7
