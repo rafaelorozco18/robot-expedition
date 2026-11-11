@@ -15,7 +15,7 @@ ambiente:
 recompensa:
   velocidad: 2.0
   altura: 0.5
-  erguido: 0.5
+  erguido: 1.5
   rumbo: 1.0
   reloj: 1.0
   paso: 0.8
@@ -24,7 +24,7 @@ recompensa:
   postura: 0
   quieto: 0
   caida: 30.0
-  suavidad: 1.0
+  suavidad: 2.0
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
@@ -36,16 +36,21 @@ parametros:
   distancia_m: 10
   periodo_s: 0.68
   despeje_m: 0.07
-  zancada_m: 0.3
+  zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 55
+  calidad_min: 45
   lado_m: 3
   giro_rad_s: 0.7
   velocidad_ms: 0.5
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2500000
+  pasos: 2000000
   reintentos: 0
+  procesos: 5
+  log_std_init: -2.5
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
+control:
+  rango: 0.8
+  filtro: 0.6

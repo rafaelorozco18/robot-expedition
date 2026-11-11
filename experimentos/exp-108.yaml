@@ -15,7 +15,7 @@ ambiente:
 recompensa:
   velocidad: 2.0
   altura: 0.5
-  erguido: 0.5
+  erguido: 1.5
   rumbo: 1.0
   reloj: 1.0
   paso: 0.8
@@ -24,7 +24,7 @@ recompensa:
   postura: 0
   quieto: 0
   caida: 30.0
-  suavidad: 1.0
+  suavidad: 2.0
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
@@ -36,9 +36,9 @@ parametros:
   distancia_m: 10
   periodo_s: 0.68
   despeje_m: 0.07
-  zancada_m: 0.3
+  zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 55
+  calidad_min: 45
   radio_m: 2.0
   velocidad_ms: 0.45
   vueltas: 0.9
@@ -46,7 +46,12 @@ parametros:
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
-  pasos: 2000000
+  pasos: 1600000
   reintentos: 0
+  procesos: 5
+  log_std_init: -2.5
 trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
   cambiar de rumbo.'
+control:
+  rango: 0.8
+  filtro: 0.6

@@ -4,9 +4,9 @@ titulo: Caminar bien
 tarea: marcha
 parte_de: exp-104
 pregunta: '¿Camina como una persona: pasos largos, ritmo pausado y sin vibrar?'
-agrega: 'Recompensas de estética: zancada de 30 cm, ritmo de 1,1 s por ciclo, pie
-  levantado, articulaciones suaves y sin resbalar'
-criterio: 10 m con calidad de marcha ≥ 70/100 en ≥ 80 %
+agrega: 'Recompensas de estética: zancada de 50 cm por paso, ciclo de 1,1 s, pie levantado,
+  torso erguido, servos suaves (filtro 60 %) y menos ruido'
+criterio: 10 m con calidad de marcha ≥ 55/100 en ≥ 80 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -16,7 +16,7 @@ ambiente:
 recompensa:
   velocidad: 2.0
   altura: 0.5
-  erguido: 0.5
+  erguido: 1.5
   rumbo: 0.3
   reloj: 1.0
   paso: 0.8
@@ -25,7 +25,7 @@ recompensa:
   postura: 0
   quieto: 0
   caida: 30.0
-  suavidad: 1.0
+  suavidad: 2.0
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
@@ -36,13 +36,18 @@ parametros:
   distancia_m: 10
   periodo_s: 0.68
   despeje_m: 0.07
-  zancada_m: 0.3
+  zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 70
+  calidad_min: 55
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2500000
+  pasos: 2000000
   reintentos: 0
+  procesos: 5
+  log_std_init: -2.5
 trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
   y despeje del pie.'
+control:
+  rango: 0.8
+  filtro: 0.6

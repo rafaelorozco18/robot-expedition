@@ -287,26 +287,29 @@ class BipedoEnv(gym.Env):
         self.vel_pies = [0.0, 0.0]
         self.pos_pies = [self.posicion_pie(k)[:2].copy() for k in (0, 1)]
         self.est = {"pasos": [], "despejes": [], "cambios": [], "inclinaciones": [], "vel_torso": [],
-                    "apoyo_previo": [True, True], "altura_vuelo": [0.0, 0.0], "ultimo_apoyo": None}
+                    "aire": [0, 0], "despegue": [None, None], "altura_vuelo": [0.0, 0.0],
+                    "aplicada_previa": np.zeros(self.model.nu)}
 
     def _acumular_estadisticas(self, accion):
+        """Un paso cuenta solo si el pie estuvo 0,1 s en el aire y subió 1,5 cm: el temblor no es caminar."""
         e = self.est
         izq, der, _ = self.contactos()
-        apoyos = [izq, der]
-        for lado in (0, 1):
+        for lado, apoyado in enumerate((izq, der)):
             pos = self.posicion_pie(lado)
             self.vel_pies[lado] = float(np.linalg.norm(pos[:2] - self.pos_pies[lado])) / self.dt
             self.pos_pies[lado] = pos[:2].copy()
-            if not apoyos[lado]:
+            if not apoyado:
+                if e["aire"][lado] == 0:
+                    e["despegue"][lado] = pos[:2].copy()
+                e["aire"][lado] += 1
                 e["altura_vuelo"][lado] = max(e["altura_vuelo"][lado], float(pos[2]) - 0.04)
-            elif not e["apoyo_previo"][lado]:  # aterrizaje: termina un paso
-                e["despejes"].append(e["altura_vuelo"][lado])
-                e["altura_vuelo"][lado] = 0.0
-                if e["ultimo_apoyo"] is not None and e["ultimo_apoyo"][0] != lado:
-                    e["pasos"].append(float(np.linalg.norm(pos[:2] - e["ultimo_apoyo"][1])))
-                e["ultimo_apoyo"] = (lado, pos[:2].copy())
-        e["apoyo_previo"] = apoyos
-        e["cambios"].append(float(np.mean(np.abs(accion - self.accion_previa))))
+            else:
+                if e["aire"][lado] * self.dt >= 0.1 and e["altura_vuelo"][lado] >= 0.015:
+                    e["pasos"].append(float(np.linalg.norm(pos[:2] - e["despegue"][lado])))
+                    e["despejes"].append(e["altura_vuelo"][lado])
+                e["aire"][lado], e["altura_vuelo"][lado] = 0, 0.0
+        e["cambios"].append(float(np.mean(np.abs(self.accion_aplicada - e["aplicada_previa"]))))
+        e["aplicada_previa"] = self.accion_aplicada.copy()
         e["inclinaciones"].append(self.inclinacion_grados())
         e["vel_torso"].append(float(np.linalg.norm(self.data.qvel[:2])))
 
@@ -318,13 +321,13 @@ class BipedoEnv(gym.Env):
         despeje = float(np.median(e["despejes"])) if e["despejes"] else 0.0
         cambio = float(np.mean(e["cambios"])) if e["cambios"] else 0.0
         inclinacion = float(np.mean(e["inclinaciones"])) if e["inclinaciones"] else 0.0
-        suavidad = float(np.exp(-cambio / 0.08))
+        suavidad = float(np.exp(-cambio / 0.04))
         erguido = float(np.clip(1 - inclinacion / 20, 0, 1))
         if self.tarea.usa_reloj:
-            zancada = float(np.exp(-(((largo - 0.3) / 0.12) ** 2)))
+            zancada = float(np.exp(-(((largo - 0.5) / 0.2) ** 2)))   # recorrido del pie en cada paso
             elevacion = float(np.clip(despeje / 0.05, 0, 1))
             cadencia = len(e["pasos"]) / segundos
-            ritmo = float(np.exp(-(((cadencia - 1.6) / 0.7) ** 2)))  # pasos por segundo
+            ritmo = float(np.exp(-(((cadencia - 1.8) / 0.7) ** 2)))  # pasos por segundo
             partes = [suavidad, erguido, zancada, elevacion, ritmo]
         else:
             quietud = float(np.exp(-float(np.mean(e["vel_torso"])) / 0.05)) if e["vel_torso"] else 0.0

@@ -31,6 +31,7 @@ export function crearViento(scene) {
   pivote.add(cono);
   manga.add(poste, pivote);
   manga.traverse((o) => { if (o.isMesh) o.castShadow = true; });
+  manga.visible = estelas.visible = false;
   scene.add(manga);
 
   const direccion = new THREE.Vector3(1, 0, 0);

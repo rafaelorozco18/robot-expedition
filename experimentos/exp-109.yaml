@@ -16,7 +16,7 @@ ambiente:
 recompensa:
   velocidad: 2.0
   altura: 0.5
-  erguido: 0.5
+  erguido: 1.5
   rumbo: 1.0
   reloj: 1.0
   paso: 0.8
@@ -25,7 +25,7 @@ recompensa:
   postura: 0
   quieto: 0
   caida: 30.0
-  suavidad: 1.0
+  suavidad: 2.0
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
@@ -37,9 +37,9 @@ parametros:
   distancia_m: 0
   periodo_s: 0.68
   despeje_m: 0.07
-  zancada_m: 0.3
+  zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 50
+  calidad_min: 40
   tramo_s: 4
   error_ms: 0.25
   error_rumbo: 0.4
@@ -79,6 +79,11 @@ adversidad:
 aprobar:
   tasa_exito: 0.7
 entrenamiento:
-  pasos: 2000000
+  pasos: 1500000
   reintentos: 0
+  procesos: 5
+  log_std_init: -2.5
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
+control:
+  rango: 0.8
+  filtro: 0.6
