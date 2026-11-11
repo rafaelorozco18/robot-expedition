@@ -682,3 +682,19 @@ stages:
       hash: md5
       md5: bb828048d655f0a3faf92b45e58160de
       size: 2446
+  escenarios-exp-108:
+    cmd: python -m expedicion escenarios exp-108
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 9fef6904331a50cddb63efde46b78c23
+      size: 1305
+    - path: experimentos/exp-108.yaml
+      hash: md5
+      md5: 075aa490e108baf8597705a2ee2ab0dd
+      size: 1306
+    outs:
+    - path: data/exp-108/escenarios.json
+      hash: md5
+      md5: a2e2b03f1b7ebcd125e950de6d2f7c84
+      size: 2237

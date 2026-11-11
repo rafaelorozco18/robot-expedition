@@ -15,7 +15,7 @@ from . import servidor as S
 
 def _guardar(ruta, datos):
     ruta.parent.mkdir(parents=True, exist_ok=True)
-    ruta.write_bytes(datos if isinstance(datos, bytes) else json.dumps(datos, ensure_ascii=False).encode())
+    ruta.write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
 
 
 def exportar(destino=None):
@@ -30,23 +30,22 @@ def exportar(destino=None):
     cuerpo = re.sub(r"<!doctype html>|</?html[^>]*>|</?head>|</?body>", "", (destino / "index.html").read_text(), flags=re.I)
     (destino / "robot-expedition.html").write_text(cuerpo.strip() + "\n")
     api = destino / "api"
-    _guardar(api / "experimentos.json", S.catalogo())
+    _guardar(api / "catalogo.json", {"experimentos": S.catalogo()})
     episodios = 0
     for exp_actual in X.listar():
         exp = P.cargar(exp_actual["id"])
         if exp is None:
             continue
         i = exp["id"]
-        _guardar(api / i / "mundo.json", S.mundo(exp))
-        _guardar(api / i / "progreso.json", S.progreso(exp))
+        paquete = {"mundo": S.mundo(exp), "progreso": S.progreso(exp)}
         evolucion = S.evolucion(exp)
-        _guardar(api / i / "evolucion.json", evolucion)
+        paquete["evolucion"] = evolucion
         pert = evolucion["perturbacion"]
         for planeta, plan in evolucion["planetas"].items():
             agentes = {h["agente"] for h in plan["hitos"]} | {"experto", "aprendiz", "sin_entrenar", "aleatorio"}
             for agente in sorted(agentes):
                 datos = S.episodio(i, agente, planeta, pert, plan["semilla"], S._version(exp))
-                nombre = f"ep-{agente.replace(':', '_')}-{plan['semilla']}-{pert}.json"
-                _guardar(api / i / nombre, datos)
+                paquete[f"ep-{agente.replace(':', '_')}-{plan['semilla']}-{pert}"] = json.loads(datos)
                 episodios += 1
+        _guardar(api / f"{i}.json", paquete)
     return destino, episodios
