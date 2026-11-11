@@ -120,7 +120,7 @@ def test_solo_marte_y_viento_registrado():
     for s in range(5):
         env.reset(seed=s)
         assert env.planeta == "marte"
-        assert 6 <= np.linalg.norm(env.viento_actual[:2]) <= 14
+        assert 3 <= np.linalg.norm(env.viento_actual[:2]) <= 8
 
 
 def test_la_esquina_pasa_a_girar_al_llegar():
