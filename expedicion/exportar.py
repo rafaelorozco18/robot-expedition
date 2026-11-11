@@ -25,6 +25,10 @@ def exportar(destino=None):
     indice = (destino / "index.html").read_text()
     (destino / "index.html").write_text(indice.replace(
         "<head>", "<head>\n  <script>window.VISOR_ESTATICO = true;</script>", 1))
+    # Variante para publicar como artifact de claude.ai: sin doctype/html/head/body propios.
+    import re
+    cuerpo = re.sub(r"<!doctype html>|</?html[^>]*>|</?head>|</?body>", "", (destino / "index.html").read_text(), flags=re.I)
+    (destino / "robot-expedition.html").write_text(cuerpo.strip() + "\n")
     api = destino / "api"
     _guardar(api / "experimentos.json", S.catalogo())
     episodios = 0

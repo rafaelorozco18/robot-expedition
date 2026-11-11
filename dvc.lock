@@ -299,10 +299,92 @@ stages:
       size: 1305
     - path: experimentos/exp-104.yaml
       hash: md5
-      md5: 3bf87d4dcad2b69a31078de18e006eb6
-      size: 924
+      md5: 7ed9d9fd9479f8cab1af5a87bada227b
+      size: 932
     outs:
     - path: data/exp-104/escenarios.json
       hash: md5
       md5: a2e2b03f1b7ebcd125e950de6d2f7c84
       size: 2237
+  entrenar-exp-104-s0:
+    cmd: nice -n 10 python -m expedicion entrenar exp-104 --semilla 0
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 9fef6904331a50cddb63efde46b78c23
+      size: 1305
+    - path: experimentos/exp-104.yaml
+      hash: md5
+      md5: 7ed9d9fd9479f8cab1af5a87bada227b
+      size: 932
+    - path: metrics/exp-102/evaluacion.json
+      hash: md5
+      md5: 2abaf487443fcc56987efbf6f7f8801a
+      size: 2160
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-104/semilla-0
+      hash: md5
+      md5: 1a27db92c2a72cf4c3db57b2b95f32b5.dir
+      size: 55126202
+      nfiles: 29
+  evaluar-exp-104:
+    cmd: nice -n 10 python -m expedicion evaluar exp-104
+    deps:
+    - path: data/exp-104/escenarios.json
+      hash: md5
+      md5: a2e2b03f1b7ebcd125e950de6d2f7c84
+      size: 2237
+    - path: models/exp-104/semilla-0
+      hash: md5
+      md5: 1a27db92c2a72cf4c3db57b2b95f32b5.dir
+      size: 55126202
+      nfiles: 29
+    outs:
+    - path: data/exp-104/trayectorias.jsonl
+      hash: md5
+      md5: 0062b6e3b55908d2cadfe01b3ba8a5aa
+      size: 40942
+    - path: metrics/exp-104/evaluacion.json
+      hash: md5
+      md5: 49700255752467f539820962a26a7ce2
+      size: 2152
+  progreso-exp-104:
+    cmd: nice -n 10 python -m expedicion progreso exp-104
+    deps:
+    - path: metrics/exp-104/evaluacion.json
+      hash: md5
+      md5: 49700255752467f539820962a26a7ce2
+      size: 2152
+    outs:
+    - path: metrics/exp-104/progreso.json
+      hash: md5
+      md5: 6486c088db21bf74c0422b0a1aa5eaa7
+      size: 5494
+  regresion-exp-104:
+    cmd: nice -n 10 python -m expedicion regresion exp-104
+    deps:
+    - path: metrics/exp-104/evaluacion.json
+      hash: md5
+      md5: 49700255752467f539820962a26a7ce2
+      size: 2152
+    outs:
+    - path: metrics/exp-104/regresion.json
+      hash: md5
+      md5: 77f1c574e6dc7704792557ead7f61d61
+      size: 76
+  evolucion-exp-104:
+    cmd: nice -n 10 python -m expedicion evolucion exp-104
+    deps:
+    - path: metrics/exp-104/progreso.json
+      hash: md5
+      md5: 6486c088db21bf74c0422b0a1aa5eaa7
+      size: 5494
+    outs:
+    - path: metrics/exp-104/evolucion.json
+      hash: md5
+      md5: 30447badc826960ec2b74000f38cea07
+      size: 2398
