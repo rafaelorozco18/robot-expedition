@@ -64,8 +64,16 @@ def _texto(exp, r):
     calidad = f" · calidad {r['calidad']:.0f}/100" if r.get("calidad") is not None else ""
     if r["exito"]:
         return f"{r['titulo_exito']}{calidad}" + (f" · {r['detalle']}" if r["detalle"] else "")
-    if not r["motivo"] in ("no cumplió la meta",):
-        return f"A los {r['segundos']:.1f} s: {r['motivo']}" + (f" · {r['detalle']}" if r["detalle"] and exp["tarea"] != "de_pie" else "")
+    if r["motivo"] != "no cumplió la meta":
+        extra = f" · {r['detalle']}" if r["detalle"] and exp["tarea"] != "de_pie" else ""
+        return f"A los {r['segundos']:.1f} s: {r['motivo']}{extra}"
+    meta = exp.get("parametros", {}).get("distancia_m")
+    if exp["tarea"] == "marcha" and meta:
+        if r["distancia"] < 0.3:
+            return f"Se queda en su sitio{calidad}"
+        if r["distancia"] < meta:
+            return f"Avanza {r['distancia']:.1f} m pero no llega a la meta{calidad}"
+        return f"Llega, pero sin la calidad pedida: {r['calidad']:.0f}/100 de {exp['parametros'].get('calidad_min', '—')}"
     return f"No cumple el objetivo{calidad}" + (f" · {r['detalle']}" if r["detalle"] else "")
 
 

@@ -21,12 +21,12 @@ stages:
     deps:
     - path: experimentos/base.yaml
       hash: md5
-      md5: 6c6a6e586c7edb431d016f44cb509bb5
-      size: 1206
+      md5: 9fef6904331a50cddb63efde46b78c23
+      size: 1305
     - path: experimentos/exp-103.yaml
       hash: md5
-      md5: 0bc407d1045f8533eea41820c1be5a8a
-      size: 540
+      md5: 0b548f9056a80e12ab912e4c67f6dbea
+      size: 569
     outs:
     - path: data/exp-103/escenarios.json
       hash: md5
