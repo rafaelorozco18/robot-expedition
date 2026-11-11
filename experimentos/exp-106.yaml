@@ -73,4 +73,5 @@ aprobar:
   tasa_exito: 0.75
 entrenamiento:
   pasos: 2500000
+  reintentos: 0
 trampa: 'Tropezar y recuperarse: la calidad baja si arrastra el pie o se inclina.'

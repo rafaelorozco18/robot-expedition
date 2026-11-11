@@ -34,4 +34,5 @@ aprobar:
   tasa_exito: 0.8
 entrenamiento:
   pasos: 2500000
+  reintentos: 0
 trampa: 'Lanzarse hacia adelante: caer termina el episodio y anula el éxito.'

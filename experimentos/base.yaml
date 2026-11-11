@@ -9,13 +9,13 @@ control:
 ambiente:
   duracion_s: 10
   frame_skip: 5
-  ruido_inicial: 0.12
+  ruido_inicial: 0.1
   altura_minima: 0.85
   inclinacion_maxima: 35
   empujon_entrenando: 0.0
   empujon_ms: 0.4
   empujones_por_episodio: 1
-  velocidad_inicial: 0.35
+  velocidad_inicial: 0.2
 recompensa:
   vivo: 1.0
   altura: 1.0

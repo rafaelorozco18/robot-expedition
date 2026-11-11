@@ -80,4 +80,5 @@ aprobar:
   tasa_exito: 0.7
 entrenamiento:
   pasos: 2500000
+  reintentos: 0
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'

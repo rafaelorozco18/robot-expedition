@@ -47,5 +47,6 @@ aprobar:
   tasa_exito: 0.75
 entrenamiento:
   pasos: 2500000
+  reintentos: 0
 trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
   cambiar de rumbo.'
