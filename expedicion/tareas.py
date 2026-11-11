@@ -251,7 +251,7 @@ class Marcha(Tarea):
                     d["vuelo"] = p["vuelo"] * np.exp(-(((env.est["ultimo_vuelo"] - 0.45) / 0.15) ** 2))
             self.pasos_vistos = n
         if self.t.get("erguido_estricto"):
-            d["erguido"] = p["erguido"] * np.exp(-((env.inclinacion_grados() / 6) ** 2))
+            d["erguido"] = p["erguido"] * np.exp(-((env.inclinacion_grados() / 12) ** 2))
         if p.get("vel_articular"):
             d["vel_articular"] = -p["vel_articular"] * float(np.mean((env.data.qvel[env.adr_v] * 0.1) ** 2))
         if p.get("deslizamiento"):
