@@ -38,10 +38,11 @@ def _muestrear(fotos, n):
     return [fotos[round(i * (len(fotos) - 1) / (n - 1))] for i in range(n)]
 
 
-def _puntaje(exp, r):
-    """Éxitos por encima de 1, ordenados por calidad; fallos entre 0 y 0,95 según su avance."""
+def _puntaje(exp, r, tasa=None):
+    """Éxitos por encima de 1, ordenados por su tasa de éxito en las pruebas y luego por calidad;
+    fallos entre 0 y 0,95 según su avance."""
     if r["exito"]:
-        return 1.0 + r["calidad"] / 1000
+        return 1.0 + 0.5 * (tasa or 0.0) + r["calidad"] / 1000
     minimo = exp.get("parametros", {}).get("calidad_min")
     factor = min(1.0, r["calidad"] / minimo) if minimo else 1.0
     return 0.95 * r["avance"] * (0.5 + 0.5 * factor)
@@ -137,7 +138,7 @@ def calcular(exp):
             tasa = tasas.get(paso, {}).get(f"exito_{planeta}") if origen == exp["id"] and paso is not None else None
             filas.append({"agente": nombre, "paso": paso, "origen": origen, "exito": r["exito"],
                           "segundos": r["segundos"], "distancia": r["distancia"], "calidad": r["calidad"],
-                          "avance": r["avance"], "puntaje": round(_puntaje(exp, r), 4),
+                          "avance": r["avance"], "puntaje": round(_puntaje(exp, r, tasa), 4),
                           "texto": _texto(exp, r), "clip": _clip(exp, r, cuadros), "tasa": tasa})
         hitos = _elegir(filas)
         salida["planetas"][planeta] = {"semilla": esc["semilla"], "hitos": hitos,
