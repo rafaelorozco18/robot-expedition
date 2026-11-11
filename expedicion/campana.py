@@ -32,7 +32,7 @@ def _editar(id_exp, **cambios):
 def _repro(etapas):
     generar()
     for e in etapas:
-        _sh("dvc", "repro", "--single-item", e)
+        _sh("dvc", "repro", "--single-item", "--no-run-cache", e)
 
 
 def _anotar(texto):

@@ -5,8 +5,8 @@ stages:
     deps:
     - path: experimentos/base.yaml
       hash: md5
-      md5: f05c96d2f98973fb9475eb75e6d920fb
-      size: 1204
+      md5: 9fef6904331a50cddb63efde46b78c23
+      size: 1305
     - path: experimentos/exp-101.yaml
       hash: md5
       md5: 6e5a1e40f4c4bc4071ef7a63f8f44826
@@ -98,3 +98,15 @@ stages:
       hash: md5
       md5: 02fcccf49eba6b2c01cf1f4626c06336
       size: 21
+  evolucion-exp-101:
+    cmd: nice -n 10 python -m expedicion evolucion exp-101
+    deps:
+    - path: metrics/exp-101/progreso.json
+      hash: md5
+      md5: c2ed2980172d00418f93639fd31349f0
+      size: 5508
+    outs:
+    - path: metrics/exp-101/evolucion.json
+      hash: md5
+      md5: 097075829d9dc15a5a64fc3a810d9b55
+      size: 2151
