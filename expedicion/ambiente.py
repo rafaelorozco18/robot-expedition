@@ -40,7 +40,14 @@ class BipedoEnv(gym.Env):
         self.exp = exp
         self.entrenando = entrenando
         self.tarea = TAREAS[exp["tarea"]](exp)
-        self.model = mujoco.MjModel.from_xml_path(str(RAIZ / exp["robot"]))
+        xml = (RAIZ / exp["robot"]).read_text()
+        self.conf_listones = exp.get("listones")
+        if self.conf_listones:
+            slots = "".join(f'<geom name="liston_{k}" type="box" size="0.03 1.6 {self.conf_listones["alto_m"] / 2}" '
+                            f'pos="{200 + k} 0 0" rgba="0.55 0.35 0.2 1" friction="0.9 0.05 0.01"/>'
+                            for k in range(self.conf_listones["cantidad"]))
+            xml = xml.replace("</worldbody>", slots + "</worldbody>", 1)
+        self.model = mujoco.MjModel.from_xml_string(xml)
         self.data = mujoco.MjData(self.model)
         self.frame_skip = exp["ambiente"]["frame_skip"]
         self.dt = self.model.opt.timestep * self.frame_skip
@@ -54,6 +61,8 @@ class BipedoEnv(gym.Env):
         self.torque_max = m.actuator_forcerange[:, 1].copy()
         self.id_torso = m.body("torso").id
         self.id_piso = m.geom("piso").id
+        self.ids_listones = [m.geom(f"liston_{k}").id for k in range(self.conf_listones["cantidad"])] if self.conf_listones else []
+        self.ids_suelo = np.array([self.id_piso, *self.ids_listones])
         self.ids_pies = [m.geom("pie_i").id, m.geom("pie_d").id]
 
         self.adversidad = exp.get("adversidad", {})
@@ -119,8 +128,8 @@ class BipedoEnv(gym.Env):
     def contactos(self):
         """(pie izquierdo apoyado, pie derecho apoyado, cuerpo toca el piso)."""
         pares = self.data.contact.geom[:self.data.ncon]
-        con_piso = pares[(pares == self.id_piso).any(axis=1)]
-        otros = con_piso[con_piso != self.id_piso]
+        con_piso = pares[np.isin(pares, self.ids_suelo).any(axis=1)]
+        otros = con_piso[~np.isin(con_piso, self.ids_suelo)]
         izq = bool((otros == self.ids_pies[0]).any())
         der = bool((otros == self.ids_pies[1]).any())
         return izq, der, bool(((otros != self.ids_pies[0]) & (otros != self.ids_pies[1])).any())
@@ -178,6 +187,7 @@ class BipedoEnv(gym.Env):
         self.empujado = False
         self._iniciar_estadisticas()
         self.tramos = self._sortear_tramos() if self.conf_pisos else []
+        self.listones = self._colocar_listones() if self.conf_listones else []
         self.pie_previo = [self.posicion_pie(0).copy(), self.posicion_pie(1).copy()]
         self.rumbo_objetivo = 0.0
         self.destino = None
@@ -274,6 +284,8 @@ class BipedoEnv(gym.Env):
 
     # --------------------------------------------------- calidad del movimiento
     def _iniciar_estadisticas(self):
+        self.vel_pies = [0.0, 0.0]
+        self.pos_pies = [self.posicion_pie(k)[:2].copy() for k in (0, 1)]
         self.est = {"pasos": [], "despejes": [], "cambios": [], "inclinaciones": [], "vel_torso": [],
                     "apoyo_previo": [True, True], "altura_vuelo": [0.0, 0.0], "ultimo_apoyo": None}
 
@@ -283,6 +295,8 @@ class BipedoEnv(gym.Env):
         apoyos = [izq, der]
         for lado in (0, 1):
             pos = self.posicion_pie(lado)
+            self.vel_pies[lado] = float(np.linalg.norm(pos[:2] - self.pos_pies[lado])) / self.dt
+            self.pos_pies[lado] = pos[:2].copy()
             if not apoyos[lado]:
                 e["altura_vuelo"][lado] = max(e["altura_vuelo"][lado], float(pos[2]) - 0.04)
             elif not e["apoyo_previo"][lado]:  # aterrizaje: termina un paso
@@ -335,6 +349,16 @@ class BipedoEnv(gym.Env):
                            "succion": p["succion"], "sacudida": p["sacudida"]})
             x += largo
         return tramos
+
+    def _colocar_listones(self):
+        c = self.conf_listones
+        posiciones, x = [], float(c["inicio_m"])
+        for k, g in enumerate(self.ids_listones):
+            x += float(self.np_random.uniform(*c["separacion_m"]))
+            self.model.geom_pos[g] = [x, 0.0, c["alto_m"] / 2]
+            posiciones.append([round(x, 3), c["alto_m"]])
+        mujoco.mj_forward(self.model, self.data)
+        return posiciones
 
     def _aplicar_piso(self):
         base = PISOS["suelo"]

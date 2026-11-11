@@ -46,6 +46,9 @@ class Tarea:
     def resumen(self, env):
         return ""
 
+    def avance(self, env):
+        return min(1.0, env.pasos / env.max_pasos)
+
     def orden(self, env):
         return "quedarse de pie"
 
@@ -193,6 +196,12 @@ class Marcha(Tarea):
         self._sortear(env)
         self.errores = []
         self.errores_rumbo = []
+        self.pasos_vistos = 0
+
+    def avance(self, env):
+        """Progreso de 0 a 1 hacia la meta, para comparar intentos fallidos."""
+        meta = self.t.get("distancia_m")
+        return min(1.0, max(env.recorrido(), 0.0) / meta) if meta else min(1.0, env.pasos / env.max_pasos)
 
     def actualizar(self, env):
         cada = self.t.get("cambia_cada_s")
@@ -221,14 +230,36 @@ class Marcha(Tarea):
         else:
             d["reloj"] = self.p["reloj"] * 0.5 * (float(izq == apoyo_i) + float(der == apoyo_d))
             alto = env.posicion_pie(1 if apoyo_i else 0)[2]
-            d["paso"] = self.p["paso"] * min(1.0, alto / 0.06)
+            d["paso"] = self.p["paso"] * min(1.0, alto / self.t.get("despeje_m", 0.06))
         d["giro"] = -self.p["giro"] * float(np.sum((env.data.qvel[3:5]) ** 2))
+        if self.p.get("guinada"):  # sigue la velocidad de giro ordenada
+            d["guinada"] = self.p["guinada"] * np.exp(-(((env.data.qvel[5] - env.comando[3]) / 0.3) ** 2))
+        self._estetica(env, d, izq, der)
         self.errores.append(np.sqrt(error))
         self.errores_rumbo.append(abs(error_rumbo))
         return d
 
+    def _estetica(self, env, d, izq, der):
+        """Términos de «caminar bien»: zancada humana, articulaciones sin vibrar, pie de apoyo firme."""
+        p = self.p
+        if p.get("zancada"):
+            n = len(env.est["pasos"])
+            if n > getattr(self, "pasos_vistos", 0):
+                largo = env.est["pasos"][-1]
+                d["zancada"] = p["zancada"] * np.exp(-(((largo - self.t.get("zancada_m", 0.3)) / 0.08) ** 2))
+            self.pasos_vistos = n
+        if p.get("vel_articular"):
+            d["vel_articular"] = -p["vel_articular"] * float(np.mean((env.data.qvel[env.adr_v] * 0.1) ** 2))
+        if p.get("deslizamiento"):
+            v = env.vel_pies
+            d["deslizamiento"] = -p["deslizamiento"] * float(v[0] * izq + v[1] * der)
+
+    def calidad_ok(self, env):
+        minimo = self.t.get("calidad_min")
+        return not minimo or env.estadisticas()["calidad"] >= minimo
+
     def exito(self, env, truncado):
-        if not truncado:
+        if not truncado or not self.calidad_ok(env):
             return False
         if "error_ms" in self.t and float(np.mean(self.errores[50:])) >= self.t["error_ms"]:
             return False
@@ -362,5 +393,127 @@ class Levantarse(Tarea):
         return truncado and self.mejor * env.dt >= self.t["segundos"]
 
 
+class Esquina(Marcha):
+    """Camina recto, se detiene, gira 90° sobre su eje y vuelve a caminar recto."""
+    titulo_exito = "Dobló la esquina"
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        self.fase_esquina = 0
+        self.lado = 1.0 if self.t.get("lado", "izquierda") == "izquierda" else -1.0
+        env.comando[:] = [self.t["velocidad_ms"], 0.0, 1.0, 0.0]
+        self.origen = np.array([env.x_inicial, env.y_inicial])
+        self.esquina = None
+
+    def actualizar(self, env):
+        L, vx, w = self.t["lado_m"], self.t["velocidad_ms"], self.t["giro_rad_s"]
+        pos = env.data.qpos[:2]
+        if self.fase_esquina == 0 and pos[0] - self.origen[0] >= L:
+            self.fase_esquina, self.esquina = 1, pos.copy()
+            env.comando[0], env.comando[3] = 0.0, self.lado * w
+        if self.fase_esquina == 1:
+            objetivo = self.lado * np.pi / 2
+            env.rumbo_objetivo += env.comando[3] * env.dt
+            if abs(env.rumbo_objetivo) >= abs(objetivo):
+                env.rumbo_objetivo, env.comando[3] = objetivo, 0.0
+                if abs(env.error_rumbo()) < 0.2:
+                    self.fase_esquina = 2
+                    env.comando[0] = vx
+
+    def tramo2(self, env):
+        if self.esquina is None:
+            return 0.0
+        return float(self.lado * (env.data.qpos[1] - self.esquina[1]))
+
+    def avance(self, env):
+        L = self.t["lado_m"]
+        t1 = min(1.0, max(0.0, env.data.qpos[0] - self.origen[0]) / L)
+        giro = min(1.0, abs(env.rumbo()) / (np.pi / 2)) if self.fase_esquina >= 1 else 0.0
+        t2 = min(1.0, max(0.0, self.tramo2(env)) / L)
+        return (t1 + giro + t2) / 3
+
+    def exito(self, env, truncado):
+        return (truncado and self.calidad_ok(env) and self.fase_esquina == 2
+                and self.tramo2(env) >= self.t["lado_m"] and abs(env.error_rumbo()) < 0.35)
+
+    def resumen(self, env):
+        return (f"tramo 1 {min(env.data.qpos[0] - self.origen[0], 99):.1f} m · giró {np.degrees(abs(env.rumbo())):.0f}° · "
+                f"tramo 2 {self.tramo2(env):.1f} m")
+
+    def orden(self, env):
+        return ["caminar recto", "girar 90° sobre su eje", "caminar recto otra vez"][self.fase_esquina]
+
+
+class Curva(Marcha):
+    """Camina en círculo: velocidad constante y giro constante."""
+    titulo_exito = "Completó el círculo"
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        R, vx = self.t["radio_m"], self.t["velocidad_ms"]
+        env.comando[:] = [vx, 0.0, 1.0, vx / R]
+        self.centro = np.array([env.x_inicial, env.y_inicial + R])
+        self.angulo = 0.0
+        self.previo = None
+        self.radios = []
+
+    def actualizar(self, env):
+        env.rumbo_objetivo += env.comando[3] * env.dt
+        rel = env.data.qpos[:2] - self.centro
+        a = float(np.arctan2(rel[1], rel[0]))
+        if self.previo is not None:
+            self.angulo += float(np.arctan2(np.sin(a - self.previo), np.cos(a - self.previo)))
+        self.previo = a
+        self.radios.append(float(np.linalg.norm(rel)))
+
+    def error_radio(self):
+        return float(np.mean(np.abs(np.array(self.radios) - self.t["radio_m"]))) if self.radios else 9.9
+
+    def avance(self, env):
+        return min(1.0, max(0.0, self.angulo) / (2 * np.pi * self.t["vueltas"]))
+
+    def exito(self, env, truncado):
+        return (truncado and self.calidad_ok(env) and self.angulo >= 2 * np.pi * self.t["vueltas"]
+                and self.error_radio() < self.t["error_radio_m"])
+
+    def resumen(self, env):
+        return f"recorrió {np.degrees(max(self.angulo, 0)):.0f}° del círculo · se desvió {self.error_radio():.2f} m del radio"
+
+    def orden(self, env):
+        return f"caminar en círculo de {self.t['radio_m']} m de radio"
+
+
+class Recorrido(Marcha):
+    """Encadena tramos rectos, giros sobre su eje y curvas, en orden aleatorio."""
+    titulo_exito = "Completó el recorrido"
+    MODOS = {"recto": (0.5, 0.0), "giro": (0.0, 0.8), "curva": (0.45, 0.25)}
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        self.cola = []
+        self.modo, self.hasta = None, 0
+        self._siguiente(env)
+
+    def _siguiente(self, env):
+        if not self.cola:
+            self.cola = list(env.np_random.permutation(["recto", "giro", "curva", "recto"]))
+        self.modo = str(self.cola.pop(0))
+        vx, w = self.MODOS[self.modo]
+        signo = env.np_random.choice([-1.0, 1.0])
+        env.comando[:] = [vx, 0.0, 1.0, signo * w]
+        duracion = (np.pi / 2) / w if self.modo == "giro" else self.t["tramo_s"]
+        self.hasta = env.pasos + int(duracion / env.dt)
+
+    def actualizar(self, env):
+        if env.pasos >= self.hasta:
+            self._siguiente(env)
+        env.rumbo_objetivo += env.comando[3] * env.dt
+
+    def orden(self, env):
+        nombres = {"recto": "caminar recto", "giro": "girar sobre su eje", "curva": "caminar en curva"}
+        return nombres[self.modo]
+
+
 TAREAS = {"de_pie": DePie, "sentadilla": Sentadilla, "pasar_peso": PasarPeso, "un_pie": UnPie,
-          "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto, "salto": Salto}
+          "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto, "salto": Salto,
+          "esquina": Esquina, "curva": Curva, "recorrido": Recorrido}
