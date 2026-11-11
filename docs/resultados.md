@@ -10,3 +10,4 @@
 | 104 | [Caminar con viento](experimentos/exp-104.md) | No aprobado | 50 % | 80 % | 1.5 M | 14 min |
 | 105 | [Caminar bien](experimentos/exp-105.md) | No aprobado | 0 % | 80 % | 2.0 M | 20 min |
 | 106 | [Caminar en terreno difícil](experimentos/exp-106.md) | No aprobado | 25 % | 75 % | 1.3 M | 15 min |
+| 107 | [Girar en la esquina](experimentos/exp-107.md) | No aprobado | 0 % | 80 % | 1.6 M | 14 min |
