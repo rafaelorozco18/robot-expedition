@@ -76,6 +76,23 @@ Todo lo anterior lo produce `expedicion campana exp-101 … exp-109`: entrena, e
 repite las pruebas anteriores (regresión), calcula las etapas, registra en MLflow, documenta, publica,
 hace commit y pone el tag.
 
+## Resultados (2026-11-11)
+
+| # | Experimento | Resultado | Éxito en Marte | Lo que se ve en las 5 etapas |
+|---|---|---|---|---|
+| 1 | De pie | Aprobado | 83 % | De caer a los 1,4 s a mantenerse 10 s |
+| 2 | Caminar | Aprobado | 100 % | De quedarse quieto a recorrer 11 m |
+| 3 | De pie con viento | No aprobado | 42 % | De caer en menos de 1 s a aguantar las ráfagas |
+| 4 | Caminar con viento | No aprobado | 50 % | De caer a los 1,8 s a cruzar 10 m con viento |
+| 5 | Caminar bien | No aprobado | 0 % | Calidad de 22 a 32/100: menos pasos por segundo, más largos y más altos |
+| 6 | Terreno difícil | No aprobado | 25 % | Cruza arena, grava, barro y listones con calidad 36/100 |
+| 7 | Esquina | No aprobado | 0 % | Camina 4 m y gira hasta 70° antes de caer |
+| 8 | Curva | No aprobado | 0 % | Recorre hasta 83° del círculo antes de caer |
+| 9 | Dominio | No aprobado | 0 % | Encadena hasta 4 s de órdenes antes de caer |
+
+Los Exps 4 a 9 parten del primer entrenamiento del Exp 2 (semilla 0, 58 %). Al final de la jornada el Exp 2
+se reentrenó con la semilla 1, que aprobó con 100 % y es la que se muestra.
+
 ## Decisiones tomadas durante la jornada
 
 - **Evaluación con el ruido de la política.** El modelo del Exp 1 se sostiene 11 de 12 veces actuando con su

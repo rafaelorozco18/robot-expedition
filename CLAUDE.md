@@ -76,7 +76,8 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 ## Estado actual (2026-11-11, cierre de la jornada)
 
 - Serie Marte entrenada completa una vez (resultados en `docs/resultados.md`, decisiones en `docs/serie-marte.md`).
-  Solo el Exp 1 aprueba. La marcha mejoró en calidad (22 → 37/100) pero no llegó a los umbrales.
+  Aprueban los Exps 1 (83 %) y 2 (100 %, semilla 1). La marcha mejoró en calidad (22 → 37/100) pero no llegó
+  a los umbrales. Los Exps 4 a 9 partieron de la semilla 0 del Exp 2, no de la aprobada.
   Girar (Exps 7 a 9) es el cuello de botella: el robot cae durante el giro.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
