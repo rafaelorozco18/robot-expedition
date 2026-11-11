@@ -6,6 +6,7 @@ import { crearProgreso } from "./progreso.js";
 import { crearPlaneta, TEMAS } from "./planetas.js";
 import { crearRobot, gestoDe } from "./robot3d.js";
 import { crearEfectos, crearSonido } from "./efectos.js";
+import { crearViento } from "./viento.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -36,7 +37,7 @@ const NOMBRE_RECOMPENSA = {
 
 const estado = {
   catalogo: [], exp: null, mundo: null,
-  agente: "experto", planeta: "tierra", perturbacion: "ninguna",
+  agente: "experto", planeta: "marte", perturbacion: "ninguna",
   episodio: null, i: 0, tiempo: 0, play: false, velocidad: 1, finClip: null,
 };
 
@@ -72,6 +73,7 @@ scene.add(sol);
 scene.add(sol.target);
 const planeta = crearPlaneta(scene, { sol, hemi });
 const efectos = crearEfectos(scene);
+const viento = crearViento(scene);
 const sonido = crearSonido();
 
 // Campo de pruebas: plano, con rejilla de 1 m. MuJoCo tiene el piso en z = 0.
@@ -96,8 +98,53 @@ function construirCampo() {
   geo.setAttribute("position", new THREE.Float32BufferAttribute(lineas, 3));
   grupoCampo.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.14 })));
   const meta = estado.mundo?.meta_m;
+  const tarea = estado.mundo?.tarea;
   if (meta) construirMeta(meta);
-  else construirCirculo();
+  else if (tarea === "esquina" || tarea === "curva") construirTrayecto(tarea, estado.mundo.parametros);
+  else if (tarea !== "recorrido") construirCirculo();
+}
+
+// Camino que se le pide: una esquina en L o un círculo, pintado en el suelo (MuJoCo y → −z).
+function construirTrayecto(tarea, p) {
+  const material = new THREE.MeshBasicMaterial({ color: 0x3fd0e0, transparent: true, opacity: 0.55, depthWrite: false });
+  const franja = (x0, z0, x1, z1) => {
+    const largo = Math.hypot(x1 - x0, z1 - z0);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(largo, 0.12), material);
+    m.rotation.x = -Math.PI / 2;
+    m.rotation.z = Math.atan2(-(z1 - z0), x1 - x0);
+    m.position.set((x0 + x1) / 2, 0.012, (z0 + z1) / 2);
+    grupoCampo.add(m);
+  };
+  if (tarea === "esquina") {
+    const L = p.lado_m;
+    franja(0, 0, L, 0);
+    franja(L, 0, L, -L);
+    const giro = new THREE.Mesh(new THREE.RingGeometry(0.32, 0.4, 40, 1, 0, Math.PI * 1.5), new THREE.MeshBasicMaterial({ color: 0xff7a1a, transparent: true, opacity: 0.8 }));
+    giro.rotation.x = -Math.PI / 2;
+    giro.position.set(L, 0.014, 0);
+    grupoCampo.add(giro);
+    const r = rotulo("GIRO 90°", 0.28, "#ffb070");
+    r.position.set(L + 0.6, 0.35, 0.5);
+    grupoCampo.add(r);
+  } else {
+    const R = p.radio_m;
+    const aro = new THREE.Mesh(new THREE.RingGeometry(R - 0.06, R + 0.06, 96), material);
+    aro.rotation.x = -Math.PI / 2;
+    aro.position.set(0, 0.012, -R);
+    grupoCampo.add(aro);
+  }
+}
+
+const grupoListones = new THREE.Group();
+function dibujarListones(listones) {
+  grupoListones.clear();
+  const mat = new THREE.MeshStandardMaterial({ color: 0x8a5a32, roughness: 0.7 });
+  for (const [x, alto] of listones || []) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.06, alto, 3.2), mat);
+    m.position.set(x, alto / 2, 0);
+    m.castShadow = m.receiveShadow = true;
+    grupoListones.add(m);
+  }
 }
 
 // Experimentos sin distancia: una plataforma circular donde demostrar el control del cuerpo.
@@ -179,6 +226,7 @@ function construirMeta(x) {
 // Tramos de piso del episodio, tal como los sorteó el simulador (x de MuJoCo = x del visor).
 const grupoTramos = new THREE.Group();
 rampa.add(grupoTramos);
+rampa.add(grupoListones);
 const texturasPiso = {};
 function texturaPiso(tipo) {
   if (texturasPiso[tipo]) return texturasPiso[tipo];
@@ -238,7 +286,8 @@ function dibujarTramos(tramos) {
     const tex = texturaPiso(tipo).clone();
     tex.repeat.set(largo / 2, 2.6);
     tex.needsUpdate = true;
-    const malla = new THREE.Mesh(new THREE.BoxGeometry(largo, 0.02, 5.2), new THREE.MeshStandardMaterial({
+    const ancho = estado.mundo?.tarea === "recorrido" ? 14 : 5.2;
+    const malla = new THREE.Mesh(new THREE.BoxGeometry(largo, 0.02, ancho), new THREE.MeshStandardMaterial({
       color: color[tipo], map: tex, roughness: tipo === "hielo" ? 0.12 : 0.95, metalness: tipo === "hielo" ? 0.25 : 0,
     }));
     malla.position.set((x0 + x1) / 2, 0.0, 0);
@@ -407,6 +456,9 @@ function mostrar(i) {
   $("v-comando").textContent = f.orden;
   $("v-distancia").textContent = `${f.distancia.toFixed(2)} m`;
   $("v-piso").textContent = planeta.tema().terrenos[f.piso] || f.piso.replace("_", " ");
+  const fv = Math.hypot(...(f.viento || [0, 0]));
+  $("v-viento").textContent = fv > 0.5 ? `${fv.toFixed(0)} N` : "sin viento";
+  $("v-viento").className = fv > 12 ? "alerta" : "";
   $("v-r").textContent = fmt(f.recompensa, 2);
   $("v-rt").textContent = fmt(f.total, 1);
   $("desglose").innerHTML = Object.entries(f.desglose).map(([k, v]) =>
@@ -428,6 +480,7 @@ function mostrarResultado() {
   el.className = `resultado ${r.exito ? "exito" : "fracaso"}`;
   el.innerHTML = `<small>${nombreVersion()}</small><b>${r.exito ? `¡${r.titulo_exito}!` : "Todavía no"}</b>
     ${r.exito ? `${r.segundos.toFixed(0)} s` : `a los ${r.segundos.toFixed(1)} s: ${r.motivo}`}${r.detalle ? `<br>${r.detalle}` : ""}<br>
+    calidad de movimiento <b class="calidad">${r.calidad.toFixed(0)}/100</b>${r.largo_paso_m ? ` · paso ${(r.largo_paso_m * 100).toFixed(0)} cm · ${r.pasos_por_s} pasos/s` : ""}<br>
     inclinación máxima ${r.inclinacion_max.toFixed(1)}° · energía ${r.energia_j.toFixed(0)} J`;
   el.hidden = false;
 }
@@ -489,6 +542,7 @@ async function abrirExperimento(id) {
     estado.play = false;
     estado.episodio = null;
     if (robot) robot.raiz.visible = false;
+    viento.ocultar();
     $("resultado").hidden = true;
     return;
   }
@@ -505,6 +559,7 @@ async function abrirExperimento(id) {
   rampa.add(grupoCampo, grupoTramos, robot.raiz);
   construirAgentes();
   construirMotores();
+  $("planeta").closest(".campo").hidden = true;  // la serie se trabaja solo en Marte
   await cargarAprendizaje(id);
   segmentado("planeta", Object.keys(estado.mundo.gravedades), (v) => `${TEMAS[v].nombre} · ${estado.mundo.gravedades[v]}`);
   segmentado("perturbacion", estado.mundo.perturbaciones, (v) => ETIQUETA_PERTURBACION[v] || v);
@@ -537,9 +592,12 @@ async function lanzar(clip = null) {
   efectos.limpiar();
   ocultarBurbuja();
   dibujarTramos(datos.resumen.tramos || []);
+  dibujarListones(datos.resumen.listones);
   estado.i = 0; estado.tiempo = 0; estado.play = true;
   $("barra").max = datos.cuadros.length - 1;
   if (clip) {
+    estado.velocidad = clip[2] || 1;
+    $("velocidad").value = String(estado.velocidad);
     estado.tiempo = clip[0];
     estado.finClip = clip[1];
     estado.i = Math.max(0, datos.cuadros.findIndex((c) => c.t >= clip[0]));
@@ -618,18 +676,17 @@ function dibujarHitos(activo = -1) {
     li.className = `hito ${h.exito ? "logrado" : ""} ${i === activo ? "activo" : ""}`;
     const tasa = h.tasa === null ? "" : `<small>En las pruebas: ${Math.round(h.tasa * 100)} %</small>`;
     li.style.setProperty("--c", colorNivel(i, plan.hitos.length));
-    li.innerHTML = `<button><span class="h-num">${i + 1}</span><span class="h-cuerpo"><b>${h.etiqueta}</b><span>${h.texto}</span>${tasa}</span><i class="estrellas">${estrellas(h)}</i></button>`;
+    li.innerHTML = `<button><span class="h-num">${i + 1}</span><span class="h-cuerpo"><b>${h.etiqueta}</b><small>${h.origen_texto || ""}</small><span>${h.texto}</span>${tasa}</span><i class="estrellas">${estrellas(h)}</i></button>`;
     li.querySelector("button").onclick = () => { detenerAprendizaje(); reproducirEtapa(plan, i, false); };
     cont.append(li);
   });
-  $("aprendizaje-nota").textContent = plan.mejora < 0.05
-    ? `En ${planeta.tema().nombre} ya lo lograba desde el inicio: el contraste está en ${TEMAS[otroPlaneta()].nombre}.`
-    : `${plan.hitos.length} etapas en ${planeta.tema().nombre}, desde que no sabía nada, todas en la misma prueba de este experimento.`;
+  $("aprendizaje-nota").textContent = `${plan.hitos.length} etapas en Marte, todas en la misma prueba: del fracaso absoluto al dominio.`;
 }
 
 const otroPlaneta = () => Object.keys(aprendizaje.planetas).find((p) => p !== estado.planeta);
 
-const estrellas = (h) => "★".repeat(h.exito ? 3 : h.avance > 0.4 ? 2 : 1).padEnd(3, "☆");
+const ESTRELLAS = { "Fracaso absoluto": 1, "Fracaso, pero mejor": 2, "Punto de inflexión": 3, "Cumplido": 4, "Perfeccionado": 5 };
+const estrellas = (h) => "★".repeat(ESTRELLAS[h.etiqueta] || 1).padEnd(5, "☆");
 
 async function reproducirEtapa(plan, i, seguir) {
   const h = plan.hitos[i];
@@ -639,12 +696,10 @@ async function reproducirEtapa(plan, i, seguir) {
   $("semilla").value = plan.semilla;
   marcarVersion();
   dibujarHitos(i);
-  mostrarEtapa(`Nivel ${i + 1} de ${plan.hitos.length}`, h.etiqueta, h.texto, h.exito, estrellas(h));
+  mostrarEtapa(`Etapa ${i + 1} de ${plan.hitos.length} · ${h.origen_texto || ""}`, h.etiqueta, h.texto, h.exito, estrellas(h));
   dibujarNiveles(plan, i);
   sonido.sonar("nivel");
   $("resultado").hidden = true;
-  estado.velocidad = 1;
-  $("velocidad").value = "1";
   estado.hito = h;
   controls.autoRotate = Boolean(seguir);
   await lanzar(h.clip);
@@ -702,6 +757,8 @@ function reaccionar(r, A, B, conSonido = true) {
       if (conSonido) sonido.sonar("paso");
     }
   });
+  const fa = Math.hypot(...(A.viento || [0, 0])), fb = Math.hypot(...(B.viento || [0, 0]));
+  if (conSonido && fb > 8 && fb > fa * 1.35) { decir("¡Ráfaga!", 1.2); sonido.sonar("empujon"); }
   if (B.empujon) {
     efectos.polvo(r.cabeza(), 0xff7a1a, 6, 1.2);
     if (conSonido) { sonido.sonar("empujon"); decir("¡Epa!", 1.2); }
@@ -868,6 +925,8 @@ function bucle() {
   if (estado.carrera) {
     animarCarrera(dt);
     seguirRobot(dt);
+    const l = estado.carrera.lider;
+    viento.actualizar(dt, estado.mundo?.viento ? l.c[l.i].viento : null, previo);
   } else if (estado.episodio) {
     const c = estado.episodio.cuadros;
     if (estado.play) {
@@ -893,6 +952,7 @@ function bucle() {
     robot.posar(A, B, Math.max(0, f));
     actualizarGuia(A);
     seguirRobot(dt);
+    viento.actualizar(dt, estado.mundo?.viento ? A.viento : null, previo);
     if (!$("burbuja").hidden) {
       colocarSobre($("burbuja"), robot.cabeza().add(new THREE.Vector3(0, 0.12, 0)));
       if (reloj.elapsedTime > burbujaHasta) ocultarBurbuja();

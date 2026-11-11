@@ -89,6 +89,8 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
             "pie_orden": round(float(env.comando[3]), 2),
             "distancia": round(env.distancia(), 2),
             "piso": env.piso_bajo_torso(),
+            "viento": [round(float(v), 1) for v in env.viento_actual[:2]],
+            "rumbo_orden": round(float(env.rumbo_objetivo), 3),
         }
 
     if grabar:
@@ -112,7 +114,10 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
                "energia_j": round(env.energia, 1), "inclinacion_max": round(inclinacion_max, 1),
                "distancia": round(env.distancia(), 2),
                "tramos": [[t["x0"], t["x1"], t["tipo"]] for t in env.tramos],
-               "altura_final": round(env.altura_torso() / env.altura_pie, 3)}
+               "altura_final": round(env.altura_torso() / env.altura_pie, 3),
+               "avance": round(float(env.tarea.avance(env)), 3),
+               "listones": env.listones,
+               **env.estadisticas()}
     return resumen, cuadros
 
 
@@ -123,6 +128,7 @@ def _metricas(filas):
         "segundos_medios": round(float(np.mean([f["segundos"] for f in filas])), 2),
         "energia_media_j": round(float(np.mean([f["energia_j"] for f in filas])), 1),
         "inclinacion_max_media": round(float(np.mean([f["inclinacion_max"] for f in filas])), 1),
+        "calidad_media": round(float(np.mean([f["calidad"] for f in filas])), 1),
     }
 
 

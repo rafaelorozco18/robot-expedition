@@ -16,3 +16,40 @@ stages:
       hash: md5
       md5: a2e2b03f1b7ebcd125e950de6d2f7c84
       size: 2237
+  escenarios-exp-103:
+    cmd: python -m expedicion escenarios exp-103
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 6c6a6e586c7edb431d016f44cb509bb5
+      size: 1206
+    - path: experimentos/exp-103.yaml
+      hash: md5
+      md5: 0bc407d1045f8533eea41820c1be5a8a
+      size: 540
+    outs:
+    - path: data/exp-103/escenarios.json
+      hash: md5
+      md5: a2e2b03f1b7ebcd125e950de6d2f7c84
+      size: 2237
+  entrenar-exp-101-s0:
+    cmd: nice -n 10 python -m expedicion entrenar exp-101 --semilla 0
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 6c6a6e586c7edb431d016f44cb509bb5
+      size: 1206
+    - path: experimentos/exp-101.yaml
+      hash: md5
+      md5: 57f596a20865f253e569adad6b36232a
+      size: 487
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-101/semilla-0
+      hash: md5
+      md5: 11a523a84cc0297d9d0eef3f1411ccfd.dir
+      size: 52330311
+      nfiles: 29

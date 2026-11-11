@@ -75,7 +75,9 @@ def mundo(exp):
     return {"id": exp["id"], "titulo": exp["titulo"], "pregunta": exp["pregunta"], "robot": robot(exp),
             "gravedades": {p: GRAVEDADES[p] for p in PLANETAS_VISOR}, "perturbaciones": PERTURBACIONES,
             "ambiente": exp["ambiente"], "recompensa": exp["recompensa"],
-            "meta_m": exp.get("parametros", {}).get("distancia_m"),
+            "meta_m": exp.get("parametros", {}).get("distancia_m") if exp["tarea"] == "marcha" else None,
+            "parametros": exp.get("parametros", {}),
+            "viento": bool(exp.get("adversidad", {}).get("viento_n")),
             "tarea": exp["tarea"],
             "clima_visual": exp.get("clima_visual", "despejado"),
             "pendiente_grados": exp.get("pendiente_grados", 0),
@@ -119,17 +121,16 @@ def evolucion(exp):
     ev = _archivo_json(pub(exp) / "evaluacion.json")
     aprobado = aprobado_visor(exp, ev)
     for plan in datos["planetas"].values():
-        for n, h in enumerate(plan["hitos"]):
-            pasos = _pasos(h["paso"])
+        for h in plan["hitos"]:
             if h["paso"] is None:
-                h["etiqueta"] = "Sin entrenar"
+                origen = "sin entrenar"
             elif h["origen"] != exp["id"]:
                 previo = P.cargar(h["origen"]) or X.cargar(h["origen"])
-                h["etiqueta"] = f"Exp {int(previo['id'][4:])}, {previo['titulo']} · {pasos}"
-            elif n == len(plan["hitos"]) - 1:
-                h["etiqueta"] = f"{'Experto' if aprobado else 'Mejor versión'} · {pasos}"
+                origen = f"heredado de «{previo['titulo']}» · {_pasos(h['paso'])}"
             else:
-                h["etiqueta"] = f"Este experimento · {pasos}"
+                origen = f"este entrenamiento · {_pasos(h['paso'])}"
+            h["etiqueta"] = h.get("etapa", "Etapa")
+            h["origen_texto"] = origen
     return {**datos, "aprobado": aprobado}
 
 

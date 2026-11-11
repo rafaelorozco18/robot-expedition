@@ -384,3 +384,5 @@ button.secundario { margin-top: 6px; background: var(--panel-2); color: var(--ti
 .tarjeta-pendiente p { color: var(--tinta-2); margin: 0; }
 
 .panel { scroll-padding-top: 170px; }
+.resultado .calidad { color: var(--verde); font-size: 15px; }
+.h-cuerpo small:first-of-type { color: var(--cian); }

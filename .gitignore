@@ -17,3 +17,7 @@ models/pilotos/
 
 # Copias que lee el visor; se regeneran con `expedicion publicar`
 publicado/
+
+# Salidas de la serie Marte: las versiona DVC, nunca git
+/models/exp-1*/semilla-*
+/data/exp-1*/*.json*

@@ -1,23 +1,30 @@
-"""Cómo aprendió el robot: etapas relevantes de cada experimento, por planeta.
+"""Cómo aprendió el robot: cinco etapas por experimento.
 
-Un modelo heredado ya sabe casi todo cuando empieza su experimento, así que se recorre todo su
-linaje: las fotos de cada antecesor y las propias se prueban en el mismo escenario fijo de este
-experimento. Se conservan la primera, la última y las que cruzan los cuartos de la mejora total,
-y cada una se recorta al tramo que muestra el contraste: la caída, el cruce o la reacción al empujón.
+Se prueban, en un mismo escenario fijo de Marte, el robot sin entrenar, algunas fotos de sus
+antecesores y todas las fotos de este entrenamiento (densas al inicio). De ellas se eligen:
+
+1. Fracaso absoluto: el peor intento.
+2. Fracaso, pero mejor: un intento fallido a mitad de camino entre el peor y el mejor fallido.
+3. Punto de inflexión: el mejor intento que todavía falla.
+4. Cumplido: el primero que cumple el objetivo.
+5. Perfeccionado: el que lo cumple con la mejor calidad de movimiento.
+
+Cada etapa se recorta al tramo que muestra el contraste.
 """
 
 import json
 
-from .evaluar import (Politica, SinEntrenar, campeon, correr_episodio, fotos_de, paso_de)
+from .evaluar import Politica, SinEntrenar, campeon, correr_episodio, fotos_de, paso_de
 from .experimentos import cargar, carpeta_datos, carpeta_metricas, carpeta_modelos
 
-PLANETAS_VISOR = ["tierra", "marte"]
-FOTOS_POR_ANTECESOR = 6
+PLANETAS_VISOR = ["marte"]
+FOTOS_POR_ANTECESOR = 4
+ETAPAS = ["Fracaso absoluto", "Fracaso, pero mejor", "Punto de inflexión", "Cumplido", "Perfeccionado"]
 
 
 def linaje(exp):
     """Antecesores desde la raíz, sin incluir al experimento."""
-    if "linaje" in exp:  # cuando un antecesor se reentrenó después y ya no es el modelo original
+    if "linaje" in exp:
         return [cargar(i) for i in exp["linaje"]]
     if not exp["parte_de"]:
         return []
@@ -31,54 +38,64 @@ def _muestrear(fotos, n):
     return [fotos[round(i * (len(fotos) - 1) / (n - 1))] for i in range(n)]
 
 
-def _avance(exp, r):
-    """Puntaje de 0 a 1 para ordenar etapas. 1 es cumplir la tarea."""
+def _puntaje(exp, r):
+    """Éxitos por encima de 1, ordenados por calidad; fallos entre 0 y 0,95 según su avance."""
     if r["exito"]:
-        return 1.0
-    meta = exp.get("parametros", {}).get("distancia_m")
-    if meta and exp["tarea"] == "marcha":
-        return min(0.95, max(r["distancia"], 0.0) / meta)
-    return min(0.95, r["segundos"] / exp["ambiente"]["duracion_s"])
+        return 1.0 + r["calidad"] / 1000
+    minimo = exp.get("parametros", {}).get("calidad_min")
+    factor = min(1.0, r["calidad"] / minimo) if minimo else 1.0
+    return 0.95 * r["avance"] * (0.5 + 0.5 * factor)
 
 
-def _clip(exp, resumen, cuadros):
-    """Ventana (inicio, fin) en segundos con el tramo que importa."""
+def _clip(exp, r, cuadros):
+    """Ventana [inicio, fin, velocidad] con el tramo que importa."""
     fin = cuadros[-1]["t"]
-    empujon = next((c["t"] for c in cuadros if c["empujon"]), None)
-    if empujon is not None:
-        inicio = max(0.0, empujon - 1.5)
-        return [round(inicio, 2), round(min(fin, inicio + 7.0), 2)]
-    if not resumen["exito"] and resumen["motivo"] != "no cumplió la meta":
-        return [round(max(0.0, fin - 6.0), 2), fin]
-    if resumen["tramos"] and resumen["exito"]:
-        x0 = resumen["tramos"][0][0]
-        inicio = next((c["t"] for c in cuadros if c["cuerpos"][0][0] >= x0 - 0.8), 0.0)
-        return [round(inicio, 2), round(min(fin, inicio + 9.0), 2)]
-    return [0.0, round(min(fin, 7.0), 2)]
+    cae = not r["exito"] and r["motivo"] not in ("no cumplió la meta", "cumplió la meta")
+    if cae:
+        return [round(max(0.0, fin - 6.0), 2), fin, 1]
+    if exp["tarea"] in ("esquina", "curva", "recorrido"):
+        return [0.0, fin, 2.5]
+    if exp["tarea"] == "marcha":
+        return [0.0, round(min(fin, 14.0), 2), 1.5]
+    return [0.0, round(min(fin, 8.0), 2), 1]
 
 
 def _texto(exp, r):
+    calidad = f" · calidad {r['calidad']:.0f}/100" if r.get("calidad") is not None else ""
     if r["exito"]:
-        return f"{r['titulo_exito']}" + (f" · {r['detalle']}" if r["detalle"] else "")
-    if exp["tarea"] == "marcha":
-        avance = max(r["distancia"], 0.0)
-        if r["motivo"] == "no cumplió la meta":
-            return "Se queda en su sitio" if avance < 0.3 else f"Avanza {avance:.1f} m y no llega a la meta"
-        return f"Avanza {avance:.1f} m y cae a los {r['segundos']:.1f} s"
-    if r["motivo"] == "no cumplió la meta":
-        return f"Aguanta, pero no cumple la orden · {r['detalle']}" if r["detalle"] else "Aguanta, pero no cumple la orden"
-    return f"A los {r['segundos']:.1f} s: {r['motivo']}"
+        return f"{r['titulo_exito']}{calidad}" + (f" · {r['detalle']}" if r["detalle"] else "")
+    if not r["motivo"] in ("no cumplió la meta",):
+        return f"A los {r['segundos']:.1f} s: {r['motivo']}" + (f" · {r['detalle']}" if r["detalle"] and exp["tarea"] != "de_pie" else "")
+    return f"No cumple el objetivo{calidad}" + (f" · {r['detalle']}" if r["detalle"] else "")
 
 
 def _elegir(filas):
-    """Primera, última y las que cruzan 1/4, 1/2 y 3/4 de la mejora total."""
-    base, techo = filas[0]["avance"], max(f["avance"] for f in filas)
-    elegidas = {0, len(filas) - 1}
-    if techo - base >= 0.05:
-        for fraccion in (0.25, 0.5, 0.75, 1.0):
-            umbral = base + fraccion * (techo - base)
-            elegidas.add(next(i for i, f in enumerate(filas) if f["avance"] >= umbral))
-    return [filas[i] for i in sorted(elegidas)]
+    """Devuelve las cinco etapas (o menos si el experimento no llegó a cumplirse)."""
+    exitos = [i for i, f in enumerate(filas) if f["exito"]]
+    if exitos:
+        cumplido = exitos[0]
+        posteriores = [i for i in exitos if i != cumplido]
+        perfecto = max(posteriores, key=lambda i: (filas[i]["puntaje"], i)) if posteriores else None
+        fallos = [i for i, f in enumerate(filas[:cumplido]) if not f["exito"]]
+    else:
+        cumplido = perfecto = None
+        fallos = [i for i, f in enumerate(filas)]
+    if not fallos:
+        fallos = [0]
+    peor = min(fallos, key=lambda i: (filas[i]["puntaje"], i))
+    tras_peor = [i for i in fallos if i > peor] or fallos
+    inflexion = max(tras_peor, key=lambda i: (filas[i]["puntaje"], i))
+    medio = (filas[peor]["puntaje"] + filas[inflexion]["puntaje"]) / 2
+    entre = [i for i in fallos if peor < i < inflexion] or [i for i in fallos if i not in (peor, inflexion)]
+    intermedio = min(entre, key=lambda i: abs(filas[i]["puntaje"] - medio)) if entre else None
+    elegidos = [peor, intermedio, inflexion, cumplido, perfecto]
+    etapas = []
+    for nombre, i in zip(ETAPAS, elegidos):
+        if i is not None and all(i != e["indice"] for e in etapas):
+            etapas.append({**filas[i], "indice": i, "etapa": nombre})
+    if cumplido is None:
+        etapas[-1]["etapa"] = "Mejor intento (aún no cumple)"
+    return etapas
 
 
 def _tasas(exp):
@@ -101,21 +118,22 @@ def calcular(exp):
     salida = {"perturbacion": pert, "planetas": {}}
     for planeta in PLANETAS_VISOR:
         candidatos = [e for e in escenarios if e["planeta"] == planeta and e["perturbacion"] == pert]
-        # Escenario donde el experto muestra lo aprendido, si existe alguno.
-        esc = next((e for e in candidatos if correr_episodio(exp, experto, e)[0]["exito"]), candidatos[0])
+        # Escenario donde el experto muestra lo aprendido con su mejor calidad.
+        pruebas = [(correr_episodio(exp, experto, e)[0], e) for e in candidatos[:6]]
+        logrados = [p for p in pruebas if p[0]["exito"]]
+        esc = max(logrados, key=lambda p: p[0]["calidad"])[1] if logrados else candidatos[0]
         filas = []
         for nombre, paso, origen, fuente in agentes:
             agente = fuente() if fuente is SinEntrenar else Politica(fuente)
             r, cuadros = correr_episodio(exp, agente, esc, grabar=True)
             tasa = tasas.get(paso, {}).get(f"exito_{planeta}") if origen == exp["id"] and paso is not None else None
-            filas.append({"agente": nombre, "paso": paso, "origen": origen, "exito": r["exito"], "segundos": r["segundos"],
-                          "distancia": r["distancia"], "avance": round(_avance(exp, r), 3),
+            filas.append({"agente": nombre, "paso": paso, "origen": origen, "exito": r["exito"],
+                          "segundos": r["segundos"], "distancia": r["distancia"], "calidad": r["calidad"],
+                          "avance": r["avance"], "puntaje": round(_puntaje(exp, r), 4),
                           "texto": _texto(exp, r), "clip": _clip(exp, r, cuadros), "tasa": tasa})
         hitos = _elegir(filas)
         salida["planetas"][planeta] = {"semilla": esc["semilla"], "hitos": hitos,
-                                       "mejora": round(hitos[-1]["avance"] - hitos[0]["avance"], 3)}
-    # A igual contraste se prefiere la Tierra: sin red se cae, y en Marte solo se queda quieto.
-    tierra, marte = (salida["planetas"][p]["mejora"] for p in PLANETAS_VISOR)
-    salida["recomendado"] = "tierra" if tierra >= marte - 0.15 else "marte"
+                                       "mejora": round(hitos[-1]["puntaje"] - hitos[0]["puntaje"], 3)}
+    salida["recomendado"] = PLANETAS_VISOR[0]
     (carpeta_metricas(exp) / "evolucion.json").write_text(json.dumps(salida, indent=1, ensure_ascii=False))
     return salida
