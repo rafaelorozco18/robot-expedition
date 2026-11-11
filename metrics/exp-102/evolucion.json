@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1374203058,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-102",
+     "exito": false,
+     "segundos": 22.0,
+     "distancia": -0.0,
+     "calidad": 39.9,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0.0 m · error de velocidad 0.59 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "paso:277824",
+     "paso": 277824,
+     "origen": "exp-102",
+     "exito": false,
+     "segundos": 22.0,
+     "distancia": 5.26,
+     "calidad": 29.4,
+     "avance": 0.538,
+     "puntaje": 0.5111,
+     "texto": "No cumple el objetivo · calidad 29/100 · recorrió 5.4 m · error de velocidad 0.40 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 0.0,
+     "indice": 13,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:525184",
+     "paso": 525184,
+     "origen": "exp-102",
+     "exito": false,
+     "segundos": 22.0,
+     "distancia": 9.93,
+     "calidad": 28.3,
+     "avance": 0.993,
+     "puntaje": 0.9433,
+     "texto": "No cumple el objetivo · calidad 28/100 · recorrió 9.9 m · error de velocidad 0.23 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 0.333,
+     "indice": 16,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:625024",
+     "paso": 625024,
+     "origen": "exp-102",
+     "exito": true,
+     "segundos": 22.0,
+     "distancia": 10.72,
+     "calidad": 24.8,
+     "avance": 1.0,
+     "puntaje": 1.0248,
+     "texto": "Caminó hasta la meta · calidad 25/100 · recorrió 10.7 m · error de velocidad 0.20 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 1.0,
+     "indice": 17,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:1555648",
+     "paso": 1555648,
+     "origen": "exp-102",
+     "exito": true,
+     "segundos": 22.0,
+     "distancia": 12.94,
+     "calidad": 34.0,
+     "avance": 1.0,
+     "puntaje": 1.034,
+     "texto": "Caminó hasta la meta · calidad 34/100 · recorrió 12.9 m · error de velocidad 0.15 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 0.333,
+     "indice": 24,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 1.034
+  }
+ },
+ "recomendado": "marte"
+}

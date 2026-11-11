@@ -87,8 +87,8 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
 
             for planeta in exp["evaluacion"]["planetas"]:
                 exitos = [correr_episodio(exp, Actual(), {"planeta": planeta, "semilla": s,
-                          "perturbacion": exp["aprobar"]["perturbacion"]})[0]["exito"] for s in range(100, 110)]
-                if np.mean(exitos) < exp["aprobar"]["tasa_exito"]:
+                          "perturbacion": exp["aprobar"]["perturbacion"]})[0]["exito"] for s in range(100, 116)]
+                if np.mean(exitos) < min(1.0, exp["aprobar"]["tasa_exito"] + 0.05):
                     return False
             return True
 

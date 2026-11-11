@@ -1,0 +1,206 @@
+{
+ "semilla": 0,
+ "episodios_por_foto": 3,
+ "fotos": [
+  {
+   "paso": 0,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 1425.4,
+   "inclinacion_max_media": 7.7,
+   "calidad_media": 30.1,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 4352,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 1465.6,
+   "inclinacion_max_media": 8.4,
+   "calidad_media": 30.4,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 17408,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 1475.5,
+   "inclinacion_max_media": 8.0,
+   "calidad_media": 29.9,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 39104,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 1577.1,
+   "inclinacion_max_media": 8.4,
+   "calidad_media": 37.4,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 69504,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 21.77,
+   "energia_media_j": 1792.2,
+   "inclinacion_max_media": 20.9,
+   "calidad_media": 41.3,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 108544,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 1956.8,
+   "inclinacion_max_media": 13.6,
+   "calidad_media": 35.4,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 156288,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 2205.8,
+   "inclinacion_max_media": 17.0,
+   "calidad_media": 30.8,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 212736,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 16.1,
+   "energia_media_j": 1612.9,
+   "inclinacion_max_media": 27.2,
+   "calidad_media": 26.4,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 277824,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 2247.4,
+   "inclinacion_max_media": 19.3,
+   "calidad_media": 26.5,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 351616,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 18.31,
+   "energia_media_j": 1775.5,
+   "inclinacion_max_media": 24.6,
+   "calidad_media": 29.9,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 434048,
+   "episodios": 3,
+   "tasa_exito": 0.0,
+   "segundos_medios": 18.43,
+   "energia_media_j": 1828.8,
+   "inclinacion_max_media": 25.0,
+   "calidad_media": 29.0,
+   "exito_marte": 0.0
+  },
+  {
+   "paso": 525184,
+   "episodios": 3,
+   "tasa_exito": 0.333,
+   "segundos_medios": 12.22,
+   "energia_media_j": 1275.1,
+   "inclinacion_max_media": 27.6,
+   "calidad_media": 26.8,
+   "exito_marte": 0.333
+  },
+  {
+   "paso": 625024,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 2325.9,
+   "inclinacion_max_media": 22.6,
+   "calidad_media": 28.5,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 733568,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 21.79,
+   "energia_media_j": 2282.1,
+   "inclinacion_max_media": 23.2,
+   "calidad_media": 28.2,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 850752,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 15.89,
+   "energia_media_j": 1550.3,
+   "inclinacion_max_media": 22.7,
+   "calidad_media": 30.1,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 976576,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 2130.3,
+   "inclinacion_max_media": 25.6,
+   "calidad_media": 27.8,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 1111168,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 19.25,
+   "energia_media_j": 1914.6,
+   "inclinacion_max_media": 27.4,
+   "calidad_media": 28.6,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 1254400,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 22.0,
+   "energia_media_j": 1979.0,
+   "inclinacion_max_media": 24.1,
+   "calidad_media": 27.8,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 1406272,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 17.75,
+   "energia_media_j": 1665.5,
+   "inclinacion_max_media": 23.7,
+   "calidad_media": 29.4,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 1555648,
+   "episodios": 3,
+   "tasa_exito": 0.333,
+   "segundos_medios": 15.64,
+   "energia_media_j": 1534.7,
+   "inclinacion_max_media": 29.7,
+   "calidad_media": 30.2,
+   "exito_marte": 0.333
+  }
+ ]
+}
