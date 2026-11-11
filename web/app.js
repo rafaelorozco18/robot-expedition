@@ -549,7 +549,9 @@ async function abrirExperimento(id) {
   }
   estado.episodio = null;
   if (robot) robot.raiz.visible = false;
-  estado.mundo = await (await api(`/api/exp/${id}/mundo`)).json();
+  const mundo = await (await api(`/api/exp/${id}/mundo`)).json();
+  if (estado.exp !== id) return;
+  estado.mundo = mundo;
   if (!estado.mundo.agentes.find((a) => a.id === estado.agente)?.disponible) estado.agente = "sin_entrenar";
   construirRobot(estado.mundo.robot);
   robot.raiz.visible = false;
@@ -566,9 +568,11 @@ async function abrirExperimento(id) {
     $("semilla").closest(".campo").hidden = true;
   }
   await cargarAprendizaje(id);
+  if (estado.exp !== id) return;
   segmentado("planeta", Object.keys(estado.mundo.gravedades), (v) => `${TEMAS[v].nombre} · ${estado.mundo.gravedades[v]}`);
   segmentado("perturbacion", estado.mundo.perturbaciones, (v) => ETIQUETA_PERTURBACION[v] || v);
   await progreso.cargar(id);
+  if (estado.exp !== id) return;
   const reg = Object.entries(estado.mundo.regresion || {});
   $("seccion-regresion").hidden = reg.length < 2;
   $("regresion").innerHTML = reg.map(([k, v]) => `<div class="reg-fila"><span>${estado.mundo.titulos[k]}</span>
@@ -584,8 +588,10 @@ async function lanzar(clip = null) {
   estado.finClip = null;
   const semilla = Number($("semilla").value) || 0;
   const q = new URLSearchParams({ agente: estado.agente, planeta: estado.planeta, perturbacion: estado.perturbacion, semilla });
-  const resp = await api(`/api/exp/${estado.exp}/episodio?${q}`);
+  const pedido = estado.exp;
+  const resp = await api(`/api/exp/${pedido}/episodio?${q}`);
   const datos = await resp.json();
+  if (estado.exp !== pedido) return;  // respuesta de un experimento que ya no está abierto
   if (!resp.ok) { alert(datos.error); return; }
   estado.episodio = datos;
   // Cada episodio empieza en el origen: la cámara vuelve a él en vez de recorrer la pista.
@@ -658,7 +664,9 @@ const ICONO_VER = '<svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>';
 
 async function cargarAprendizaje(id) {
   const r = await api(`/api/exp/${id}/evolucion`);
-  aprendizaje = r.ok ? await r.json() : null;
+  const datos = r.ok ? await r.json() : null;
+  if (estado.exp !== id) return;  // el usuario ya abrió otro experimento
+  aprendizaje = datos;
   $("aprendizaje").hidden = !aprendizaje;
   if (!aprendizaje) return;
   estado.planeta = aprendizaje.recomendado;
