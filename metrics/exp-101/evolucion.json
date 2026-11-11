@@ -11,7 +11,7 @@
      "exito": false,
      "segundos": 1.42,
      "distancia": 0.54,
-     "calidad": 7.2,
+     "calidad": 6.6,
      "avance": 0.142,
      "puntaje": 0.1349,
      "texto": "A los 1.4 s: se agachó o cayó",
@@ -31,7 +31,7 @@
      "exito": false,
      "segundos": 1.56,
      "distancia": 0.55,
-     "calidad": 8.5,
+     "calidad": 7.9,
      "avance": 0.156,
      "puntaje": 0.1482,
      "texto": "A los 1.6 s: se agachó o cayó",
@@ -51,7 +51,7 @@
      "exito": false,
      "segundos": 3.44,
      "distancia": 1.03,
-     "calidad": 13.7,
+     "calidad": 13.1,
      "avance": 0.344,
      "puntaje": 0.3268,
      "texto": "A los 3.4 s: se agachó o cayó",
@@ -71,9 +71,9 @@
      "exito": true,
      "segundos": 10.0,
      "distancia": 0.65,
-     "calidad": 28.4,
+     "calidad": 27.9,
      "avance": 1.0,
-     "puntaje": 1.0284,
+     "puntaje": 1.5279,
      "texto": "Se mantuvo de pie · calidad 28/100",
      "clip": [
       0.0,
@@ -91,9 +91,9 @@
      "exito": true,
      "segundos": 10.0,
      "distancia": 0.34,
-     "calidad": 33.2,
+     "calidad": 32.8,
      "avance": 1.0,
-     "puntaje": 1.0332,
+     "puntaje": 1.5328,
      "texto": "Se mantuvo de pie · calidad 33/100",
      "clip": [
       0.0,
@@ -105,7 +105,7 @@
      "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 0.898
+   "mejora": 1.398
   }
  },
  "recomendado": "marte"

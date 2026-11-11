@@ -14,7 +14,7 @@
      "calidad": 39.9,
      "avance": 0.0,
      "puntaje": 0.0,
-     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0.0 m · error de velocidad 0.59 m/s",
+     "texto": "Se queda en su sitio · calidad 40/100",
      "clip": [
       0.0,
       14.0,
@@ -34,7 +34,7 @@
      "calidad": 29.4,
      "avance": 0.538,
      "puntaje": 0.5111,
-     "texto": "No cumple el objetivo · calidad 29/100 · recorrió 5.4 m · error de velocidad 0.40 m/s",
+     "texto": "Avanza 5.3 m pero no llega a la meta · calidad 29/100",
      "clip": [
       0.0,
       14.0,
@@ -54,7 +54,7 @@
      "calidad": 28.3,
      "avance": 0.993,
      "puntaje": 0.9433,
-     "texto": "No cumple el objetivo · calidad 28/100 · recorrió 9.9 m · error de velocidad 0.23 m/s",
+     "texto": "Avanza 9.9 m pero no llega a la meta · calidad 28/100",
      "clip": [
       0.0,
       14.0,
@@ -73,7 +73,7 @@
      "distancia": 10.72,
      "calidad": 24.8,
      "avance": 1.0,
-     "puntaje": 1.0248,
+     "puntaje": 1.5248,
      "texto": "Caminó hasta la meta · calidad 25/100 · recorrió 10.7 m · error de velocidad 0.20 m/s",
      "clip": [
       0.0,
@@ -85,27 +85,27 @@
      "etapa": "Cumplido"
     },
     {
-     "agente": "paso:1555648",
-     "paso": 1555648,
+     "agente": "paso:850752",
+     "paso": 850752,
      "origen": "exp-102",
      "exito": true,
      "segundos": 22.0,
-     "distancia": 12.94,
-     "calidad": 34.0,
+     "distancia": 11.47,
+     "calidad": 26.4,
      "avance": 1.0,
-     "puntaje": 1.034,
-     "texto": "Caminó hasta la meta · calidad 34/100 · recorrió 12.9 m · error de velocidad 0.15 m/s",
+     "puntaje": 1.3599,
+     "texto": "Caminó hasta la meta · calidad 26/100 · recorrió 11.5 m · error de velocidad 0.16 m/s",
      "clip": [
       0.0,
       14.0,
       1.5
      ],
-     "tasa": 0.333,
-     "indice": 24,
+     "tasa": 0.667,
+     "indice": 19,
      "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 1.034
+   "mejora": 1.36
   }
  },
  "recomendado": "marte"
