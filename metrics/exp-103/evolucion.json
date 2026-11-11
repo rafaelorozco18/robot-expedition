@@ -1,0 +1,72 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1829338324,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-103",
+     "exito": false,
+     "segundos": 1.08,
+     "distancia": 0.44,
+     "calidad": 40.2,
+     "avance": 0.108,
+     "puntaje": 0.1026,
+     "texto": "A los 1.1 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      1.08,
+      1
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "paso:147120",
+     "paso": 147120,
+     "origen": "exp-103",
+     "exito": false,
+     "segundos": 2.06,
+     "distancia": 0.98,
+     "calidad": 21.3,
+     "avance": 0.206,
+     "puntaje": 0.1957,
+     "texto": "A los 2.1 s: se agachó o cayó",
+     "clip": [
+      0.0,
+      2.06,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 16,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:642960",
+     "paso": 642960,
+     "origen": "exp-103",
+     "exito": false,
+     "segundos": 3.14,
+     "distancia": 2.62,
+     "calidad": 22.5,
+     "avance": 0.314,
+     "puntaje": 0.2983,
+     "texto": "A los 3.1 s: se inclinó demasiado",
+     "clip": [
+      0.0,
+      3.14,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 28,
+     "etapa": "Mejor intento (aún no cumple)"
+    }
+   ],
+   "mejora": 0.196
+  }
+ },
+ "recomendado": "marte"
+}
