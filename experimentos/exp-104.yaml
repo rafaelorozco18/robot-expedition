@@ -48,6 +48,7 @@ entrenamiento:
   procesos: 5
   semillas:
   - 0
+  - 1
   log_std_init: -1.8
   log_std_final: -2.8
 trampa: 'Caminar de lado para presentar menos superficie: la velocidad y el rumbo

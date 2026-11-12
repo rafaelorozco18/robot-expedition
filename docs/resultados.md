@@ -9,7 +9,7 @@ Los resultados de la serie anterior, con tres planetas, están en el tag `exp-02
 | 1 | [De pie](experimentos/exp-101.md) | Aprobado | 83 % | 29.3 | 80 % | 1.5 M | 12 min |
 | 2 | [Caminar](experimentos/exp-102.md) | Aprobado | 100 % | 26.1 | 80 % | 1.6 M | 12 min |
 | 3 | [De pie con viento](experimentos/exp-103.md) | No aprobado | 67 % | 21.9 | 90 % | 3.0 M | 19 min |
-| 4 | [Caminar con viento](experimentos/exp-104.md) | No aprobado | 50 % | 26.8 | 80 % | 1.5 M | 14 min |
+| 4 | [Caminar con viento](experimentos/exp-104.md) | No aprobado | 50 % | 29.2 | 80 % | 5.0 M | 35 min |
 | 5 | [Caminar bien](experimentos/exp-105.md) | No aprobado | 0 % | 28.8 | 80 % | 2.0 M | 20 min |
 | 6 | [Caminar en terreno difícil](experimentos/exp-106.md) | No aprobado | 25 % | 36.6 | 75 % | 1.3 M | 15 min |
 | 7 | [Girar en la esquina](experimentos/exp-107.md) | No aprobado | 0 % | 37.6 | 80 % | 1.6 M | 14 min |
