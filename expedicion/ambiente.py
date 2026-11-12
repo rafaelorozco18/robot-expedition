@@ -65,7 +65,9 @@ class BipedoEnv(gym.Env):
         self.ids_suelo = np.array([self.id_piso, *self.ids_listones])
         self.ids_pies = [m.geom("pie_i").id, m.geom("pie_d").id]
 
-        self.adversidad = exp.get("adversidad", {})
+        self.adversidad = dict(exp.get("adversidad", {}))
+        if entrenando:  # entrenar con adversidad más variada (desde suave) que la del examen
+            self.adversidad.update(exp.get("adversidad_entrenando", {}))
         self.pendiente = np.radians(exp.get("pendiente_grados", 0.0))
         self.gain_base = m.actuator_gainprm[:, 0].copy()
         self.bias_base = m.actuator_biasprm[:, :3].copy()

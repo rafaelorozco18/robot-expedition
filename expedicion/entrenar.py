@@ -95,6 +95,14 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
         def _on_training_start(self):
             self._foto()
 
+        def _on_rollout_start(self):
+            # Ruido de exploración que baja con el entrenamiento: al final la marcha no depende de él.
+            final = p.get("log_std_final")
+            if final is not None:
+                avance = min(1.0, self.num_timesteps / (p.get("ruido_hasta", 0.7) * total))
+                techo = p["log_std_init"] + (final - p["log_std_init"]) * avance
+                self.model.policy.log_std.data.clamp_(max=techo)
+
         def _on_step(self):
             for info in self.locals["infos"]:
                 if "episode" in info:

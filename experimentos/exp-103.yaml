@@ -20,11 +20,13 @@ adversidad:
 aprobar:
   tasa_exito: 0.9
 entrenamiento:
-  pasos: 1000000
-  reintentos: 0
+  pasos: 3000000
+  reintentos: 1
   procesos: 5
   semillas:
-  - 1
+  - 0
+  log_std_init: -1.5
+  log_std_final: -2.6
 trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
   episodio.'
 ambiente:
@@ -32,3 +34,10 @@ ambiente:
 pendiente: 'Con viento de 6 a 14 N el primer intento quedó en 0 %: el modelo del Exp
   1 ya cae con 2 a 5 N. Se bajó a 3 a 8 N y se quitó el arranque desequilibrado: el
   reto es solo el viento.'
+adversidad_entrenando:
+  viento_n:
+  - 0
+  - 8
+  rafaga_n:
+  - 0
+  - 8

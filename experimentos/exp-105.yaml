@@ -44,10 +44,13 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 2000000
-  reintentos: 0
+  pasos: 6000000
+  reintentos: 1
   procesos: 5
-  log_std_init: -2.5
+  log_std_init: -2.2
+  semillas:
+  - 0
+  log_std_final: -3.0
 trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
   y despeje del pie.'
 control:

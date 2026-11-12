@@ -43,7 +43,7 @@ def _anotar(texto):
         f.write(linea + "\n")
 
 
-def correr(i):
+def correr(i, hasta=None):
     """Devuelve True si el experimento quedó aprobado."""
     _editar(i, estado="activo")
     exp = X.cargar(i)
@@ -55,6 +55,9 @@ def correr(i):
         ev = json.loads((X.carpeta_metricas(exp) / "evaluacion.json").read_text())
         _anotar(f"{i} semilla {s}: aprobado={ev['aprobado']}")
         if ev["aprobado"] or len(semillas) > exp["entrenamiento"].get("reintentos", 1):
+            break
+        if hasta and datetime.datetime.now().strftime("%H:%M") >= hasta:
+            _anotar(f"Hora límite {hasta}: {i} no se reintenta")
             break
         _editar(i, entrenamiento={"semillas": [*semillas, s + 1]})
     exp = X.cargar(i)
@@ -77,7 +80,7 @@ def campana(ids, hasta=None, seguir=False):
         if hasta and datetime.datetime.now().strftime("%H:%M") >= hasta:
             _anotar(f"Hora límite {hasta}: no se inicia {i}")
             return
-        if correr(i):
+        if correr(i, hasta):
             _anotar(f"{i} aprobado")
         elif seguir:
             _anotar(f"{i} no aprobó: la campaña sigue")

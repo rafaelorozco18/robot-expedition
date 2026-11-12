@@ -81,10 +81,13 @@ adversidad:
 aprobar:
   tasa_exito: 0.7
 entrenamiento:
-  pasos: 1200000
-  reintentos: 0
+  pasos: 5000000
+  reintentos: 1
   procesos: 5
   log_std_init: -2.5
+  semillas:
+  - 0
+  log_std_final: -3.0
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
 control:
   rango: 0.8

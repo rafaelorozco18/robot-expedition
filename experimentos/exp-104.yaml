@@ -43,8 +43,19 @@ adversidad:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 1500000
-  reintentos: 0
+  pasos: 5000000
+  reintentos: 1
   procesos: 5
+  semillas:
+  - 0
+  log_std_init: -1.8
+  log_std_final: -2.8
 trampa: 'Caminar de lado para presentar menos superficie: la velocidad y el rumbo
   ordenados se siguen exigiendo.'
+adversidad_entrenando:
+  viento_n:
+  - 0
+  - 8
+  rafaga_n:
+  - 0
+  - 8

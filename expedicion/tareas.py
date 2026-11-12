@@ -251,7 +251,9 @@ class Marcha(Tarea):
                     d["vuelo"] = p["vuelo"] * np.exp(-(((env.est["ultimo_vuelo"] - 0.45) / 0.15) ** 2))
             self.pasos_vistos = n
         if self.t.get("erguido_estricto"):
-            d["erguido"] = p["erguido"] * np.exp(-((env.inclinacion_grados() / 12) ** 2))
+            # Mezcla estricta y suave: lejos de vertical la recompensa todavía orienta.
+            i = env.inclinacion_grados()
+            d["erguido"] = p["erguido"] * (0.6 * np.exp(-((i / 10) ** 2)) + 0.4 * np.exp(-((i / 30) ** 2)))
         if p.get("vel_articular"):
             d["vel_articular"] = -p["vel_articular"] * float(np.mean((env.data.qvel[env.adr_v] * 0.1) ** 2))
         if p.get("deslizamiento"):
@@ -405,12 +407,19 @@ class Esquina(Marcha):
         super().iniciar(env)
         self.fase_esquina = 0
         self.lado = 1.0 if self.t.get("lado", "izquierda") == "izquierda" else -1.0
+        self.L, self.w = self.t["lado_m"], self.t["giro_rad_s"]
+        v = self.t.get("variar_entrenando")
+        if v and env.entrenando:
+            # Practica más giros: esquinas a ambos lados, tramos cortos y giros más lentos.
+            self.lado = env.np_random.choice([-1.0, 1.0])
+            self.L = float(env.np_random.uniform(v["lado_m"][0], v["lado_m"][1]))
+            self.w = float(env.np_random.uniform(v["giro_rad_s"][0], v["giro_rad_s"][1]))
         env.comando[:] = [self.t["velocidad_ms"], 0.0, 1.0, 0.0]
         self.origen = np.array([env.x_inicial, env.y_inicial])
         self.esquina = None
 
     def actualizar(self, env):
-        L, vx, w = self.t["lado_m"], self.t["velocidad_ms"], self.t["giro_rad_s"]
+        L, vx, w = self.L, self.t["velocidad_ms"], self.w
         pos = env.data.qpos[:2]
         if self.fase_esquina == 0 and pos[0] - self.origen[0] >= L:
             self.fase_esquina, self.esquina = 1, pos.copy()
@@ -430,7 +439,7 @@ class Esquina(Marcha):
         return float(self.lado * (env.data.qpos[1] - self.esquina[1]))
 
     def avance(self, env):
-        L = self.t["lado_m"]
+        L = self.L
         t1 = min(1.0, max(0.0, env.data.qpos[0] - self.origen[0]) / L)
         giro = min(1.0, abs(env.rumbo()) / (np.pi / 2)) if self.fase_esquina >= 1 else 0.0
         t2 = min(1.0, max(0.0, self.tramo2(env)) / L)
@@ -438,7 +447,7 @@ class Esquina(Marcha):
 
     def exito(self, env, truncado):
         return (truncado and self.calidad_ok(env) and self.fase_esquina == 2
-                and self.tramo2(env) >= self.t["lado_m"] and abs(env.error_rumbo()) < 0.35)
+                and self.tramo2(env) >= self.L and abs(env.error_rumbo()) < 0.35)
 
     def resumen(self, env):
         return (f"tramo 1 {min(env.data.qpos[0] - self.origen[0], 99):.1f} m · giró {np.degrees(abs(env.rumbo())):.0f}° · "
@@ -455,8 +464,15 @@ class Curva(Marcha):
     def iniciar(self, env):
         super().iniciar(env)
         R, vx = self.t["radio_m"], self.t["velocidad_ms"]
-        env.comando[:] = [vx, 0.0, 1.0, vx / R]
-        self.centro = np.array([env.x_inicial, env.y_inicial + R])
+        self.signo = 1.0
+        v = self.t.get("variar_entrenando")
+        if v and env.entrenando:
+            # Curvas a ambos lados y de radio variable, de amplias a cerradas.
+            self.signo = env.np_random.choice([-1.0, 1.0])
+            R = float(env.np_random.uniform(v["radio_m"][0], v["radio_m"][1]))
+        self.R = R
+        env.comando[:] = [vx, 0.0, 1.0, self.signo * vx / R]
+        self.centro = np.array([env.x_inicial, env.y_inicial + self.signo * R])
         self.angulo = 0.0
         self.previo = None
         self.radios = []
@@ -466,12 +482,12 @@ class Curva(Marcha):
         rel = env.data.qpos[:2] - self.centro
         a = float(np.arctan2(rel[1], rel[0]))
         if self.previo is not None:
-            self.angulo += float(np.arctan2(np.sin(a - self.previo), np.cos(a - self.previo)))
+            self.angulo += self.signo * float(np.arctan2(np.sin(a - self.previo), np.cos(a - self.previo)))
         self.previo = a
         self.radios.append(float(np.linalg.norm(rel)))
 
     def error_radio(self):
-        return float(np.mean(np.abs(np.array(self.radios) - self.t["radio_m"]))) if self.radios else 9.9
+        return float(np.mean(np.abs(np.array(self.radios) - self.R))) if self.radios else 9.9
 
     def avance(self, env):
         return min(1.0, max(0.0, self.angulo) / (2 * np.pi * self.t["vueltas"]))

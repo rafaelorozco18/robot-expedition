@@ -45,13 +45,20 @@ parametros:
   vueltas: 0.9
   error_radio_m: 0.4
   erguido_estricto: true
+  variar_entrenando:
+    radio_m:
+    - 2.0
+    - 4.0
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
-  pasos: 1900000
-  reintentos: 0
+  pasos: 5000000
+  reintentos: 1
   procesos: 5
-  log_std_init: -2.5
+  log_std_init: -2.3
+  semillas:
+  - 0
+  log_std_final: -3.0
 trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
   cambiar de rumbo.'
 control:
