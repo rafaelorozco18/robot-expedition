@@ -43,7 +43,17 @@ def _anotar(texto):
         f.write(linea + "\n")
 
 
-def correr(i, hasta=None):
+def _limite(hasta):
+    """Próxima vez que el reloj marque HH:MM (hoy o mañana): la campaña puede cruzar la medianoche."""
+    if not hasta:
+        return None
+    ahora = datetime.datetime.now()
+    h, m = map(int, hasta.split(":"))
+    limite = ahora.replace(hour=h, minute=m, second=0, microsecond=0)
+    return limite if limite > ahora else limite + datetime.timedelta(days=1)
+
+
+def correr(i, hasta=None, limite=None):
     """Devuelve True si el experimento quedó aprobado."""
     _editar(i, estado="activo")
     exp = X.cargar(i)
@@ -56,7 +66,7 @@ def correr(i, hasta=None):
         _anotar(f"{i} semilla {s}: aprobado={ev['aprobado']}")
         if ev["aprobado"] or len(semillas) > exp["entrenamiento"].get("reintentos", 1):
             break
-        if hasta and datetime.datetime.now().strftime("%H:%M") >= hasta:
+        if limite and datetime.datetime.now() >= limite:
             _anotar(f"Hora límite {hasta}: {i} no se reintenta")
             break
         _editar(i, entrenamiento={"semillas": [*semillas, s + 1]})
@@ -76,11 +86,12 @@ def correr(i, hasta=None):
 
 
 def campana(ids, hasta=None, seguir=False):
+    limite = _limite(hasta)
     for i in ids:
-        if hasta and datetime.datetime.now().strftime("%H:%M") >= hasta:
+        if limite and datetime.datetime.now() >= limite:
             _anotar(f"Hora límite {hasta}: no se inicia {i}")
             return
-        if correr(i, hasta):
+        if correr(i, hasta, limite):
             _anotar(f"{i} aprobado")
         elif seguir:
             _anotar(f"{i} no aprobó: la campaña sigue")
