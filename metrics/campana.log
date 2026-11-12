@@ -31,3 +31,6 @@
 14:53 exp-102 semilla 1: aprobado=True
 14:54 exp-102: robot-exp-102 v2
 14:54 exp-102 aprobado
+23:44 exp-103 semilla 0: aprobado=False
+00:02 exp-103 semilla 1: aprobado=False
+00:04 exp-103: robot-exp-103 v3

@@ -1,6 +1,6 @@
 {
   "experimento": "exp-103",
-  "campeon": 1,
+  "campeon": 0,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -56,30 +56,56 @@
     }
   },
   "semillas": {
-    "1": {
+    "0": {
       "global": {
         "episodios": 24,
-        "tasa_exito": 0.417,
-        "segundos_medios": 6.96,
-        "energia_media_j": 1051.5,
-        "inclinacion_max_media": 23.2,
-        "calidad_media": 17.5
+        "tasa_exito": 0.667,
+        "segundos_medios": 7.89,
+        "energia_media_j": 521.4,
+        "inclinacion_max_media": 17.9,
+        "calidad_media": 23.3
       },
       "marte.ninguna": {
         "episodios": 12,
-        "tasa_exito": 0.417,
-        "segundos_medios": 6.55,
-        "energia_media_j": 1014.9,
-        "inclinacion_max_media": 22.8,
-        "calidad_media": 17.2
+        "tasa_exito": 0.667,
+        "segundos_medios": 7.56,
+        "energia_media_j": 509.7,
+        "inclinacion_max_media": 19.1,
+        "calidad_media": 21.9
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.667,
+        "segundos_medios": 8.23,
+        "energia_media_j": 533.2,
+        "inclinacion_max_media": 16.8,
+        "calidad_media": 24.7
+      }
+    },
+    "1": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.5,
+        "segundos_medios": 7.04,
+        "energia_media_j": 533.9,
+        "inclinacion_max_media": 21.2,
+        "calidad_media": 16.4
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.583,
+        "segundos_medios": 7.32,
+        "energia_media_j": 547.3,
+        "inclinacion_max_media": 20.2,
+        "calidad_media": 16.5
       },
       "marte.empujon": {
         "episodios": 12,
         "tasa_exito": 0.417,
-        "segundos_medios": 7.38,
-        "energia_media_j": 1088.0,
-        "inclinacion_max_media": 23.6,
-        "calidad_media": 17.9
+        "segundos_medios": 6.77,
+        "energia_media_j": 520.5,
+        "inclinacion_max_media": 22.3,
+        "calidad_media": 16.3
       }
     }
   },

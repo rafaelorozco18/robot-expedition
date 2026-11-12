@@ -25,6 +25,7 @@ entrenamiento:
   procesos: 5
   semillas:
   - 0
+  - 1
   log_std_init: -1.5
   log_std_final: -2.6
 trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
