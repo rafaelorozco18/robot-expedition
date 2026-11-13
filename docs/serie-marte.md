@@ -11,17 +11,23 @@ La serie anterior (plan de 50 experimentos, tres planetas) queda archivada en
 
 ## Los 9 experimentos
 
+Orden vigente desde el 2026-11-13 (pedido del usuario): un experimento a la vez, y solo se avanza con un robot
+mejor. El viento queda para el final.
+
 | # | Experimento | Parte de | Dificultad que agrega | Se aprueba cuando |
 |---|---|---|---|---|
 | 1 | De pie | — | Articulaciones y gravedad de Marte, arrancando desequilibrado | Aguanta 10 s en ≥ 80 % |
 | 2 | Caminar | 1 | Recompensa por velocidad y reloj de marcha | 10 m sin caer en ≥ 80 % |
-| 3 | De pie con viento | 1 | Viento de 3 a 8 N en cualquier dirección, más ráfagas de 3 a 8 N | Aguanta 10 s en ≥ 90 % |
-| 4 | Caminar con viento | 2 | Viento de 3 a 8 N en cualquier dirección, más ráfagas de 3 a 8 N | 10 m sin caer en ≥ 80 % |
-| 5 | Caminar bien | 4 | Pasos largos y pausados (0,45 s en el aire), pie levantado, torso erguido, servos suaves | 10 m con calidad ≥ 55/100 en ≥ 80 % |
-| 6 | Terreno difícil | 5 | Arena, grava y barro al azar, y listones de 3,5 cm | 10 m sin perder la calidad del Exp 5 (≥ 30/100) en ≥ 75 % |
-| 7 | Girar en la esquina | 6 | Caminar 3 m, detenerse, girar 90° sobre su eje y caminar 3 m | Completa la esquina con calidad ≥ 28/100 en ≥ 80 % |
-| 8 | Caminar en curva | 7 | Avanzar y girar a la vez: círculo de 2 m de radio | 324° del círculo, desvío < 0,4 m y calidad ≥ 28/100, en ≥ 75 % |
-| 9 | Dominio en terreno duro | 8 | Rectas, giros y curvas en orden aleatorio, pisos mezclados y viento | 24 s siguiendo velocidad y rumbo en ≥ 70 % |
+| 3 | Caminar bien | 2 | Pasos largos y pausados, pie levantado, torso erguido, servos suaves | 10 m con calidad ≥ 55/100 en ≥ 80 % |
+| 4 | Terreno difícil | 3 | Arena, grava y barro al azar, y listones de 3,5 cm | 10 m con calidad ≥ 55/100 en ≥ 75 % |
+| 5 | Girar en la esquina | 4 | Caminar 3 m, detenerse, girar 90° sobre su eje y caminar 3 m | Completa la esquina con calidad ≥ 55/100 en ≥ 80 % |
+| 6 | Caminar en curva | 5 | Avanzar y girar a la vez: círculo de 2 m de radio | 324° del círculo, desvío < 0,4 m y calidad ≥ 55/100, en ≥ 75 % |
+| 7 | Dominio en terreno duro | 6 | Rectas, giros y curvas en orden aleatorio sobre pisos mezclados | 24 s siguiendo velocidad y rumbo, calidad ≥ 55/100, en ≥ 70 % |
+| 8 | De pie con viento | 7 | Viento de 3 a 8 N en cualquier dirección, más ráfagas de 3 a 8 N | Aguanta 10 s en ≥ 90 % |
+| 9 | Caminar con viento | 8 | El mismo viento, caminando | 10 m sin caer, con calidad ≥ 55/100, en ≥ 80 % |
+
+Del 4 en adelante la calidad mínima es la que exige el Exp 3: aprender algo nuevo no puede empeorar la marcha.
+La serie anterior, con el viento en los puestos 3 y 4, quedó en los tags `serie-marte-v1` y `serie-marte-v2`.
 
 La configuración de cada uno está en `experimentos/exp-1NN.yaml` y la ficha con los 8 puntos de la
 guía del profesor, generada con datos reales, en `docs/experimentos/exp-1NN.md`.
@@ -64,7 +70,7 @@ Cada etapa se recorta al tramo que muestra el contraste: la caída, la esquina o
 
 | Qué | Cómo |
 |---|---|
-| Código | git, un commit y un tag por experimento (`exp-101` … `exp-109`) |
+| Código | git, un commit y un tag por experimento (`exp-101` … `exp-109`); series anteriores en `serie-marte-v1` y `serie-marte-v2` |
 | Dataset | DVC: escenarios de prueba congelados (`data/exp-1NN/escenarios.json`) y trayectorias grabadas |
 | Pipeline | `dvc.yaml`, generado por `expedicion pipeline`, y `dvc.lock` con los hashes |
 | Experimento | MLflow: un experimento por pregunta y una corrida por semilla (`mlflow.db`) |

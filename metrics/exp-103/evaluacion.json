@@ -1,0 +1,87 @@
+{
+  "experimento": "exp-103",
+  "campeon": 0,
+  "agentes": {
+    "sin_entrenar": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.0,
+        "segundos_medios": 20.66,
+        "energia_media_j": 1.1,
+        "inclinacion_max_media": 20.6,
+        "calidad_media": 38.9
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.0,
+        "segundos_medios": 26.0,
+        "energia_media_j": 0.4,
+        "inclinacion_max_media": 0.5,
+        "calidad_media": 39.9
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.0,
+        "segundos_medios": 15.32,
+        "energia_media_j": 1.7,
+        "inclinacion_max_media": 40.7,
+        "calidad_media": 37.9
+      }
+    },
+    "aleatorio": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.0,
+        "segundos_medios": 2.15,
+        "energia_media_j": 174.6,
+        "inclinacion_max_media": 40.7,
+        "calidad_media": 31.6
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.0,
+        "segundos_medios": 2.27,
+        "energia_media_j": 185.3,
+        "inclinacion_max_media": 40.7,
+        "calidad_media": 30.5
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.0,
+        "segundos_medios": 2.02,
+        "energia_media_j": 163.8,
+        "inclinacion_max_media": 40.8,
+        "calidad_media": 32.7
+      }
+    }
+  },
+  "semillas": {
+    "0": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.583,
+        "segundos_medios": 21.31,
+        "energia_media_j": 627.6,
+        "inclinacion_max_media": 22.7,
+        "calidad_media": 80.4
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.75,
+        "segundos_medios": 22.64,
+        "energia_media_j": 664.5,
+        "inclinacion_max_media": 18.4,
+        "calidad_media": 80.5
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 19.97,
+        "energia_media_j": 590.7,
+        "inclinacion_max_media": 27.1,
+        "calidad_media": 80.2
+      }
+    }
+  },
+  "aprobado": false
+}

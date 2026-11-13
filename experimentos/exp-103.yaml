@@ -44,12 +44,13 @@ parametros:
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 6000000
+  pasos: 9000000
   reintentos: 0
   procesos: 4
   log_std_init: -2.2
   semillas:
   - 0
+  - 1
   log_std_final: -3.0
 trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
   y despeje del pie.'
@@ -57,4 +58,6 @@ control:
   rango: 0.8
   filtro: 0.6
 pendiente: 'Suavidad 15, reloj 4 y levantar el pie 1,5: con 2, 2 y 0,8 la calidad
-  se quedaba en 44 a 50/100 (articulaciones que vibran y 3,5 pasos por segundo).'
+  se quedaba en 44 a 50/100 (articulaciones que vibran y 3,5 pasos por segundo). Semilla
+  0 (6 M): 75 % en el examen y 26 de 30 en episodios nuevos; caía 2 veces y 2 veces
+  no llegaba a 10 m. La semilla 1 entrena 9 M.'

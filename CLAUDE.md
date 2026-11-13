@@ -31,11 +31,13 @@ muestra la evolución, con un selector para ir de experimento en experimento.
 
 ## Hoja de ruta
 
-**Vigente desde 2026-11-11: la Serie Marte** (`docs/serie-marte.md`, `experimentos/exp-101` a `exp-109`):
-de pie, caminar, de pie con viento, caminar con viento, caminar bien, terreno difícil, esquina, curva y
-dominio en terreno duro. Solo Marte, robot v2 (12 articulaciones). El usuario pidió 5 etapas por
-experimento en «Ver cómo aprendió»: fracaso absoluto, fracaso pero mejor, punto de inflexión, cumplido y
-perfeccionado.
+**Vigente desde 2026-11-13: la Serie Marte en orden** (`docs/serie-marte.md`, `experimentos/exp-101` a `exp-109`):
+de pie, caminar, caminar bien, terreno difícil, esquina, curva, dominio, de pie con viento y caminar con viento.
+Solo Marte, robot v2 (12 articulaciones). El usuario pidió 5 etapas por experimento en «Ver cómo aprendió»:
+fracaso absoluto, fracaso pero mejor, punto de inflexión, cumplido y perfeccionado.
+**Un experimento a la vez (pedido del usuario, 2026-11-13):** entrenar uno, revisar por qué falla, ajustar una cosa
+y reintentar; pasar al siguiente solo con un robot mejor. Nunca lanzar la cadena entera en lote.
+Mientras el usuario usa la máquina: 4 procesos, `nice -n 19 ionice -c3`.
 
 El plan de 50 experimentos y sus resultados quedaron archivados en `experimentos/plan-50/` y en los
 tags `exp-001` a `exp-028`.
