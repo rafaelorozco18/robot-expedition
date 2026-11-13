@@ -18,14 +18,14 @@ recompensa:
   altura: 0.5
   erguido: 1.5
   rumbo: 0.3
-  reloj: 2.0
-  paso: 0.8
+  reloj: 4.0
+  paso: 1.5
   giro: 0.02
   vivo: 0.3
   postura: 0
   quieto: 0
   caida: 30.0
-  suavidad: 2.0
+  suavidad: 15.0
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
@@ -50,9 +50,14 @@ entrenamiento:
   log_std_init: -2.2
   semillas:
   - 0
+  - 1
   log_std_final: -3.0
 trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
   y despeje del pie.'
 control:
   rango: 0.8
   filtro: 0.6
+pendiente: 'El 2026-11-12, a mitad de la semilla 0, la calidad llegó a 44/100: torso
+  erguido (5°) pero articulaciones que vibran (suavidad 15 %) y 3,5 pasos por segundo.
+  Desde la semilla 1 la suavidad pesa 15 (antes 2), el reloj de marcha 4 (antes 2)
+  y levantar el pie 1,5 (antes 0,8); igual en los Exps 6 a 9.'

@@ -18,14 +18,14 @@ recompensa:
   altura: 0.5
   erguido: 1.5
   rumbo: 1.0
-  reloj: 2.0
-  paso: 0.8
+  reloj: 4.0
+  paso: 1.5
   giro: 0.02
   vivo: 0.3
   postura: 0
   quieto: 0
   caida: 30.0
-  suavidad: 2.0
+  suavidad: 15.0
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
