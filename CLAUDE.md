@@ -81,7 +81,8 @@ y el registro de modelos; las métricas y parámetros siguen en git.
   **Pero los Exps 5 y 6 olvidaron tareas anteriores** (regresión: el 6 hace 8 % en terreno y 0 % en esquina).
   El usuario pidió que el robot no olvide: ya están `entrenamiento.repaso` (30 %) y `aprobar.sin_olvidar`
   configurados desde el Exp 5. **Próximo paso: reentrenar desde el Exp 5 con repaso**, uno a la vez.
-- El Exp 7 (dominio) se entrenó una vez el 2026-11-13 sin repaso, con 4 M de pasos (ver `metrics/campana.log`).
+- El Exp 7 (dominio) entrenó 4 M de pasos sin repaso el 2026-11-13 (23 % de éxito en entrenamiento) y se detuvo
+  durante la evaluación porque el usuario necesitó la máquina: no tiene resultado oficial. Rehacerlo con repaso.
 - La serie anterior (viento en 3 y 4) está en el tag `serie-marte-v2` y sus artefactos en `archivo/serie-marte-v2/`.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
