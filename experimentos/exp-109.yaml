@@ -83,7 +83,7 @@ aprobar:
 entrenamiento:
   pasos: 5000000
   reintentos: 1
-  procesos: 5
+  procesos: 4
   log_std_init: -2.5
   semillas:
   - 0

@@ -22,7 +22,7 @@ aprobar:
 entrenamiento:
   pasos: 3000000
   reintentos: 1
-  procesos: 5
+  procesos: 4
   semillas:
   - 0
   - 1
