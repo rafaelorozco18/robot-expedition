@@ -53,6 +53,16 @@ def _limite(hasta):
     return limite if limite > ahora else limite + datetime.timedelta(days=1)
 
 
+def olvidos(exp):
+    """Exámenes anteriores (aprobar.sin_olvidar) que el campeón ya no aprueba."""
+    ruta = X.carpeta_metricas(exp) / "regresion.json"
+    if not exp["aprobar"].get("sin_olvidar") or not ruta.exists():
+        return []
+    reg = json.loads(ruta.read_text())
+    return [p for p in exp["aprobar"]["sin_olvidar"]
+            if reg.get(p, 0.0) < X.cargar(p)["aprobar"]["tasa_exito"]]
+
+
 def correr(i, hasta=None, limite=None):
     """Devuelve True si el experimento quedó aprobado."""
     _editar(i, estado="activo")
@@ -72,6 +82,10 @@ def correr(i, hasta=None, limite=None):
         _editar(i, entrenamiento={"semillas": [*semillas, s + 1]})
     exp = X.cargar(i)
     _repro([f"progreso-{i}", f"regresion-{i}", f"evolucion-{i}"])
+    olvido = olvidos(exp)
+    if ev["aprobado"] and olvido:
+        _anotar(f"{i}: cumple su examen pero olvidó {', '.join(olvido)}")
+        ev["aprobado"] = False
     _anotar(f"{i}: {registrar(exp)}")
     documentar(exp)
     informe()

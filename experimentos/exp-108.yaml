@@ -19,6 +19,12 @@ adversidad:
   prob_rafaga: 0.015
 aprobar:
   tasa_exito: 0.9
+  sin_olvidar:
+  - exp-103
+  - exp-104
+  - exp-105
+  - exp-106
+  - exp-107
 entrenamiento:
   pasos: 4000000
   reintentos: 0
@@ -27,6 +33,11 @@ entrenamiento:
   - 0
   log_std_init: -2.3
   log_std_final: -3.0
+  repaso:
+    experimentos:
+    - exp-107
+    - exp-105
+    fraccion: 0.3
 trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
   episodio.'
 ambiente:

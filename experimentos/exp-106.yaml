@@ -51,6 +51,10 @@ parametros:
     - 4.0
 aprobar:
   tasa_exito: 0.75
+  sin_olvidar:
+  - exp-103
+  - exp-104
+  - exp-105
 entrenamiento:
   pasos: 5000000
   reintentos: 0
@@ -59,6 +63,11 @@ entrenamiento:
   semillas:
   - 0
   log_std_final: -3.0
+  repaso:
+    experimentos:
+    - exp-104
+    - exp-105
+    fraccion: 0.3
 trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
   cambiar de rumbo.'
 control:

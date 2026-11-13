@@ -232,6 +232,7 @@ def regresion(exp):
         if previo["id"] > exp["id"] or previo["estado"] == "pendiente":
             continue
         escenarios = json.loads((carpeta_datos(previo) / "escenarios.json").read_text())
+        previo = {**previo, "control": exp["control"]}  # el filtro de los servos es del robot que se prueba
         pert = previo["aprobar"]["perturbacion"]
         sub = [e for e in escenarios if e["perturbacion"] == pert][:12]
         filas = [correr_episodio(previo, agente, e)[0] for e in sub]

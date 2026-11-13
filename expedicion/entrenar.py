@@ -130,8 +130,16 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
                 return False
             return True
 
+    repaso = p.get("repaso")
+
     def crear(i):
-        env = BipedoEnv(exp, entrenando=True)
+        # Repaso: en cada proceso, una fracción de los robots practica tareas de experimentos anteriores,
+        # con el control de este experimento. Así aprende lo nuevo sin olvidar lo viejo.
+        tarea = exp
+        if repaso and i < round(repaso["fraccion"] * p["robots_por_proceso"]):
+            previo = cargar(repaso["experimentos"][i % len(repaso["experimentos"])])
+            tarea = {**previo, "control": exp["control"]}
+        env = BipedoEnv(tarea, entrenando=True)
         env.reset(seed=semilla * 1000 + i)
         return env
 

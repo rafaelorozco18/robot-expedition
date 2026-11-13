@@ -54,6 +54,9 @@ parametros:
   rampa_s: 1.5
 aprobar:
   tasa_exito: 0.8
+  sin_olvidar:
+  - exp-103
+  - exp-104
 entrenamiento:
   pasos: 6000000
   reintentos: 0
@@ -67,6 +70,11 @@ entrenamiento:
   - 4
   - 5
   log_std_final: -3.0
+  repaso:
+    experimentos:
+    - exp-103
+    - exp-104
+    fraccion: 0.3
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
