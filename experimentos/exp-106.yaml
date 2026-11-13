@@ -1,22 +1,22 @@
 id: exp-106
 estado: activo
-titulo: Caminar en terreno difícil
-tarea: marcha
+titulo: Caminar en curva
+tarea: curva
 parte_de: exp-105
-pregunta: ¿Mantiene una marcha buena sobre arena, grava, barro y listones?
-agrega: Pisos mezclados al azar y listones de 3,5 cm que obligan a levantar el pie
-criterio: 10 m sin perder la calidad del Exp 5 (≥ 30/100) en ≥ 75 %
+pregunta: ¿Camina en círculo, girando y avanzando a la vez?
+agrega: 'Velocidad y giro simultáneos: un círculo de 2 m de radio'
+criterio: 324° del círculo, desvío < 0,4 m y calidad ≥ 55/100 en ≥ 75 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
-  duracion_s: 28
+  duracion_s: 30
   velocidad_inicial: 0.0
   ruido_inicial: 0.02
 recompensa:
   velocidad: 2.0
   altura: 0.5
   erguido: 1.5
-  rumbo: 0.3
+  rumbo: 1.0
   reloj: 4.0
   paso: 1.5
   giro: 0.02
@@ -28,6 +28,7 @@ recompensa:
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
+  guinada: 1.0
   vuelo: 15.0
 parametros:
   vx:
@@ -38,53 +39,30 @@ parametros:
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 30
+  calidad_min: 55
+  radio_m: 2.0
+  velocidad_ms: 0.45
+  vueltas: 0.9
+  error_radio_m: 0.4
   erguido_estricto: true
-pisos:
-  tramos:
-  - tipo: arena
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: grava
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: barro
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: arena
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: grava
-    largo:
-    - 1.5
-    - 2.5
-  inicio_m: 1.5
-  mezclar: true
-listones:
-  cantidad: 8
-  alto_m: 0.035
-  inicio_m: 1.0
-  separacion_m:
-  - 0.7
-  - 1.2
+  variar_entrenando:
+    radio_m:
+    - 2.0
+    - 4.0
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
   pasos: 5000000
-  reintentos: 1
+  reintentos: 0
   procesos: 4
-  log_std_init: -2.5
+  log_std_init: -2.3
   semillas:
   - 0
-  - 1
   log_std_final: -3.0
-trampa: 'Tropezar y recuperarse: la calidad baja si arrastra el pie o se inclina.'
+trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
+  cambiar de rumbo.'
 control:
   rango: 0.8
   filtro: 0.6
-pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
-  no empeorar la marcha mientras aprende lo nuevo.'
+pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientras aprende
+  lo nuevo.'

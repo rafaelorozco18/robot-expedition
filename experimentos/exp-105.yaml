@@ -1,23 +1,22 @@
 id: exp-105
 estado: activo
-titulo: Caminar bien
-tarea: marcha
+titulo: Girar en la esquina
+tarea: esquina
 parte_de: exp-104
-pregunta: '¿Camina como una persona: pasos largos, ritmo pausado y sin vibrar?'
-agrega: 'Recompensas de estética: zancada de 50 cm por paso, ciclo de 1,1 s, pie levantado,
-  torso erguido, servos suaves (filtro 60 %) y menos ruido'
-criterio: 10 m con calidad de marcha ≥ 55/100 en ≥ 80 %
+pregunta: ¿Camina recto, gira 90° sobre su eje y sigue recto?
+agrega: 'Una esquina: detenerse, rotar en el sitio y retomar la marcha'
+criterio: Completa la esquina con calidad ≥ 55/100 en ≥ 80 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
-  duracion_s: 26
+  duracion_s: 24
   velocidad_inicial: 0.0
   ruido_inicial: 0.02
 recompensa:
   velocidad: 2.0
   altura: 0.5
   erguido: 1.5
-  rumbo: 0.3
+  rumbo: 1.0
   reloj: 4.0
   paso: 1.5
   giro: 0.02
@@ -29,6 +28,7 @@ recompensa:
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
+  guinada: 1.0
   vuelo: 15.0
 parametros:
   vx:
@@ -40,24 +40,31 @@ parametros:
   zancada_m: 0.5
   sigma_v: 0.05
   calidad_min: 55
+  lado_m: 3
+  giro_rad_s: 0.7
+  velocidad_ms: 0.5
   erguido_estricto: true
+  variar_entrenando:
+    lado_m:
+    - 0.5
+    - 3.0
+    giro_rad_s:
+    - 0.3
+    - 0.7
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
   pasos: 6000000
-  reintentos: 1
+  reintentos: 0
   procesos: 4
-  log_std_init: -2.2
+  log_std_init: -2.3
   semillas:
   - 0
-  - 1
   log_std_final: -3.0
-trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
-  y despeje del pie.'
+trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
+  giro.'
 control:
   rango: 0.8
   filtro: 0.6
-pendiente: 'El 2026-11-12, a mitad de la semilla 0, la calidad llegó a 44/100: torso
-  erguido (5°) pero articulaciones que vibran (suavidad 15 %) y 3,5 pasos por segundo.
-  Desde la semilla 1 la suavidad pesa 15 (antes 2), el reloj de marcha 4 (antes 2)
-  y levantar el pie 1,5 (antes 0,8); igual en los Exps 6 a 9.'
+pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientras aprende
+  lo nuevo.'

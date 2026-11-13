@@ -1,11 +1,12 @@
 id: exp-107
 estado: activo
-titulo: Girar en la esquina
-tarea: esquina
+titulo: Dominio en terreno duro
+tarea: recorrido
 parte_de: exp-106
-pregunta: ¿Camina recto, gira 90° sobre su eje y sigue recto?
-agrega: 'Una esquina: detenerse, rotar en el sitio y retomar la marcha'
-criterio: Completa la esquina con calidad ≥ 28/100 en ≥ 80 %
+pregunta: ¿Encadena rectas, giros y curvas sobre terreno difícil?
+agrega: Órdenes que cambian cada pocos segundos (recto, giro y curva) sobre pisos
+  mezclados
+criterio: 24 s siguiendo velocidad y rumbo, calidad ≥ 55/100, en ≥ 70 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
@@ -34,38 +35,57 @@ parametros:
   vx:
   - 0.45
   - 0.55
-  distancia_m: 10
+  distancia_m: 0
   periodo_s: 0.68
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 28
-  lado_m: 3
-  giro_rad_s: 0.7
-  velocidad_ms: 0.5
+  calidad_min: 55
+  tramo_s: 4
+  error_ms: 0.25
+  error_rumbo: 0.4
   erguido_estricto: true
-  variar_entrenando:
-    lado_m:
-    - 0.5
-    - 3.0
-    giro_rad_s:
-    - 0.3
-    - 0.7
+pisos:
+  tramos:
+  - tipo: grava
+    largo:
+    - 1.5
+    - 2.5
+  - tipo: arena
+    largo:
+    - 1.5
+    - 2.5
+  - tipo: barro
+    largo:
+    - 1.5
+    - 2.5
+  - tipo: grava
+    largo:
+    - 1.5
+    - 2.5
+  - tipo: arena
+    largo:
+    - 1.5
+    - 2.5
+  - tipo: barro
+    largo:
+    - 1.5
+    - 2.5
+  inicio_m: -6
+  mezclar: true
 aprobar:
-  tasa_exito: 0.8
+  tasa_exito: 0.7
 entrenamiento:
   pasos: 6000000
-  reintentos: 1
+  reintentos: 0
   procesos: 4
-  log_std_init: -2.3
+  log_std_init: -2.5
   semillas:
   - 0
-  - 1
   log_std_final: -3.0
-trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
-  giro.'
+trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
 control:
   rango: 0.8
   filtro: 0.6
-pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
-  no empeorar la marcha mientras aprende lo nuevo.'
+pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientras aprende
+  lo nuevo.'

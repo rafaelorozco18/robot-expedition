@@ -1,69 +1,45 @@
 id: exp-108
 estado: activo
-titulo: Caminar en curva
-tarea: curva
+titulo: De pie con viento
+tarea: de_pie
 parte_de: exp-107
-pregunta: ¿Camina en círculo, girando y avanzando a la vez?
-agrega: 'Velocidad y giro simultáneos: un círculo de 2 m de radio'
-criterio: 324° del círculo, desvío < 0,4 m y calidad ≥ 28/100 en ≥ 75 %
-ambiente:
-  altura_minima: 0.75
-  inclinacion_maxima: 40
-  duracion_s: 30
-  velocidad_inicial: 0.0
-  ruido_inicial: 0.02
-recompensa:
-  velocidad: 2.0
-  altura: 0.5
-  erguido: 1.5
-  rumbo: 1.0
-  reloj: 4.0
-  paso: 1.5
-  giro: 0.02
-  vivo: 0.3
-  postura: 0
-  quieto: 0
-  caida: 30.0
-  suavidad: 15.0
-  vel_articular: 1.0
-  zancada: 15.0
-  deslizamiento: 2.0
-  guinada: 1.0
-  vuelo: 15.0
-parametros:
-  vx:
-  - 0.45
-  - 0.55
-  distancia_m: 10
-  periodo_s: 0.68
-  despeje_m: 0.07
-  zancada_m: 0.5
-  sigma_v: 0.05
-  calidad_min: 28
-  radio_m: 2.0
-  velocidad_ms: 0.45
-  vueltas: 0.9
-  error_radio_m: 0.4
-  erguido_estricto: true
-  variar_entrenando:
-    radio_m:
-    - 2.0
-    - 4.0
+pregunta: ¿Se mantiene de pie con viento y ráfagas en Marte?
+agrega: Viento constante de 3 a 8 N, en cualquier dirección, más ráfagas de 3 a 8
+  N
+criterio: Aguanta 10 s en ≥ 90 %
+clima_visual: lluvia
+adversidad:
+  viento_n:
+  - 3
+  - 8
+  viento_libre: true
+  rafaga_n:
+  - 3
+  - 8
+  prob_rafaga: 0.015
 aprobar:
-  tasa_exito: 0.75
+  tasa_exito: 0.9
 entrenamiento:
-  pasos: 5000000
-  reintentos: 1
+  pasos: 4000000
+  reintentos: 0
   procesos: 4
-  log_std_init: -2.3
   semillas:
   - 0
-  - 1
+  log_std_init: -2.3
   log_std_final: -3.0
-trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
-  cambiar de rumbo.'
+trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
+  episodio.'
+ambiente:
+  velocidad_inicial: 0.0
+adversidad_entrenando:
+  viento_n:
+  - 2
+  - 8
+  rafaga_n:
+  - 0
+  - 8
 control:
   rango: 0.8
   filtro: 0.6
-pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
-  no empeorar la marcha mientras aprende lo nuevo.'
+pendiente: 'Viento de entrenamiento de 2 a 8 N: con 0 a 8 N aguantaba el 80 % pero
+  caía con viento fijo de 5,5 N o más en los primeros segundos (serie-marte-v2).'

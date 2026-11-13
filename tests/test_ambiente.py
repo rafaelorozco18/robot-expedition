@@ -112,11 +112,11 @@ def test_cinco_etapas_del_fracaso_al_dominio():
 
 def test_el_linaje_recorre_los_antecesores_desde_la_raiz():
     from expedicion.evolucion import linaje
-    assert [e["id"] for e in linaje(X.cargar("exp-105"))] == ["exp-101", "exp-102", "exp-104"]
+    assert [e["id"] for e in linaje(X.cargar("exp-105"))] == ["exp-101", "exp-102", "exp-103", "exp-104"]
 
 
 def test_solo_marte_y_viento_registrado():
-    env = BipedoEnv(X.cargar("exp-103"))
+    env = BipedoEnv(X.cargar("exp-108"))
     for s in range(5):
         env.reset(seed=s)
         assert env.planeta == "marte"
@@ -124,7 +124,7 @@ def test_solo_marte_y_viento_registrado():
 
 
 def test_la_esquina_pasa_a_girar_al_llegar():
-    e = X.cargar("exp-107")
+    e = X.cargar("exp-105")
     env = BipedoEnv(e)
     env.reset(seed=0)
     env.data.qpos[0] = env.x_inicial + e["parametros"]["lado_m"] + 0.1

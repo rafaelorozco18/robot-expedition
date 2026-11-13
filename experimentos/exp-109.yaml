@@ -1,16 +1,16 @@
 id: exp-109
 estado: activo
-titulo: Dominio en terreno duro
-tarea: recorrido
+titulo: Caminar con viento
+tarea: marcha
 parte_de: exp-108
-pregunta: ¿Encadena rectas, giros y curvas sobre terreno difícil y con viento?
-agrega: Órdenes que cambian cada pocos segundos, pisos mezclados y viento suave
-criterio: 24 s siguiendo velocidad y rumbo, calidad ≥ 25/100, en ≥ 70 %
+pregunta: ¿Camina 10 m con viento y ráfagas en Marte?
+agrega: Viento de 3 a 8 N en cualquier dirección, más ráfagas de 3 a 8 N
+criterio: 10 m sin caer, con calidad ≥ 55/100, en ≥ 80 %
 clima_visual: lluvia
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
-  duracion_s: 24
+  duracion_s: 26
   velocidad_inicial: 0.0
   ruido_inicial: 0.02
 recompensa:
@@ -29,69 +29,49 @@ recompensa:
   vel_articular: 1.0
   zancada: 15.0
   deslizamiento: 2.0
-  guinada: 1.0
+  guinada: 0
   vuelo: 15.0
 parametros:
   vx:
   - 0.45
   - 0.55
-  distancia_m: 0
+  distancia_m: 10
   periodo_s: 0.68
   despeje_m: 0.07
   zancada_m: 0.5
   sigma_v: 0.05
-  calidad_min: 25
-  tramo_s: 4
-  error_ms: 0.25
-  error_rumbo: 0.4
   erguido_estricto: true
-pisos:
-  tramos:
-  - tipo: grava
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: arena
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: barro
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: grava
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: arena
-    largo:
-    - 1.5
-    - 2.5
-  - tipo: barro
-    largo:
-    - 1.5
-    - 2.5
-  inicio_m: -6
-  mezclar: true
+  calidad_min: 55
 adversidad:
   viento_n:
-  - 2
-  - 5
+  - 3
+  - 8
   viento_libre: true
+  rafaga_n:
+  - 3
+  - 8
+  prob_rafaga: 0.012
 aprobar:
-  tasa_exito: 0.7
+  tasa_exito: 0.8
 entrenamiento:
   pasos: 5000000
-  reintentos: 1
+  reintentos: 0
   procesos: 4
-  log_std_init: -2.5
   semillas:
   - 0
-  - 1
+  log_std_init: -2.3
   log_std_final: -3.0
-trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
+trampa: 'Caminar de lado para presentar menos superficie: la velocidad y el rumbo
+  ordenados se siguen exigiendo.'
+adversidad_entrenando:
+  viento_n:
+  - 2
+  - 8
+  rafaga_n:
+  - 0
+  - 8
 control:
   rango: 0.8
   filtro: 0.6
-pendiente: ' El umbral de calidad se fijó en lo que logró el Exp 5 (29/100): exige
-  no empeorar la marcha mientras aprende lo nuevo.'
+pendiente: Usa la recompensa de «caminar bien» del Exp 3 para no perder la técnica
+  con el viento.

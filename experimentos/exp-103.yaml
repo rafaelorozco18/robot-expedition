@@ -1,44 +1,60 @@
 id: exp-103
 estado: activo
-titulo: De pie con viento
-tarea: de_pie
-parte_de: exp-101
-pregunta: ¿Se mantiene de pie con viento y ráfagas en Marte?
-agrega: Viento constante de 3 a 8 N, en cualquier dirección, más ráfagas de 3 a 8
-  N
-criterio: Aguanta 10 s en ≥ 90 %
-clima_visual: lluvia
-adversidad:
-  viento_n:
-  - 3
-  - 8
-  viento_libre: true
-  rafaga_n:
-  - 3
-  - 8
-  prob_rafaga: 0.015
+titulo: Caminar bien
+tarea: marcha
+parte_de: exp-102
+pregunta: '¿Camina como una persona: pasos largos, ritmo pausado y sin vibrar?'
+agrega: 'Recompensas de estética: zancada de 50 cm por paso, ciclo de 1,1 s, pie levantado,
+  torso erguido, servos suaves (filtro 60 %) y menos ruido'
+criterio: 10 m con calidad de marcha ≥ 55/100 en ≥ 80 %
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 26
+  velocidad_inicial: 0.0
+  ruido_inicial: 0.02
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 1.5
+  rumbo: 0.3
+  reloj: 4.0
+  paso: 1.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+  suavidad: 15.0
+  vel_articular: 1.0
+  zancada: 15.0
+  deslizamiento: 2.0
+  vuelo: 15.0
+parametros:
+  vx:
+  - 0.45
+  - 0.55
+  distancia_m: 10
+  periodo_s: 0.68
+  despeje_m: 0.07
+  zancada_m: 0.5
+  sigma_v: 0.05
+  calidad_min: 55
+  erguido_estricto: true
 aprobar:
-  tasa_exito: 0.9
+  tasa_exito: 0.8
 entrenamiento:
-  pasos: 3000000
-  reintentos: 1
+  pasos: 6000000
+  reintentos: 0
   procesos: 4
+  log_std_init: -2.2
   semillas:
   - 0
-  - 1
-  log_std_init: -1.5
-  log_std_final: -2.6
-trampa: 'Inclinarse siempre hacia un lado: la dirección del viento cambia en cada
-  episodio.'
-ambiente:
-  velocidad_inicial: 0.0
-pendiente: 'Con viento de 6 a 14 N el primer intento quedó en 0 %: el modelo del Exp
-  1 ya cae con 2 a 5 N. Se bajó a 3 a 8 N y se quitó el arranque desequilibrado: el
-  reto es solo el viento.'
-adversidad_entrenando:
-  viento_n:
-  - 0
-  - 8
-  rafaga_n:
-  - 0
-  - 8
+  log_std_final: -3.0
+trampa: 'Arrastrar los pies con pasos cortos y rápidos: la calidad mide zancada, ritmo
+  y despeje del pie.'
+control:
+  rango: 0.8
+  filtro: 0.6
+pendiente: 'Suavidad 15, reloj 4 y levantar el pie 1,5: con 2, 2 y 0,8 la calidad
+  se quedaba en 44 a 50/100 (articulaciones que vibran y 3,5 pasos por segundo).'
