@@ -8,4 +8,4 @@ Los resultados de la serie anterior, con tres planetas, están en el tag `exp-02
 |---|---|---|---|---|---|---|---|
 | 1 | [De pie](experimentos/exp-101.md) | Aprobado | 83 % | 29.3 | 80 % | 1.5 M | 12 min |
 | 2 | [Caminar](experimentos/exp-102.md) | Aprobado | 100 % | 26.1 | 80 % | 1.6 M | 12 min |
-| 3 | [Caminar bien](experimentos/exp-103.md) | No aprobado | 75 % | 80.5 | 80 % | 6.0 M | 54 min |
+| 3 | [Caminar bien](experimentos/exp-103.md) | Aprobado | 100 % | 81.6 | 80 % | 9.0 M | 74 min |
