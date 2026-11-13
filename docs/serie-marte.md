@@ -82,7 +82,7 @@ Todo lo anterior lo produce `expedicion campana exp-101 … exp-109`: entrena, e
 repite las pruebas anteriores (regresión), calcula las etapas, registra en MLflow, documenta, publica,
 hace commit y pone el tag.
 
-## Resultados (2026-11-13, 14:10, serie en orden)
+## Resultados (2026-11-13, 15:00, serie en orden)
 
 | # | Experimento | Resultado | Éxito en el examen | Calidad | Intentos |
 |---|---|---|---|---|---|
@@ -91,7 +91,8 @@ hace commit y pone el tag.
 | 3 | Caminar bien | Aprobado | 100 % | 82/100 | 2: 75 % con 6 M de pasos, 100 % con 9 M |
 | 4 | Terreno difícil | Aprobado (justo) | 75 % | 78/100 | 2: el primero se atascaba en los listones |
 | 5 | Girar en la esquina | Aprobado | 100 % (35 de 40 en episodios nuevos) | 80/100 | 6: aprobó al retomar la marcha con una rampa de 1,5 s |
-| 6 a 9 | Curva, dominio y viento | Pendientes | — | — | — |
+| 6 | Caminar en curva | Aprobado | 100 % | 81/100 | 1 |
+| 7 a 9 | Dominio y viento | Pendientes | — | — | — |
 
 El examen tiene 12 episodios por condición: un episodio son 8 puntos. Por eso cada candidato se probó además en
 40 episodios nuevos antes de decidir el siguiente ajuste.
@@ -113,6 +114,26 @@ El examen tiene 12 episodios por condición: un episodio son 8 puntos. Por eso c
   examen). La semilla 5 aprobó: 100 % en el examen y 35 de 40 en episodios nuevos, calidad 80/100. La semilla 4,
   con la misma configuración, logró 42 %: la diferencia entre semillas es grande.
 - **Calidad mínima 55/100 desde el Exp 4:** aprender algo nuevo no puede empeorar la marcha del Exp 3.
+
+## Olvido de lo aprendido y repaso
+
+Cada modelo repite los exámenes de los experimentos anteriores (regresión). La técnica de marcha se conserva:
+todos siguen aprobando «Caminar bien» con calidad de 77 a 82/100, porque su recompensa sigue activa. Pero las
+habilidades de cada tarea se olvidan al aprender la siguiente (olvido catastrófico):
+
+| Modelo | Caminar bien (3) | Terreno (4) | Esquina (5) | Su examen |
+|---|---|---|---|---|
+| Exp 4 (terreno) | 100 % | — | — | 75 % |
+| Exp 5 (esquina) | 92 % | 0 % | — | 100 % |
+| Exp 6 (curva) | 100 % | 8 % | 0 % | 100 % |
+
+**Solución, implementada el 2026-11-13 para la próxima vuelta desde el Exp 5:**
+- **Repaso** (`entrenamiento.repaso`): el 30 % de los robots de cada proceso practica tareas anteriores mientras
+  el resto aprende la nueva.
+- **No olvidar** (`aprobar.sin_olvidar`): un experimento solo aprueba si su campeón sigue aprobando los exámenes
+  anteriores indicados. Con esta regla, los Exps 5 y 6 de hoy no aprobarían.
+- La regresión ahora prueba con el filtro de servos del robot evaluado: los Exps 1 y 2 usaban otro filtro y la
+  comparación con ellos no era justa.
 
 ## Limitaciones conocidas
 

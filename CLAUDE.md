@@ -75,15 +75,17 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-13, 14:10)
+## Estado actual (2026-11-13, 15:00)
 
-- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 (100 %, calidad 82), 4 (75 %, justo) y
-  5 (esquina: 100 %, calidad 80, semilla 5, con rampa de 1,5 s al retomar la marcha). Exps 6 a 9 sin entrenar
-  en este orden: el siguiente es el 6 (curva), que parte del 5.
+- Serie en orden (ver `docs/serie-marte.md`). Aprobados con su examen: 1, 2, 3, 4 (justo), 5 (esquina) y 6 (curva).
+  **Pero los Exps 5 y 6 olvidaron tareas anteriores** (regresión: el 6 hace 8 % en terreno y 0 % en esquina).
+  El usuario pidió que el robot no olvide: ya están `entrenamiento.repaso` (30 %) y `aprobar.sin_olvidar`
+  configurados desde el Exp 5. **Próximo paso: reentrenar desde el Exp 5 con repaso**, uno a la vez.
+- El Exp 7 (dominio) se entrenó una vez el 2026-11-13 sin repaso, con 4 M de pasos (ver `metrics/campana.log`).
 - La serie anterior (viento en 3 y 4) está en el tag `serie-marte-v2` y sus artefactos en `archivo/serie-marte-v2/`.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
-- Próximo paso: Exp 6 (curva). La diferencia entre semillas es grande (en el Exp 5, de 33 % a 100 % con la misma
+- La diferencia entre semillas es grande (en el Exp 5, de 33 % a 100 % con la misma
   configuración): ante un intento fallido, probar otra semilla antes de cambiar varias cosas. `continuar_de` en
   `entrenamiento` permite seguir una semilla anterior; con el Exp 5 empeoró.
 - Para medir de verdad un candidato: 40 episodios nuevos (`correr_episodio` con semillas 3000+): el examen de 12
