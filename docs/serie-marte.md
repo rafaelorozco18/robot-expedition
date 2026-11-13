@@ -82,31 +82,35 @@ Todo lo anterior lo produce `expedicion campana exp-101 … exp-109`: entrena, e
 repite las pruebas anteriores (regresión), calcula las etapas, registra en MLflow, documenta, publica,
 hace commit y pone el tag.
 
-## Resultados (2026-11-11)
+## Resultados (2026-11-13, serie en orden)
 
-| # | Experimento | Resultado | Éxito en Marte | Lo que se ve en las 5 etapas |
-|---|---|---|---|---|
-| 1 | De pie | Aprobado | 83 % | De caer a los 1,4 s a mantenerse 10 s |
-| 2 | Caminar | Aprobado | 100 % | De quedarse quieto a recorrer 11 m |
-| 3 | De pie con viento | No aprobado | 42 % | De caer en menos de 1 s a aguantar las ráfagas |
-| 4 | Caminar con viento | No aprobado | 50 % | De caer a los 1,8 s a cruzar 10 m con viento |
-| 5 | Caminar bien | No aprobado | 0 % | Calidad de 22 a 32/100: menos pasos por segundo, más largos y más altos |
-| 6 | Terreno difícil | No aprobado | 25 % | Cruza arena, grava, barro y listones con calidad 36/100 |
-| 7 | Esquina | No aprobado | 0 % | Camina 4 m y gira hasta 70° antes de caer |
-| 8 | Curva | No aprobado | 0 % | Recorre hasta 83° del círculo antes de caer |
-| 9 | Dominio | No aprobado | 0 % | Encadena hasta 4 s de órdenes antes de caer |
+| # | Experimento | Resultado | Éxito en el examen | Calidad | Intentos |
+|---|---|---|---|---|---|
+| 1 | De pie | Aprobado | 83 % | 29/100 | Conservado de la serie anterior |
+| 2 | Caminar | Aprobado | 100 % | 26/100 | Conservado de la serie anterior |
+| 3 | Caminar bien | Aprobado | 100 % | 82/100 | 2: 75 % con 6 M de pasos, 100 % con 9 M |
+| 4 | Terreno difícil | Aprobado (justo) | 75 % | 78/100 | 2: el primero se atascaba en los listones |
+| 5 | Girar en la esquina | No aprobado | 67 % (≈ 75 % en 40 episodios nuevos) | 77/100 | 4 |
+| 6 a 9 | Curva, dominio y viento | Pendientes | — | — | — |
 
-Los Exps 4 a 9 parten del primer entrenamiento del Exp 2 (semilla 0, 58 %). Al final de la jornada el Exp 2
-se reentrenó con la semilla 1, que aprobó con 100 % y es la que se muestra.
+El examen tiene 12 episodios por condición: un episodio son 8 puntos. Por eso cada candidato se probó además en
+40 episodios nuevos antes de decidir el siguiente ajuste.
 
-## Decisiones tomadas durante la jornada
+## Decisiones tomadas el 2026-11-13
 
-- **Evaluación con el ruido de la política.** El modelo del Exp 1 se sostiene 11 de 12 veces actuando con su
-  propio ruido y 0 de 12 sin él. Se evalúa con ese ruido, sembrado por episodio: cada episodio se repite idéntico.
-- **Exp 1:** el criterio se bajó de 95 % a 80 % (logró 83 %), porque arranca desequilibrado al azar.
-- **Viento:** con 6 a 14 N el Exp 3 quedó en 0 %, y el modelo del Exp 1 ya cae con 2 a 5 N. Se calibró a 3 a 8 N.
-- **Calidad:** el Exp 5 subió la calidad de 22 a 32/100 (de 5,8 a 4 pasos por segundo y de 14 a 24 cm por paso),
-  sin llegar a 55. Los Exps 6 a 9 exigen no bajar de ese nivel mientras aprenden lo nuevo.
+- **Un experimento a la vez.** Se entrena uno, se revisa por qué falla, se ajusta una sola cosa y se reintenta.
+  Solo se avanza con un robot aprobado.
+- **Ruido que baja.** La exploración baja hasta `log_std_final` en el 70 % del entrenamiento: la marcha deja de
+  depender del ruido y vibra menos.
+- **Exp 3:** la suavidad pesa 15, el reloj de marcha 4 y levantar el pie 1,5. Con 2, 2 y 0,8 la calidad se
+  quedaba en 44 a 50/100 (articulaciones que vibran y 3,5 pasos por segundo). Con 9 M de pasos aprobó: 100 % y
+  calidad 82/100.
+- **Exp 4:** al entrenar, los listones tienen altura al azar entre 0 y 3,5 cm. Con la altura completa el robot se
+  atascaba en el primero y no cumplía ningún episodio. El examen usa siempre 3,5 cm.
+- **Exp 5:** se probó más entrenamiento (9 M: 33 %), giros de práctica más rápidos (0,5 a 0,9 rad/s: 58 %) y
+  continuar el mejor intento (4 M más: 50 %). Ninguno superó a la semilla 0 (67 %). Sus fallas: cae al retomar la
+  marcha justo después del giro.
+- **Calidad mínima 55/100 desde el Exp 4:** aprender algo nuevo no puede empeorar la marcha del Exp 3.
 
 ## Limitaciones conocidas
 

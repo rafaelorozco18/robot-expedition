@@ -75,16 +75,19 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-11, cierre de la jornada)
+## Estado actual (2026-11-13, 12:15)
 
-- Serie Marte entrenada completa una vez (resultados en `docs/resultados.md`, decisiones en `docs/serie-marte.md`).
-  Aprueban los Exps 1 (83 %) y 2 (100 %, semilla 1). La marcha mejoró en calidad (22 → 37/100) pero no llegó
-  a los umbrales. Los Exps 4 a 9 partieron de la semilla 0 del Exp 2, no de la aprobada.
-  Girar (Exps 7 a 9) es el cuello de botella: el robot cae durante el giro.
+- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 (100 %, calidad 82) y 4 (75 %, justo).
+  El Exp 5 (esquina) no aprueba: mejor intento semilla 0, 67 % en el examen y ≈ 75 % en 40 episodios nuevos.
+  Cae al retomar la marcha justo después del giro. Exps 6 a 9 sin entrenar en este orden.
+- La serie anterior (viento en 3 y 4) está en el tag `serie-marte-v2` y sus artefactos en `archivo/serie-marte-v2/`.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
-- Próximos pasos sugeridos: más pasos de entrenamiento para caminar (Exp 2 quedó en 58 %), giro más lento o
-  entrenamiento de giro aparte antes de la esquina, y recompensa de erguido suave desde el Exp 5.
+- Próximo paso: Exp 5. Ideas no probadas: recompensa que premie arrancar suave tras el giro (rampa de velocidad
+  al retomar), o episodios de práctica que empiecen justo después de girar. `continuar_de` en `entrenamiento`
+  permite seguir una semilla anterior; con el Exp 5 empeoró.
+- Para medir de verdad un candidato: 40 episodios nuevos (`correr_episodio` con semillas 3000+): el examen de 12
+  episodios varía ±8 puntos por episodio.
 
 ### Lecciones que no hay que volver a aprender
 
@@ -103,6 +106,6 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 - Evaluar siempre sin exploración: con ruido alto (`log_std_init` -1.5) el modelo depende del ruido; -2.2 ayuda en equilibrio.
 - La Luna es la condición más difícil en equilibrio y barro: casi todos los fallos son solo ahí.
 - Sentadilla: lejos de la meta la recompensa debe seguir dando pistas, o el robot se queda a media altura.
-- `pkill -f` coincide con el propio comando si el texto aparece en él: usarlo en una llamada aparte.
+- `pkill -f` y `pgrep -f` coinciden con el propio comando si el texto aparece en él: esperar con `kill -0 PID`.
 - No matar una campaña antes de que escriba "aprobado" o "no aprobó": se pierde el cierre del experimento.
 - El directorio temporal y el navegador de Playwright pueden desaparecer entre sesiones.
