@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1003451250,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-104",
+     "exito": false,
+     "segundos": 28.0,
+     "distancia": -0.0,
+     "calidad": 39.9,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "Se queda en su sitio · calidad 40/100",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "paso:868096",
+     "paso": 868096,
+     "origen": "exp-104",
+     "exito": false,
+     "segundos": 7.22,
+     "distancia": 3.1,
+     "calidad": 63.1,
+     "avance": 0.312,
+     "puntaje": 0.2964,
+     "texto": "A los 7.2 s: se agachó o cayó · recorrió 3.1 m · error de velocidad 0.19 m/s",
+     "clip": [
+      1.22,
+      7.22,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 23,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:1250048",
+     "paso": 1250048,
+     "origen": "exp-104",
+     "exito": false,
+     "segundos": 22.86,
+     "distancia": 9.27,
+     "calidad": 70.8,
+     "avance": 0.942,
+     "puntaje": 0.8949,
+     "texto": "A los 22.9 s: se agachó o cayó · recorrió 9.4 m · error de velocidad 0.20 m/s",
+     "clip": [
+      16.86,
+      22.86,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 25,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:1701440",
+     "paso": 1701440,
+     "origen": "exp-104",
+     "exito": true,
+     "segundos": 28.0,
+     "distancia": 10.86,
+     "calidad": 77.7,
+     "avance": 1.0,
+     "puntaje": 1.4112,
+     "texto": "Caminó hasta la meta · calidad 78/100 · recorrió 10.9 m · error de velocidad 0.18 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 0.667,
+     "indice": 27,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:5000000",
+     "paso": 5000000,
+     "origen": "exp-104",
+     "exito": true,
+     "segundos": 28.0,
+     "distancia": 13.66,
+     "calidad": 79.5,
+     "avance": 1.0,
+     "puntaje": 1.5795,
+     "texto": "Caminó hasta la meta · calidad 80/100 · recorrió 13.7 m · error de velocidad 0.08 m/s",
+     "clip": [
+      0.0,
+      14.0,
+      1.5
+     ],
+     "tasa": 1.0,
+     "indice": 37,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 1.579
+  }
+ },
+ "recomendado": "marte"
+}
