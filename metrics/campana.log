@@ -67,3 +67,6 @@
 08:48 exp-104 aprobado
 09:38 exp-105 semilla 0: aprobado=False
 09:41 exp-105: robot-exp-105 v3
+09:41 exp-105 no aprobó: campaña detenida
+10:47 exp-105 semilla 1: aprobado=False
+10:49 exp-105: robot-exp-105 v4
