@@ -80,6 +80,7 @@ entrenamiento:
   log_std_init: -2.5
   semillas:
   - 0
+  - 1
   log_std_final: -3.0
 trampa: 'Tropezar y recuperarse: la calidad baja si arrastra el pie o se inclina.'
 control:
