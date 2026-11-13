@@ -76,7 +76,7 @@ pisos:
 aprobar:
   tasa_exito: 0.7
 entrenamiento:
-  pasos: 6000000
+  pasos: 4000000
   reintentos: 0
   procesos: 5
   log_std_init: -2.5
