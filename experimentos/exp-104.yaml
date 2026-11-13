@@ -71,6 +71,9 @@ listones:
   separacion_m:
   - 0.7
   - 1.2
+  alto_entrenando:
+  - 0.0
+  - 0.035
 aprobar:
   tasa_exito: 0.75
 entrenamiento:
@@ -86,4 +89,6 @@ control:
   rango: 0.8
   filtro: 0.6
 pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientras aprende
-  lo nuevo.'
+  lo nuevo. Primer intento (2026-11-13, detenido a 3,1 M): calidad 55 a 62 pero se
+  atascaba en los primeros listones y no cumplía ningún episodio. Al entrenar la altura
+  de los listones se sortea de 0 a 3,5 cm.'

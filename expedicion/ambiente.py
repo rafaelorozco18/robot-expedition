@@ -358,11 +358,16 @@ class BipedoEnv(gym.Env):
 
     def _colocar_listones(self):
         c = self.conf_listones
+        alto = c["alto_m"]
+        if self.entrenando and c.get("alto_entrenando"):
+            # Listones de altura al azar al entrenar: los bajos dan señal para aprender a pasar los altos.
+            alto = float(self.np_random.uniform(*c["alto_entrenando"]))
         posiciones, x = [], float(c["inicio_m"])
         for k, g in enumerate(self.ids_listones):
             x += float(self.np_random.uniform(*c["separacion_m"]))
-            self.model.geom_pos[g] = [x, 0.0, c["alto_m"] / 2]
-            posiciones.append([round(x, 3), c["alto_m"]])
+            self.model.geom_size[g][2] = max(alto, 0.002) / 2
+            self.model.geom_pos[g] = [x, 0.0, max(alto, 0.002) / 2]
+            posiciones.append([round(x, 3), alto])
         mujoco.mj_forward(self.model, self.data)
         return posiciones
 
