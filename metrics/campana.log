@@ -50,3 +50,7 @@
 01:38 exp-107 semilla 0: aprobado=False
 02:24 exp-107 semilla 1: aprobado=False
 02:27 exp-107: robot-exp-107 v2
+02:27 exp-107 no aprobó: la campaña sigue
+02:52 exp-108 semilla 0: aprobado=False
+03:51 exp-108 semilla 1: aprobado=True
+03:56 exp-108: robot-exp-108 v2

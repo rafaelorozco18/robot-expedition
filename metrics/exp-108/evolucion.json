@@ -2,7 +2,7 @@
  "perturbacion": "ninguna",
  "planetas": {
   "marte": {
-   "semilla": 1829338324,
+   "semilla": 1374203058,
    "hitos": [
     {
      "agente": "sin_entrenar",
@@ -10,11 +10,11 @@
      "origen": "exp-108",
      "exito": false,
      "segundos": 30.0,
-     "distancia": -0.02,
-     "calidad": 40.0,
+     "distancia": -0.0,
+     "calidad": 39.9,
      "avance": 0.0,
      "puntaje": 0.0,
-     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0° del círculo · se desvió 0.01 m del radio",
+     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0° del círculo · se desvió 0.00 m del radio",
      "clip": [
       0.0,
       30.0,
@@ -25,87 +25,87 @@
      "etapa": "Fracaso absoluto"
     },
     {
-     "agente": "foto:exp-102:0",
-     "paso": 0,
-     "origen": "exp-102",
+     "agente": "foto:exp-107:6000640",
+     "paso": 6000640,
+     "origen": "exp-107",
      "exito": false,
-     "segundos": 7.9,
-     "distancia": 0.69,
-     "calidad": 30.4,
-     "avance": 0.065,
-     "puntaje": 0.0617,
-     "texto": "A los 7.9 s: se inclinó demasiado · recorrió 21° del círculo · se desvió 0.10 m del radio",
+     "segundos": 7.26,
+     "distancia": 2.51,
+     "calidad": 70.3,
+     "avance": 0.318,
+     "puntaje": 0.3021,
+     "texto": "A los 7.3 s: se agachó o cayó · recorrió 103° del círculo · se desvió 0.21 m del radio",
      "clip": [
-      1.9,
-      7.9,
+      1.26,
+      7.26,
       1
      ],
      "tasa": null,
-     "indice": 5,
+     "indice": 24,
      "etapa": "Fracaso, pero mejor"
     },
     {
-     "agente": "foto:exp-105:222240",
-     "paso": 222240,
-     "origen": "exp-105",
+     "agente": "paso:217024",
+     "paso": 217024,
+     "origen": "exp-108",
      "exito": false,
-     "segundos": 3.2,
-     "distancia": 1.92,
-     "calidad": 29.8,
-     "avance": 0.126,
-     "puntaje": 0.1197,
-     "texto": "A los 3.2 s: se agachó o cayó · recorrió 41° del círculo · se desvió 0.27 m del radio",
+     "segundos": 19.38,
+     "distancia": -2.17,
+     "calidad": 73.7,
+     "avance": 0.665,
+     "puntaje": 0.6318,
+     "texto": "A los 19.4 s: se agachó o cayó · recorrió 215° del círculo · se desvió 0.71 m del radio",
      "clip": [
-      0.0,
-      3.2,
+      13.38,
+      19.38,
       1
      ],
-     "tasa": null,
-     "indice": 14,
+     "tasa": 0.0,
+     "indice": 30,
      "etapa": "Punto de inflexión"
     },
     {
-     "agente": "paso:161680",
-     "paso": 161680,
+     "agente": "paso:312512",
+     "paso": 312512,
      "origen": "exp-108",
-     "exito": false,
-     "segundos": 6.28,
-     "distancia": 2.39,
-     "calidad": 35.4,
-     "avance": 0.194,
-     "puntaje": 0.1843,
-     "texto": "A los 6.3 s: se agachó o cayó · recorrió 63° del círculo · se desvió 0.35 m del radio",
+     "exito": true,
+     "segundos": 30.0,
+     "distancia": 0.85,
+     "calidad": 75.6,
+     "avance": 1.0,
+     "puntaje": 1.0756,
+     "texto": "Completó el círculo · calidad 76/100 · recorrió 387° del círculo · se desvió 0.28 m del radio",
      "clip": [
-      0.28,
-      6.28,
-      1
+      0.0,
+      30.0,
+      2.5
      ],
      "tasa": 0.0,
-     "indice": 32,
-     "etapa": "Casi lo logra"
+     "indice": 31,
+     "etapa": "Cumplido"
     },
     {
-     "agente": "paso:1745040",
-     "paso": 1745040,
+     "agente": "paso:5001216",
+     "paso": 5001216,
      "origen": "exp-108",
-     "exito": false,
-     "segundos": 10.94,
-     "distancia": 3.01,
-     "calidad": 36.5,
-     "avance": 0.256,
-     "puntaje": 0.2432,
-     "texto": "A los 10.9 s: se agachó o cayó · recorrió 83° del círculo · se desvió 0.83 m del radio",
+     "exito": true,
+     "segundos": 30.0,
+     "distancia": 0.63,
+     "calidad": 78.8,
+     "avance": 1.0,
+     "puntaje": 1.5788,
+     "texto": "Completó el círculo · calidad 79/100 · recorrió 384° del círculo · se desvió 0.28 m del radio",
      "clip": [
-      4.94,
-      10.94,
-      1
+      0.0,
+      30.0,
+      2.5
      ],
-     "tasa": 0.0,
-     "indice": 48,
-     "etapa": "Mejor intento (aún no cumple)"
+     "tasa": 1.0,
+     "indice": 50,
+     "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 0.243
+   "mejora": 1.579
   }
  },
  "recomendado": "marte"

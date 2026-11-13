@@ -58,6 +58,7 @@ entrenamiento:
   log_std_init: -2.3
   semillas:
   - 0
+  - 1
   log_std_final: -3.0
 trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
   cambiar de rumbo.'

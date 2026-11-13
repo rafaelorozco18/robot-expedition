@@ -1,6 +1,6 @@
 {
   "experimento": "exp-108",
-  "campeon": 0,
+  "campeon": 1,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -59,29 +59,55 @@
     "0": {
       "global": {
         "episodios": 24,
-        "tasa_exito": 0.0,
-        "segundos_medios": 10.55,
-        "energia_media_j": 637.5,
-        "inclinacion_max_media": 25.3,
-        "calidad_media": 37.2
+        "tasa_exito": 0.292,
+        "segundos_medios": 19.84,
+        "energia_media_j": 926.8,
+        "inclinacion_max_media": 26.9,
+        "calidad_media": 73.5
       },
       "marte.ninguna": {
         "episodios": 12,
-        "tasa_exito": 0.0,
-        "segundos_medios": 9.38,
-        "energia_media_j": 576.4,
-        "inclinacion_max_media": 27.9,
-        "calidad_media": 37.1
+        "tasa_exito": 0.417,
+        "segundos_medios": 19.18,
+        "energia_media_j": 889.1,
+        "inclinacion_max_media": 25.3,
+        "calidad_media": 69.9
       },
       "marte.empujon": {
         "episodios": 12,
-        "tasa_exito": 0.0,
-        "segundos_medios": 11.72,
-        "energia_media_j": 698.6,
-        "inclinacion_max_media": 22.8,
-        "calidad_media": 37.3
+        "tasa_exito": 0.167,
+        "segundos_medios": 20.5,
+        "energia_media_j": 964.5,
+        "inclinacion_max_media": 28.4,
+        "calidad_media": 77.1
+      }
+    },
+    "1": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.708,
+        "segundos_medios": 26.12,
+        "energia_media_j": 1487.0,
+        "inclinacion_max_media": 20.3,
+        "calidad_media": 77.6
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 1.0,
+        "segundos_medios": 30.0,
+        "energia_media_j": 1708.5,
+        "inclinacion_max_media": 12.4,
+        "calidad_media": 78.4
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 22.25,
+        "energia_media_j": 1265.5,
+        "inclinacion_max_media": 28.2,
+        "calidad_media": 76.8
       }
     }
   },
-  "aprobado": false
+  "aprobado": true
 }
