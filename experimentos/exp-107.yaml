@@ -60,6 +60,7 @@ entrenamiento:
   log_std_init: -2.3
   semillas:
   - 0
+  - 1
   log_std_final: -3.0
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
