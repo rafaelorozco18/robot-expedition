@@ -75,17 +75,17 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-13, 12:15)
+## Estado actual (2026-11-13, 14:10)
 
-- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 (100 %, calidad 82) y 4 (75 %, justo).
-  El Exp 5 (esquina) no aprueba: mejor intento semilla 0, 67 % en el examen y ≈ 75 % en 40 episodios nuevos.
-  Cae al retomar la marcha justo después del giro. Exps 6 a 9 sin entrenar en este orden.
+- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 (100 %, calidad 82), 4 (75 %, justo) y
+  5 (esquina: 100 %, calidad 80, semilla 5, con rampa de 1,5 s al retomar la marcha). Exps 6 a 9 sin entrenar
+  en este orden: el siguiente es el 6 (curva), que parte del 5.
 - La serie anterior (viento en 3 y 4) está en el tag `serie-marte-v2` y sus artefactos en `archivo/serie-marte-v2/`.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
-- Próximo paso: Exp 5. Ideas no probadas: recompensa que premie arrancar suave tras el giro (rampa de velocidad
-  al retomar), o episodios de práctica que empiecen justo después de girar. `continuar_de` en `entrenamiento`
-  permite seguir una semilla anterior; con el Exp 5 empeoró.
+- Próximo paso: Exp 6 (curva). La diferencia entre semillas es grande (en el Exp 5, de 33 % a 100 % con la misma
+  configuración): ante un intento fallido, probar otra semilla antes de cambiar varias cosas. `continuar_de` en
+  `entrenamiento` permite seguir una semilla anterior; con el Exp 5 empeoró.
 - Para medir de verdad un candidato: 40 episodios nuevos (`correr_episodio` con semillas 3000+): el examen de 12
   episodios varía ±8 puntos por episodio.
 

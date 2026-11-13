@@ -82,7 +82,7 @@ Todo lo anterior lo produce `expedicion campana exp-101 … exp-109`: entrena, e
 repite las pruebas anteriores (regresión), calcula las etapas, registra en MLflow, documenta, publica,
 hace commit y pone el tag.
 
-## Resultados (2026-11-13, serie en orden)
+## Resultados (2026-11-13, 14:10, serie en orden)
 
 | # | Experimento | Resultado | Éxito en el examen | Calidad | Intentos |
 |---|---|---|---|---|---|
@@ -90,7 +90,7 @@ hace commit y pone el tag.
 | 2 | Caminar | Aprobado | 100 % | 26/100 | Conservado de la serie anterior |
 | 3 | Caminar bien | Aprobado | 100 % | 82/100 | 2: 75 % con 6 M de pasos, 100 % con 9 M |
 | 4 | Terreno difícil | Aprobado (justo) | 75 % | 78/100 | 2: el primero se atascaba en los listones |
-| 5 | Girar en la esquina | No aprobado | 67 % (≈ 75 % en 40 episodios nuevos) | 77/100 | 4 |
+| 5 | Girar en la esquina | Aprobado | 100 % (35 de 40 en episodios nuevos) | 80/100 | 6: aprobó al retomar la marcha con una rampa de 1,5 s |
 | 6 a 9 | Curva, dominio y viento | Pendientes | — | — | — |
 
 El examen tiene 12 episodios por condición: un episodio son 8 puntos. Por eso cada candidato se probó además en
@@ -108,8 +108,10 @@ El examen tiene 12 episodios por condición: un episodio son 8 puntos. Por eso c
 - **Exp 4:** al entrenar, los listones tienen altura al azar entre 0 y 3,5 cm. Con la altura completa el robot se
   atascaba en el primero y no cumplía ningún episodio. El examen usa siempre 3,5 cm.
 - **Exp 5:** se probó más entrenamiento (9 M: 33 %), giros de práctica más rápidos (0,5 a 0,9 rad/s: 58 %) y
-  continuar el mejor intento (4 M más: 50 %). Ninguno superó a la semilla 0 (67 %). Sus fallas: cae al retomar la
-  marcha justo después del giro.
+  continuar el mejor intento (4 M más: 50 %). Todas las caídas eran al retomar la marcha justo después del giro,
+  cuando la orden saltaba de 0 a 0,5 m/s. Desde la semilla 4 la velocidad pedida sube en 1,5 s (también en el
+  examen). La semilla 5 aprobó: 100 % en el examen y 35 de 40 en episodios nuevos, calidad 80/100. La semilla 4,
+  con la misma configuración, logró 42 %: la diferencia entre semillas es grande.
 - **Calidad mínima 55/100 desde el Exp 4:** aprender algo nuevo no puede empeorar la marcha del Exp 3.
 
 ## Limitaciones conocidas
