@@ -65,6 +65,7 @@ entrenamiento:
   - 2
   - 3
   - 4
+  - 5
   log_std_final: -3.0
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
@@ -80,4 +81,7 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   la semilla 0 logra 30 de 40. La semilla 3 continúa la semilla 0 con 4 M de pasos
   más, con su rango de giros original (0,3 a 0,7) y ruido bajo. Semilla 3: 50 %. Desde
   la semilla 4, tras el giro la velocidad pedida sube de 0 a 0,5 m/s en 1,5 s en vez
-  de saltar de golpe (también en el examen): todas las caídas eran al retomar la marcha.'
+  de saltar de golpe (también en el examen): todas las caídas eran al retomar la marcha.
+  Semilla 4: 42 % (14 de 40). Con la rampa en el examen, las semillas 0 y 2 suben
+  a 75 % en el examen y a 35 y 34 de 40 (87 % y 85 %) en episodios nuevos. La semilla
+  5 repite la configuración de la 4.'
