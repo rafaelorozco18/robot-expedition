@@ -49,20 +49,23 @@ parametros:
     - 0.5
     - 3.0
     giro_rad_s:
-    - 0.5
-    - 0.9
+    - 0.3
+    - 0.7
 aprobar:
   tasa_exito: 0.8
 entrenamiento:
-  pasos: 6000000
+  pasos: 4000000
   reintentos: 0
   procesos: 5
-  log_std_init: -2.3
+  log_std_init: -2.8
   semillas:
   - 0
   - 1
   - 2
+  - 3
   log_std_final: -3.0
+  continuar_de:
+    3: 0
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -73,4 +76,6 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   caídas son todas al retomar la marcha tras el giro. La semilla 1 entrena 9 M. Semilla
   1 (9 M): 33 %, cae a mitad del giro: el examen gira a 0,7 rad/s, el extremo del
   rango practicado (0,3 a 0,7). La semilla 2 practica giros de 0,5 a 0,9 rad/s, con
-  el examen al centro, y 6 M de pasos.'
+  el examen al centro, y 6 M de pasos. Semilla 2: 58 % (27 de 40 en episodios nuevos);
+  la semilla 0 logra 30 de 40. La semilla 3 continúa la semilla 0 con 4 M de pasos
+  más, con su rango de giros original (0,3 a 0,7) y ruido bajo.'

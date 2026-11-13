@@ -139,7 +139,13 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
     ajustes = dict(n_steps=p["n_steps"], batch_size=p["batch_size"], n_epochs=p["n_epochs"],
                    learning_rate=p["learning_rate"], gamma=p["gamma"], gae_lambda=p["gae_lambda"],
                    clip_range=p["clip_range"])
-    if exp["parte_de"]:
+    continuar = p.get("continuar_de", {}).get(semilla) if isinstance(p.get("continuar_de"), dict) else None
+    if continuar is not None:
+        # Sigue entrenando una semilla anterior del mismo experimento (más pasos sobre el mejor intento).
+        modelo = PPO.load(carpeta_modelos(exp) / f"semilla-{continuar}" / "experto.zip", env=env, device="cpu",
+                          seed=semilla, custom_objects=ajustes)
+        modelo.policy.log_std.data.fill_(p["log_std_init"])
+    elif exp["parte_de"]:
         padre = carpeta_modelos(cargar(exp["parte_de"]))
         from .evaluar import campeon
         ruta_padre = padre / f"semilla-{campeon(cargar(exp['parte_de']))}" / "experto.zip"

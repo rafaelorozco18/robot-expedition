@@ -107,6 +107,32 @@
         "inclinacion_max_media": 32.0,
         "calidad_media": 76.8
       }
+    },
+    "2": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.5,
+        "segundos_medios": 18.32,
+        "energia_media_j": 708.9,
+        "inclinacion_max_media": 25.5,
+        "calidad_media": 76.3
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.583,
+        "segundos_medios": 19.06,
+        "energia_media_j": 743.4,
+        "inclinacion_max_media": 24.0,
+        "calidad_media": 76.1
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 17.58,
+        "energia_media_j": 674.4,
+        "inclinacion_max_media": 26.9,
+        "calidad_media": 76.5
+      }
     }
   },
   "aprobado": false
