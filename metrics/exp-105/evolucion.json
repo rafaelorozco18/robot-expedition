@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 384259585,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 24.0,
+     "distancia": -0.01,
+     "calidad": 39.9,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "No cumple el objetivo · calidad 40/100 · tramo 1 -0.0 m · giró 3° · tramo 2 0.0 m",
+     "clip": [
+      0.0,
+      24.0,
+      2.5
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "foto:exp-104:0",
+     "paso": 0,
+     "origen": "exp-104",
+     "exito": false,
+     "segundos": 10.28,
+     "distancia": 4.47,
+     "calidad": 72.5,
+     "avance": 0.374,
+     "puntaje": 0.3553,
+     "texto": "A los 10.3 s: se agachó o cayó · tramo 1 4.5 m · giró 9° · tramo 2 0.1 m",
+     "clip": [
+      4.28,
+      10.28,
+      1
+     ],
+     "tasa": null,
+     "indice": 13,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:666720",
+     "paso": 666720,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 11.92,
+     "distancia": 3.73,
+     "calidad": 69.1,
+     "avance": 0.743,
+     "puntaje": 0.7058,
+     "texto": "A los 11.9 s: se inclinó demasiado · tramo 1 3.7 m · giró 92° · tramo 2 0.7 m",
+     "clip": [
+      5.92,
+      11.92,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 25,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:1041680",
+     "paso": 1041680,
+     "origen": "exp-105",
+     "exito": true,
+     "segundos": 24.0,
+     "distancia": 2.76,
+     "calidad": 71.4,
+     "avance": 0.955,
+     "puntaje": 1.4049,
+     "texto": "Dobló la esquina · calidad 71/100 · tramo 1 2.8 m · giró 85° · tramo 2 4.6 m",
+     "clip": [
+      0.0,
+      24.0,
+      2.5
+     ],
+     "tasa": 0.667,
+     "indice": 27,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:3010480",
+     "paso": 3010480,
+     "origen": "exp-105",
+     "exito": true,
+     "segundos": 24.0,
+     "distancia": 2.9,
+     "calidad": 79.1,
+     "avance": 0.989,
+     "puntaje": 1.5791,
+     "texto": "Dobló la esquina · calidad 79/100 · tramo 1 2.9 m · giró 95° · tramo 2 7.6 m",
+     "clip": [
+      0.0,
+      24.0,
+      2.5
+     ],
+     "tasa": 1.0,
+     "indice": 34,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 1.579
+  }
+ },
+ "recomendado": "marte"
+}
