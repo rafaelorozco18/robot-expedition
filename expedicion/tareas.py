@@ -431,7 +431,11 @@ class Esquina(Marcha):
                 env.rumbo_objetivo, env.comando[3] = objetivo, 0.0
                 if abs(env.error_rumbo()) < 0.2:
                     self.fase_esquina = 2
-                    env.comando[0] = vx
+                    self.reanuda = env.pasos
+                    env.comando[0] = vx if not self.t.get("rampa_s") else 0.0
+        if self.fase_esquina == 2 and self.t.get("rampa_s"):
+            # Retoma la marcha de a poco: saltar de 0 a vx justo después de girar lo tumbaba.
+            env.comando[0] = vx * min(1.0, (env.pasos - self.reanuda) * env.dt / self.t["rampa_s"])
 
     def tramo2(self, env):
         if self.esquina is None:
