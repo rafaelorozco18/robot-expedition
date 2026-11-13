@@ -87,6 +87,7 @@ entrenamiento:
   log_std_init: -2.5
   semillas:
   - 0
+  - 1
   log_std_final: -3.0
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
 control:

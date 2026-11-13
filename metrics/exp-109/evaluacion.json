@@ -60,26 +60,26 @@
       "global": {
         "episodios": 24,
         "tasa_exito": 0.0,
-        "segundos_medios": 6.06,
-        "energia_media_j": 495.0,
-        "inclinacion_max_media": 28.9,
-        "calidad_media": 34.7
+        "segundos_medios": 7.03,
+        "energia_media_j": 363.4,
+        "inclinacion_max_media": 29.2,
+        "calidad_media": 55.6
       },
       "marte.ninguna": {
         "episodios": 12,
         "tasa_exito": 0.0,
-        "segundos_medios": 4.86,
-        "energia_media_j": 394.0,
-        "inclinacion_max_media": 31.5,
-        "calidad_media": 35.1
+        "segundos_medios": 5.75,
+        "energia_media_j": 294.7,
+        "inclinacion_max_media": 28.0,
+        "calidad_media": 48.9
       },
       "marte.empujon": {
         "episodios": 12,
         "tasa_exito": 0.0,
-        "segundos_medios": 7.26,
-        "energia_media_j": 596.0,
-        "inclinacion_max_media": 26.3,
-        "calidad_media": 34.3
+        "segundos_medios": 8.3,
+        "energia_media_j": 432.1,
+        "inclinacion_max_media": 30.4,
+        "calidad_media": 62.3
       }
     }
   },
