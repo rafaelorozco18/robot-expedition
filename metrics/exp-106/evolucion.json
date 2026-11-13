@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 384259585,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-106",
+     "exito": false,
+     "segundos": 30.0,
+     "distancia": -0.01,
+     "calidad": 39.9,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0° del círculo · se desvió 0.01 m del radio",
+     "clip": [
+      0.0,
+      30.0,
+      2.5
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "foto:exp-105:6000640",
+     "paso": 6000640,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 11.62,
+     "distancia": 1.77,
+     "calidad": 77.0,
+     "avance": 0.442,
+     "puntaje": 0.4199,
+     "texto": "A los 11.6 s: se agachó o cayó · recorrió 143° del círculo · se desvió 0.31 m del radio",
+     "clip": [
+      5.62,
+      11.62,
+      1
+     ],
+     "tasa": null,
+     "indice": 20,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:138960",
+     "paso": 138960,
+     "origen": "exp-106",
+     "exito": false,
+     "segundos": 30.0,
+     "distancia": 0.79,
+     "calidad": 67.3,
+     "avance": 1.0,
+     "puntaje": 0.95,
+     "texto": "No cumple el objetivo · calidad 67/100 · recorrió 384° del círculo · se desvió 0.64 m del radio",
+     "clip": [
+      0.0,
+      30.0,
+      2.5
+     ],
+     "tasa": 0.0,
+     "indice": 25,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:217040",
+     "paso": 217040,
+     "origen": "exp-106",
+     "exito": true,
+     "segundos": 30.0,
+     "distancia": 0.3,
+     "calidad": 73.2,
+     "avance": 1.0,
+     "puntaje": 1.4067,
+     "texto": "Completó el círculo · calidad 73/100 · recorrió 369° del círculo · se desvió 0.25 m del radio",
+     "clip": [
+      0.0,
+      30.0,
+      2.5
+     ],
+     "tasa": 0.667,
+     "indice": 26,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:3472240",
+     "paso": 3472240,
+     "origen": "exp-106",
+     "exito": true,
+     "segundos": 30.0,
+     "distancia": 0.42,
+     "calidad": 81.2,
+     "avance": 1.0,
+     "puntaje": 1.5812,
+     "texto": "Completó el círculo · calidad 81/100 · recorrió 375° del círculo · se desvió 0.26 m del radio",
+     "clip": [
+      0.0,
+      30.0,
+      2.5
+     ],
+     "tasa": 1.0,
+     "indice": 41,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 1.581
+  }
+ },
+ "recomendado": "marte"
+}
