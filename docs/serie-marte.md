@@ -164,6 +164,8 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 | 14 | repite la receta de la 10 desde la 10 | 25 % | 50 % | 100 % | 25 % |
 | 15 | destilación desde la 9 (2 maestros) y 3 M de PPO | 100 % | **83 %** | 100 % | 42 % |
 | 16 | igual, con el ruido de PPO en -3,0 | 17 % | 92 % | 17 % | 0 % |
+| 17 | como la 15 + calentamiento del crítico | 0 % | 50 % | 100 % | 42 % |
+| 18 | desde la 15, solo destilación | 83 % | 58 % | 100 % | 83 % |
 
 - Con 40 episodios nuevos, la semilla 10 hace 34 de 40 en la esquina (85 %) y 22 de 40 en De pie (55 %).
 - **De pie con los servos actuales:** desde el Exp 3 el filtro de servos es 0,6 (el Exp 1 usaba 0,3). Con ese
@@ -192,6 +194,21 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
   la destilación cambia la política y no el crítico, así que las primeras ventajas son malas. La semilla 17 prueba
   un calentamiento del crítico (`entrenamiento.calentar_critico`): los primeros 500 mil pasos solo aprende la
   función de valor.
+- **Cualquier PPO después de destilar desordena lo destilado** (semillas 15, 16 y 17), también con el crítico
+  calentado. La semilla 18 parte de la 15 (que solo fallaba el terreno) y solo destila (la política queda
+  congelada en la fase de PPO): cumple todo en validación, pero en el examen fijo falla De pie (7 de 12).
+- **Medición con 40 episodios nuevos** (semillas 3000+, nunca usadas para entrenar ni para elegir):
+
+  | Modelo | Esquina | De pie | Caminar bien | Terreno |
+  |---|---|---|---|---|
+  | Semilla 18 | 39 | 29 | 40 | 21 |
+  | Semilla 10 (campeón) | 34 | 22 | 40 | 25 |
+  | Especialista De pie | 0 | 35 | 0 | 0 |
+  | Campeón del Exp 4 | — | 10 | — | 29 |
+  | Semilla 9 | — | 21 | — | 26 |
+
+  Los exámenes de 12 episodios fijos engañan en ambos sentidos: el campeón del Exp 4 hace 72 % en terreno con
+  episodios nuevos (su examen: 75 %) y la semilla 10, 62 % (su examen: 92 %).
 - Detalles que importaron: la destilación debe usar el ruido del modelo de partida (con el ruido inicial de PPO la
   esquina no se sostiene), y bajar el ruido de PPO a -3,0 hizo que el robot prefiriera quedarse quieto.
 
