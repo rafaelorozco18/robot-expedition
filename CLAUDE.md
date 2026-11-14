@@ -112,3 +112,10 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 - `pkill -f` y `pgrep -f` coinciden con el propio comando si el texto aparece en él: esperar con `kill -0 PID`.
 - No matar una campaña antes de que escriba "aprobado" o "no aprobó": se pierde el cierre del experimento.
 - El directorio temporal y el navegador de Playwright pueden desaparecer entre sesiones.
+- Repaso: el índice que recibe `crear(i)` es global; la fracción se aplica al índice local del proceso
+  (antes solo repasaba el primer proceso: 6 % de los robots).
+- Al continuar una semilla que ya sabe la tarea, el corte temprano (`pasos_minimos`) corta enseguida:
+  subir `pasos_minimos` a los pasos totales.
+- El campeón lo elige `evaluar` contando `aprobar.sin_olvidar`: una semilla que olvida no aprueba.
+- El Exp 2 no entra a sin_olvidar: su ritmo (0,8 s y 0,5–0,6 m/s) lo reemplazó la marcha del Exp 3;
+  el robot camina los 22 s con calidad 76 pero no llega a 10 m.
