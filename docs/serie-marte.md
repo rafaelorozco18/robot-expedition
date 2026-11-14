@@ -135,6 +135,39 @@ habilidades de cada tarea se olvidan al aprender la siguiente (olvido catastróf
 - La regresión ahora prueba con el filtro de servos del robot evaluado: los Exps 1 y 2 usaban otro filtro y la
   comparación con ellos no era justa.
 
+## Noche del 2026-11-14: el Exp 5 sin olvidar
+
+Cambios en el código:
+- **El campeón no puede olvidar:** `evaluar` corre, para cada semilla, los exámenes de `aprobar.sin_olvidar`.
+  Gana la semilla que aprueba todo; si ninguna lo logra, el experimento no aprueba y la campaña reintenta.
+- **El repaso no funcionaba:** el índice de los robots es global, así que solo el primer proceso repasaba
+  (5 de 80 robots, 6 % en vez de 30 %). Corregido.
+- **De pie entra al repaso y a sin_olvidar:** desde el Exp 3 ningún robot lo conservaba. El Exp 2 no entra:
+  su ritmo (0,8 s, 0,5 a 0,6 m/s) lo reemplazó la marcha del Exp 3, y el robot camina sus 22 s con calidad 76
+  sin llegar a 10 m.
+- **Curva:** en entrenamiento la meta es el 90 % del ángulo alcanzable en el episodio. Con radios de hasta 4 m
+  no cabían 0,9 vueltas en 30 s y la tasa de éxito de entrenamiento era engañosa. El examen no cambia.
+
+Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %, Caminar bien 80 %, Terreno 75 %):
+
+| Semilla | Cómo | Esquina | De pie | Caminar bien | Terreno |
+|---|---|---|---|---|---|
+| 5 (antes) | sin repaso | 100 % | 8 % | 92 % | 0 % |
+| 6 | desde el Exp 4, repaso 30 %, 6 M | 50 % | 50 % | 83 % | 58 % |
+| 7 | igual, 9 M | 100 % | 0 % | 100 % | 0 % |
+| 8 | desde la 7, repaso 50 % (el corte temprano paró a los 2 M) | 42 % | 75 % | 83 % | 58 % |
+| 9 | desde la 7, repaso 50 %, 6 M | 92 % | 50 % | 100 % | 75 % |
+| **10** | desde la 9, más De pie, 4 M | **92 %** | **58 %** | **100 %** | **92 %** |
+| 11 | desde la 10, aún más De pie | 92 % | 67 % | 100 % | 42 % |
+| 12 | desde la 10, De pie y Terreno parejos, 6 M | 58 % | 58 % | 75 % | 42 % |
+
+- Con 40 episodios nuevos, la semilla 10 hace 34 de 40 en la esquina (85 %) y 22 de 40 en De pie (55 %).
+- **De pie con los servos actuales:** desde el Exp 3 el filtro de servos es 0,6 (el Exp 1 usaba 0,3). Con ese
+  filtro, el propio campeón del Exp 1 hace 67 % en su examen. El 80 % de De pie quizá no se alcanza con este
+  cuerpo: decidir si el mínimo para sin_olvidar debe ser lo que logra el campeón original con el mismo control.
+- Las tareas se turnan: cuando una mejora, otra empeora. La consolidación (seguir una semilla buena con más
+  repaso) funcionó mejor que empezar desde el Exp 4.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.
