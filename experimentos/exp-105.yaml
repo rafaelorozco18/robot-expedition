@@ -59,8 +59,8 @@ aprobar:
   - exp-103
   - exp-104
 entrenamiento:
-  pasos: 3500000
-  reintentos: 11
+  pasos: 400000
+  reintentos: 12
   procesos: 4
   log_std_init: -2.3
   semillas:
@@ -76,6 +76,7 @@ entrenamiento:
   - 15
   - 16
   - 17
+  - 18
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -95,12 +96,13 @@ entrenamiento:
     15: 9
     16: 9
     17: 9
-  pasos_minimos: 3500000
+    18: 15
+  pasos_minimos: 400000
   learning_rate: 0.0003
   destilar:
     maestros:
-      exp-105: models/exp-105/semilla-9/experto.zip
-      exp-103: models/exp-105/semilla-9/experto.zip
+      exp-105: models/exp-105/semilla-15/experto.zip
+      exp-103: models/exp-105/semilla-15/experto.zip
       exp-104: models/exp-105/semilla-9/experto.zip
       exp-101: models/maestros/de-pie-filtro06.zip
     episodios:
@@ -111,7 +113,7 @@ entrenamiento:
     rondas: 12
     validar: 16
     procesos: 4
-  calentar_critico: 500000
+  calentar_critico: 400000
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -170,4 +172,8 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   0 %, De pie 92 %). La semilla 17 vuelve a la receta de la 15 y agrega un calentamiento
   del crítico: los primeros 500 mil pasos solo aprende la función de valor, porque
   la destilación cambia la política pero no el crítico, y sus primeras ventajas desordenaban
-  lo destilado.'
+  lo destilado. Semilla 17 (con calentamiento del crítico): peor (esquina 0 %, De
+  pie 50 %, Terreno 42 %). La semilla 18 parte de la 15 (solo le faltaba el terreno)
+  y solo destila: maestros la propia 15 en esquina y Caminar bien, la 9 en Terreno
+  y el especialista en De pie; la política queda congelada durante los 400 mil pasos
+  de PPO, que solo ajustan el crítico.'
