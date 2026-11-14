@@ -59,10 +59,10 @@ aprobar:
   - exp-103
   - exp-104
 entrenamiento:
-  pasos: 3000000
-  reintentos: 10
+  pasos: 3500000
+  reintentos: 11
   procesos: 4
-  log_std_init: -3.0
+  log_std_init: -2.3
   semillas:
   - 6
   - 7
@@ -75,6 +75,7 @@ entrenamiento:
   - 14
   - 15
   - 16
+  - 17
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -93,7 +94,8 @@ entrenamiento:
     14: 10
     15: 9
     16: 9
-  pasos_minimos: 3000000
+    17: 9
+  pasos_minimos: 3500000
   learning_rate: 0.0003
   destilar:
     maestros:
@@ -109,6 +111,7 @@ entrenamiento:
     rondas: 12
     validar: 16
     procesos: 4
+  calentar_critico: 500000
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -162,4 +165,9 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   %, Terreno 75 % y esquina 62 %. Semilla 15 (destilación y 3 M de PPO): esquina 100
   % sin empujón, De pie 83 % (la primera que lo aprueba), Caminar bien 100 %, pero
   Terreno 42 %: tras la destilación tenía 75 % y cayó en cuanto empezó PPO, cuando
-  el ruido vuelve a -2,3. La semilla 16 repite todo con el ruido de PPO en -3,0.'
+  el ruido vuelve a -2,3. La semilla 16 repite todo con el ruido de PPO en -3,0. Semilla
+  16 (ruido de PPO en -3,0): se derrumbó (esquina 17 %, Caminar bien 17 %, Terreno
+  0 %, De pie 92 %). La semilla 17 vuelve a la receta de la 15 y agrega un calentamiento
+  del crítico: los primeros 500 mil pasos solo aprende la función de valor, porque
+  la destilación cambia la política pero no el crítico, y sus primeras ventajas desordenaban
+  lo destilado.'
