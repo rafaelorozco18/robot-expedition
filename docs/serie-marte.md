@@ -162,6 +162,8 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 | 12 | desde la 10, De pie y Terreno parejos, 6 M | 58 % | 58 % | 75 % | 42 % |
 | 13 | desde la 10, tasa de aprendizaje 1e-4, 4 M | 0 % | 75 % | 100 % | 42 % |
 | 14 | repite la receta de la 10 desde la 10 | 25 % | 50 % | 100 % | 25 % |
+| 15 | destilación desde la 9 (2 maestros) y 3 M de PPO | 100 % | **83 %** | 100 % | 42 % |
+| 16 | igual, con el ruido de PPO en -3,0 | 17 % | 92 % | 17 % | 0 % |
 
 - Con 40 episodios nuevos, la semilla 10 hace 34 de 40 en la esquina (85 %) y 22 de 40 en De pie (55 %).
 - **De pie con los servos actuales:** desde el Exp 3 el filtro de servos es 0,6 (el Exp 1 usaba 0,3). Con ese
@@ -171,6 +173,27 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
   Terreno 92 %, Esquina 92 %.
 - Las tareas se turnan: cuando una mejora, otra empeora. La consolidación (seguir una semilla buena con más
   repaso) funcionó mejor que empezar desde el Exp 4.
+
+## Tarde del 2026-11-14: destilación de políticas
+
+- **¿Se puede pedir 80 % en De pie con los servos actuales?** Sí. Un especialista que solo practica De pie con
+  el filtro 0,6 (`scripts/especialista_de_pie.py`, 2 M de pasos desde el campeón del Exp 1) hace 35 de 40
+  (87 %) en episodios nuevos, aunque solo 8 de 12 en el examen fijo, que es más difícil que el promedio.
+  No se baja el criterio.
+- **Las fotos intermedias tampoco sirven:** se probaron todas las fotos de las semillas 9 a 13 en episodios de
+  validación (semillas 5000+, nunca las del examen). Ninguna cumple todo, y la esquina salta de 6 % a 100 % entre
+  fotos vecinas.
+- **Destilación (DAgger, `expedicion/destilar.py`):** el alumno recorre episodios de cada tarea con su propio
+  ruido y aprende, supervisado, la acción media del maestro de esa tarea en esos estados. Maestros: la semilla 9
+  (esquina, Caminar bien, Terreno) y el especialista de De pie (`models/maestros/`, versionado con DVC). Tras cada
+  ronda valida en episodios nuevos y se queda la mejor ronda. Sola llega a De pie 81–88 %, Caminar bien 100 % y
+  Terreno 75 %, pero la esquina se queda entre 40 % y 60 %: falla al retomar la marcha tras el giro.
+- **PPO después de destilar** levanta la esquina pero tira el terreno en los primeros 250 mil pasos. Hipótesis:
+  la destilación cambia la política y no el crítico, así que las primeras ventajas son malas. La semilla 17 prueba
+  un calentamiento del crítico (`entrenamiento.calentar_critico`): los primeros 500 mil pasos solo aprende la
+  función de valor.
+- Detalles que importaron: la destilación debe usar el ruido del modelo de partida (con el ruido inicial de PPO la
+  esquina no se sostiene), y bajar el ruido de PPO a -3,0 hizo que el robot prefiriera quedarse quieto.
 
 ## Limitaciones conocidas
 
