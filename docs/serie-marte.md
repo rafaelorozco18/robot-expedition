@@ -160,11 +160,14 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 | **10** | desde la 9, más De pie, 4 M | **92 %** | **58 %** | **100 %** | **92 %** |
 | 11 | desde la 10, aún más De pie | 92 % | 67 % | 100 % | 42 % |
 | 12 | desde la 10, De pie y Terreno parejos, 6 M | 58 % | 58 % | 75 % | 42 % |
+| 13 | desde la 10, tasa de aprendizaje 1e-4, 4 M | 0 % | 75 % | 100 % | 42 % |
 
 - Con 40 episodios nuevos, la semilla 10 hace 34 de 40 en la esquina (85 %) y 22 de 40 en De pie (55 %).
 - **De pie con los servos actuales:** desde el Exp 3 el filtro de servos es 0,6 (el Exp 1 usaba 0,3). Con ese
   filtro, el propio campeón del Exp 1 hace 67 % en su examen. El 80 % de De pie quizá no se alcanza con este
   cuerpo: decidir si el mínimo para sin_olvidar debe ser lo que logra el campeón original con el mismo control.
+- Campeón: semilla 10 (no aprueba: falla De pie). Su regresión: De pie 58 %, Caminar 0 %, Caminar bien 100 %,
+  Terreno 92 %, Esquina 92 %.
 - Las tareas se turnan: cuando una mejora, otra empeora. La consolidación (seguir una semilla buena con más
   repaso) funcionó mejor que empezar desde el Exp 4.
 

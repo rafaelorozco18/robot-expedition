@@ -34,10 +34,16 @@ def _archivo_json(ruta):
 
 
 def aprobado_visor(exp, ev):
-    """El visor solo muestra Tierra y Marte: el criterio se exige en esos planetas."""
+    """El visor solo muestra Tierra y Marte: el criterio se exige en esos planetas.
+    Además no puede olvidar: los exámenes de aprobar.sin_olvidar (regla vigente) se revisan con la
+    regresión publicada del campeón."""
     m = ev["semillas"][str(ev["campeon"])]
     pert = exp["aprobar"]["perturbacion"]
-    return all(m[f"{p}.{pert}"]["tasa_exito"] >= exp["aprobar"]["tasa_exito"] for p in PLANETAS_VISOR)
+    propio = all(m[f"{p}.{pert}"]["tasa_exito"] >= exp["aprobar"]["tasa_exito"] for p in PLANETAS_VISOR)
+    previos = _archivo_json(pub(exp) / "regresion.json") or {}
+    vigente = X.cargar(exp["id"])["aprobar"].get("sin_olvidar", [])
+    olvida = any(i in previos and previos[i] < X.cargar(i)["aprobar"]["tasa_exito"] for i in vigente)
+    return propio and not olvida
 
 
 def catalogo():

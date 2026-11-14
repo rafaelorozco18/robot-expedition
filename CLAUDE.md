@@ -75,20 +75,18 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-13, 15:00)
+## Estado actual (2026-11-14, 06:15)
 
-- Serie en orden (ver `docs/serie-marte.md`). Aprobados con su examen: 1, 2, 3, 4 (justo), 5 (esquina) y 6 (curva).
-  **Pero los Exps 5 y 6 olvidaron tareas anteriores** (regresión: el 6 hace 8 % en terreno y 0 % en esquina).
-  El usuario pidió que el robot no olvide: ya están `entrenamiento.repaso` (30 %) y `aprobar.sin_olvidar`
-  configurados desde el Exp 5. **Próximo paso: reentrenar desde el Exp 5 con repaso**, uno a la vez.
-- El Exp 7 (dominio) entrenó 4 M de pasos sin repaso el 2026-11-13 (23 % de éxito en entrenamiento) y se detuvo
-  durante la evaluación porque el usuario necesitó la máquina: no tiene resultado oficial. Rehacerlo con repaso.
-- La serie anterior (viento en 3 y 4) está en el tag `serie-marte-v2` y sus artefactos en `archivo/serie-marte-v2/`.
+- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 y 4. **El Exp 5 ya no cuenta como aprobado:**
+  con la regla de no olvidar (desde el 2026-11-14 el campeón se elige con `sin_olvidar`) su mejor semilla, la 10,
+  hace esquina 92 %, Caminar bien 100 % y Terreno 92 %, pero De pie 58 % (pide 80 %).
+- Con el filtro de servos actual (0,6) el propio campeón del Exp 1 hace 67 % en De pie: **pendiente que el usuario
+  decida** si el mínimo de sin_olvidar para De pie debe ser lo que logra el campeón original con el mismo control.
+- Los Exps 6 a 9 esperan al 5. Exp 6 y 7 ya tienen repaso (con De pie) y sin_olvidar configurados.
+- La consolidación (`continuar_de` una semilla buena con repaso al 50 %) fue lo que mejor funcionó; subir
+  `pasos_minimos` a los pasos totales al continuar. Bajar la tasa de aprendizaje a 1e-4 (semilla 13) derrumbó la esquina.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
-- La diferencia entre semillas es grande (en el Exp 5, de 33 % a 100 % con la misma
-  configuración): ante un intento fallido, probar otra semilla antes de cambiar varias cosas. `continuar_de` en
-  `entrenamiento` permite seguir una semilla anterior; con el Exp 5 empeoró.
 - Para medir de verdad un candidato: 40 episodios nuevos (`correr_episodio` con semillas 3000+): el examen de 12
   episodios varía ±8 puntos por episodio.
 
