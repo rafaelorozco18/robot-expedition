@@ -60,7 +60,7 @@ aprobar:
   - exp-104
 entrenamiento:
   pasos: 4000000
-  reintentos: 7
+  reintentos: 8
   procesos: 5
   log_std_init: -2.3
   semillas:
@@ -72,6 +72,7 @@ entrenamiento:
   - 11
   - 12
   - 13
+  - 14
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -87,8 +88,9 @@ entrenamiento:
     11: 10
     12: 10
     13: 10
+    14: 10
   pasos_minimos: 4000000
-  learning_rate: 0.0001
+  learning_rate: 0.0003
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -130,4 +132,6 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   12 consolida desde la 10 con 6 M y el repaso parejo entre De pie y Terreno (3 y
   3 de cada 16). Semilla 12 (6 M, repaso parejo): peor en todo (esquina 58 %, Caminar
   bien 75 %, Terreno 42 %). La semilla 13 consolida desde la 10 con el repaso de la
-  10 y la tasa de aprendizaje a un tercio (1e-4), para que lo nuevo no borre lo viejo.'
+  10 y la tasa de aprendizaje a un tercio (1e-4), para que lo nuevo no borre lo viejo.
+  Semilla 13: la esquina se derrumbó (0 %). La semilla 14 repite la receta de la 10
+  desde la 10 (otra semilla, misma configuración).'
