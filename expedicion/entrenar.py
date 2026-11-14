@@ -154,20 +154,26 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
         # Sigue entrenando una semilla anterior del mismo experimento (más pasos sobre el mejor intento).
         modelo = PPO.load(carpeta_modelos(exp) / f"semilla-{continuar}" / "experto.zip", env=env, device="cpu",
                           seed=semilla, custom_objects=ajustes)
+        log_std_partida = modelo.policy.log_std.data.clone()
         modelo.policy.log_std.data.fill_(p["log_std_init"])
     elif exp["parte_de"]:
         padre = carpeta_modelos(cargar(exp["parte_de"]))
         from .evaluar import campeon
         ruta_padre = padre / f"semilla-{campeon(cargar(exp['parte_de']))}" / "experto.zip"
         modelo = PPO.load(ruta_padre, env=env, device="cpu", seed=semilla, custom_objects=ajustes)
+        log_std_partida = modelo.policy.log_std.data.clone()
         modelo.policy.log_std.data.fill_(p["log_std_init"])
     else:
+        log_std_partida = None
         modelo = PPO("MlpPolicy", env, device="cpu", seed=semilla, verbose=0, **ajustes,
                      policy_kwargs={"net_arch": p["red"], "log_std_init": p["log_std_init"]})
     t0 = time.time()
     if p.get("destilar"):
-        # Primero aprende de los maestros (supervisado); luego PPO afina con la recompensa.
+        # Primero aprende de los maestros (supervisado); luego PPO afina con la recompensa. La destilación
+        # usa el ruido con que terminó el modelo de partida: con el ruido inicial de PPO la esquina no se sostiene.
         from .destilar import destilar
+        if log_std_partida is not None:
+            modelo.policy.log_std.data.copy_(log_std_partida)
         modelo = destilar(modelo, exp, semilla, salida / "destilacion", p["destilar"].get("procesos", 4))
         modelo.policy.log_std.data.fill_(p["log_std_init"])
     modelo.learn(total, callback=Registro(), reset_num_timesteps=True)
