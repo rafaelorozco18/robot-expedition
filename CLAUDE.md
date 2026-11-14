@@ -75,20 +75,22 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-14, 06:15)
+## Estado actual (2026-11-14, 18:45)
 
-- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 y 4. **El Exp 5 ya no cuenta como aprobado:**
-  con la regla de no olvidar (desde el 2026-11-14 el campeón se elige con `sin_olvidar`) su mejor semilla, la 10,
-  hace esquina 92 %, Caminar bien 100 % y Terreno 92 %, pero De pie 58 % (pide 80 %).
-- Con el filtro de servos actual (0,6) el propio campeón del Exp 1 hace 67 % en De pie: **pendiente que el usuario
-  decida** si el mínimo de sin_olvidar para De pie debe ser lo que logra el campeón original con el mismo control.
-- Los Exps 6 a 9 esperan al 5. Exp 6 y 7 ya tienen repaso (con De pie) y sin_olvidar configurados.
-- La consolidación (`continuar_de` una semilla buena con repaso al 50 %) fue lo que mejor funcionó; subir
-  `pasos_minimos` a los pasos totales al continuar. Bajar la tasa de aprendizaje a 1e-4 (semilla 13) derrumbó la esquina.
+- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 y 4. **El Exp 5 no aprueba** con la regla de no
+  olvidar: 14 intentos (semillas 6 a 19), ninguno cumple a la vez la esquina, De pie, Caminar bien y Terreno.
+  Campeón: semilla 10. La más pareja en episodios nuevos: semilla 18 (40 episodios: esquina 39, De pie 29,
+  Caminar bien 40, Terreno 21).
+- El 80 % de De pie sí se alcanza con los servos actuales: el especialista (`models/maestros/`) hace 35 de 40.
+- Herramientas nuevas: `entrenamiento.destilar` (DAgger con un maestro por tarea, `expedicion/destilar.py`) y
+  `entrenamiento.calentar_critico`. Destilar desde la semilla 15 (semilla 18) fue lo mejor; cualquier PPO
+  después de destilar desordena lo destilado.
+- **Próximo paso sugerido:** un maestro de terreno con el mismo estilo de marcha que la semilla 15 (por ejemplo,
+  la 15 entrenada solo en terreno) y volver a destilar desde la 15. Los exámenes de 12 episodios engañan:
+  verificar con 40 episodios nuevos (`scripts/medir40.py`, semillas 3000+) antes de creer un resultado.
+- Los Exps 6 a 9 esperan al 5.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
-- Para medir de verdad un candidato: 40 episodios nuevos (`correr_episodio` con semillas 3000+): el examen de 12
-  episodios varía ±8 puntos por episodio.
 
 ### Lecciones que no hay que volver a aprender
 
@@ -110,6 +112,9 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 - `pkill -f` y `pgrep -f` coinciden con el propio comando si el texto aparece en él: esperar con `kill -0 PID`.
 - No matar una campaña antes de que escriba "aprobado" o "no aprobó": se pierde el cierre del experimento.
 - El directorio temporal y el navegador de Playwright pueden desaparecer entre sesiones.
+- Validar y elegir con episodios nuevos (semillas 5000+), confirmar con otros (3000+); el examen fijo no se usa
+  para elegir.
+- Matar un `ProcessPoolExecutor` deja vivo su forkserver y sus trabajadores: matarlos por PID.
 - Repaso: el índice que recibe `crear(i)` es global; la fracción se aplica al índice local del proceso
   (antes solo repasaba el primer proceso: 6 % de los robots).
 - Al continuar una semilla que ya sabe la tarea, el corte temprano (`pasos_minimos`) corta enseguida:

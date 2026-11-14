@@ -166,6 +166,7 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 | 16 | igual, con el ruido de PPO en -3,0 | 17 % | 92 % | 17 % | 0 % |
 | 17 | como la 15 + calentamiento del crítico | 0 % | 50 % | 100 % | 42 % |
 | 18 | desde la 15, solo destilación | 83 % | 58 % | 100 % | 83 % |
+| 19 | como la 18, con el campeón del Exp 4 como maestro de terreno | 25 % | 67 % | 100 % | 17 % |
 
 - Con 40 episodios nuevos, la semilla 10 hace 34 de 40 en la esquina (85 %) y 22 de 40 en De pie (55 %).
 - **De pie con los servos actuales:** desde el Exp 3 el filtro de servos es 0,6 (el Exp 1 usaba 0,3). Con ese
@@ -209,6 +210,9 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 
   Los exámenes de 12 episodios fijos engañan en ambos sentidos: el campeón del Exp 4 hace 72 % en terreno con
   episodios nuevos (su examen: 75 %) y la semilla 10, 62 % (su examen: 92 %).
+- **Los maestros deben caminar con el mismo estilo:** con el campeón del Exp 4 como maestro de terreno (semilla 19)
+  la pérdida de imitación fue 5 veces mayor y el terreno no pasó de 12 %. El alumno no puede imitar a la vez dos
+  marchas distintas.
 - Detalles que importaron: la destilación debe usar el ruido del modelo de partida (con el ruido inicial de PPO la
   esquina no se sostiene), y bajar el ruido de PPO a -3,0 hizo que el robot prefiriera quedarse quieto.
 
