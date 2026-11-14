@@ -1,6 +1,6 @@
 {
   "experimento": "exp-105",
-  "campeon": 5,
+  "campeon": 8,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -56,162 +56,101 @@
     }
   },
   "semillas": {
-    "0": {
+    "6": {
       "global": {
         "episodios": 24,
-        "tasa_exito": 0.625,
-        "segundos_medios": 19.8,
-        "energia_media_j": 809.8,
-        "inclinacion_max_media": 26.0,
-        "calidad_media": 76.8
-      },
-      "marte.ninguna": {
-        "episodios": 12,
-        "tasa_exito": 0.75,
-        "segundos_medios": 20.93,
-        "energia_media_j": 855.9,
-        "inclinacion_max_media": 25.2,
-        "calidad_media": 77.0
-      },
-      "marte.empujon": {
-        "episodios": 12,
-        "tasa_exito": 0.5,
-        "segundos_medios": 18.68,
-        "energia_media_j": 763.8,
-        "inclinacion_max_media": 26.9,
-        "calidad_media": 76.6
-      }
-    },
-    "1": {
-      "global": {
-        "episodios": 24,
-        "tasa_exito": 0.25,
-        "segundos_medios": 13.87,
-        "energia_media_j": 535.7,
-        "inclinacion_max_media": 32.5,
-        "calidad_media": 76.7
-      },
-      "marte.ninguna": {
-        "episodios": 12,
-        "tasa_exito": 0.333,
-        "segundos_medios": 14.78,
-        "energia_media_j": 568.3,
-        "inclinacion_max_media": 31.1,
-        "calidad_media": 77.3
-      },
-      "marte.empujon": {
-        "episodios": 12,
-        "tasa_exito": 0.167,
-        "segundos_medios": 12.95,
-        "energia_media_j": 503.2,
-        "inclinacion_max_media": 34.0,
-        "calidad_media": 76.2
-      }
-    },
-    "2": {
-      "global": {
-        "episodios": 24,
-        "tasa_exito": 0.667,
-        "segundos_medios": 20.28,
-        "energia_media_j": 792.8,
-        "inclinacion_max_media": 22.5,
-        "calidad_media": 77.2
-      },
-      "marte.ninguna": {
-        "episodios": 12,
-        "tasa_exito": 0.75,
-        "segundos_medios": 21.2,
-        "energia_media_j": 835.2,
-        "inclinacion_max_media": 21.6,
-        "calidad_media": 77.2
-      },
-      "marte.empujon": {
-        "episodios": 12,
-        "tasa_exito": 0.583,
-        "segundos_medios": 19.36,
-        "energia_media_j": 750.3,
-        "inclinacion_max_media": 23.4,
-        "calidad_media": 77.1
-      }
-    },
-    "3": {
-      "global": {
-        "episodios": 24,
-        "tasa_exito": 0.417,
-        "segundos_medios": 17.73,
-        "energia_media_j": 755.2,
-        "inclinacion_max_media": 23.3,
-        "calidad_media": 75.6
+        "tasa_exito": 0.458,
+        "segundos_medios": 18.6,
+        "energia_media_j": 1132.3,
+        "inclinacion_max_media": 30.3,
+        "calidad_media": 72.1
       },
       "marte.ninguna": {
         "episodios": 12,
         "tasa_exito": 0.5,
-        "segundos_medios": 18.63,
-        "energia_media_j": 793.3,
-        "inclinacion_max_media": 21.8,
-        "calidad_media": 75.9
+        "segundos_medios": 18.23,
+        "energia_media_j": 1113.2,
+        "inclinacion_max_media": 30.4,
+        "calidad_media": 72.0
       },
       "marte.empujon": {
-        "episodios": 12,
-        "tasa_exito": 0.333,
-        "segundos_medios": 16.83,
-        "energia_media_j": 717.1,
-        "inclinacion_max_media": 24.9,
-        "calidad_media": 75.3
-      }
-    },
-    "4": {
-      "global": {
-        "episodios": 24,
-        "tasa_exito": 0.333,
-        "segundos_medios": 16.43,
-        "energia_media_j": 616.7,
-        "inclinacion_max_media": 23.0,
-        "calidad_media": 79.2
-      },
-      "marte.ninguna": {
         "episodios": 12,
         "tasa_exito": 0.417,
-        "segundos_medios": 17.25,
-        "energia_media_j": 646.3,
-        "inclinacion_max_media": 20.9,
-        "calidad_media": 79.4
-      },
-      "marte.empujon": {
-        "episodios": 12,
-        "tasa_exito": 0.25,
-        "segundos_medios": 15.62,
-        "energia_media_j": 587.1,
-        "inclinacion_max_media": 25.1,
-        "calidad_media": 78.9
+        "segundos_medios": 18.98,
+        "energia_media_j": 1151.4,
+        "inclinacion_max_media": 30.1,
+        "calidad_media": 72.1
       }
     },
-    "5": {
+    "7": {
       "global": {
         "episodios": 24,
         "tasa_exito": 0.792,
-        "segundos_medios": 22.01,
-        "energia_media_j": 665.2,
-        "inclinacion_max_media": 22.5,
-        "calidad_media": 80.1
+        "segundos_medios": 22.02,
+        "energia_media_j": 1543.2,
+        "inclinacion_max_media": 23.9,
+        "calidad_media": 70.4
       },
       "marte.ninguna": {
         "episodios": 12,
         "tasa_exito": 1.0,
         "segundos_medios": 24.0,
-        "energia_media_j": 726.2,
-        "inclinacion_max_media": 19.1,
-        "calidad_media": 80.4
+        "energia_media_j": 1653.9,
+        "inclinacion_max_media": 20.6,
+        "calidad_media": 72.9
       },
       "marte.empujon": {
         "episodios": 12,
         "tasa_exito": 0.583,
-        "segundos_medios": 20.03,
-        "energia_media_j": 604.1,
-        "inclinacion_max_media": 25.9,
-        "calidad_media": 79.7
+        "segundos_medios": 20.04,
+        "energia_media_j": 1432.5,
+        "inclinacion_max_media": 27.2,
+        "calidad_media": 67.9
+      }
+    },
+    "8": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.417,
+        "segundos_medios": 16.43,
+        "energia_media_j": 1147.7,
+        "inclinacion_max_media": 29.3,
+        "calidad_media": 73.2
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 16.5,
+        "energia_media_j": 1156.9,
+        "inclinacion_max_media": 30.2,
+        "calidad_media": 73.4
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 16.36,
+        "energia_media_j": 1138.6,
+        "inclinacion_max_media": 28.4,
+        "calidad_media": 73.0
       }
     }
   },
-  "aprobado": true
+  "examenes_previos": {
+    "6": {
+      "exp-101": 0.5,
+      "exp-103": 0.833,
+      "exp-104": 0.583
+    },
+    "7": {
+      "exp-101": 0.0,
+      "exp-103": 1.0,
+      "exp-104": 0.0
+    },
+    "8": {
+      "exp-101": 0.75,
+      "exp-103": 0.833,
+      "exp-104": 0.583
+    }
+  },
+  "aprobado": false
 }

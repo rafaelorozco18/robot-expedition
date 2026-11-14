@@ -59,19 +59,24 @@ aprobar:
   - exp-103
   - exp-104
 entrenamiento:
-  pasos: 6000000
+  pasos: 4000000
   reintentos: 2
   procesos: 5
   log_std_init: -2.3
   semillas:
   - 6
+  - 7
+  - 8
   log_std_final: -3.0
   repaso:
     experimentos:
+    - exp-104
     - exp-101
     - exp-103
     - exp-104
-    fraccion: 0.3
+    fraccion: 0.5
+  continuar_de:
+    8: 7
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -92,4 +97,10 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   5 repite la configuración de la 4. La semilla 5 aprobó la esquina pero olvidó el
   terreno (0 %). Desde la semilla 6 (2026-11-14) se entrena con repaso: el 30 % de
   los robots practica los Exps 1, 3 y 4 (también olvidaba quedarse de pie), y el campeón
-  debe seguir aprobando sus exámenes.'
+  debe seguir aprobando sus exámenes. Semilla 6 (6 M, con repaso): 46 % en la esquina,
+  pero recuerda más: De pie 50 %, Caminar bien 83 %, Terreno 58 % (antes 0 %); la
+  curva seguía subiendo y solo el 70 % de los robots practica la esquina, así que
+  la semilla 7 entrena 9 M. Semilla 7 (9 M): esquina 100 % sin empujón y 58 % con
+  empujón, pero De pie y Terreno en 0 %: el terreno solo tenía 5 de 80 robots repasando.
+  La semilla 8 consolida: parte de la 7 y entrena 4 M con la mitad de los robots repasando
+  (terreno 4, De pie 2 y Caminar bien 2 de cada 16).'
