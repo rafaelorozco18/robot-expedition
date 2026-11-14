@@ -471,6 +471,11 @@ stages:
       md5: 9458af452599834ddd74aa66a7b1babb.dir
       size: 55125394
       nfiles: 29
+    - path: models/exp-105/semilla-15
+      hash: md5
+      md5: a507ef444b71b3cdac2f784fec9ff92d.dir
+      size: 81214741
+      nfiles: 43
     - path: models/exp-105/semilla-6
       hash: md5
       md5: 0911860126e64804a5418cef8026517f.dir
@@ -494,19 +499,19 @@ stages:
     outs:
     - path: data/exp-105/trayectorias.jsonl
       hash: md5
-      md5: cbaa8ed1ecaba79de191bbb840c0631e
-      size: 150906
+      md5: 631e7411cfc03efe8eebe32d3ba26e46
+      size: 164622
     - path: metrics/exp-105/evaluacion.json
       hash: md5
-      md5: bef3d005dd0db84bd57da0adc990f28e
-      size: 8458
+      md5: d6436e107f0b9ba0cf007b436c25e239
+      size: 9229
   progreso-exp-105:
     cmd: nice -n 10 python -m expedicion progreso exp-105
     deps:
     - path: metrics/exp-105/evaluacion.json
       hash: md5
-      md5: bef3d005dd0db84bd57da0adc990f28e
-      size: 8458
+      md5: d6436e107f0b9ba0cf007b436c25e239
+      size: 9229
     outs:
     - path: metrics/exp-105/progreso.json
       hash: md5
@@ -517,8 +522,8 @@ stages:
     deps:
     - path: metrics/exp-105/evaluacion.json
       hash: md5
-      md5: bef3d005dd0db84bd57da0adc990f28e
-      size: 8458
+      md5: d6436e107f0b9ba0cf007b436c25e239
+      size: 9229
     outs:
     - path: metrics/exp-105/regresion.json
       hash: md5
@@ -1438,3 +1443,28 @@ stages:
       md5: 9458af452599834ddd74aa66a7b1babb.dir
       size: 55125394
       nfiles: 29
+  entrenar-exp-105-s15:
+    cmd: nice -n 10 python -m expedicion entrenar exp-105 --semilla 15
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-105.yaml
+      hash: md5
+      md5: bc4722506581b247b430b6c57671e3fc
+      size: 5884
+    - path: metrics/exp-104/evaluacion.json
+      hash: md5
+      md5: 316560625aa25d52c4434de23d701b70
+      size: 2158
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-105/semilla-15
+      hash: md5
+      md5: a507ef444b71b3cdac2f784fec9ff92d.dir
+      size: 81214741
+      nfiles: 43
