@@ -59,8 +59,8 @@ aprobar:
   - exp-103
   - exp-104
 entrenamiento:
-  pasos: 6000000
-  reintentos: 3
+  pasos: 4000000
+  reintentos: 4
   procesos: 5
   log_std_init: -2.3
   semillas:
@@ -68,18 +68,20 @@ entrenamiento:
   - 7
   - 8
   - 9
+  - 10
   log_std_final: -3.0
   repaso:
     experimentos:
+    - exp-101
     - exp-104
     - exp-101
     - exp-103
-    - exp-104
     fraccion: 0.5
   continuar_de:
     8: 7
     9: 7
-  pasos_minimos: 6000000
+    10: 9
+  pasos_minimos: 4000000
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -109,4 +111,7 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   (terreno 4, De pie 2 y Caminar bien 2 de cada 16). Semilla 8: el corte temprano
   solo mira la esquina y paró a los 2 M; recuperó De pie (75 %), Caminar bien (83
   %) y Terreno (58 %) pero la esquina bajó a 42 %. La semilla 9 repite la consolidación
-  desde la 7, sin corte temprano y con 6 M.'
+  desde la 7, sin corte temprano y con 6 M. Semilla 9 (6 M desde la 7): esquina 92
+  %, calidad 79, Caminar bien 100 %, Terreno 75 %, De pie 50 %: solo falla De pie.
+  La semilla 10 consolida desde la 9 con 4 M y más repaso de De pie (4 de cada 16
+  robots).'
