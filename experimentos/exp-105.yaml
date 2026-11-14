@@ -55,6 +55,7 @@ parametros:
 aprobar:
   tasa_exito: 0.8
   sin_olvidar:
+  - exp-101
   - exp-103
   - exp-104
 entrenamiento:
@@ -67,6 +68,7 @@ entrenamiento:
   log_std_final: -3.0
   repaso:
     experimentos:
+    - exp-101
     - exp-103
     - exp-104
     fraccion: 0.3
@@ -89,4 +91,5 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   a 75 % en el examen y a 35 y 34 de 40 (87 % y 85 %) en episodios nuevos. La semilla
   5 repite la configuración de la 4. La semilla 5 aprobó la esquina pero olvidó el
   terreno (0 %). Desde la semilla 6 (2026-11-14) se entrena con repaso: el 30 % de
-  los robots practica los Exps 3 y 4, y el campeón debe seguir aprobando sus exámenes.'
+  los robots practica los Exps 1, 3 y 4 (también olvidaba quedarse de pie), y el campeón
+  debe seguir aprobando sus exámenes.'

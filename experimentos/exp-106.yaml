@@ -52,6 +52,7 @@ parametros:
 aprobar:
   tasa_exito: 0.75
   sin_olvidar:
+  - exp-101
   - exp-103
   - exp-104
   - exp-105
@@ -65,6 +66,7 @@ entrenamiento:
   log_std_final: -3.0
   repaso:
     experimentos:
+    - exp-101
     - exp-104
     - exp-105
     fraccion: 0.3

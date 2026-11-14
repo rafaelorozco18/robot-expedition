@@ -135,9 +135,11 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
     def crear(i):
         # Repaso: en cada proceso, una fracción de los robots practica tareas de experimentos anteriores,
         # con el control de este experimento. Así aprende lo nuevo sin olvidar lo viejo.
+        # i es el índice global (proceso × robots_por_proceso + robot): el repaso usa el índice local.
         tarea = exp
-        if repaso and i < round(repaso["fraccion"] * p["robots_por_proceso"]):
-            previo = cargar(repaso["experimentos"][i % len(repaso["experimentos"])])
+        local = i % p["robots_por_proceso"]
+        if repaso and local < round(repaso["fraccion"] * p["robots_por_proceso"]):
+            previo = cargar(repaso["experimentos"][local % len(repaso["experimentos"])])
             tarea = {**previo, "control": exp["control"]}
         env = BipedoEnv(tarea, entrenando=True)
         env.reset(seed=semilla * 1000 + i)
