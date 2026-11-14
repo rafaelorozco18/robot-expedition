@@ -60,9 +60,9 @@ aprobar:
   - exp-104
 entrenamiento:
   pasos: 3000000
-  reintentos: 9
+  reintentos: 10
   procesos: 4
-  log_std_init: -2.3
+  log_std_init: -3.0
   semillas:
   - 6
   - 7
@@ -74,6 +74,7 @@ entrenamiento:
   - 13
   - 14
   - 15
+  - 16
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -91,6 +92,7 @@ entrenamiento:
     13: 10
     14: 10
     15: 9
+    16: 9
   pasos_minimos: 3000000
   learning_rate: 0.0003
   destilar:
@@ -157,4 +159,7 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   de la 9 e imita a dos maestros (la 9 en esquina, Caminar bien y Terreno; el especialista
   en De pie), se queda con la mejor ronda en validación y luego PPO afina 3 M con
   repaso. En un prototipo, la destilación sola llegó a De pie 88 %, Caminar bien 100
-  %, Terreno 75 % y esquina 62 %.'
+  %, Terreno 75 % y esquina 62 %. Semilla 15 (destilación y 3 M de PPO): esquina 100
+  % sin empujón, De pie 83 % (la primera que lo aprueba), Caminar bien 100 %, pero
+  Terreno 42 %: tras la destilación tenía 75 % y cayó en cuanto empezó PPO, cuando
+  el ruido vuelve a -2,3. La semilla 16 repite todo con el ruido de PPO en -3,0.'

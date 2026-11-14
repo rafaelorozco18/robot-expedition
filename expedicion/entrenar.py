@@ -93,10 +93,22 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
                     return False
             return True
 
+        def _congelar(self, congelada):
+            """Calentamiento del crítico: la política no cambia mientras la función de valor se ajusta."""
+            pol = self.model.policy
+            for prm in [*pol.mlp_extractor.policy_net.parameters(), *pol.action_net.parameters(), pol.log_std]:
+                prm.requires_grad_(not congelada)
+
         def _on_training_start(self):
+            self.calentando = p.get("calentar_critico", 0) > 0
+            if self.calentando:
+                self._congelar(True)
             self._foto()
 
         def _on_rollout_start(self):
+            if self.calentando and self.num_timesteps >= p["calentar_critico"]:
+                self.calentando = False
+                self._congelar(False)
             # Ruido de exploración que baja con el entrenamiento: al final la marcha no depende de él.
             final = p.get("log_std_final")
             if final is not None:
