@@ -185,6 +185,32 @@
         "inclinacion_max_media": 21.0,
         "calidad_media": 77.4
       }
+    },
+    "11": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.75,
+        "segundos_medios": 21.27,
+        "energia_media_j": 1777.3,
+        "inclinacion_max_media": 16.8,
+        "calidad_media": 78.0
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.917,
+        "segundos_medios": 22.96,
+        "energia_media_j": 1920.4,
+        "inclinacion_max_media": 14.1,
+        "calidad_media": 78.5
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.583,
+        "segundos_medios": 19.58,
+        "energia_media_j": 1634.2,
+        "inclinacion_max_media": 19.5,
+        "calidad_media": 77.5
+      }
     }
   },
   "examenes_previos": {
@@ -212,6 +238,11 @@
       "exp-101": 0.583,
       "exp-103": 1.0,
       "exp-104": 0.917
+    },
+    "11": {
+      "exp-101": 0.667,
+      "exp-103": 1.0,
+      "exp-104": 0.417
     }
   },
   "aprobado": false

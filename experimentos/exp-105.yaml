@@ -60,7 +60,7 @@ aprobar:
   - exp-104
 entrenamiento:
   pasos: 4000000
-  reintentos: 4
+  reintentos: 5
   procesos: 5
   log_std_init: -2.3
   semillas:
@@ -69,18 +69,24 @@ entrenamiento:
   - 8
   - 9
   - 10
+  - 11
   log_std_final: -3.0
   repaso:
     experimentos:
     - exp-101
+    - exp-101
     - exp-104
     - exp-101
+    - exp-101
     - exp-103
+    - exp-101
+    - exp-104
     fraccion: 0.5
   continuar_de:
     8: 7
     9: 7
     10: 9
+    11: 10
   pasos_minimos: 4000000
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
@@ -114,4 +120,8 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   desde la 7, sin corte temprano y con 6 M. Semilla 9 (6 M desde la 7): esquina 92
   %, calidad 79, Caminar bien 100 %, Terreno 75 %, De pie 50 %: solo falla De pie.
   La semilla 10 consolida desde la 9 con 4 M y más repaso de De pie (4 de cada 16
-  robots).'
+  robots). Semilla 10 (4 M desde la 9): esquina 92 % (67 % con empujón), Caminar bien
+  100 %, Terreno 92 %, De pie 58 %. Con el filtro de servos actual (0,6) el propio
+  campeón del Exp 1 hace 67 % en su examen (83 % con su filtro de 0,3): De pie es
+  más difícil con servos más lentos. La semilla 11 consolida desde la 10 con 5 de
+  cada 16 robots en De pie.'
