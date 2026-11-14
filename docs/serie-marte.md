@@ -161,6 +161,7 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 | 11 | desde la 10, aún más De pie | 92 % | 67 % | 100 % | 42 % |
 | 12 | desde la 10, De pie y Terreno parejos, 6 M | 58 % | 58 % | 75 % | 42 % |
 | 13 | desde la 10, tasa de aprendizaje 1e-4, 4 M | 0 % | 75 % | 100 % | 42 % |
+| 14 | repite la receta de la 10 desde la 10 | 25 % | 50 % | 100 % | 25 % |
 
 - Con 40 episodios nuevos, la semilla 10 hace 34 de 40 en la esquina (85 %) y 22 de 40 en De pie (55 %).
 - **De pie con los servos actuales:** desde el Exp 3 el filtro de servos es 0,6 (el Exp 1 usaba 0,3). Con ese
