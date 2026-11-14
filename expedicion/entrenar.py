@@ -165,6 +165,11 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
         modelo = PPO("MlpPolicy", env, device="cpu", seed=semilla, verbose=0, **ajustes,
                      policy_kwargs={"net_arch": p["red"], "log_std_init": p["log_std_init"]})
     t0 = time.time()
+    if p.get("destilar"):
+        # Primero aprende de los maestros (supervisado); luego PPO afina con la recompensa.
+        from .destilar import destilar
+        modelo = destilar(modelo, exp, semilla, salida / "destilacion", p["destilar"].get("procesos", 4))
+        modelo.policy.log_std.data.fill_(p["log_std_init"])
     modelo.learn(total, callback=Registro(), reset_num_timesteps=True)
     segundos = time.time() - t0
     env.close()

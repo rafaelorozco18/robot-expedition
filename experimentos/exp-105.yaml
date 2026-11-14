@@ -59,9 +59,9 @@ aprobar:
   - exp-103
   - exp-104
 entrenamiento:
-  pasos: 4000000
-  reintentos: 8
-  procesos: 5
+  pasos: 3000000
+  reintentos: 9
+  procesos: 4
   log_std_init: -2.3
   semillas:
   - 6
@@ -73,6 +73,7 @@ entrenamiento:
   - 12
   - 13
   - 14
+  - 15
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -89,8 +90,23 @@ entrenamiento:
     12: 10
     13: 10
     14: 10
-  pasos_minimos: 4000000
+    15: 9
+  pasos_minimos: 3000000
   learning_rate: 0.0003
+  destilar:
+    maestros:
+      exp-105: models/exp-105/semilla-9/experto.zip
+      exp-103: models/exp-105/semilla-9/experto.zip
+      exp-104: models/exp-105/semilla-9/experto.zip
+      exp-101: models/maestros/de-pie-filtro06.zip
+    episodios:
+      exp-105: 24
+      exp-103: 6
+      exp-104: 12
+      exp-101: 16
+    rondas: 12
+    validar: 16
+    procesos: 4
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
   giro.'
 control:
@@ -134,4 +150,11 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   bien 75 %, Terreno 42 %). La semilla 13 consolida desde la 10 con el repaso de la
   10 y la tasa de aprendizaje a un tercio (1e-4), para que lo nuevo no borre lo viejo.
   Semilla 13: la esquina se derrumbó (0 %). La semilla 14 repite la receta de la 10
-  desde la 10 (otra semilla, misma configuración).'
+  desde la 10 (otra semilla, misma configuración). Semilla 14: peor (esquina 25 %).
+  Un especialista solo en De pie con estos servos hace 35 de 40 (87 %) en episodios
+  nuevos: el 80 % es alcanzable. Probar todas las fotos de las semillas 9 a 13 en
+  episodios nuevos: ninguna cumple todo. La semilla 15 usa destilación (DAgger): parte
+  de la 9 e imita a dos maestros (la 9 en esquina, Caminar bien y Terreno; el especialista
+  en De pie), se queda con la mejor ronda en validación y luego PPO afina 3 M con
+  repaso. En un prototipo, la destilación sola llegó a De pie 88 %, Caminar bien 100
+  %, Terreno 75 % y esquina 62 %.'
