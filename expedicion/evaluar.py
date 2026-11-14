@@ -189,11 +189,18 @@ def evaluar(exp):
             for fila in filas:
                 f.write(json.dumps({"agente": f"semilla-{semilla}", **fila}) + "\n")
 
-    # Campeón: mejor tasa global; en empate, menor energía.
-    mejor = max(por_semilla, key=lambda s: (por_semilla[s]["global"]["tasa_exito"],
-                                            -por_semilla[s]["global"]["energia_media_j"]))
+    # No olvidar: cada semilla repite los exámenes de aprobar.sin_olvidar.
+    previos = {s: examen_previo(exp, carpeta_modelos(exp) / f"semilla-{s}" / "experto.zip",
+                                exp["aprobar"].get("sin_olvidar", [])) for s in por_semilla}
+    cumple = {s: aprueba(exp, por_semilla[s]) and not olvidados(previos[s]) for s in por_semilla}
+    # Campeón: primero la que cumple todo; luego tasa propia más la media de los exámenes
+    # anteriores; en empate, menor energía.
+    mejor = max(por_semilla, key=lambda s: (
+        cumple[s], por_semilla[s]["global"]["tasa_exito"] + float(np.mean(list(previos[s].values()) or [0.0])),
+        -por_semilla[s]["global"]["energia_media_j"]))
     resultado = {"experimento": exp["id"], "campeon": int(mejor), "agentes": resultados,
-                 "semillas": por_semilla, "aprobado": aprueba(exp, por_semilla[mejor])}
+                 "semillas": por_semilla, "examenes_previos": previos,
+                 "aprobado": cumple[mejor]}
     carpeta_metricas(exp).mkdir(parents=True, exist_ok=True)
     (carpeta_metricas(exp) / "evaluacion.json").write_text(json.dumps(resultado, indent=2))
     return resultado
@@ -222,20 +229,32 @@ def evaluar_progreso(exp):
     return filas
 
 
-def regresion(exp):
-    """Prueba al campeón en las pruebas de los experimentos anteriores."""
+def examen_previo(exp, ruta, ids):
+    """Tasa de éxito del modelo en ruta en los exámenes (12 episodios) de los experimentos ids."""
     from . import experimentos as X
-    semilla = campeon(exp)
-    agente = Politica(carpeta_modelos(exp) / f"semilla-{semilla}" / "experto.zip")
+    agente = Politica(ruta)
     resultado = {}
-    for previo in X.listar():
-        if previo["id"] > exp["id"] or previo["estado"] == "pendiente":
-            continue
+    for i in ids:
+        previo = X.cargar(i)
         escenarios = json.loads((carpeta_datos(previo) / "escenarios.json").read_text())
         previo = {**previo, "control": exp["control"]}  # el filtro de los servos es del robot que se prueba
         pert = previo["aprobar"]["perturbacion"]
         sub = [e for e in escenarios if e["perturbacion"] == pert][:12]
         filas = [correr_episodio(previo, agente, e)[0] for e in sub]
-        resultado[previo["id"]] = round(float(np.mean([f["exito"] for f in filas])), 3)
+        resultado[i] = round(float(np.mean([f["exito"] for f in filas])), 3)
+    return resultado
+
+
+def olvidados(tasas):
+    """Exámenes anteriores que ya no se aprueban."""
+    from . import experimentos as X
+    return [i for i, t in tasas.items() if t < X.cargar(i)["aprobar"]["tasa_exito"]]
+
+
+def regresion(exp):
+    """Prueba al campeón en las pruebas de los experimentos anteriores."""
+    from . import experimentos as X
+    ids = [p["id"] for p in X.listar() if p["id"] <= exp["id"] and p["estado"] != "pendiente"]
+    resultado = examen_previo(exp, carpeta_modelos(exp) / f"semilla-{campeon(exp)}" / "experto.zip", ids)
     (carpeta_metricas(exp) / "regresion.json").write_text(json.dumps(resultado, indent=1))
     return resultado

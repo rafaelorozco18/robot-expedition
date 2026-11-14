@@ -27,7 +27,7 @@ aprobar:
   - exp-107
 entrenamiento:
   pasos: 4000000
-  reintentos: 0
+  reintentos: 2
   procesos: 5
   semillas:
   - 0

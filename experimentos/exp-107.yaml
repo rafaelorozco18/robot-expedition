@@ -75,14 +75,24 @@ pisos:
   mezclar: true
 aprobar:
   tasa_exito: 0.7
+  sin_olvidar:
+  - exp-103
+  - exp-104
+  - exp-105
+  - exp-106
 entrenamiento:
-  pasos: 4000000
-  reintentos: 0
+  pasos: 6000000
+  reintentos: 2
   procesos: 5
   log_std_init: -2.5
   semillas:
-  - 0
+  - 1
   log_std_final: -3.0
+  repaso:
+    experimentos:
+    - exp-105
+    - exp-106
+    fraccion: 0.3
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
 control:
   rango: 0.8

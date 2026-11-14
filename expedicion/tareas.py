@@ -475,6 +475,9 @@ class Curva(Marcha):
             self.signo = env.np_random.choice([-1.0, 1.0])
             R = float(env.np_random.uniform(v["radio_m"][0], v["radio_m"][1]))
         self.R = R
+        # Meta en radianes: las vueltas pedidas, o el 90 % de lo que alcanza a recorrer en el
+        # episodio a esa velocidad (en un radio amplio de entrenamiento no cabe la vuelta).
+        self.meta = min(2 * np.pi * self.t["vueltas"], 0.9 * vx * env.max_pasos * env.dt / R)
         env.comando[:] = [vx, 0.0, 1.0, self.signo * vx / R]
         self.centro = np.array([env.x_inicial, env.y_inicial + self.signo * R])
         self.angulo = 0.0
@@ -494,10 +497,10 @@ class Curva(Marcha):
         return float(np.mean(np.abs(np.array(self.radios) - self.R))) if self.radios else 9.9
 
     def avance(self, env):
-        return min(1.0, max(0.0, self.angulo) / (2 * np.pi * self.t["vueltas"]))
+        return min(1.0, max(0.0, self.angulo) / self.meta)
 
     def exito(self, env, truncado):
-        return (truncado and self.calidad_ok(env) and self.angulo >= 2 * np.pi * self.t["vueltas"]
+        return (truncado and self.calidad_ok(env) and self.angulo >= self.meta
                 and self.error_radio() < self.t["error_radio_m"])
 
     def resumen(self, env):
