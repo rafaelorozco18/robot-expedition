@@ -217,4 +217,7 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   Los escenarios del examen que fallan cambian de un modelo a otro: es el azar de
   12 episodios. La validación con 16 episodios elige rondas peores que las que se
   ven con 40, así que la semilla 24 repite la 23 validando cada ronda con 40 episodios
-  por tarea.'
+  por tarea. Semilla 24: la mejor en episodios nuevos (esquina 39 y 39, De pie 38
+  y 35, Caminar bien 40 y 40, Terreno 35 y 31 de 40); en el examen esquina 100 %,
+  De pie 92 %, Caminar bien 100 %, pero Terreno 7 de 12. Tres semillas que cumplen
+  en episodios nuevos (21, 23 y 24) fallaron el examen de terreno por 1 o 2 episodios.'

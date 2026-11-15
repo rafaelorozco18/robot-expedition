@@ -232,10 +232,12 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
   | 21 | y maestro de De pie de la 15 | 76 | 70 | 80 | 66 | Terreno 8 de 12 |
   | 22 | maestro de terreno = promedio de dos | — | — | — | ≤ 69 % en validación | Terreno 6 de 12 |
   | 23 | 21 con el doble de episodios de terreno | 74 | 64 | 80 | 65 | Terreno 7 de 12 |
+  | 24 | 23 validando cada ronda con 40 episodios | 78 | 73 | 80 | 66 | Terreno 7 de 12 |
 
-  (Semilla 20: ronda 8; semillas 21 y 23: la ronda que quedó como modelo final.)
-- **El examen fijo de 12 episodios es la última traba.** Las semillas 21 y 23 hacen ~82 % en terreno con episodios
-  nuevos y en el examen sacan 8 y 7 de 12 (hacen falta 9). Los escenarios del examen que fallan cambian de un modelo
+  (Semilla 20: ronda 8; las demás: la ronda que quedó como modelo final.) La semilla 24 es la mejor: en su examen
+  hace esquina 100 %, De pie 92 % y Caminar bien 100 %; solo le falta el terreno.
+- **El examen fijo de 12 episodios es la última traba.** Las semillas 21, 23 y 24 hacen 81–83 % en terreno con
+  episodios nuevos y en el examen sacan 8, 7 y 7 de 12 (hacen falta 9). Los escenarios del examen que fallan cambian de un modelo
   a otro: no hay un escenario imposible, es el azar de 12 episodios. Con 82 % real, 9 de 12 sale ~3 de cada 4 veces.
 - **Lo que no sirvió:** practicar con listones más altos (2 a 4,5 cm) no subió el techo del maestro de terreno
   (64 de 80); imitar el promedio de dos maestros de terreno, que juntos hacen 91 %, dejó al alumno peor (semilla 22).
