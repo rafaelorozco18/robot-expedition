@@ -24,3 +24,7 @@ publicado/
 
 # Visor estático generado por `expedicion exportar`
 exportado/
+
+# Maestros en prueba y registros de entrenamiento locales (los maestros elegidos van a models/maestros, con DVC)
+/models/prueba-*/
+registros/

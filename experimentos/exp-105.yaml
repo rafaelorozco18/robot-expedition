@@ -60,7 +60,7 @@ aprobar:
   - exp-104
 entrenamiento:
   pasos: 400000
-  reintentos: 13
+  reintentos: 15
   procesos: 4
   log_std_init: -2.3
   semillas:
@@ -78,6 +78,8 @@ entrenamiento:
   - 17
   - 18
   - 19
+  - 20
+  - 21
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -99,14 +101,16 @@ entrenamiento:
     17: 9
     18: 15
     19: 15
+    20: 15
+    21: 15
   pasos_minimos: 400000
   learning_rate: 0.0003
   destilar:
     maestros:
       exp-105: models/exp-105/semilla-15/experto.zip
       exp-103: models/exp-105/semilla-15/experto.zip
-      exp-104: models/exp-104/semilla-0/experto.zip
-      exp-101: models/maestros/de-pie-filtro06.zip
+      exp-104: models/maestros/terreno-s15.zip
+      exp-101: models/maestros/de-pie-s15.zip
     episodios:
       exp-105: 24
       exp-103: 6
@@ -183,4 +187,13 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   81 %); en el examen falla De pie (58 %; el especialista también hace 8 de 12 en
   ese examen). En 40 episodios nuevos: esquina 39, De pie 29, Caminar bien 40 y Terreno
   21 de 40. El campeón del Exp 4 hace 29 de 40 en terreno y la semilla 9, el maestro
-  usado, 26. La semilla 19 repite la 18 con el campeón del Exp 4 como maestro de terreno.'
+  usado, 26. La semilla 19 repite la 18 con el campeón del Exp 4 como maestro de terreno.
+  Semilla 19: peor (Terreno 17 %, esquina 25 %): dos estilos de marcha confunden al
+  alumno. La semilla 20 repite la 18 con un maestro de terreno del mismo estilo: la
+  15 entrenada 2,5 M solo en terreno (models/maestros/terreno-s15.zip; 63 de 80 en
+  episodios nuevos, el campeón del Exp 4 58). Semilla 20: en 40 episodios nuevos de
+  validación la ronda 8 cumple todo justo (esquina 37, De pie 32, Caminar bien 40,
+  Terreno 30), pero en otros 40 De pie cae a 28 en todas las rondas; el terreno queda
+  en 29 a 31. La semilla 21 cambia también el maestro de De pie por uno del estilo
+  de la 15: la 15 entrenada 1,5 M solo en De pie (models/maestros/de-pie-s15.zip;
+  38 y 37 de 40, el especialista anterior 38 y 35).'
