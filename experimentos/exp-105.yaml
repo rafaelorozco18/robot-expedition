@@ -60,7 +60,7 @@ aprobar:
   - exp-104
 entrenamiento:
   pasos: 400000
-  reintentos: 17
+  reintentos: 18
   procesos: 4
   log_std_init: -2.3
   semillas:
@@ -82,6 +82,7 @@ entrenamiento:
   - 21
   - 22
   - 23
+  - 24
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -107,6 +108,7 @@ entrenamiento:
     21: 15
     22: 15
     23: 15
+    24: 15
   pasos_minimos: 400000
   learning_rate: 0.0003
   destilar:
@@ -121,7 +123,7 @@ entrenamiento:
       exp-104: 24
       exp-101: 16
     rondas: 12
-    validar: 16
+    validar: 40
     procesos: 4
   calentar_critico: 400000
 trampa: 'Doblar en curva amplia sin rotar: la orden pide velocidad cero durante el
@@ -209,4 +211,10 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   con ese conjunto como maestro de terreno. Semilla 22: peor (Terreno 69 % como máximo
   en validación): imitar el promedio de dos maestros cuesta más que imitar a uno.
   La semilla 23 repite la 21 (un solo maestro de terreno) con el doble de episodios
-  de terreno por ronda (24): el alumno ya supera a su maestro en terreno.'
+  de terreno por ronda (24): el alumno ya supera a su maestro en terreno. Semilla
+  23: en 40 y 40 episodios nuevos cumple todo (esquina 37 y 37, De pie 32 y 32, Caminar
+  bien 40 y 40, Terreno 32 y 33), pero en el examen Terreno 7 de 12; la 21 sacó 8.
+  Los escenarios del examen que fallan cambian de un modelo a otro: es el azar de
+  12 episodios. La validación con 16 episodios elige rondas peores que las que se
+  ven con 40, así que la semilla 24 repite la 23 validando cada ronda con 40 episodios
+  por tarea.'

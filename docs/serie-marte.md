@@ -216,6 +216,31 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 - Detalles que importaron: la destilación debe usar el ruido del modelo de partida (con el ruido inicial de PPO la
   esquina no se sostiene), y bajar el ruido de PPO a -3,0 hizo que el robot prefiriera quedarse quieto.
 
+### Noche del 2026-11-14 al 15: maestros del mismo estilo
+
+- **Maestros nuevos que parten de la semilla 15** (`scripts/especialista_s15.py`, guardados en `models/maestros/`
+  con DVC): uno de Terreno (la 15 entrenada solo en terreno; foto de 2,5 M) y uno de De pie (la 15 solo en De
+  pie; foto de 1,5 M). Medidos con 40 + 40 episodios nuevos: Terreno 63 de 80 (el campeón del Exp 4, 58);
+  De pie 75 de 80 (el especialista anterior, 73).
+- **Con los cuatro maestros del mismo estilo, la destilación cumple todo en episodios nuevos por primera vez.**
+  Cada fila suma los dos grupos de 40 (validación 5000+ y confirmación 3000+); los mínimos son 64, 64, 64 y 60 de 80:
+
+  | Semilla | Cambio | Esquina | De pie | Caminar bien | Terreno | Examen fijo |
+  |---|---|---|---|---|---|---|
+  | 18 | maestro de terreno: la 9 | 78 | 58 | 80 | 41 | falla De pie |
+  | 20 | maestro de terreno de la 15 | 76 | 60 | 80 | 61 | falla De pie y Terreno |
+  | 21 | y maestro de De pie de la 15 | 76 | 70 | 80 | 66 | Terreno 8 de 12 |
+  | 22 | maestro de terreno = promedio de dos | — | — | — | ≤ 69 % en validación | Terreno 6 de 12 |
+  | 23 | 21 con el doble de episodios de terreno | 74 | 64 | 80 | 65 | Terreno 7 de 12 |
+
+  (Semilla 20: ronda 8; semillas 21 y 23: la ronda que quedó como modelo final.)
+- **El examen fijo de 12 episodios es la última traba.** Las semillas 21 y 23 hacen ~82 % en terreno con episodios
+  nuevos y en el examen sacan 8 y 7 de 12 (hacen falta 9). Los escenarios del examen que fallan cambian de un modelo
+  a otro: no hay un escenario imposible, es el azar de 12 episodios. Con 82 % real, 9 de 12 sale ~3 de cada 4 veces.
+- **Lo que no sirvió:** practicar con listones más altos (2 a 4,5 cm) no subió el techo del maestro de terreno
+  (64 de 80); imitar el promedio de dos maestros de terreno, que juntos hacen 91 %, dejó al alumno peor (semilla 22).
+- Las caídas en terreno son en grava y arena junto a un listón.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.
