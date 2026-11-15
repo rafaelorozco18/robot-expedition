@@ -227,4 +227,8 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   en episodios nuevos (21, 23 y 24) fallaron el examen de terreno por 1 o 2 episodios.
   Maestros de terreno nuevos (otra semilla de PPO, uno afinado con tasa 1e-4, y promedios
   de pesos de fotos vecinas) no superan al actual: todos rondan el 80-84 % en 120
-  episodios nuevos. Las semillas 25 y 26 repiten la receta de la 24 con otro sorteo.'
+  episodios nuevos. Las semillas 25 y 26 repiten la receta de la 24 con otro sorteo.
+  Aprobado (2026-11-15) con la semilla 25: esquina 100 %, De pie 92 %, Caminar bien
+  100 %, Terreno 75 % (9 de 12) en sus exámenes; en 80 episodios nuevos esquina 75,
+  De pie 73, Caminar bien 80, Terreno 71 de 80. La semilla 26 también aprueba (Terreno
+  83 %).'

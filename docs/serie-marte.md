@@ -233,6 +233,8 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
   | 22 | maestro de terreno = promedio de dos | — | — | — | ≤ 69 % en validación | Terreno 6 de 12 |
   | 23 | 21 con el doble de episodios de terreno | 74 | 64 | 80 | 65 | Terreno 7 de 12 |
   | 24 | 23 validando cada ronda con 40 episodios | 78 | 73 | 80 | 66 | Terreno 7 de 12 |
+  | **25** | **24 con otro sorteo** | **75** | **73** | **80** | **71** | **aprueba todo (Terreno 9 de 12)** |
+  | 26 | 24 con otro sorteo | 75 | 73 | 80 | 69 | aprueba todo (Terreno 10 de 12) |
 
   (Semilla 20: ronda 8; las demás: la ronda que quedó como modelo final.) La semilla 24 es la mejor: en su examen
   hace esquina 100 %, De pie 92 % y Caminar bien 100 %; solo le falta el terreno.
@@ -242,6 +244,14 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
 - **Lo que no sirvió:** practicar con listones más altos (2 a 4,5 cm) no subió el techo del maestro de terreno
   (64 de 80); imitar el promedio de dos maestros de terreno, que juntos hacen 91 %, dejó al alumno peor (semilla 22).
 - Las caídas en terreno son en grava y arena junto a un listón.
+- La mañana del 15 se probaron más maestros de terreno: otra semilla de PPO, uno afinado con tasa 1e-4 y promedios
+  de pesos de fotos vecinas (SWA, `scripts/promediar_pesos.py`). Ninguno superó al actual: todos rondan el 80–84 %
+  en 120 episodios nuevos. El techo de terreno con este estilo de marcha está cerca del 83 %.
+- **El Exp 5 aprobó (2026-11-15, 12:43)** con la semilla 25, la receta de la 24 con otro sorteo de episodios de
+  destilación: esquina 100 %, De pie 92 %, Caminar bien 100 % y Terreno 75 % en sus exámenes, y lo confirma en
+  80 episodios nuevos (Terreno 71 de 80, 89 %). La semilla 26 también aprueba todo. Receta final: destilar desde
+  la semilla 15 con cuatro maestros del mismo estilo, política congelada durante PPO y validación de 40 episodios
+  por tarea en cada ronda.
 
 ## Limitaciones conocidas
 

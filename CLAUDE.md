@@ -75,23 +75,16 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-15, 04:45)
+## Estado actual (2026-11-15, 13:00)
 
-- Serie en orden (ver `docs/serie-marte.md`). Aprobados: 1, 2, 3 y 4. **El Exp 5 no aprueba**: 19 intentos
-  (semillas 6 a 24). Campeón oficial: semilla 10 (falla De pie). **La mejor es la semilla 24**: cumple todo en
-  80 episodios nuevos (esquina 78, De pie 73, Caminar bien 80, Terreno 66 de 80) y en su examen hace esquina 100 %,
-  De pie 92 % y Caminar bien 100 %, pero Terreno 7 de 12 (hacen falta 9). Las semillas 21 y 23 fallaron igual (8 y 7).
-- Receta que funciona: destilar desde la semilla 15 con cuatro maestros del mismo estilo (la 15 para esquina y
-  Caminar bien; `models/maestros/terreno-s15.zip` y `de-pie-s15.zip`, hechos con `scripts/especialista_s15.py`),
-  política congelada en la fase de PPO y cada ronda validada con 40 episodios por tarea.
-- El techo es el terreno: todos los maestros de terreno rondan el 80 % (también con listones más altos al practicar).
-  Imitar el promedio de dos maestros empeora al alumno (semilla 22).
-- **Próximo paso sugerido:** subir el terreno real a ~90 % para que el examen de 12 deje de ser una lotería; por
-  ejemplo, un maestro de terreno mejor (más pasos o más semillas, elegido con 80 episodios nuevos). Otra opción, que
-  decide el usuario: examinar con más episodios. Verificar siempre con 40 + 40 episodios nuevos (`scripts/medir40.py`,
-  `BASE=5000` para elegir, 3000 para confirmar).
-- `destilar` acepta una lista de maestros por tarea (promedio de medias), aunque no sirvió.
-- Los Exps 6 a 9 esperan al 5.
+- Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1, 2, 3, 4 y 5.** El Exp 5 aprobó con la semilla 25
+  (21 intentos, semillas 6 a 26) sin olvidar De pie, Caminar bien ni Terreno; lo confirma en 80 episodios nuevos.
+- Receta que funcionó para no olvidar: destilar (DAgger, `entrenamiento.destilar`) desde un modelo que ya sabe lo
+  nuevo, con maestros **del mismo estilo de marcha** (`scripts/especialista_s15.py`, `models/maestros/`), política
+  congelada en la fase de PPO (`calentar_critico` = pasos) y cada ronda validada con 40 episodios por tarea.
+- El terreno es el punto débil: ~83 % real con este estilo, contra un mínimo de 75 % en un examen de 12 episodios.
+- **Próximo paso:** el Exp 6 (curva). Su `repaso` y `sin_olvidar` ya incluyen los Exps 1, 3, 4 y 5.
+  Si olvida, aplicar la misma receta de destilación con la semilla 25 del Exp 5 como maestro de esquina.
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
 
