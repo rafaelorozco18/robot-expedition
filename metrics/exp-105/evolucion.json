@@ -2,7 +2,7 @@
  "perturbacion": "ninguna",
  "planetas": {
   "marte": {
-   "semilla": 384259585,
+   "semilla": 1003451250,
    "hitos": [
     {
      "agente": "sin_entrenar",
@@ -10,11 +10,11 @@
      "origen": "exp-105",
      "exito": false,
      "segundos": 24.0,
-     "distancia": -0.01,
+     "distancia": -0.0,
      "calidad": 39.9,
      "avance": 0.0,
      "puntaje": 0.0,
-     "texto": "No cumple el objetivo · calidad 40/100 · tramo 1 -0.0 m · giró 3° · tramo 2 0.0 m",
+     "texto": "No cumple el objetivo · calidad 40/100 · tramo 1 -0.0 m · giró 8° · tramo 2 0.0 m",
      "clip": [
       0.0,
       24.0,
@@ -25,87 +25,87 @@
      "etapa": "Fracaso absoluto"
     },
     {
-     "agente": "foto:exp-103:9003008",
-     "paso": 9003008,
-     "origen": "exp-103",
+     "agente": "foto:exp-104:0",
+     "paso": 0,
+     "origen": "exp-104",
      "exito": false,
-     "segundos": 9.84,
-     "distancia": 4.37,
-     "calidad": 79.6,
-     "avance": 0.455,
-     "puntaje": 0.4322,
-     "texto": "A los 9.8 s: se agachó o cayó · tramo 1 4.4 m · giró 28° · tramo 2 0.2 m",
+     "segundos": 10.06,
+     "distancia": 2.84,
+     "calidad": 67.2,
+     "avance": 0.471,
+     "puntaje": 0.4474,
+     "texto": "A los 10.1 s: se agachó o cayó · tramo 1 2.8 m · giró 39° · tramo 2 0.1 m",
      "clip": [
-      3.84,
-      9.84,
+      4.06,
+      10.06,
       1
      ],
      "tasa": null,
-     "indice": 12,
+     "indice": 13,
      "etapa": "Fracaso, pero mejor"
     },
     {
-     "agente": "paso:6960",
-     "paso": 6960,
+     "agente": "paso:56256",
+     "paso": 56256,
      "origen": "exp-105",
      "exito": false,
-     "segundos": 12.52,
-     "distancia": 4.5,
-     "calidad": 75.2,
-     "avance": 0.905,
-     "puntaje": 0.8598,
-     "texto": "A los 12.5 s: se agachó o cayó · tramo 1 4.5 m · giró 82° · tramo 2 2.4 m",
+     "segundos": 15.64,
+     "distancia": 3.92,
+     "calidad": 75.4,
+     "avance": 1.0,
+     "puntaje": 0.95,
+     "texto": "A los 15.6 s: se agachó o cayó · tramo 1 3.9 m · giró 92° · tramo 2 3.6 m",
      "clip": [
-      6.52,
-      12.52,
+      9.64,
+      15.64,
       1
      ],
      "tasa": 0.0,
-     "indice": 18,
+     "indice": 26,
      "etapa": "Punto de inflexión"
     },
     {
-     "agente": "paso:62560",
-     "paso": 62560,
+     "agente": "paso:156288",
+     "paso": 156288,
      "origen": "exp-105",
      "exito": true,
      "segundos": 24.0,
-     "distancia": 4.42,
-     "calidad": 77.9,
+     "distancia": 3.46,
+     "calidad": 76.7,
      "avance": 0.998,
-     "puntaje": 1.5779,
-     "texto": "Dobló la esquina · calidad 78/100 · tramo 1 4.4 m · giró 89° · tramo 2 6.4 m",
+     "puntaje": 1.4102,
+     "texto": "Dobló la esquina · calidad 77/100 · tramo 1 3.5 m · giró 89° · tramo 2 6.8 m",
      "clip": [
       0.0,
       24.0,
       2.5
      ],
-     "tasa": 1.0,
-     "indice": 20,
+     "tasa": 0.667,
+     "indice": 32,
      "etapa": "Cumplido"
     },
     {
-     "agente": "paso:1777840",
-     "paso": 1777840,
+     "agente": "paso:401408",
+     "paso": 401408,
      "origen": "exp-105",
      "exito": true,
      "segundos": 24.0,
-     "distancia": 3.82,
-     "calidad": 79.0,
-     "avance": 0.993,
-     "puntaje": 1.579,
-     "texto": "Dobló la esquina · calidad 79/100 · tramo 1 3.8 m · giró 88° · tramo 2 6.6 m",
+     "distancia": 2.72,
+     "calidad": 77.4,
+     "avance": 0.969,
+     "puntaje": 1.5774,
+     "texto": "Dobló la esquina · calidad 77/100 · tramo 1 2.7 m · giró 90° · tramo 2 7.0 m",
      "clip": [
       0.0,
       24.0,
       2.5
      ],
      "tasa": 1.0,
-     "indice": 33,
+     "indice": 42,
      "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 1.579
+   "mejora": 1.577
   }
  },
  "recomendado": "marte"

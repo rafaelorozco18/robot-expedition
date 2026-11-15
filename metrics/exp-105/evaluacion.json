@@ -1,6 +1,6 @@
 {
   "experimento": "exp-105",
-  "campeon": 10,
+  "campeon": 25,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -549,6 +549,58 @@
         "inclinacion_max_media": 28.2,
         "calidad_media": 76.1
       }
+    },
+    "25": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.75,
+        "segundos_medios": 21.6,
+        "energia_media_j": 1574.1,
+        "inclinacion_max_media": 20.8,
+        "calidad_media": 76.8
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 1.0,
+        "segundos_medios": 24.0,
+        "energia_media_j": 1747.6,
+        "inclinacion_max_media": 16.8,
+        "calidad_media": 77.2
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.5,
+        "segundos_medios": 19.21,
+        "energia_media_j": 1400.6,
+        "inclinacion_max_media": 24.8,
+        "calidad_media": 76.4
+      }
+    },
+    "26": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.625,
+        "segundos_medios": 20.77,
+        "energia_media_j": 1520.4,
+        "inclinacion_max_media": 22.7,
+        "calidad_media": 76.8
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.917,
+        "segundos_medios": 22.94,
+        "energia_media_j": 1676.3,
+        "inclinacion_max_media": 18.7,
+        "calidad_media": 77.1
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.333,
+        "segundos_medios": 18.61,
+        "energia_media_j": 1364.4,
+        "inclinacion_max_media": 26.7,
+        "calidad_media": 76.6
+      }
     }
   },
   "examenes_previos": {
@@ -646,7 +698,17 @@
       "exp-101": 0.917,
       "exp-103": 1.0,
       "exp-104": 0.583
+    },
+    "25": {
+      "exp-101": 0.917,
+      "exp-103": 1.0,
+      "exp-104": 0.75
+    },
+    "26": {
+      "exp-101": 0.917,
+      "exp-103": 1.0,
+      "exp-104": 0.833
     }
   },
-  "aprobado": false
+  "aprobado": true
 }
