@@ -6,7 +6,8 @@ media de la acción), lo que haría el maestro de esa tarea en esos mismos estad
 valida en episodios nuevos (semillas 5000+, distintas de las del examen) y se queda la mejor ronda.
 
 Configuración en `entrenamiento.destilar`:
-    maestros: {exp-NNN: ruta del modelo relativa a la raíz}
+    maestros: {exp-NNN: ruta del modelo relativa a la raíz, o una lista de rutas: un conjunto cuya acción
+              es el promedio de las medias (dos maestros de terreno del mismo linaje caen menos juntos)}
     episodios: {exp-NNN: episodios por ronda}
     rondas: número de rondas
     validar: episodios de validación por tarea
@@ -32,6 +33,10 @@ def _cargar(ruta):
     return _cache[ruta]
 
 
+def _media_maestro(rutas, obs):
+    return np.mean([_media_y_desvio(_cargar(r), obs)[0] for r in rutas], axis=0)
+
+
 def _media_y_desvio(politica, obs):
     import torch
     with torch.no_grad():
@@ -46,14 +51,13 @@ def _recolectar(args):
     tarea, ruta_maestro, ruta_alumno, control, semilla = args
     from stable_baselines3 import PPO
     alumno = PPO.load(ruta_alumno, device="cpu").policy
-    maestro = _cargar(ruta_maestro)
     env = BipedoEnv({**X.cargar(tarea), "control": control}, entrenando=True)
     rng = np.random.default_rng(semilla)
     obs, _ = env.reset(seed=semilla)
     xs, ys, hecho = [], [], False
     while not hecho:
         xs.append(obs.copy())
-        ys.append(_media_y_desvio(maestro, obs)[0])
+        ys.append(_media_maestro(ruta_maestro, obs))
         media, desvio = _media_y_desvio(alumno, obs)
         obs, _, term, trunc, _ = env.step(np.clip(media + desvio * rng.standard_normal(media.shape), -1, 1))
         hecho = term or trunc
@@ -96,7 +100,7 @@ def destilar(modelo, exp, semilla, carpeta, procesos):
     """Destila en el modelo (se modifica y se devuelve con los pesos de la mejor ronda)."""
     cfg = exp["entrenamiento"]["destilar"]
     control = exp["control"]
-    maestros = {t: str(X.RAIZ / r) for t, r in cfg["maestros"].items()}
+    maestros = {t: [str(X.RAIZ / x) for x in ([r] if isinstance(r, str) else r)] for t, r in cfg["maestros"].items()}
     minimos = {t: X.cargar(t)["aprobar"]["tasa_exito"] for t in maestros}
     carpeta.mkdir(parents=True, exist_ok=True)
     ruta = carpeta / "alumno-0.zip"

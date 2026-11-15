@@ -60,7 +60,7 @@ aprobar:
   - exp-104
 entrenamiento:
   pasos: 400000
-  reintentos: 15
+  reintentos: 17
   procesos: 4
   log_std_init: -2.3
   semillas:
@@ -80,6 +80,8 @@ entrenamiento:
   - 19
   - 20
   - 21
+  - 22
+  - 23
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -103,6 +105,8 @@ entrenamiento:
     19: 15
     20: 15
     21: 15
+    22: 15
+    23: 15
   pasos_minimos: 400000
   learning_rate: 0.0003
   destilar:
@@ -114,7 +118,7 @@ entrenamiento:
     episodios:
       exp-105: 24
       exp-103: 6
-      exp-104: 12
+      exp-104: 24
       exp-101: 16
     rondas: 12
     validar: 16
@@ -196,4 +200,13 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   Terreno 30), pero en otros 40 De pie cae a 28 en todas las rondas; el terreno queda
   en 29 a 31. La semilla 21 cambia también el maestro de De pie por uno del estilo
   de la 15: la 15 entrenada 1,5 M solo en De pie (models/maestros/de-pie-s15.zip;
-  38 y 37 de 40, el especialista anterior 38 y 35).'
+  38 y 37 de 40, el especialista anterior 38 y 35). Semilla 21: en 40 y 40 episodios
+  nuevos cumple todo (esquina 39 y 37, De pie 37 y 33, Caminar bien 40 y 40, Terreno
+  32 y 34), pero en el examen saca Terreno 8 de 12 (hacen falta 9); esquina 92 %,
+  De pie 92 %. Los maestros de terreno rondan el 80 %, también uno entrenado con listones
+  más altos (2 a 4,5 cm). Las caídas son en grava y arena junto a un listón. El promedio
+  de los dos maestros de terreno hace 73 de 80 (91 %). La semilla 22 repite la 21
+  con ese conjunto como maestro de terreno. Semilla 22: peor (Terreno 69 % como máximo
+  en validación): imitar el promedio de dos maestros cuesta más que imitar a uno.
+  La semilla 23 repite la 21 (un solo maestro de terreno) con el doble de episodios
+  de terreno por ronda (24): el alumno ya supera a su maestro en terreno.'

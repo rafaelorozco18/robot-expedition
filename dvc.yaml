@@ -358,6 +358,24 @@ stages:
     - metrics/exp-104/evaluacion.json
     outs:
     - models/exp-105/semilla-21
+  entrenar-exp-105-s22:
+    cmd: nice -n 10 python -m expedicion entrenar exp-105 --semilla 22
+    deps:
+    - experimentos/exp-105.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-104/evaluacion.json
+    outs:
+    - models/exp-105/semilla-22
+  entrenar-exp-105-s23:
+    cmd: nice -n 10 python -m expedicion entrenar exp-105 --semilla 23
+    deps:
+    - experimentos/exp-105.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-104/evaluacion.json
+    outs:
+    - models/exp-105/semilla-23
   evaluar-exp-105:
     cmd: nice -n 10 python -m expedicion evaluar exp-105
     deps:
@@ -378,6 +396,8 @@ stages:
     - models/exp-105/semilla-19
     - models/exp-105/semilla-20
     - models/exp-105/semilla-21
+    - models/exp-105/semilla-22
+    - models/exp-105/semilla-23
     outs:
     - data/exp-105/trayectorias.jsonl
     metrics:
