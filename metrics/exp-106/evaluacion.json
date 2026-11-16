@@ -1,6 +1,6 @@
 {
   "experimento": "exp-106",
-  "campeon": 0,
+  "campeon": 1,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -56,32 +56,72 @@
     }
   },
   "semillas": {
-    "0": {
+    "1": {
       "global": {
         "episodios": 24,
-        "tasa_exito": 0.583,
-        "segundos_medios": 25.36,
-        "energia_media_j": 1016.5,
-        "inclinacion_max_media": 22.8,
-        "calidad_media": 80.4
+        "tasa_exito": 0.458,
+        "segundos_medios": 26.17,
+        "energia_media_j": 2108.6,
+        "inclinacion_max_media": 25.6,
+        "calidad_media": 72.0
       },
       "marte.ninguna": {
         "episodios": 12,
-        "tasa_exito": 1.0,
+        "tasa_exito": 0.833,
         "segundos_medios": 30.0,
-        "energia_media_j": 1209.3,
-        "inclinacion_max_media": 11.3,
-        "calidad_media": 81.0
+        "energia_media_j": 2419.4,
+        "inclinacion_max_media": 19.4,
+        "calidad_media": 72.5
       },
       "marte.empujon": {
         "episodios": 12,
-        "tasa_exito": 0.167,
-        "segundos_medios": 20.73,
-        "energia_media_j": 823.7,
-        "inclinacion_max_media": 34.3,
-        "calidad_media": 79.7
+        "tasa_exito": 0.083,
+        "segundos_medios": 22.34,
+        "energia_media_j": 1797.7,
+        "inclinacion_max_media": 31.9,
+        "calidad_media": 71.5
+      }
+    },
+    "2": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.208,
+        "segundos_medios": 27.49,
+        "energia_media_j": 2157.0,
+        "inclinacion_max_media": 22.3,
+        "calidad_media": 68.1
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 30.0,
+        "energia_media_j": 2358.2,
+        "inclinacion_max_media": 15.9,
+        "calidad_media": 68.1
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.0,
+        "segundos_medios": 24.97,
+        "energia_media_j": 1955.8,
+        "inclinacion_max_media": 28.7,
+        "calidad_media": 68.1
       }
     }
   },
-  "aprobado": true
+  "examenes_previos": {
+    "1": {
+      "exp-101": 0.917,
+      "exp-103": 1.0,
+      "exp-104": 0.417,
+      "exp-105": 1.0
+    },
+    "2": {
+      "exp-101": 0.583,
+      "exp-103": 0.0,
+      "exp-104": 0.417,
+      "exp-105": 0.5
+    }
+  },
+  "aprobado": false
 }

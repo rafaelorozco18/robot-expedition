@@ -136,3 +136,6 @@
 12:40 exp-105 semilla 26: aprobado=True
 12:43 exp-105: robot-exp-105 v24
 12:43 exp-105 aprobado
+01:00 exp-106 semilla 1: aprobado=False
+01:49 exp-106 semilla 2: aprobado=False
+01:53 exp-106: robot-exp-106 v4

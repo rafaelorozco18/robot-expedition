@@ -470,11 +470,21 @@ stages:
     - metrics/exp-105/evaluacion.json
     outs:
     - models/exp-106/semilla-1
+  entrenar-exp-106-s2:
+    cmd: nice -n 10 python -m expedicion entrenar exp-106 --semilla 2
+    deps:
+    - experimentos/exp-106.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-105/evaluacion.json
+    outs:
+    - models/exp-106/semilla-2
   evaluar-exp-106:
     cmd: nice -n 10 python -m expedicion evaluar exp-106
     deps:
     - data/exp-106/escenarios.json
     - models/exp-106/semilla-1
+    - models/exp-106/semilla-2
     outs:
     - data/exp-106/trayectorias.jsonl
     metrics:

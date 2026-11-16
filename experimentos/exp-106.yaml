@@ -58,11 +58,12 @@ aprobar:
   - exp-105
 entrenamiento:
   pasos: 5000000
-  reintentos: 2
-  procesos: 5
+  reintentos: 1
+  procesos: 4
   log_std_init: -2.3
   semillas:
   - 1
+  - 2
   log_std_final: -3.0
   repaso:
     experimentos:
