@@ -139,3 +139,6 @@
 01:00 exp-106 semilla 1: aprobado=False
 01:49 exp-106 semilla 2: aprobado=False
 01:53 exp-106: robot-exp-106 v4
+01:53 exp-106 no aprobó: campaña detenida
+04:13 exp-106 semilla 5: aprobado=True
+04:17 exp-106: robot-exp-106 v5

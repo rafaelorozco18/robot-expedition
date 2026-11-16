@@ -2,7 +2,7 @@
  "perturbacion": "ninguna",
  "planetas": {
   "marte": {
-   "semilla": 384259585,
+   "semilla": 1003451250,
    "hitos": [
     {
      "agente": "sin_entrenar",
@@ -10,11 +10,11 @@
      "origen": "exp-106",
      "exito": false,
      "segundos": 30.0,
-     "distancia": -0.01,
+     "distancia": -0.0,
      "calidad": 39.9,
      "avance": 0.0,
      "puntaje": 0.0,
-     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0° del círculo · se desvió 0.01 m del radio",
+     "texto": "No cumple el objetivo · calidad 40/100 · recorrió 0° del círculo · se desvió 0.00 m del radio",
      "clip": [
       0.0,
       30.0,
@@ -25,87 +25,87 @@
      "etapa": "Fracaso absoluto"
     },
     {
-     "agente": "paso:34752",
-     "paso": 34752,
-     "origen": "exp-106",
+     "agente": "foto:exp-104:555584",
+     "paso": 555584,
+     "origen": "exp-104",
      "exito": false,
-     "segundos": 9.02,
-     "distancia": 3.08,
-     "calidad": 73.9,
-     "avance": 0.325,
-     "puntaje": 0.3087,
-     "texto": "A los 9.0 s: se agachó o cayó · recorrió 105° del círculo · se desvió 0.25 m del radio",
+     "segundos": 4.16,
+     "distancia": 2.31,
+     "calidad": 58.5,
+     "avance": 0.138,
+     "puntaje": 0.1311,
+     "texto": "A los 4.2 s: se agachó o cayó · recorrió 45° del círculo · se desvió 0.33 m del radio",
      "clip": [
-      3.02,
-      9.02,
+      0.0,
+      4.16,
       1
      ],
-     "tasa": 0.0,
-     "indice": 23,
+     "tasa": null,
+     "indice": 14,
      "etapa": "Fracaso, pero mejor"
     },
     {
-     "agente": "paso:78144",
-     "paso": 78144,
-     "origen": "exp-106",
+     "agente": "foto:exp-105:44480",
+     "paso": 44480,
+     "origen": "exp-105",
      "exito": false,
-     "segundos": 12.46,
-     "distancia": 0.72,
-     "calidad": 74.2,
-     "avance": 0.5,
-     "puntaje": 0.475,
-     "texto": "A los 12.5 s: se agachó o cayó · recorrió 162° del círculo · se desvió 0.12 m del radio",
+     "segundos": 10.38,
+     "distancia": 1.3,
+     "calidad": 74.0,
+     "avance": 0.452,
+     "puntaje": 0.4294,
+     "texto": "A los 10.4 s: se agachó o cayó · recorrió 147° del círculo · se desvió 0.25 m del radio",
      "clip": [
-      6.46,
-      12.46,
+      4.38,
+      10.38,
       1
      ],
-     "tasa": 0.0,
-     "indice": 24,
+     "tasa": null,
+     "indice": 18,
      "etapa": "Punto de inflexión"
     },
     {
-     "agente": "paso:138944",
-     "paso": 138944,
+     "agente": "paso:0",
+     "paso": 0,
      "origen": "exp-106",
      "exito": true,
      "segundos": 30.0,
-     "distancia": 0.24,
-     "calidad": 75.1,
+     "distancia": 0.17,
+     "calidad": 73.1,
      "avance": 1.0,
-     "puntaje": 1.2416,
-     "texto": "Completó el círculo · calidad 75/100 · recorrió 369° del círculo · se desvió 0.40 m del radio",
+     "puntaje": 1.0731,
+     "texto": "Completó el círculo · calidad 73/100 · recorrió 364° del círculo · se desvió 0.39 m del radio",
      "clip": [
       0.0,
       30.0,
       2.5
      ],
-     "tasa": 0.333,
-     "indice": 25,
+     "tasa": 0.0,
+     "indice": 21,
      "etapa": "Cumplido"
     },
     {
-     "agente": "paso:312512",
-     "paso": 312512,
+     "agente": "paso:401408",
+     "paso": 401408,
      "origen": "exp-106",
      "exito": true,
      "segundos": 30.0,
-     "distancia": 0.53,
-     "calidad": 73.5,
+     "distancia": 0.49,
+     "calidad": 73.6,
      "avance": 1.0,
-     "puntaje": 1.5735,
-     "texto": "Completó el círculo · calidad 74/100 · recorrió 381° del círculo · se desvió 0.28 m del radio",
+     "puntaje": 1.4071,
+     "texto": "Completó el círculo · calidad 74/100 · recorrió 372° del círculo · se desvió 0.31 m del radio",
      "clip": [
       0.0,
       30.0,
       2.5
      ],
-     "tasa": 1.0,
-     "indice": 27,
+     "tasa": 0.667,
+     "indice": 46,
      "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 1.573
+   "mejora": 1.407
   }
  },
  "recomendado": "marte"

@@ -57,13 +57,16 @@ aprobar:
   - exp-104
   - exp-105
 entrenamiento:
-  pasos: 5000000
-  reintentos: 1
+  pasos: 400000
+  reintentos: 4
   procesos: 4
   log_std_init: -2.3
   semillas:
   - 1
   - 2
+  - 3
+  - 4
+  - 5
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -71,10 +74,43 @@ entrenamiento:
     - exp-104
     - exp-105
     fraccion: 0.3
+  continuar_de:
+    3: 1
+    5: 4
+  pasos_minimos: 400000
+  calentar_critico: 400000
+  destilar:
+    maestros:
+      exp-106: models/exp-106/semilla-1/experto.zip
+      exp-105: models/exp-106/semilla-1/experto.zip
+      exp-103: models/exp-106/semilla-1/experto.zip
+      exp-104: models/exp-105/semilla-25/experto.zip
+      exp-101: models/exp-105/semilla-25/experto.zip
+    episodios:
+      exp-106: 24
+      exp-105: 12
+      exp-103: 6
+      exp-104: 24
+      exp-101: 16
+    rondas: 12
+    validar: 40
+    procesos: 4
 trampa: 'Girar en el sitio sin avanzar: el éxito exige recorrer el círculo, no solo
   cambiar de rumbo.'
 control:
   rango: 0.8
   filtro: 0.6
 pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientras aprende
-  lo nuevo.'
+  lo nuevo. Semilla 1 (5 M desde la semilla 25 del Exp 5, con repaso): curva 83 %,
+  De pie 92 %, Caminar bien 100 %, esquina 100 %, pero Terreno 42 %: olvidó el terreno.
+  La semilla 2 (otro intento igual) salió peor. La semilla 3 aplica la receta del
+  Exp 5: parte de la 1 y solo destila (la política queda congelada en la fase de PPO),
+  con maestros del mismo linaje: la 1 en curva, esquina y Caminar bien; la semilla
+  25 del Exp 5 en Terreno y De pie. Semilla 3: Terreno no pasa de 72 % en validación
+  (la curva sí, hasta 100 %): partir del que olvidó no recupera el terreno. La semilla
+  4 parte del campeón del Exp 5 (semilla 25, que sabe todo lo anterior) y aprende
+  la curva de la semilla 1, con los mismos maestros. Semilla 4: cumple todo en validación
+  en la ronda 12 (curva 90 %, esquina 100 %, Caminar bien 100 %, Terreno 80 %, De
+  pie 85 %) y en otros 40 episodios (curva 39, esquina 40, Caminar bien 40, De pie
+  35, Terreno 30 de 40); seguía mejorando. La semilla 5 continúa la destilación desde
+  la 4 con 12 rondas más.'

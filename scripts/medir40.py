@@ -6,10 +6,10 @@ from expedicion import experimentos as X
 from expedicion.evaluar import Politica, correr_episodio
 import os
 BASE = int(os.environ.get("BASE", 3000))
-TAREAS = ["exp-105", "exp-101", "exp-103", "exp-104"]
+TAREAS = os.environ.get("TAREAS", "exp-105 exp-101 exp-103 exp-104").split()
 def uno(a):
     ruta, t = a
-    exp = {**X.cargar(t), "control": X.cargar("exp-105")["control"]}
+    exp = {**X.cargar(t), "control": X.cargar(os.environ.get("CONTROL", "exp-105"))["control"]}
     pol = Politica(Path(ruta))
     return ruta, t, sum(correr_episodio(exp, pol, {"planeta": "marte", "perturbacion": "ninguna", "semilla": BASE + k})[0]["exito"] for k in range(40))
 if __name__ == "__main__":
