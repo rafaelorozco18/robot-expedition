@@ -1,6 +1,6 @@
 {
   "experimento": "exp-107",
-  "campeon": 1,
+  "campeon": 2,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -81,6 +81,58 @@
         "inclinacion_max_media": 34.7,
         "calidad_media": 56.8
       }
+    },
+    "2": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.125,
+        "segundos_medios": 18.51,
+        "energia_media_j": 1425.1,
+        "inclinacion_max_media": 27.0,
+        "calidad_media": 65.3
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.167,
+        "segundos_medios": 19.82,
+        "energia_media_j": 1523.3,
+        "inclinacion_max_media": 25.5,
+        "calidad_media": 66.5
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.083,
+        "segundos_medios": 17.19,
+        "energia_media_j": 1327.0,
+        "inclinacion_max_media": 28.4,
+        "calidad_media": 64.0
+      }
+    },
+    "3": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.125,
+        "segundos_medios": 15.46,
+        "energia_media_j": 1131.2,
+        "inclinacion_max_media": 27.2,
+        "calidad_media": 63.8
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.167,
+        "segundos_medios": 16.29,
+        "energia_media_j": 1205.5,
+        "inclinacion_max_media": 25.3,
+        "calidad_media": 63.2
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.083,
+        "segundos_medios": 14.63,
+        "energia_media_j": 1056.9,
+        "inclinacion_max_media": 29.1,
+        "calidad_media": 64.4
+      }
     }
   },
   "examenes_previos": {
@@ -90,6 +142,20 @@
       "exp-104": 0.0,
       "exp-105": 0.167,
       "exp-106": 0.083
+    },
+    "2": {
+      "exp-101": 0.833,
+      "exp-103": 1.0,
+      "exp-104": 0.167,
+      "exp-105": 0.833,
+      "exp-106": 0.833
+    },
+    "3": {
+      "exp-101": 0.917,
+      "exp-103": 0.083,
+      "exp-104": 0.0,
+      "exp-105": 0.25,
+      "exp-106": 0.333
     }
   },
   "aprobado": false

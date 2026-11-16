@@ -75,16 +75,19 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-15, 13:00)
+## Estado actual (2026-11-16, 06:45)
 
-- Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1, 2, 3, 4 y 5.** El Exp 5 aprobó con la semilla 25
-  (21 intentos, semillas 6 a 26) sin olvidar De pie, Caminar bien ni Terreno; lo confirma en 80 episodios nuevos.
-- Receta que funcionó para no olvidar: destilar (DAgger, `entrenamiento.destilar`) desde un modelo que ya sabe lo
-  nuevo, con maestros **del mismo estilo de marcha** (`scripts/especialista_s15.py`, `models/maestros/`), política
-  congelada en la fase de PPO (`calentar_critico` = pasos) y cada ronda validada con 40 episodios por tarea.
-- El terreno es el punto débil: ~83 % real con este estilo, contra un mínimo de 75 % en un examen de 12 episodios.
-- **Próximo paso:** el Exp 6 (curva). Su `repaso` y `sin_olvidar` ya incluyen los Exps 1, 3, 4 y 5.
-  Si olvida, aplicar la misma receta de destilación con la semilla 25 del Exp 5 como maestro de esquina.
+- Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1 a 6.** El Exp 5 aprobó con la semilla 25 y el Exp 6
+  con la semilla 5, ambos sin olvidar lo anterior y confirmados en 80 episodios nuevos.
+- Receta para no olvidar: PPO aprende lo nuevo; después se destila (`entrenamiento.destilar`) **partiendo del
+  campeón anterior** (que sabe lo viejo) con maestros del mismo linaje: el modelo de PPO para lo nuevo y el
+  campeón anterior para lo viejo. Política congelada en la fase de PPO y cada ronda validada con 40 episodios.
+- **El Exp 7 no aprueba** (mejor: 15 de 40 recorridos). Diagnóstico: sobre piso firme el recorrido sale 24–28 de 40;
+  lo difícil es girar sobre pisos sueltos. El Exp 7 agrega dos cosas a la vez. **Decisión pendiente del usuario:**
+  partirlo en recorrido sobre piso firme y luego sobre terreno. Con tasa de aprendizaje 3e-4 PPO desarma lo
+  aprendido; con 1e-4 no, pero se estanca.
+- El terreno sigue siendo el punto débil (~76–89 % real frente a un mínimo de 75 %).
+- `scripts/medir40.py` acepta `TAREAS`, `CONTROL` y `BASE` (5000 para elegir, 3000 para confirmar).
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
   Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
 

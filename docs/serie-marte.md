@@ -253,6 +253,27 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
   la semilla 15 con cuatro maestros del mismo estilo, política congelada durante PPO y validación de 40 episodios
   por tarea en cada ronda.
 
+## Noche del 2026-11-15 al 16: Exps 6 y 7
+
+- **Exp 6 (Caminar en curva), semilla 1:** 5 M de PPO con repaso desde el campeón del Exp 5. Aprende la curva
+  (83 %) pero olvida el terreno (42 %). La semilla 2 repitió lo mismo y salió peor.
+- **Semilla 3:** destila desde la 1 (la que olvidó), con la 1 como maestro de curva, esquina y Caminar bien, y el
+  campeón del Exp 5 (semilla 25) como maestro de Terreno y De pie. El terreno no pasa de 72 %.
+- **Semilla 4:** los mismos maestros, pero parte del campeón del Exp 5, que ya sabe todo lo anterior, y aprende
+  solo la curva. Cumple todo en validación en la ronda 12. **La semilla 5** continúa 12 rondas más y **aprueba
+  el Exp 6** (2026-11-16, 04:17): curva 75 %, esquina 100 %, Caminar bien 100 %, Terreno 83 % y De pie 83 % en
+  sus exámenes. En 80 episodios nuevos: curva 71, esquina 80, Caminar bien 80, De pie 71 y Terreno 61 de 80.
+- **Lección:** para destilar, partir del modelo que sabe lo viejo y enseñarle lo nuevo, no al revés.
+- **Exp 7 (Dominio en terreno duro), semilla 1:** 6 M de PPO con repaso. 0 % y olvida casi todo. Al entrenar el
+  éxito sube a 39 % a los 260 mil pasos y después baja: PPO desarma lo aprendido. El campeón del Exp 6 sin entrenar
+  cumple 3 de 40 recorridos; la mejor foto, 8 de 40. Las caídas son en pisos sueltos (grava, arena y barro en
+  todo el recorrido). La semilla 2 baja la tasa de aprendizaje a 1e-4: ya no se desarma, pero sube despacio
+  (7 de 40). La semilla 3 sigue 6 M más y se estanca: su mejor foto hace 15 de 40 y la final 6 de 40.
+- **Diagnóstico del Exp 7:** sobre piso firme, el mismo recorrido lo cumplen 24 de 40 el campeón del Exp 6 sin
+  entrenar y 28 de 40 la semilla 2. Con grava, arena y barro caen a 3 y 7 de 40. El Exp 7 agrega dos cosas a la
+  vez (órdenes que cambian y girar sobre pisos sueltos). Propuesta, que decide el usuario: partirlo en un
+  recorrido sobre piso firme y después el mismo recorrido sobre terreno.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.

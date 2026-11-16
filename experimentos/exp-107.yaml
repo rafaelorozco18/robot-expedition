@@ -83,11 +83,13 @@ aprobar:
   - exp-106
 entrenamiento:
   pasos: 6000000
-  reintentos: 0
+  reintentos: 2
   procesos: 4
   log_std_init: -2.5
   semillas:
   - 1
+  - 2
+  - 3
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -95,9 +97,24 @@ entrenamiento:
     - exp-105
     - exp-106
     fraccion: 0.3
+  learning_rate: 0.0001
+  pasos_minimos: 6000000
+  continuar_de:
+    3: 2
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
 control:
   rango: 0.8
   filtro: 0.6
 pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientras aprende
-  lo nuevo.'
+  lo nuevo. Semilla 1 (6 M desde el campeón del Exp 6, con repaso): 0 % y olvidó casi
+  todo (De pie 75 %, el resto 0 a 17 %). Al entrenar, el éxito subió a 39 % hacia
+  los 260 mil pasos y luego bajó; la mejor foto hace 8 de 40 en episodios nuevos y
+  el campeón del Exp 6 sin entrenar, 3 de 40. Las caídas son en pisos sueltos. La
+  semilla 2 baja la tasa de aprendizaje a 1e-4 (3 M de pasos). Semilla 2 (tasa 1e-4,
+  3 M): ya no se desarma, pero el recorrido sube despacio (7 de 40 en episodios nuevos).
+  Sobre piso firme el mismo recorrido lo cumplen 24 de 40 el campeón del Exp 6 sin
+  entrenar y 28 de 40 la semilla 2: lo difícil son los pisos sueltos al girar. El
+  Exp 7 agrega dos cosas a la vez (órdenes cambiantes y pisos sueltos). La semilla
+  3 continúa la 2 con 6 M más. Semilla 3 (6 M más desde la 2): se estanca; la mejor
+  foto (1,26 M) hace 15 de 40 recorridos nuevos y la final 6 de 40. Pendiente de decisión
+  del usuario: partir el Exp 7 en recorrido sobre piso firme y luego sobre terreno.'
