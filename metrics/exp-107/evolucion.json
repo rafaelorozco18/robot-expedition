@@ -1,0 +1,92 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1829338324,
+   "hitos": [
+    {
+     "agente": "foto:exp-102:1555600",
+     "paso": 1555600,
+     "origen": "exp-102",
+     "exito": false,
+     "segundos": 2.32,
+     "distancia": 0.59,
+     "calidad": 27.1,
+     "avance": 0.097,
+     "puntaje": 0.0688,
+     "texto": "A los 2.3 s: se agachó o cayó · recorrió 0.6 m · error de velocidad 0.27 m/s",
+     "clip": [
+      0.0,
+      2.32,
+      1
+     ],
+     "tasa": null,
+     "indice": 8,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "foto:exp-105:0",
+     "paso": 0,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 6.78,
+     "distancia": 2.6,
+     "calidad": 62.3,
+     "avance": 0.282,
+     "puntaje": 0.2679,
+     "texto": "A los 6.8 s: se agachó o cayó · recorrió 2.7 m · error de velocidad 0.31 m/s",
+     "clip": [
+      0.78,
+      6.78,
+      1
+     ],
+     "tasa": null,
+     "indice": 17,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:41728",
+     "paso": 41728,
+     "origen": "exp-107",
+     "exito": false,
+     "segundos": 11.94,
+     "distancia": -0.24,
+     "calidad": 59.2,
+     "avance": 0.497,
+     "puntaje": 0.4721,
+     "texto": "A los 11.9 s: se agachó o cayó · recorrió 1.0 m · error de velocidad 0.35 m/s",
+     "clip": [
+      5.94,
+      11.94,
+      1
+     ],
+     "tasa": 0.333,
+     "indice": 27,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:93760",
+     "paso": 93760,
+     "origen": "exp-107",
+     "exito": false,
+     "segundos": 24.0,
+     "distancia": -0.36,
+     "calidad": 66.0,
+     "avance": 1.0,
+     "puntaje": 0.95,
+     "texto": "No cumple el objetivo · calidad 66/100 · recorrió 4.4 m · error de velocidad 0.36 m/s",
+     "clip": [
+      0.0,
+      24.0,
+      2.5
+     ],
+     "tasa": 0.333,
+     "indice": 28,
+     "etapa": "Mejor intento (aún no cumple)"
+    }
+   ],
+   "mejora": 0.881
+  }
+ },
+ "recomendado": "marte"
+}
