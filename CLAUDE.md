@@ -103,6 +103,8 @@ y el registro de modelos; las métricas y parámetros siguen en git.
   media sola no se sostiene. Nunca usar el generador global de torch: el servidor atiende episodios en paralelo.
 - `dvc repro` puede reponer resultados viejos desde su caché aunque se borren: para recalcular, correr el
   comando de la etapa directamente y después `dvc commit -f`.
+- Después de `dvc commit -f` no tocar `experimentos/exp-NNN.yaml` (ni siquiera `pendiente`) antes de la campaña: el yaml es
+  dependencia de cada etapa y `dvc repro` vuelve a entrenar la semilla (y borra su salida). Anotar antes de registrar.
 - En Marte el servo solo ya sostiene al robot: el Exp 101 arranca desequilibrado para que haya algo que aprender.
 
 - DVC borra las salidas al reentrenar: nada que se muestre al usuario debe leer `models/` o `metrics/` en vivo.

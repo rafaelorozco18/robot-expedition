@@ -85,7 +85,7 @@ aprobar:
   - exp-105
   - exp-106
 entrenamiento:
-  pasos: 2000000
+  pasos: 400000
   reintentos: 2
   procesos: 4
   log_std_init: -2.5
@@ -99,6 +99,7 @@ entrenamiento:
   - 7
   - 8
   - 9
+  - 10
   log_std_final: -3.0
   repaso:
     experimentos:
@@ -106,14 +107,33 @@ entrenamiento:
     - exp-105
     - exp-106
     fraccion: 0.3
-  learning_rate: 3.0e-05
-  pasos_minimos: 2000000
+  learning_rate: 5.0e-05
+  pasos_minimos: 400000
   continuar_de:
     3: 2
     5: 4
     6: 5
     7: 6
     9: 8
+  calentar_critico: 400000
+  destilar:
+    maestros:
+      exp-107: models/exp-107/semilla-7/experto.zip
+      exp-106: models/exp-106/semilla-5/experto.zip
+      exp-105: models/exp-106/semilla-5/experto.zip
+      exp-103: models/exp-106/semilla-5/experto.zip
+      exp-104: models/exp-106/semilla-5/experto.zip
+      exp-101: models/exp-106/semilla-5/experto.zip
+    episodios:
+      exp-107: 48
+      exp-106: 12
+      exp-105: 12
+      exp-103: 6
+      exp-104: 24
+      exp-101: 16
+    rondas: 16
+    validar: 40
+    procesos: 4
 trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
 control:
   rango: 0.8
@@ -163,4 +183,10 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   lo anterior. (La destilación de la semilla 8 usó: maestros {''exp-107'': ''models/exp-107/semilla-7/experto.zip'',
   ''exp-106'': ''models/exp-106/semilla-5/experto.zip'', ''exp-105'': ''models/exp-106/semilla-5/experto.zip'',
   ''exp-103'': ''models/exp-106/semilla-5/experto.zip'', ''exp-104'': ''models/exp-106/semilla-5/experto.zip'',
-  ''exp-101'': ''models/exp-106/semilla-5/experto.zip''}, 12 rondas.)'
+  ''exp-101'': ''models/exp-106/semilla-5/experto.zip''}, 12 rondas.) Semilla 9: 17
+  a 22 de 40; en el examen oficial (24 episodios) 42 %, igual que la 8. Campaña del
+  2026-11-18: campeón la semilla 6 (recorrido 71 % en el examen, pero olvida la curva,
+  25 %, y el Terreno, 67 %). Semilla 10: repite la destilación de la 8 desde el campeón
+  del Exp 6 con el doble de recorridos por ronda (48) y 16 rondas. Semilla 10: mejor
+  ronda 8; en 40 episodios nuevos (3000+): recorrido 28, curva 37, esquina 39, De
+  pie 30, Caminar bien 40 y Terreno 35 de 40.'
