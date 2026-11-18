@@ -63,8 +63,9 @@ métricas y perturbación, cinco transiciones reales, y trampas y decisiones pen
   Antes de entrenar, revisa `uptime` y `free -g`. Entrena con `nice` y sin ocupar todos los núcleos.
 - Máquina: 10 núcleos, 7 GB de RAM, sin GPU, Python 3.14 en `.venv`.
 - Commits en rama de trabajo, con mensajes en español. Remotos (desde 2026-11-17): git en GitHub
-  `rafaelorozco18/robot-expedition` (privado; integrantes Daniel-RGS, lunalugoeuc-a11y y alejobernalg) y DVC y MLflow
-  en DagsHub (`rafaelorozco18/robot-expedition`). Tras entrenar: `dvc push` y `git push`. Guía en el README.
+  `rafaelorozco18/robot-expedition` (privado; integrantes Daniel-RGS, lunalugoeuc-a11y y alejobernalg). DVC se comparte
+  como releases `datos-dvc-*` del repo (`scripts/bajar_modelos.sh` y `scripts/subir_modelos.sh`; remoto local `equipo`
+  en `~/robot-expedition-dvc`). DagsHub queda configurado como `origin` de DVC pero sin conectar. Guía en el README.
 - Antes de decir que el visor funciona, revísalo con capturas.
 
 ## Trabajo anterior

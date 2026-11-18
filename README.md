@@ -69,8 +69,8 @@ mlflow ui --backend-store-uri sqlite:///mlflow.db    # http://localhost:5000
 dvc metrics show
 ```
 
-El código vive en GitHub (`rafaelorozco18/robot-expedition`, privado). Los modelos y escenarios, en el remoto
-de DVC de DagsHub, y MLflow puede usar el servidor de DagsHub (ver abajo).
+El código vive en GitHub (`rafaelorozco18/robot-expedition`, privado). Los modelos y escenarios (DVC) se
+comparten como releases `datos-dvc-*` del mismo repositorio (ver abajo).
 
 ## Para el equipo: cómo empezar
 
@@ -83,30 +83,23 @@ de DVC de DagsHub, y MLflow puede usar el servidor de DagsHub (ver abajo).
    pip install -r requirements.txt && pip install -e .
    ```
 
-2. Credenciales de DagsHub (cada uno con su token: DagsHub → *User Settings → Tokens*). Se guardan en
-   `.dvc/config.local`, que git no sube:
+2. Bajar los modelos y escenarios (DVC). Están en las releases `datos-dvc-*` del repositorio; el script las
+   baja, arma el remoto de DVC en `~/robot-expedition-dvc` y corre `dvc pull`. Pide `gh auth login` una vez:
 
    ```bash
-   dvc remote modify origin --local auth basic
-   dvc remote modify origin --local user TU_USUARIO_DAGSHUB
-   dvc remote modify origin --local password TU_TOKEN
+   bash scripts/bajar_modelos.sh
    ```
 
-3. Bajar modelos y escenarios y preparar el visor:
+3. Visor:
 
    ```bash
-   dvc pull
    expedicion publicar
    expedicion servir          # http://localhost:8765
    ```
 
-4. MLflow compartido (opcional; sin esto cada uno registra en su `mlflow.db` local):
-
-   ```bash
-   export MLFLOW_TRACKING_URI=https://dagshub.com/rafaelorozco18/robot-expedition.mlflow
-   export MLFLOW_TRACKING_USERNAME=TU_USUARIO_DAGSHUB
-   export MLFLOW_TRACKING_PASSWORD=TU_TOKEN
-   ```
+> DagsHub (`dagshub.com/rafaelorozco18/robot-expedition`) queda como remoto futuro de DVC y MLflow; mientras
+> no esté conectado, se usan las releases. Con DagsHub listo: credenciales con
+> `dvc remote modify origin --local user/password` y `MLFLOW_TRACKING_URI=https://dagshub.com/rafaelorozco18/robot-expedition.mlflow`.
 
 ### Reglas para entrenar
 
@@ -117,8 +110,11 @@ de DVC de DagsHub, y MLflow puede usar el servidor de DagsHub (ver abajo).
 - Trabaja en una rama propia (`git switch -c exp-107-nombre`) y cambia **una cosa por intento**.
 - Entrenar ocupa la CPU por horas. Con el equipo en uso: `nice -n 19 ionice -c3` y `procesos: 4` en el yaml.
 - Para correr un experimento completo: `expedicion campana exp-NNN` (entrena, evalúa, documenta, hace commit y tag).
-- Al terminar, subir **las dos cosas**: `dvc push` (modelos) y `git push origin TU_RAMA --tags` (código y lock).
-  Si solo se sube git, los demás tienen un `dvc.lock` que apunta a modelos que no existen en el remoto.
+- Al terminar, subir **las dos cosas**: `git push origin TU_RAMA --tags` (código y lock) y
+  `bash scripts/subir_modelos.sh` (modelos nuevos). Si solo se sube git, los demás tienen un `dvc.lock` que
+  apunta a modelos que no pueden bajar. Para traer lo de los demás: `git pull` y `bash scripts/bajar_modelos.sh`.
+- La campaña mueve el tag `exp-NNN` (`git tag -f`). Si dos personas corren el mismo experimento, sube tu rama
+  sin `--tags` y acuerden quién publica el tag del campeón.
 - Aprobar exige no olvidar: el campeón debe seguir pasando los exámenes anteriores (`aprobar.sin_olvidar`).
   No bajes los criterios de aprobación sin acordarlo con el grupo.
 
