@@ -85,27 +85,27 @@
      "etapa": "Cumplido"
     },
     {
-     "agente": "paso:3002368",
-     "paso": 3002368,
+     "agente": "paso:6000640",
+     "paso": 6000640,
      "origen": "exp-107",
      "exito": true,
      "segundos": 24.0,
-     "distancia": 7.54,
-     "calidad": 76.0,
+     "distancia": 9.11,
+     "calidad": 75.0,
      "avance": 1.0,
-     "puntaje": 1.2425,
-     "texto": "Completó el recorrido · calidad 76/100 · recorrió 8.4 m · error de velocidad 0.18 m/s",
+     "puntaje": 1.4085,
+     "texto": "Completó el recorrido · calidad 75/100 · recorrió 10.0 m · error de velocidad 0.18 m/s",
      "clip": [
       0.0,
       24.0,
       2.5
      ],
-     "tasa": 0.333,
+     "tasa": 0.667,
      "indice": 50,
      "etapa": "Perfeccionado"
     }
    ],
-   "mejora": 1.187
+   "mejora": 1.353
   }
  },
  "recomendado": "marte"

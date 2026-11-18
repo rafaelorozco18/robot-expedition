@@ -274,6 +274,37 @@ Intentos del Exp 5 (examen de 12 episodios; mínimos: esquina 80 %, De pie 80 %,
   vez (órdenes que cambian y girar sobre pisos sueltos). Propuesta, que decide el usuario: partirlo en un
   recorrido sobre piso firme y después el mismo recorrido sobre terreno.
 
+## Noche del 2026-11-17 al 18: el Exp 7 sube de 15 a 30 de 40
+
+Sin cambiar el diseño del experimento ni su examen. Toda medida es en 40 recorridos nuevos (semillas 5000+ para
+elegir, 3000+ para confirmar).
+
+- **Cambio de entrenamiento: intensidad de los pisos** (`pisos.intensidad_entrenando`, solo al entrenar). Cada
+  episodio sortea k entre un mínimo y 1: con k = 0 los pisos son suelo firme y con k = 1 son los del examen.
+  Es la misma idea que `alto_entrenando` en los listones: lo suave da señal para aprender lo duro.
+
+| Semilla | Parte de | Cambio | Recorrido (mejor foto) |
+|---|---|---|---|
+| 4 | Campeón del Exp 6 | k entre 0 y 1, tasa 1e-4, 6 M | 12 de 40 |
+| 5 | Semilla 4 | k entre 0,5 y 1 | 21 de 40 |
+| 6 | Semilla 5 | k entre 0,75 y 1 | 28 + 28 de 80 |
+| 7 | Semilla 6 | tasa 5e-5 | 30 + 26 de 80 (70 %) |
+| 8 | Campeón del Exp 6 | destila: semilla 7 en el recorrido, campeón del Exp 6 en lo anterior | 67 % en validación; 20 de 40 nuevos |
+| 9 | Semilla 8 | PPO tasa 3e-5, 2 M, sin destilar | 17 a 22 de 40 |
+
+- **Diagnóstico con la semilla 4:** el recorrido sobre piso firme ya sale 36 de 40 (90 %). Con un solo tipo de
+  piso: arena 36, grava 17 y **barro 0 de 40**. En barro no se cae: aguanta 24 s pero va lento (error de velocidad
+  0,26–0,29 m/s; el máximo es 0,25). En el examen mixto la mayoría de los fallos son caídas.
+- **Semilla 7:** con pisos al 75 % cumple 37 de 40; con los del examen, 30. Solo barro, 9 de 40; solo grava, 24.
+  Falla por inclinarse demasiado o por ir lento.
+- **PPO olvida:** la semilla 5 bajó la curva a 1 de 40. La semilla 8 aplica la receta del Exp 6 y no olvida nada
+  (curva 39, esquina 36, De pie 31, Caminar bien 40 y Terreno 35 de 40), pero el recorrido queda debajo del maestro.
+- **Lo que no subió el techo del maestro** (fuera de la serie, en `models/prueba-*`): 6 M más de PPO desde la
+  semilla 7 (31 de 40), promediar tres maestros del mismo linaje (56 de 80), practicar con pisos más duros que el
+  examen (k entre 0,9 y 1,25: 26 de 40) y seguir destilando desde la semilla 8 (52 a 62 % en validación).
+- **Dónde quedó:** el maestro cumple ~70 % del recorrido y el alumno que no olvida, 50–67 %. El cuello de botella
+  es girar en el barro.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.

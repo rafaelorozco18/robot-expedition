@@ -1,6 +1,6 @@
 {
   "experimento": "exp-107",
-  "campeon": 2,
+  "campeon": 6,
   "agentes": {
     "sin_entrenar": {
       "global": {
@@ -133,6 +133,162 @@
         "inclinacion_max_media": 29.1,
         "calidad_media": 64.4
       }
+    },
+    "4": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.167,
+        "segundos_medios": 20.08,
+        "energia_media_j": 1668.3,
+        "inclinacion_max_media": 23.9,
+        "calidad_media": 66.8
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.167,
+        "segundos_medios": 20.66,
+        "energia_media_j": 1715.1,
+        "inclinacion_max_media": 21.1,
+        "calidad_media": 66.7
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.167,
+        "segundos_medios": 19.5,
+        "energia_media_j": 1621.6,
+        "inclinacion_max_media": 26.7,
+        "calidad_media": 66.8
+      }
+    },
+    "5": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.333,
+        "segundos_medios": 15.89,
+        "energia_media_j": 1304.4,
+        "inclinacion_max_media": 26.7,
+        "calidad_media": 65.8
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.333,
+        "segundos_medios": 16.7,
+        "energia_media_j": 1364.2,
+        "inclinacion_max_media": 24.0,
+        "calidad_media": 65.8
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.333,
+        "segundos_medios": 15.08,
+        "energia_media_j": 1244.7,
+        "inclinacion_max_media": 29.4,
+        "calidad_media": 65.9
+      }
+    },
+    "6": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.708,
+        "segundos_medios": 21.11,
+        "energia_media_j": 1817.0,
+        "inclinacion_max_media": 21.4,
+        "calidad_media": 70.9
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.75,
+        "segundos_medios": 21.86,
+        "energia_media_j": 1867.7,
+        "inclinacion_max_media": 22.5,
+        "calidad_media": 71.8
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.667,
+        "segundos_medios": 20.36,
+        "energia_media_j": 1766.3,
+        "inclinacion_max_media": 20.2,
+        "calidad_media": 70.0
+      }
+    },
+    "7": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.625,
+        "segundos_medios": 22.56,
+        "energia_media_j": 1862.0,
+        "inclinacion_max_media": 17.9,
+        "calidad_media": 71.6
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.667,
+        "segundos_medios": 24.0,
+        "energia_media_j": 1976.9,
+        "inclinacion_max_media": 16.3,
+        "calidad_media": 72.6
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.583,
+        "segundos_medios": 21.12,
+        "energia_media_j": 1747.0,
+        "inclinacion_max_media": 19.5,
+        "calidad_media": 70.6
+      }
+    },
+    "8": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.417,
+        "segundos_medios": 20.0,
+        "energia_media_j": 1667.6,
+        "inclinacion_max_media": 24.3,
+        "calidad_media": 69.5
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 21.61,
+        "energia_media_j": 1791.5,
+        "inclinacion_max_media": 22.7,
+        "calidad_media": 71.5
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.417,
+        "segundos_medios": 18.39,
+        "energia_media_j": 1543.8,
+        "inclinacion_max_media": 25.8,
+        "calidad_media": 67.5
+      }
+    },
+    "9": {
+      "global": {
+        "episodios": 24,
+        "tasa_exito": 0.417,
+        "segundos_medios": 18.77,
+        "energia_media_j": 1573.2,
+        "inclinacion_max_media": 21.8,
+        "calidad_media": 67.7
+      },
+      "marte.ninguna": {
+        "episodios": 12,
+        "tasa_exito": 0.5,
+        "segundos_medios": 18.35,
+        "energia_media_j": 1530.1,
+        "inclinacion_max_media": 22.8,
+        "calidad_media": 68.6
+      },
+      "marte.empujon": {
+        "episodios": 12,
+        "tasa_exito": 0.333,
+        "segundos_medios": 19.19,
+        "energia_media_j": 1616.3,
+        "inclinacion_max_media": 20.9,
+        "calidad_media": 66.8
+      }
     }
   },
   "examenes_previos": {
@@ -155,6 +311,48 @@
       "exp-103": 0.083,
       "exp-104": 0.0,
       "exp-105": 0.25,
+      "exp-106": 0.333
+    },
+    "4": {
+      "exp-101": 0.833,
+      "exp-103": 1.0,
+      "exp-104": 0.5,
+      "exp-105": 0.917,
+      "exp-106": 0.083
+    },
+    "5": {
+      "exp-101": 0.583,
+      "exp-103": 1.0,
+      "exp-104": 0.75,
+      "exp-105": 0.75,
+      "exp-106": 0.0
+    },
+    "6": {
+      "exp-101": 0.833,
+      "exp-103": 1.0,
+      "exp-104": 0.667,
+      "exp-105": 1.0,
+      "exp-106": 0.25
+    },
+    "7": {
+      "exp-101": 0.833,
+      "exp-103": 1.0,
+      "exp-104": 0.5,
+      "exp-105": 1.0,
+      "exp-106": 0.417
+    },
+    "8": {
+      "exp-101": 0.917,
+      "exp-103": 1.0,
+      "exp-104": 0.833,
+      "exp-105": 0.917,
+      "exp-106": 1.0
+    },
+    "9": {
+      "exp-101": 0.75,
+      "exp-103": 1.0,
+      "exp-104": 0.833,
+      "exp-105": 0.917,
       "exp-106": 0.333
     }
   },

@@ -78,17 +78,18 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-16, 06:45)
+## Estado actual (2026-11-18, mañana)
 
 - Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1 a 6.** El Exp 5 aprobó con la semilla 25 y el Exp 6
   con la semilla 5, ambos sin olvidar lo anterior y confirmados en 80 episodios nuevos.
 - Receta para no olvidar: PPO aprende lo nuevo; después se destila (`entrenamiento.destilar`) **partiendo del
   campeón anterior** (que sabe lo viejo) con maestros del mismo linaje: el modelo de PPO para lo nuevo y el
   campeón anterior para lo viejo. Política congelada en la fase de PPO y cada ronda validada con 40 episodios.
-- **El Exp 7 no aprueba** (mejor: 15 de 40 recorridos). Diagnóstico: sobre piso firme el recorrido sale 24–28 de 40;
-  lo difícil es girar sobre pisos sueltos. El Exp 7 agrega dos cosas a la vez. **Decisión pendiente del usuario:**
-  partirlo en recorrido sobre piso firme y luego sobre terreno. Con tasa de aprendizaje 3e-4 PPO desarma lo
-  aprendido; con 1e-4 no, pero se estanca.
+- **El Exp 7 no aprueba, pero subió de 15 a 30 de 40 recorridos** con `pisos.intensidad_entrenando` (pisos de
+  intensidad al azar solo al entrenar; semillas 4 a 7). Maestro de PPO (semilla 7): ~70 %. Alumno destilado que no
+  olvida (semilla 8): 50–67 %. Sobre piso firme sale 36 de 40; el cuello de botella es **girar en el barro**
+  (solo barro: 9 de 40; se inclina o va lento). Sigue pendiente la decisión del usuario de partir el Exp 7.
+- Equipo: tres integrantes entrenan con el repositorio de GitHub; modelos por releases (ver Forma de trabajar).
 - El terreno sigue siendo el punto débil (~76–89 % real frente a un mínimo de 75 %).
 - `scripts/medir40.py` acepta `TAREAS`, `CONTROL` y `BASE` (5000 para elegir, 3000 para confirmar).
 - Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).

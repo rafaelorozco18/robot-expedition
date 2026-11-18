@@ -346,13 +346,20 @@ class BipedoEnv(gym.Env):
         if conf.get("mezclar"):
             self.np_random.shuffle(orden)
         tramos, x = [], float(conf.get("inicio_m", 2.0))
+        # Al entrenar, pisos de intensidad al azar (0 = suelo firme, 1 = la del examen): los suaves dan señal
+        # para aprender los duros. El examen siempre usa la intensidad completa.
+        k = 1.0
+        if self.entrenando and conf.get("intensidad_entrenando"):
+            k = float(self.np_random.uniform(*conf["intensidad_entrenando"]))
+        f_suelo = PISOS["suelo"]["friccion"][0]
         for t in orden:
             p = PISOS[t["tipo"]]
             largo = float(self.np_random.uniform(*t["largo"])) if isinstance(t["largo"], list) else float(t["largo"])
+            friccion = float(self.np_random.uniform(*p["friccion"]))
             tramos.append({"x0": x, "x1": x + largo, "tipo": t["tipo"],
-                           "friccion": float(self.np_random.uniform(*p["friccion"])),
-                           "arrastre": float(self.np_random.uniform(*p["arrastre"])),
-                           "succion": p["succion"], "sacudida": p["sacudida"]})
+                           "friccion": f_suelo + k * (friccion - f_suelo),
+                           "arrastre": k * float(self.np_random.uniform(*p["arrastre"])),
+                           "succion": k * p["succion"], "sacudida": k * p["sacudida"]})
             x += largo
         return tramos
 
