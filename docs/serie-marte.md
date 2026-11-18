@@ -291,6 +291,7 @@ elegir, 3000+ para confirmar).
 | 7 | Semilla 6 | tasa 5e-5 | 30 + 26 de 80 (70 %) |
 | 8 | Campeón del Exp 6 | destila: semilla 7 en el recorrido, campeón del Exp 6 en lo anterior | 67 % en validación; 20 de 40 nuevos |
 | 9 | Semilla 8 | PPO tasa 3e-5, 2 M, sin destilar | 17 a 22 de 40 |
+| 10 | Campeón del Exp 6 | destila como la 8, con 48 recorridos por ronda y 16 rondas | 28 de 40 nuevos; examen oficial 12 de 24 |
 
 - **Diagnóstico con la semilla 4:** el recorrido sobre piso firme ya sale 36 de 40 (90 %). Con un solo tipo de
   piso: arena 36, grava 17 y **barro 0 de 40**. En barro no se cae: aguanta 24 s pero va lento (error de velocidad
@@ -302,6 +303,9 @@ elegir, 3000+ para confirmar).
 - **Lo que no subió el techo del maestro** (fuera de la serie, en `models/prueba-*`): 6 M más de PPO desde la
   semilla 7 (31 de 40), promediar tres maestros del mismo linaje (56 de 80), practicar con pisos más duros que el
   examen (k entre 0,9 y 1,25: 26 de 40) y seguir destilando desde la semilla 8 (52 a 62 % en validación).
+- **Semilla 10:** en 40 episodios nuevos por tarea cumple todo a la vez (recorrido 28, curva 37, esquina 39, De pie 30,
+  Caminar bien 40 y Terreno 35 de 40), pero en el examen oficial saca 50 % en el recorrido y 75 % en De pie (mínimo 80 %).
+  El examen de 24 recorridos tiene escenarios más duros o es ruidoso: con ~70 % real, aprobar es cara o sello.
 - **Dónde quedó:** el maestro cumple ~70 % del recorrido y el alumno que no olvida, 50–67 %. El cuello de botella
   es girar en el barro.
 

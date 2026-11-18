@@ -87,7 +87,8 @@ y el registro de modelos; las métricas y parámetros siguen en git.
   campeón anterior para lo viejo. Política congelada en la fase de PPO y cada ronda validada con 40 episodios.
 - **El Exp 7 no aprueba, pero subió de 15 a 30 de 40 recorridos** con `pisos.intensidad_entrenando` (pisos de
   intensidad al azar solo al entrenar; semillas 4 a 7). Maestro de PPO (semilla 7): ~70 %. Alumno destilado que no
-  olvida (semilla 8): 50–67 %. Sobre piso firme sale 36 de 40; el cuello de botella es **girar en el barro**
+  olvida: semilla 8, 50–67 %; semilla 10 (48 recorridos por ronda), 70 % en episodios nuevos pero 50 % en el examen
+  oficial y De pie 75 %. Sobre piso firme sale 36 de 40; el cuello de botella es **girar en el barro**
   (solo barro: 9 de 40; se inclina o va lento). Sigue pendiente la decisión del usuario de partir el Exp 7.
 - Equipo: tres integrantes entrenan con el repositorio de GitHub; modelos por releases (ver Forma de trabajar).
 - El terreno sigue siendo el punto débil (~76–89 % real frente a un mínimo de 75 %).
