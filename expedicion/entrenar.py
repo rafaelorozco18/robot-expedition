@@ -1,6 +1,7 @@
 """Entrenamiento con PPO y registro de cada corrida en MLflow."""
 
 import json
+import os
 import subprocess
 import time
 from collections import deque
@@ -12,7 +13,8 @@ from .ambiente import BipedoEnv
 from .vectorizado import BloquesVecEnv
 from .experimentos import RAIZ, cargar, carpeta_metricas, carpeta_modelos
 
-URI_MLFLOW = f"sqlite:///{RAIZ / 'mlflow.db'}"
+# Local por defecto; para el servidor compartido del equipo se define MLFLOW_TRACKING_URI (ver README).
+URI_MLFLOW = os.environ.get("MLFLOW_TRACKING_URI") or f"sqlite:///{RAIZ / 'mlflow.db'}"
 
 
 def git_commit():

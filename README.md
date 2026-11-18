@@ -69,8 +69,58 @@ mlflow ui --backend-store-uri sqlite:///mlflow.db    # http://localhost:5000
 dvc metrics show
 ```
 
-DVC y MLflow son locales: para compartirlos con el equipo falta configurar un remoto (`dvc remote add`)
-y un servidor de MLflow.
+El código vive en GitHub (`rafaelorozco18/robot-expedition`, privado). Los modelos y escenarios, en el remoto
+de DVC de DagsHub, y MLflow puede usar el servidor de DagsHub (ver abajo).
+
+## Para el equipo: cómo empezar
+
+1. Clonar e instalar:
+
+   ```bash
+   git clone https://github.com/rafaelorozco18/robot-expedition.git
+   cd robot-expedition
+   python -m venv .venv && source .venv/bin/activate
+   pip install -r requirements.txt && pip install -e .
+   ```
+
+2. Credenciales de DagsHub (cada uno con su token: DagsHub → *User Settings → Tokens*). Se guardan en
+   `.dvc/config.local`, que git no sube:
+
+   ```bash
+   dvc remote modify origin --local auth basic
+   dvc remote modify origin --local user TU_USUARIO_DAGSHUB
+   dvc remote modify origin --local password TU_TOKEN
+   ```
+
+3. Bajar modelos y escenarios y preparar el visor:
+
+   ```bash
+   dvc pull
+   expedicion publicar
+   expedicion servir          # http://localhost:8765
+   ```
+
+4. MLflow compartido (opcional; sin esto cada uno registra en su `mlflow.db` local):
+
+   ```bash
+   export MLFLOW_TRACKING_URI=https://dagshub.com/rafaelorozco18/robot-expedition.mlflow
+   export MLFLOW_TRACKING_USERNAME=TU_USUARIO_DAGSHUB
+   export MLFLOW_TRACKING_PASSWORD=TU_TOKEN
+   ```
+
+### Reglas para entrenar
+
+- **Los experimentos van en cadena.** Cada uno parte del campeón del anterior (`parte_de`): el Exp 8 no se puede
+  entrenar hasta que el Exp 7 esté aprobado y su campeón esté en DVC (`dvc pull`).
+- Antes de tocar un experimento, lee su `pendiente` en `experimentos/exp-NNN.yaml` y la bitácora
+  `docs/serie-marte.md`: ahí está lo que ya se probó y falló.
+- Trabaja en una rama propia (`git switch -c exp-107-nombre`) y cambia **una cosa por intento**.
+- Entrenar ocupa la CPU por horas. Con el equipo en uso: `nice -n 19 ionice -c3` y `procesos: 4` en el yaml.
+- Para correr un experimento completo: `expedicion campana exp-NNN` (entrena, evalúa, documenta, hace commit y tag).
+- Al terminar, subir **las dos cosas**: `dvc push` (modelos) y `git push origin TU_RAMA --tags` (código y lock).
+  Si solo se sube git, los demás tienen un `dvc.lock` que apunta a modelos que no existen en el remoto.
+- Aprobar exige no olvidar: el campeón debe seguir pasando los exámenes anteriores (`aprobar.sin_olvidar`).
+  No bajes los criterios de aprobación sin acordarlo con el grupo.
 
 La navegación en rejilla con Q-learning, primera versión del proyecto, está archivada en el tag
 `legado-navegacion`.
