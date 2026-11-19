@@ -27,7 +27,7 @@ evaluar en vivo en la aplicación (Exp 9). La versión sin el Exp 9 queda en el 
 
 | Pide | Dónde |
 |---|---|
-| URL Vercel y repositorio con release/tag | Arriba. Release `entrega-final` en GitHub |
+| URL Vercel y repositorio con release/tag | Arriba. Release `entrega-final-v2` en GitHub |
 | README con instalación, ejecución, variables, arquitectura y reproducción | [README.md](../README.md), [.env.example](../.env.example) |
 | Ficha del ambiente y tres niveles | [docs/ficha-ambiente.md](../docs/ficha-ambiente.md); ficha por experimento en [docs/experimentos/](../docs/experimentos/) |
 | Cuatro configuraciones con hipótesis y sus runs/estados en MLflow | [docs/comparacion-experimentos.md](../docs/comparacion-experimentos.md) (49 corridas) y la página [registro](https://robot-expedition-tawny.vercel.app/registro.html); hipótesis en la etiqueta `hipotesis` de cada run y en el `pendiente` de cada `experimentos/exp-NNN.yaml` |
