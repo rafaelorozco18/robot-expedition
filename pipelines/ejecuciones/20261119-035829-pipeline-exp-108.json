@@ -1,0 +1,83 @@
+{
+ "exp": "exp-108",
+ "inicio": "2026-11-19T03:57:29",
+ "perfil": {
+  "tarea": "balizas",
+  "robot": "robots/bipedo-v2.xml",
+  "obs": [
+   58
+  ],
+  "acciones": 12,
+  "parte_de": "exp-107a",
+  "semillas": [
+   1,
+   2,
+   3,
+   4
+  ]
+ },
+ "pruebas": "17 passed in 6.82s",
+ "entrenamiento": [
+  {
+   "semilla": 1,
+   "reutilizado": true
+  },
+  {
+   "semilla": 2,
+   "reutilizado": true
+  },
+  {
+   "semilla": 3,
+   "reutilizado": true
+  },
+  {
+   "semilla": 4,
+   "reutilizado": true
+  }
+ ],
+ "evaluacion": {
+  "campeon": 1,
+  "tasa": 0.708,
+  "sin_olvidar": {
+   "exp-101": 0.917,
+   "exp-103": 1.0,
+   "exp-104": 0.75,
+   "exp-105": 1.0,
+   "exp-106": 1.0,
+   "exp-107a": 1.0
+  },
+  "regresion": {
+   "exp-101": 0.917,
+   "exp-102": 0.083,
+   "exp-103": 1.0,
+   "exp-104": 0.75,
+   "exp-105": 1.0,
+   "exp-106": 1.0,
+   "exp-107a": 1.0,
+   "exp-108": 0.833
+  },
+  "aprobado": true
+ },
+ "registro": "  color_warning(",
+ "seleccion": {
+  "decision": "seleccionar",
+  "olvida": [],
+  "minimo": 0.7,
+  "sin_olvidar": [
+   "exp-101",
+   "exp-103",
+   "exp-104",
+   "exp-105",
+   "exp-106",
+   "exp-107a"
+  ]
+ },
+ "publicacion": "/home/rafaelorozco/code/proyecto-gymnasium/publicado/exp-108",
+ "verificacion": {
+  "servida": "exp-108-1795078676587501230",
+  "semilla_servida": 1,
+  "model_sha256": "2083930f7bb0c766082d1f83f0b760bdfc9540f773a1220bf3b0681ed1f1f460",
+  "exito": 7,
+  "episodios": 10
+ }
+}

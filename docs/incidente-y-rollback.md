@@ -45,9 +45,25 @@ manifiestos `manifests/exp-107-semilla-6.json` y `manifests/exp-107-semilla-10.j
 - La regresión de cada campeón (exámenes anteriores) se publica junto al modelo y el visor la muestra en
   «¿Olvidó lo anterior?».
 
-## 4. Rollback
+## 4. Prueba de rollback (ejecutada el 2026-11-19)
 
-Ver la sección «Prueba de rollback» más abajo: se ejecuta con el flujo de Prefect `robot-expedition-rollback`
-(`pipelines/flujo.py --rollback`), que vuelve el enlace `publicado/<exp>` a la versión publicada anterior
-(`publicado/.versiones/`), verifica el SHA-256 del modelo servido y corre un episodio de prueba. En MLflow, el alias
-`campeon` del Model Registry identifica la versión recomendada y puede moverse a la versión anterior.
+Escenario: un candidato rechazado se promueve por error como versión servida del Exp 8. El monitoreo lo detecta y el
+flujo de rollback vuelve a la versión anterior y comprueba que funciona. Cada paso es un flujo de Prefect y deja su
+registro en `pipelines/ejecuciones/` (archivos `20261119-0400*`).
+
+| Paso | Comando | Versión servida | Semilla | SHA-256 del modelo | Éxito en episodios nuevos (7000+) |
+|---|---|---|---|---|---|
+| 1. Monitoreo inicial | `flujo.py exp-108 --monitorear` | `exp-108-1795078763825659466` | 1 (campeón) | `2083930f7bb0…` | 15 de 20 |
+| 2. Promoción por error | `scripts/promover.py exp-108 2` | `exp-108-1795078834288728653` | 2 (rechazado) | `6b1b5d06f30b…` | — |
+| 3. Monitoreo: degradación | `flujo.py exp-108 --monitorear` | `exp-108-1795078834288728653` | 2 | `6b1b5d06f30b…` | **7 de 20** |
+| 4. Rollback | `flujo.py exp-108 --rollback` | vuelve a `exp-108-1795078763825659466` | 1 | `2083930f7bb0…` | 7 de 10 (verificación del rollback) |
+| 5. Monitoreo final | `flujo.py exp-108 --monitorear` | `exp-108-1795078763825659466` | 1 | `2083930f7bb0…` | **15 de 20** |
+
+- Promover **no sobrescribe** nada: cada publicación es una carpeta nueva en `publicado/.versiones/` y el enlace
+  `publicado/exp-108` cambia de un solo golpe. El rollback mueve el enlace a la versión publicada anterior.
+- El rollback se comprueba por identidad (el SHA-256 vuelve a ser el del campeón y la semilla servida es la 1) y por
+  funcionamiento (episodios nuevos).
+- En MLflow el campeón está identificado por el alias `campeon` de `robot-exp-108` (versión 4); la promoción por error
+  no lo tocó, y el registro es idempotente: volver a registrar el mismo run reutiliza su versión.
+- Rollback del código y la configuración: cada experimento tiene su tag (`git checkout exp-107a`), y
+  `bash scripts/bajar_modelos.sh` (`dvc pull`) trae los modelos que ese commit referencia.

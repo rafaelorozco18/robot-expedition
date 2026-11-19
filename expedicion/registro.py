@@ -27,6 +27,15 @@ def registrar(exp):
     nombre = f"robot-{exp['id']}"
 
     mlflow.set_tracking_uri(URI_MLFLOW)
+    cliente = mlflow.MlflowClient()
+    # Idempotente: si este run ya tiene una versión registrada, se reutiliza (no se duplica el artefacto).
+    previas = [v for v in cliente.search_model_versions(f"name='{nombre}'") if v.run_id == corrida["mlflow_run_id"]] \
+        if cliente.search_registered_models(filter_string=f"name='{nombre}'") else []
+    if previas:
+        version = max(int(v.version) for v in previas)
+        cliente.set_registered_model_alias(nombre, "campeon", version)
+        cliente.set_model_version_tag(nombre, version, "aprobado", str(evaluacion["aprobado"]))
+        return f"{nombre} v{version} (ya registrada)"
     with mlflow.start_run(run_id=corrida["mlflow_run_id"]):
         m = evaluacion["semillas"][str(semilla)]
         for grupo, valores in m.items():
@@ -36,7 +45,6 @@ def registrar(exp):
             name="politica", python_model=Politica(),
             artifacts={"modelo": str(carpeta / "experto.zip")},
             registered_model_name=nombre)
-    cliente = mlflow.MlflowClient()
     version = info.registered_model_version
     cliente.set_registered_model_alias(nombre, "campeon", version)
     cliente.set_model_version_tag(nombre, version, "aprobado", str(evaluacion["aprobado"]))

@@ -64,9 +64,9 @@
     {
      "run_id": "cc34a50960e84cb99737d29fbbfe4664",
      "nombre": "semilla-1",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794415114188,
-     "fin": null,
+     "fin": 1795078603458,
      "params": {
       "ent.pasos": "700000",
       "ent.procesos": "4",
@@ -735,9 +735,9 @@
     {
      "run_id": "b2a6b6acf2fc4f8ba29c4c2307739964",
      "nombre": "semilla-0",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794418338641,
-     "fin": null,
+     "fin": 1795078603436,
      "params": {
       "ent.pasos": "1300000",
       "ent.procesos": "5",
@@ -1007,9 +1007,9 @@
     {
      "run_id": "511a9de800ef4a189839ef0644a34bd6",
      "nombre": "semilla-0",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794572639588,
-     "fin": null,
+     "fin": 1795078603359,
      "params": {
       "ent.pasos": "5000000",
       "ent.procesos": "4",
@@ -1155,9 +1155,9 @@
     {
      "run_id": "4323ee8217154806aca81f1c78775f12",
      "nombre": "semilla-0",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794419493636,
-     "fin": null,
+     "fin": 1795078603418,
      "params": {
       "ent.pasos": "1600000",
       "ent.procesos": "5",
@@ -1292,9 +1292,9 @@
     {
      "run_id": "2e0f16d75ae141e2880f8ace9b8a6ff7",
      "nombre": "semilla-0",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794464211755,
-     "fin": null,
+     "fin": 1795078603404,
      "params": {
       "ent.pasos": "6000000",
       "ent.procesos": "5",
@@ -1949,9 +1949,9 @@
     {
      "run_id": "9fca1ab2392040d297e3356485805ee9",
      "nombre": "semilla-6",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794635238236,
-     "fin": null,
+     "fin": 1795078603334,
      "params": {
       "ent.pasos": "6000000",
       "ent.procesos": "5",
@@ -2091,9 +2091,9 @@
     {
      "run_id": "afeb6b057bad4638bda3abd4be949381",
      "nombre": "semilla-7",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794638114043,
-     "fin": null,
+     "fin": 1795078603320,
      "params": {
       "ent.pasos": "6000000",
       "ent.procesos": "5",
@@ -2233,9 +2233,9 @@
     {
      "run_id": "5ce0a47fd7a44a5a8dd6092d379d84ca",
      "nombre": "semilla-8",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794642011229,
-     "fin": null,
+     "fin": 1795078603304,
      "params": {
       "ent.pasos": "9000000",
       "ent.procesos": "5",
@@ -2826,9 +2826,9 @@
     {
      "run_id": "f818de54f5864d55806f0d2e161dd649",
      "nombre": "semilla-15",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794686436239,
-     "fin": null,
+     "fin": 1795078603291,
      "params": {
       "ent.pasos": "3000000",
       "ent.procesos": "4",
@@ -5375,9 +5375,9 @@
     {
      "run_id": "8d2dc98f2dd4463abd1e22fd68baf42e",
      "nombre": "semilla-9",
-     "estado": "RUNNING",
+     "estado": "KILLED",
      "inicio": 1794992438616,
-     "fin": null,
+     "fin": 1795078603262,
      "params": {
       "ent.pasos": "400000",
       "ent.procesos": "4",
@@ -6356,7 +6356,7 @@
      "nombre": "semilla-1",
      "estado": "FINISHED",
      "inicio": 1795059649456,
-     "fin": 1795060639140,
+     "fin": 1795078583385,
      "params": {
       "ent.pasos": "300000",
       "ent.procesos": "4",
@@ -6506,9 +6506,9 @@
     {
      "run_id": "175793b0ab74441cad2c38a4e8f55a46",
      "nombre": "semilla-3",
-     "estado": "RUNNING",
+     "estado": "FINISHED",
      "inicio": 1795061405563,
-     "fin": null,
+     "fin": 1795062058973,
      "params": {
       "ent.pasos": "1000000",
       "ent.procesos": "4",
@@ -6565,11 +6565,88 @@
       "semilla": "3"
      },
      "metricas": {
-      "tasa_exito": 0.8,
-      "recompensa_media": 429.7
+      "tasa_exito": 0.69,
+      "recompensa_media": 395.7,
+      "segundos": 648.0,
+      "pasos_por_segundo": 1549.0
      },
      "tags": {
       "mlflow.runName": "semilla-3",
+      "hipotesis": "Candidato: ajustar con PPO en la tarea de balizas (tasa 3e-5, 1 M de pasos, con repaso) reduce las caídas de la línea base sin olvidar los exámenes anteriores.",
+      "git_commit": "062c241",
+      "robot": "robots/bipedo-v2.xml",
+      "parte_de": "exp-107a"
+     }
+    },
+    {
+     "run_id": "98a73a9ab40940fab921b99663952846",
+     "nombre": "semilla-4",
+     "estado": "FINISHED",
+     "inicio": 1795062073732,
+     "fin": 1795062570437,
+     "params": {
+      "ent.pasos": "1000000",
+      "ent.procesos": "4",
+      "ent.robots_por_proceso": "16",
+      "ent.hilos": "1",
+      "ent.n_steps": "64",
+      "ent.batch_size": "2048",
+      "ent.n_epochs": "5",
+      "ent.learning_rate": "3e-05",
+      "ent.gamma": "0.99",
+      "ent.gae_lambda": "0.95",
+      "ent.clip_range": "0.2",
+      "ent.log_std_init": "-2.5",
+      "ent.escala_recompensa": "0.05",
+      "ent.red": "[256, 256]",
+      "ent.fotos": "24",
+      "ent.aprendiz": "0.25",
+      "ent.pasos_minimos": "1000000",
+      "ent.perfeccionar": "0.5",
+      "ent.ruido_hasta": "0.7",
+      "ent.fotos_cuadraticas": "True",
+      "ent.reintentos": "0",
+      "ent.log_std_final": "-3.0",
+      "ent.repaso": "{'experimentos': ['exp-101', 'exp-105', 'exp-106', 'exp-107a'], 'fraccion': 0.3}",
+      "ent.calentar_critico": "0",
+      "ent.continuar_de": "{2: 1, 3: 1, 4: 1}",
+      "amb.duracion_s": "45",
+      "amb.frame_skip": "5",
+      "amb.ruido_inicial": "0.02",
+      "amb.altura_minima": "0.75",
+      "amb.inclinacion_maxima": "40",
+      "amb.empujon_entrenando": "0.0",
+      "amb.empujon_ms": "0.4",
+      "amb.empujones_por_episodio": "1",
+      "amb.velocidad_inicial": "0.0",
+      "rec.vivo": "0.3",
+      "rec.altura": "0.5",
+      "rec.postura": "0",
+      "rec.quieto": "0",
+      "rec.esfuerzo": "0.05",
+      "rec.suavidad": "15.0",
+      "rec.caida": "30.0",
+      "rec.velocidad": "2.0",
+      "rec.erguido": "1.5",
+      "rec.rumbo": "1.0",
+      "rec.reloj": "4.0",
+      "rec.paso": "1.5",
+      "rec.giro": "0.02",
+      "rec.vel_articular": "1.0",
+      "rec.zancada": "15.0",
+      "rec.deslizamiento": "2.0",
+      "rec.guinada": "1.0",
+      "rec.vuelo": "15.0",
+      "semilla": "4"
+     },
+     "metricas": {
+      "tasa_exito": 0.69,
+      "recompensa_media": 403.3,
+      "segundos": 493.9,
+      "pasos_por_segundo": 2032.0
+     },
+     "tags": {
+      "mlflow.runName": "semilla-4",
       "hipotesis": "Candidato: ajustar con PPO en la tarea de balizas (tasa 3e-5, 1 M de pasos, con repaso) reduce las caídas de la línea base sin olvidar los exámenes anteriores.",
       "git_commit": "062c241",
       "robot": "robots/bipedo-v2.xml",
@@ -7243,6 +7320,18 @@
      "version": 3,
      "run_id": "a6328691a8d14623a3b879d2b365f7c4",
      "estado": "READY",
+     "alias": [],
+     "tags": {
+      "aprobado": "True",
+      "parte_de": "exp-107a",
+      "robot": "robots/bipedo-v2.xml"
+     },
+     "creado": 1795060639034
+    },
+    {
+     "version": 4,
+     "run_id": "a6328691a8d14623a3b879d2b365f7c4",
+     "estado": "READY",
      "alias": [
       "campeon"
      ],
@@ -7251,7 +7340,7 @@
       "parte_de": "exp-107a",
       "robot": "robots/bipedo-v2.xml"
      },
-     "creado": 1795060639034
+     "creado": 1795078583345
     }
    ]
   },

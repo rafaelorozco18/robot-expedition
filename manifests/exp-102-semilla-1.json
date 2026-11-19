@@ -1,0 +1,145 @@
+{
+ "run_id": "91f42b85f3fe46b09fd0bd020c2e5bc7",
+ "level_id": "N1",
+ "experimento": "exp-102",
+ "titulo": "Caminar",
+ "pregunta": "¿Camina 10 m sin caer en Marte?",
+ "papel": "historico",
+ "environment_version": "robots/bipedo-v2.xml (sha256 c543e04fed5add10) + tarea «marcha»",
+ "git_commit": "caa6fffb6684f8fdd0649e1a525c2c32c105ca8b",
+ "config_sha256": "7af1187fceb75b97cd6abf4763f0b1da73f2a1bb27303c2af4266225e0ef7266",
+ "config_publicada": "publicado/exp-102/exp.json",
+ "model_uri": "dvc://models/exp-102/semilla-1/experto.zip",
+ "model_sha256": "278ea961bb867b061c860938dfdecab94ea60b4e9acc4d72b4b97e2ddaefb2a8",
+ "dvc": {
+  "salida": "models/exp-102/semilla-1",
+  "md5": "2f0020129f9999037cb03c47bb97827b.dir",
+  "recuperar": "dvc pull models/exp-102/semilla-1"
+ },
+ "mlflow_registro": {
+  "nombre": "robot-exp-102",
+  "version": 2,
+  "alias": [
+   "campeon"
+  ],
+  "uri": "models:/robot-exp-102/2"
+ },
+ "normalization_uri": null,
+ "runtime_ref": "requirements.txt (Python 3.14, MuJoCo, Gymnasium, Stable-Baselines3, PyTorch CPU)",
+ "evaluation_suite_id": "exp-102/escenarios.json sha256 4c9f3f9403d7844e",
+ "seed": 1,
+ "presupuesto": {
+  "pasos": 1555600,
+  "segundos": 699.1
+ },
+ "parent_run_id": "523bb570879c49dfb956fe0ccf21cee6",
+ "origen": {
+  "tipo": "parte_de",
+  "exp": "exp-101",
+  "semilla": 0,
+  "run_id": "523bb570879c49dfb956fe0ccf21cee6"
+ },
+ "algoritmo": "PPO (Stable-Baselines3), red 256×256; destilación DAgger cuando el yaml declara `destilar`",
+ "contrato": {
+  "observacion": {
+   "dimension": 58,
+   "tipo": "float32",
+   "recorte": [
+    -10,
+    10
+   ],
+   "orden": [
+    {
+     "nombre": "altura_torso_rel",
+     "dimension": 1,
+     "unidades": "m, altura del torso menos la de pie"
+    },
+    {
+     "nombre": "vertical_en_torso",
+     "dimension": 3,
+     "unidades": "eje z del mundo en ejes del torso (adimensional)"
+    },
+    {
+     "nombre": "rumbo_pedido_en_torso",
+     "dimension": 3,
+     "unidades": "dirección pedida (cos, sin, 0) en ejes del torso"
+    },
+    {
+     "nombre": "vel_lineal_torso",
+     "dimension": 3,
+     "unidades": "m/s, en ejes del mundo rotados al torso"
+    },
+    {
+     "nombre": "vel_angular_torso",
+     "dimension": 3,
+     "unidades": "rad/s × 0,25"
+    },
+    {
+     "nombre": "angulos_rel_postura",
+     "dimension": 12,
+     "unidades": "rad, ángulo de cada articulación menos la postura inicial"
+    },
+    {
+     "nombre": "vel_articulares",
+     "dimension": 12,
+     "unidades": "rad/s × 0,1"
+    },
+    {
+     "nombre": "accion_previa",
+     "dimension": 12,
+     "unidades": "la acción del paso anterior, [-1, 1]"
+    },
+    {
+     "nombre": "contacto_pies",
+     "dimension": 2,
+     "unidades": "1 si el pie izquierdo / derecho toca el piso"
+    },
+    {
+     "nombre": "gravedad_rel",
+     "dimension": 1,
+     "unidades": "g / 9,81 (Marte: 0,378)"
+    },
+    {
+     "nombre": "comando",
+     "dimension": 4,
+     "unidades": "velocidad x, velocidad y (m/s), altura relativa pedida, giro pedido (rad/s)"
+    },
+    {
+     "nombre": "reloj",
+     "dimension": 2,
+     "unidades": "sin y cos de la fase de la marcha (0 en tareas sin reloj)"
+    }
+   ]
+  },
+  "accion": {
+   "dimension": 12,
+   "tipo": "float32",
+   "rango": [
+    -1,
+    1
+   ],
+   "articulaciones": [
+    "cadera_yaw_i",
+    "cadera_roll_i",
+    "cadera_pitch_i",
+    "rodilla_i",
+    "tobillo_pitch_i",
+    "tobillo_roll_i",
+    "cadera_yaw_d",
+    "cadera_roll_d",
+    "cadera_pitch_d",
+    "rodilla_d",
+    "tobillo_pitch_d",
+    "tobillo_roll_d"
+   ],
+   "significado": "ángulo objetivo = postura inicial + acción × 0.8 rad; filtro de primer orden 0.3; un servo PD por articulación convierte el ángulo en torque"
+  },
+  "normalizacion": "ninguna: sin VecNormalize; la observación se recorta a ±10 dentro del ambiente y la acción a ±1",
+  "paso_fisico": {
+   "dt_mujoco_s": 0.004,
+   "frame_skip": 5,
+   "dt_decision_s": 0.02,
+   "frecuencia_hz": 50.0
+  }
+ }
+}

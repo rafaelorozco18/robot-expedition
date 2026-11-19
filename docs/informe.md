@@ -48,7 +48,8 @@ aprendido del Exp 1 lo logra 20 de 24.
   no exige movimientos nuevos. Sin entrenar, llega a las 3 balizas en **37 de 40** episodios nuevos (5000+).
 - **Hipótesis del candidato:** un ajuste fino con PPO en la tarea (tasa 3e-5, 1 M de pasos, con repaso) reduce las caídas.
   Tres semillas de entrenamiento independientes: **24, 25 y 34 de 40**. Las tres empeoran: el ajuste fino perturba una
-  marcha que ya era buena.
+  marcha que ya era buena. En el examen oficial sacan 50, 75 y 58 % en balizas (línea base: 83 %) y además **olvidan el
+  terreno** (8, 33 y 0 %; mínimo 75 %) y De pie (75 %; mínimo 80 %).
 - **Decisión: rechazar el candidato y quedarse con la línea base**, que además no olvida ningún examen anterior.
   Todos los candidatos quedan conservados en MLflow, DVC y la tabla de comparación.
 

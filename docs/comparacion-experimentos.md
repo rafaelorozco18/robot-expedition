@@ -18,7 +18,7 @@ tabla por semilla en CSV: `docs/evaluaciones/<exp>-semillas.csv`.
 | 5 | Girar en la esquina | 21 | semilla 25 | aprobado |
 | 6 | Caminar en curva | 5 | semilla 5 | aprobado |
 | 7 | Recorrido | 3 | semilla 3 | aprobado |
-| 8 | Llegar a las balizas | 1 | semilla 1 | aprobado |
+| 8 | Llegar a las balizas | 4 | semilla 1 | aprobado |
 | 7 (terreno, descartado) | Dominio en terreno duro | 10 | semilla 6 | no aprobado |
 
 ## Todas las corridas
@@ -61,6 +61,9 @@ tabla por semilla en CSV: `docs/evaluaciones/<exp>-semillas.csv`.
 | 7 | 2 | campeón de exp-106 | 401,408 | 58 min | 100 % | 42 % | 101 83 % · 103 100 % · 104 58 % · 105 100 % · 106 100 % | rechazado: olvida exp-104 | `b17082c6` |
 | 7 | 3 | campeón de exp-106 | 401,408 | 57 min | 100 % | 50 % | 101 92 % · 103 100 % · 104 75 % · 105 100 % · 106 100 % | **campeón · aprobado** | `d88c5a3d` |
 | 8 | 1 | campeón de exp-107a | 303,104 | 4 min | 83 % | 58 % | 101 92 % · 103 100 % · 104 75 % · 105 100 % · 106 100 % · 107a 100 % | **campeón · aprobado** | `a6328691` |
+| 8 | 2 | continúa semilla 1 | 1,003,520 | 9 min | 50 % | 33 % | 101 75 % · 103 100 % · 104 8 % · 105 92 % · 106 100 % · 107a 75 % | rechazado: no llega al mínimo; olvida exp-101, exp-104 | `87a38abf` |
+| 8 | 3 | continúa semilla 1 | 1,003,520 | 11 min | 75 % | 50 % | 101 75 % · 103 100 % · 104 33 % · 105 92 % · 106 75 % · 107a 75 % | rechazado: olvida exp-101, exp-104 | `175793b0` |
+| 8 | 4 | continúa semilla 1 | 1,003,520 | 8 min | 58 % | 42 % | 101 83 % · 103 100 % · 104 0 % · 105 100 % · 106 100 % · 107a 92 % | rechazado: no llega al mínimo; olvida exp-104 | `98a73a9a` |
 | 7 (terreno, descartado) | 1 | campeón de exp-106 | 6,000,640 | 47 min | 0 % | 17 % | 101 75 % · 103 17 % · 104 0 % · 105 17 % · 106 8 % | rechazado: no llega al mínimo; olvida exp-101, exp-103, exp-104, exp-105, exp-106 | `807e24cc` |
 | 7 (terreno, descartado) | 2 | campeón de exp-106 | 3,002,368 | 21 min | 17 % | 8 % | 101 83 % · 103 100 % · 104 17 % · 105 83 % · 106 83 % | rechazado: no llega al mínimo; olvida exp-104 | `51a01ac5` |
 | 7 (terreno, descartado) | 3 | continúa semilla 2 | 6,000,640 | 42 min | 17 % | 8 % | 101 92 % · 103 8 % · 104 0 % · 105 25 % · 106 33 % | rechazado: no llega al mínimo; olvida exp-103, exp-104, exp-105, exp-106 | `18726350` |

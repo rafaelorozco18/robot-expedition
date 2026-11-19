@@ -1,0 +1,139 @@
+{
+ "run_id": "87a38abf220046cdac2d77c039ffc8c4",
+ "level_id": "N3",
+ "experimento": "exp-108",
+ "titulo": "Llegar a las balizas",
+ "pregunta": "¿Llega, una tras otra, a tres balizas puestas al azar a su alrededor?",
+ "papel": "rechazado",
+ "motivo": "Candidato de ajuste fino con PPO: 24 de 40 balizas en episodios nuevos (línea base: 37).",
+ "environment_version": "robots/bipedo-v2.xml (sha256 c543e04fed5add10) + tarea «balizas»",
+ "git_commit": "062c24121336c42a1422ec421cbfddc55289081a",
+ "config_sha256": "0cf02910e796e72b8fcfebc49dd90513cfadcd5ff912c4968755614afbc6ed05",
+ "config_publicada": "publicado/exp-108/exp.json",
+ "model_uri": "dvc://models/exp-108/semilla-2/experto.zip",
+ "model_sha256": "6b1b5d06f30bebcc7980575345f753d0e2866ced8dab77693c60bfa1e03ce1d9",
+ "dvc": {
+  "salida": "models/exp-108/semilla-2",
+  "md5": "d0fc45d71b942a9e4468c6f25408c8f5.dir",
+  "recuperar": "dvc pull models/exp-108/semilla-2"
+ },
+ "mlflow_registro": null,
+ "normalization_uri": null,
+ "runtime_ref": "requirements.txt (Python 3.14, MuJoCo, Gymnasium, Stable-Baselines3, PyTorch CPU)",
+ "evaluation_suite_id": "exp-108/escenarios.json sha256 4c9f3f9403d7844e",
+ "seed": 2,
+ "presupuesto": {
+  "pasos": 1003520,
+  "segundos": 560.9
+ },
+ "parent_run_id": "a6328691a8d14623a3b879d2b365f7c4",
+ "origen": {
+  "tipo": "continuacion",
+  "exp": "exp-108",
+  "semilla": 1,
+  "run_id": "a6328691a8d14623a3b879d2b365f7c4"
+ },
+ "algoritmo": "PPO (Stable-Baselines3), red 256×256; destilación DAgger cuando el yaml declara `destilar`",
+ "contrato": {
+  "observacion": {
+   "dimension": 58,
+   "tipo": "float32",
+   "recorte": [
+    -10,
+    10
+   ],
+   "orden": [
+    {
+     "nombre": "altura_torso_rel",
+     "dimension": 1,
+     "unidades": "m, altura del torso menos la de pie"
+    },
+    {
+     "nombre": "vertical_en_torso",
+     "dimension": 3,
+     "unidades": "eje z del mundo en ejes del torso (adimensional)"
+    },
+    {
+     "nombre": "rumbo_pedido_en_torso",
+     "dimension": 3,
+     "unidades": "dirección pedida (cos, sin, 0) en ejes del torso"
+    },
+    {
+     "nombre": "vel_lineal_torso",
+     "dimension": 3,
+     "unidades": "m/s, en ejes del mundo rotados al torso"
+    },
+    {
+     "nombre": "vel_angular_torso",
+     "dimension": 3,
+     "unidades": "rad/s × 0,25"
+    },
+    {
+     "nombre": "angulos_rel_postura",
+     "dimension": 12,
+     "unidades": "rad, ángulo de cada articulación menos la postura inicial"
+    },
+    {
+     "nombre": "vel_articulares",
+     "dimension": 12,
+     "unidades": "rad/s × 0,1"
+    },
+    {
+     "nombre": "accion_previa",
+     "dimension": 12,
+     "unidades": "la acción del paso anterior, [-1, 1]"
+    },
+    {
+     "nombre": "contacto_pies",
+     "dimension": 2,
+     "unidades": "1 si el pie izquierdo / derecho toca el piso"
+    },
+    {
+     "nombre": "gravedad_rel",
+     "dimension": 1,
+     "unidades": "g / 9,81 (Marte: 0,378)"
+    },
+    {
+     "nombre": "comando",
+     "dimension": 4,
+     "unidades": "velocidad x, velocidad y (m/s), altura relativa pedida, giro pedido (rad/s)"
+    },
+    {
+     "nombre": "reloj",
+     "dimension": 2,
+     "unidades": "sin y cos de la fase de la marcha (0 en tareas sin reloj)"
+    }
+   ]
+  },
+  "accion": {
+   "dimension": 12,
+   "tipo": "float32",
+   "rango": [
+    -1,
+    1
+   ],
+   "articulaciones": [
+    "cadera_yaw_i",
+    "cadera_roll_i",
+    "cadera_pitch_i",
+    "rodilla_i",
+    "tobillo_pitch_i",
+    "tobillo_roll_i",
+    "cadera_yaw_d",
+    "cadera_roll_d",
+    "cadera_pitch_d",
+    "rodilla_d",
+    "tobillo_pitch_d",
+    "tobillo_roll_d"
+   ],
+   "significado": "ángulo objetivo = postura inicial + acción × 0.8 rad; filtro de primer orden 0.6; un servo PD por articulación convierte el ángulo en torque"
+  },
+  "normalizacion": "ninguna: sin VecNormalize; la observación se recorta a ±10 dentro del ambiente y la acción a ±1",
+  "paso_fisico": {
+   "dt_mujoco_s": 0.004,
+   "frame_skip": 5,
+   "dt_decision_s": 0.02,
+   "frecuencia_hz": 50.0
+  }
+ }
+}

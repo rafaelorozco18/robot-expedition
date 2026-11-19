@@ -1,0 +1,10 @@
+{
+ "exp": "exp-108",
+ "verificacion": {
+  "servida": "exp-108-1795078763825659466",
+  "semilla_servida": 1,
+  "model_sha256": "2083930f7bb0c766082d1f83f0b760bdfc9540f773a1220bf3b0681ed1f1f460",
+  "exito": 15,
+  "episodios": 20
+ }
+}

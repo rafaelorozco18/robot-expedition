@@ -1,0 +1,139 @@
+{
+ "run_id": "b17082c6eb3f48a8801cca3596ad9265",
+ "level_id": "N2",
+ "experimento": "exp-107a",
+ "titulo": "Recorrido",
+ "pregunta": "¿Encadena rectas, giros y curvas sobre piso firme?",
+ "papel": "historico",
+ "motivo": "Misma receta que el campeón; falló solo el examen de Terreno (58 %).",
+ "environment_version": "robots/bipedo-v2.xml (sha256 c543e04fed5add10) + tarea «recorrido»",
+ "git_commit": "441dbef8f011a36e39edb677c2868a9da074369b",
+ "config_sha256": "09f07a1390ea9389417c845bb30703d8ea62f541b5afabd61ee72cb763c20b72",
+ "config_publicada": "publicado/exp-107a/exp.json",
+ "model_uri": "dvc://models/exp-107a/semilla-2/experto.zip",
+ "model_sha256": "f5b520aaa2de73227237e99d8ef8319e43e9e2125fc88815e48fd5fba535d33a",
+ "dvc": {
+  "salida": "models/exp-107a/semilla-2",
+  "md5": "c4c58db71cc9b022d2a12f61e0f86361.dir",
+  "recuperar": "dvc pull models/exp-107a/semilla-2"
+ },
+ "mlflow_registro": null,
+ "normalization_uri": null,
+ "runtime_ref": "requirements.txt (Python 3.14, MuJoCo, Gymnasium, Stable-Baselines3, PyTorch CPU)",
+ "evaluation_suite_id": "exp-107a/escenarios.json sha256 4c9f3f9403d7844e",
+ "seed": 2,
+ "presupuesto": {
+  "pasos": 401408,
+  "segundos": 3452.5
+ },
+ "parent_run_id": "b8780d3806754849871dedefedc1da77",
+ "origen": {
+  "tipo": "parte_de",
+  "exp": "exp-106",
+  "semilla": 5,
+  "run_id": "b8780d3806754849871dedefedc1da77"
+ },
+ "algoritmo": "PPO (Stable-Baselines3), red 256×256; destilación DAgger cuando el yaml declara `destilar`",
+ "contrato": {
+  "observacion": {
+   "dimension": 58,
+   "tipo": "float32",
+   "recorte": [
+    -10,
+    10
+   ],
+   "orden": [
+    {
+     "nombre": "altura_torso_rel",
+     "dimension": 1,
+     "unidades": "m, altura del torso menos la de pie"
+    },
+    {
+     "nombre": "vertical_en_torso",
+     "dimension": 3,
+     "unidades": "eje z del mundo en ejes del torso (adimensional)"
+    },
+    {
+     "nombre": "rumbo_pedido_en_torso",
+     "dimension": 3,
+     "unidades": "dirección pedida (cos, sin, 0) en ejes del torso"
+    },
+    {
+     "nombre": "vel_lineal_torso",
+     "dimension": 3,
+     "unidades": "m/s, en ejes del mundo rotados al torso"
+    },
+    {
+     "nombre": "vel_angular_torso",
+     "dimension": 3,
+     "unidades": "rad/s × 0,25"
+    },
+    {
+     "nombre": "angulos_rel_postura",
+     "dimension": 12,
+     "unidades": "rad, ángulo de cada articulación menos la postura inicial"
+    },
+    {
+     "nombre": "vel_articulares",
+     "dimension": 12,
+     "unidades": "rad/s × 0,1"
+    },
+    {
+     "nombre": "accion_previa",
+     "dimension": 12,
+     "unidades": "la acción del paso anterior, [-1, 1]"
+    },
+    {
+     "nombre": "contacto_pies",
+     "dimension": 2,
+     "unidades": "1 si el pie izquierdo / derecho toca el piso"
+    },
+    {
+     "nombre": "gravedad_rel",
+     "dimension": 1,
+     "unidades": "g / 9,81 (Marte: 0,378)"
+    },
+    {
+     "nombre": "comando",
+     "dimension": 4,
+     "unidades": "velocidad x, velocidad y (m/s), altura relativa pedida, giro pedido (rad/s)"
+    },
+    {
+     "nombre": "reloj",
+     "dimension": 2,
+     "unidades": "sin y cos de la fase de la marcha (0 en tareas sin reloj)"
+    }
+   ]
+  },
+  "accion": {
+   "dimension": 12,
+   "tipo": "float32",
+   "rango": [
+    -1,
+    1
+   ],
+   "articulaciones": [
+    "cadera_yaw_i",
+    "cadera_roll_i",
+    "cadera_pitch_i",
+    "rodilla_i",
+    "tobillo_pitch_i",
+    "tobillo_roll_i",
+    "cadera_yaw_d",
+    "cadera_roll_d",
+    "cadera_pitch_d",
+    "rodilla_d",
+    "tobillo_pitch_d",
+    "tobillo_roll_d"
+   ],
+   "significado": "ángulo objetivo = postura inicial + acción × 0.8 rad; filtro de primer orden 0.6; un servo PD por articulación convierte el ángulo en torque"
+  },
+  "normalizacion": "ninguna: sin VecNormalize; la observación se recorta a ±10 dentro del ambiente y la acción a ±1",
+  "paso_fisico": {
+   "dt_mujoco_s": 0.004,
+   "frame_skip": 5,
+   "dt_decision_s": 0.02,
+   "frecuencia_hz": 50.0
+  }
+ }
+}

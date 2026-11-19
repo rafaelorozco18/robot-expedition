@@ -75,16 +75,21 @@ def evaluar(exp):
     ev = json.loads((RAIZ / "metrics" / exp / "evaluacion.json").read_text())
     reg = json.loads((RAIZ / "metrics" / exp / "regresion.json").read_text())
     c = str(ev["campeon"])
-    return {"campeon": ev["campeon"], "tasa": ev["semillas"][c]["global"]["tasa_exito"],
+    pert = _py(f"from expedicion import experimentos as X; import json; "
+               f"print(json.dumps(X.cargar({exp!r})['aprobar'].get('perturbacion', 'ninguna')))")
+    grupo = ev["semillas"][c].get(f"marte.{pert}", ev["semillas"][c]["global"])  # condición que decide la aprobación
+    return {"campeon": ev["campeon"], "condicion": pert, "tasa": grupo["tasa_exito"],
+            "tasa_global": ev["semillas"][c]["global"]["tasa_exito"],
             "sin_olvidar": ev["examenes_previos"].get(c, {}), "regresion": reg, "aprobado": ev["aprobado"]}
 
 
 @task(name="5 · registrar en MLflow")
 def registrar(exp):
     salida = _sh(PY, "-c", f"from expedicion import experimentos as X; from expedicion.registro import registrar; "
-                           f"print(registrar(X.cargar({exp!r})))")
-    get_run_logger().info(salida.splitlines()[-1])
-    return salida.splitlines()[-1]
+                           f"print('REGISTRO', registrar(X.cargar({exp!r})))")
+    linea = next(l for l in reversed(salida.splitlines()) if l.startswith("REGISTRO"))[9:]
+    get_run_logger().info(linea)
+    return linea
 
 
 @task(name="6 · seleccionar o rechazar (criterios fijados)")
@@ -166,6 +171,14 @@ def rollback(exp: str):
     return resultado
 
 
+@flow(name="robot-expedition-monitoreo")
+def monitorear(exp: str, episodios: int = 20):
+    """Revisa la versión servida (identidad y éxito en episodios nuevos) y lo deja registrado."""
+    resultado = {"exp": exp, "verificacion": verificar(exp, episodios)}
+    _guardar(resultado, "monitoreo")
+    return resultado
+
+
 def _guardar(resultado, tipo="pipeline"):
     REGISTRO.mkdir(parents=True, exist_ok=True)
     marca = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -176,5 +189,7 @@ if __name__ == "__main__":
     a = argparse.ArgumentParser()
     a.add_argument("exp")
     a.add_argument("--rollback", action="store_true")
+    a.add_argument("--monitorear", action="store_true")
     args = a.parse_args()
-    print(json.dumps((rollback if args.rollback else pipeline)(args.exp), indent=1, ensure_ascii=False, default=str))
+    flujo = rollback if args.rollback else monitorear if args.monitorear else pipeline
+    print(json.dumps(flujo(args.exp), indent=1, ensure_ascii=False, default=str))

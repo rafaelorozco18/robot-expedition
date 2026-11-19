@@ -1,0 +1,53 @@
+# Entrega final · Robot Expedition
+
+Mapa de la entrega: cada punto que pide el enunciado y dónde se revisa. Todo lo de la columna «Dónde» está en el
+repositorio `rafaelorozco18/robot-expedition` o en la aplicación publicada.
+
+## Identidad de la versión entregada
+
+| | |
+|---|---|
+| Aplicación (Vercel) | https://robot-expedition-tawny.vercel.app |
+| Release / tag | `entrega-final` |
+| Commit entregado | `{{SHA}}` |
+| Deployment de Vercel | lleva el mismo commit en sus metadatos y en https://robot-expedition-tawny.vercel.app/sim/api/estado (`commit`) |
+| Modelo recomendado | `exp-108` semilla 1 · run `{{RUN108}}` · `robot-exp-108` alias `campeon` · [manifiesto](../manifests/exp-108-semilla-1.json) |
+| Modelo histórico (ejemplo) | `exp-103` semilla 1 · run `{{RUN103}}` · ambiente `robots/bipedo-v2.xml` + tarea «marcha» · [manifiesto](../manifests/exp-103-semilla-1.json) |
+| Presentación | https://robot-expedition-tawny.vercel.app/presentacion.html |
+
+## Paquete final (sección 17 del enunciado)
+
+| Pide | Dónde |
+|---|---|
+| URL Vercel y repositorio con release/tag | Arriba. Release `entrega-final` en GitHub |
+| README con instalación, ejecución, variables, arquitectura y reproducción | [README.md](../README.md), [.env.example](../.env.example) |
+| Ficha del ambiente y tres niveles | [docs/ficha-ambiente.md](../docs/ficha-ambiente.md); ficha por experimento en [docs/experimentos/](../docs/experimentos/) |
+| Cuatro configuraciones con hipótesis y sus runs/estados en MLflow | [docs/comparacion-experimentos.md](../docs/comparacion-experimentos.md) (49 corridas) y la página [registro](https://robot-expedition-tawny.vercel.app/registro.html); hipótesis en la etiqueta `hipotesis` de cada run y en el `pendiente` de cada `experimentos/exp-NNN.yaml` |
+| Modelos finales recuperables, normalización, manifiestos y referencias | [manifests/](../manifests/) (SHA-256, contrato de 58 observaciones y 12 acciones, normalización «ninguna», DVC y MLflow); recuperación con `bash scripts/bajar_modelos.sh` |
+| Evaluaciones por caso, comparación de finalistas y presupuesto | `data/<exp>/trayectorias.jsonl` (cada episodio del examen), [docs/evaluaciones/](../docs/evaluaciones/) (por semilla, con pasos y segundos), comparación del Exp 8 en [docs/informe.md](../docs/informe.md) |
+| Pipeline | [pipelines/flujo.py](../pipelines/flujo.py) (Prefect, 8 etapas) y sus ejecuciones en [pipelines/ejecuciones/](../pipelines/ejecuciones/); `dvc.yaml` / `dvc.lock` |
+| Degradación, intervención y prueba de rollback | [docs/incidente-y-rollback.md](../docs/incidente-y-rollback.md) |
+| Informe breve y presentación | [docs/informe.md](../docs/informe.md), [presentación](https://robot-expedition-tawny.vercel.app/presentacion.html) |
+
+## Cómo revisarlo (lo que pide la sección «Cómo se revisará»)
+
+1. **Elegir una ejecución histórica y comprobar su identidad.** En la [página de registro](https://robot-expedition-tawny.vercel.app/registro.html)
+   cada modelo muestra run, commit y SHA-256; el manifiesto completo está en `manifests/`. `/sim/api/estado` da el SHA-256
+   del modelo que se está sirviendo para cada experimento.
+2. **Cargar el modelo y evaluarlo.** En la aplicación, abrir cualquier experimento (por ejemplo el Exp 3) y pulsar
+   «Lanzar episodio» con una semilla: el episodio se corre en ese momento en MuJoCo (función Python de Vercel) y se
+   marca «Evaluación en vivo». «Versión del robot» permite evaluar también el aprendiz, la regla sin red y el agente
+   aleatorio.
+3. **Comparar candidatos compatibles.** Todos los modelos son de la misma familia (mismo robot, 58 observaciones,
+   12 acciones). Comparación por semilla en `docs/comparacion-experimentos.md`; «Carrera de versiones» en la aplicación.
+4. **Explicar fallos.** Cada episodio muestra su motivo de fin (cayó, se inclinó, no llegó) y el desglose de la recompensa.
+5. **Reconstruir una evaluación desde la release.** `git checkout entrega-final && bash scripts/bajar_modelos.sh &&
+   dvc repro evaluar-exp-108` (o `python scripts/medir40.py models/exp-108/semilla-1/experto.zip`).
+6. **Restaurar una versión anterior.** `~/.venvs/prefect/bin/python pipelines/flujo.py exp-108 --rollback`; la prueba
+   ejecutada está en `docs/incidente-y-rollback.md`. A nivel de código: `git checkout exp-107a` (tag de cada experimento).
+
+## Lo que requiere al equipo antes de enviar
+
+- Completar en `entrega/CORREO.md` el grupo (A o B) y los nombres completos.
+- Dar acceso al repositorio privado al docente (invitarlo con su usuario de GitHub, o pedírselo en el correo).
+- Completar las contribuciones de cada integrante en `docs/informe.md`.
