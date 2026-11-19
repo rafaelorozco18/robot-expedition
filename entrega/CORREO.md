@@ -1,20 +1,20 @@
 # Correo de entrega (borrador para enviar al docente)
 
-Los campos entre corchetes los completa el equipo antes de enviar (grupo y nombres completos). Todo lo demás ya está verificado.
+Listo para enviar.
 
 ---
 
 **Para:** Julián Zuluaga
-**Asunto:** MLOps · Entrega final · Grupo [A o B] · Robot Expedition
+**Asunto:** MLOps · Entrega final · Grupo B · Robot Expedition
 
 Profesor Julián, buenos días.
 
 Le enviamos la entrega final del proyecto de MLOps.
 
 **1. Grupo, escenario e integrantes**
-- Grupo: [A o B]
+- Grupo: B
 - Escenario: Robot Expedition
-- Integrantes: Rafael Orozco [segundo apellido], [nombre completo], [nombre completo], [nombre completo]
+- Integrantes: Rafael José Orozco Luquez, Luna Nicole Lugo Ospina, Jhon Alejandro Bernal Guaman, Daniel Santiago Gamba Rincon
 
 **2. Repositorio**
 - https://github.com/rafaelorozco18/robot-expedition
@@ -57,4 +57,7 @@ Le enviamos la entrega final del proyecto de MLOps.
 
 Quedamos atentos.
 
-[Firmas]
+Rafael José Orozco Luquez
+Luna Nicole Lugo Ospina
+Jhon Alejandro Bernal Guaman
+Daniel Santiago Gamba Rincon
