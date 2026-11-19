@@ -78,10 +78,12 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-18, mañana)
+## Estado actual (2026-11-18, 20:30)
 
-- Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1 a 6.** El Exp 5 aprobó con la semilla 25 y el Exp 6
-  con la semilla 5, ambos sin olvidar lo anterior y confirmados en 80 episodios nuevos.
+- Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1 a 6 y el 7a** (`exp-107a`, «Recorrido» sobre piso firme,
+  semilla 3). El usuario partió el Exp 7: el 7a está aprobado y el Exp 7 de terreno (`exp-107`) queda guardado, sin aprobar.
+- **Los Exps 8 y 9 van a cambiar (pedido del usuario, 2026-11-18):** no entrenar `exp-108` ni `exp-109` hasta que el usuario
+  diga cuáles son.
 - Receta para no olvidar: PPO aprende lo nuevo; después se destila (`entrenamiento.destilar`) **partiendo del
   campeón anterior** (que sabe lo viejo) con maestros del mismo linaje: el modelo de PPO para lo nuevo y el
   campeón anterior para lo viejo. Política congelada en la fase de PPO y cada ronda validada con 40 episodios.

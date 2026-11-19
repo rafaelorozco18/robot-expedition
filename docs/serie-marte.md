@@ -309,6 +309,21 @@ elegir, 3000+ para confirmar).
 - **Dónde quedó:** el maestro cumple ~70 % del recorrido y el alumno que no olvida, 50–67 %. El cuello de botella
   es girar en el barro.
 
+## 2026-11-18: Exp 7a (Recorrido) aprobado
+
+Por pedido del usuario, el Exp 7 se partió en dos. El **Exp 7a** (`exp-107a`, «Recorrido») pregunta solo lo primero:
+¿encadena rectas, giros y curvas, en orden al azar, sobre piso firme? Mismo recorrido, mismo criterio (70 %) y los
+mismos exámenes sin olvidar que el Exp 7. El Exp 7 de terreno (`exp-107`) queda guardado, sin cambios.
+
+- **Semilla 1:** 3 M de PPO desde el campeón del Exp 6: 28 de 40 recorridos nuevos. Como maestro del recorrido
+  rindió más la semilla 4 del Exp 7 (entrenada con pisos suaves, mismo linaje): 73 de 80 sobre piso firme (91 %).
+- **Semilla 2:** parte del campeón del Exp 6 y destila (48 recorridos por ronda, 12 rondas) con ese maestro para el
+  recorrido y el campeón del Exp 6 para lo anterior. En 40 episodios nuevos por tarea: recorrido 37, curva 40,
+  esquina 40, Caminar bien 40, De pie 34 y Terreno 34 de 40. En el examen oficial falló solo el Terreno (58 %).
+- **Semilla 3** (reintento automático de la campaña, misma receta): **aprueba el Exp 7a** (2026-11-18, 20:25).
+  Recorrido 75 %, De pie 92 %, Caminar bien 100 %, Terreno 75 %, esquina 100 % y curva 100 % en sus exámenes.
+- Para ordenar el catálogo, cada experimento acepta `orden` (opcional): el 7a usa 106.5.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.
