@@ -370,6 +370,19 @@ lejos del 60 % fijado antes de entrenar: **el Exp 9 no aprueba**. El robusto que
 **Siguiente hipótesis razonable:** juntar las dos mejoras (suave en caídas, robusto en choques) entrenando más tiempo
 y con el caminante en el circuito en lugar del simulador cinemático (ajuste fino del navegador en MuJoCo).
 
+### Cambios de la mañana del 2026-11-19 (pedidos por el usuario)
+
+- **Conteo de balizas:** en un episodio el robot pasó por la baliza 2 sin haber llegado a la 1, y la 3 había caído sobre
+  la salida; el conteo («0 de 3») era correcto porque cuentan en orden, pero se veía engañoso. Ahora cada baliza lleva su
+  número en el visor y el resultado dice «llegó a N de 3 balizas en orden · le faltó la baliza N+1».
+- **Mapa a la mitad:** 7 m × 7 m. Balizas repartidas (al menos 3,5 m entre sí y 2 m de la salida), visitadas en orden de
+  cercanía: nunca terminan donde se empieza.
+- **Pisos sobre la ruta:** antes quedaban donde el robot no pasaba. Medido en el mapa nuevo (24 episodios, navegador sin
+  reentrenar): firme 3 llegadas, arena y grava 3, **barro 0 (16 caídas)**. El barro sale (girar sobre barro es el límite
+  conocido desde el Exp 7); la arena y la grava van en el tramo de llegada a cada baliza.
+- **Sin perder lo aprendido:** el navegador sigue entrenando desde el anterior (`parte_de`), primero en el simulador del
+  mapa nuevo y después **dentro de MuJoCo con el caminante real** (`ExploradorMuJoCo`), donde caerse o chocar se castiga.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.

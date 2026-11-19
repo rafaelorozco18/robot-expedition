@@ -604,9 +604,9 @@ class Balizas(Marcha):
         return float((self.alcanzadas + max(0.0, 1 - lejos / max(tramo, 1e-6))) / len(self.balizas))
 
     def resumen(self, env):
-        texto = f"llegó a {self.alcanzadas} de {len(self.balizas)} balizas"
+        texto = f"llegó a {self.alcanzadas} de {len(self.balizas)} balizas en orden"
         if self.alcanzadas < len(self.balizas):
-            texto += f" · quedó a {self._error(env)[1]:.1f} m de la siguiente"
+            texto += f" · le faltó la baliza {self.alcanzadas + 1}, a {self._error(env)[1]:.1f} m"
         return texto
 
     def orden(self, env):
@@ -641,6 +641,11 @@ class Exploracion(Balizas):
         def media(self, obs):
             from .mundo import DIRECCIONES
             return self.rng.random(len(DIRECCIONES))
+
+    def elegir(self, env, direccion):
+        """Decisión tomada desde fuera (ExploradorMuJoCo, al ajustar el navegador con la física real)."""
+        self.direccion = int(direccion)
+        self.deseado = env.rumbo() + self.M.DIRECCIONES[self.direccion]
 
     def _navegador(self):
         ruta = self.exp["navegador"]["modelo"]
@@ -692,7 +697,8 @@ class Exploracion(Balizas):
             env.comando[:] = [0.0, 0.0, 1.0, 0.0]
             self.modo = "detenido"
             return
-        if env.pasos % self.cada == 0:  # el navegador elige hacia dónde ir
+        externo = self.exp["navegador"]["modelo"] == "externo"  # el navegador lo maneja ExploradorMuJoCo
+        if env.pasos % self.cada == 0 and not externo:  # el navegador elige hacia dónde ir
             obs = self.M.observacion(env.data.qpos[:2].copy(), env.rumbo(), env.destino, self.rocas, self.mundo["lado"],
                                      self.direccion)
             self.direccion = int(np.argmax(self._navegador().media(obs)))

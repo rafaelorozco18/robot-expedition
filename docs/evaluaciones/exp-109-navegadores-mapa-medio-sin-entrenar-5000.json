@@ -1,0 +1,368 @@
+{
+ "caminante": "models/exp-108/semilla-1/experto.zip",
+ "episodios": 24,
+ "semilla_base": 5000,
+ "resumen": {
+  "regla-directa": {
+   "exitos": 0,
+   "episodios": 24,
+   "motivos": {
+    "chocó con una roca": 11,
+    "se agachó o cayó": 8,
+    "se inclinó demasiado": 5
+   }
+  },
+  "robusto-s1": {
+   "exitos": 1,
+   "episodios": 24,
+   "motivos": {
+    "chocó con una roca": 7,
+    "se agachó o cayó": 12,
+    "se inclinó demasiado": 4,
+    "llegó a todas las balizas": 1
+   }
+  }
+ },
+ "por_episodio": {
+  "regla-directa": [
+   {
+    "semilla": 5000,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 1.0 m de la siguiente",
+    "segundos": 7.42
+   },
+   {
+    "semilla": 5001,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 4.4 m de la siguiente",
+    "segundos": 7.52
+   },
+   {
+    "semilla": 5002,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.5 m de la siguiente",
+    "segundos": 4.18
+   },
+   {
+    "semilla": 5003,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 4.18
+   },
+   {
+    "semilla": 5004,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.5 m de la siguiente",
+    "segundos": 1.94
+   },
+   {
+    "semilla": 5005,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 4.3 m de la siguiente",
+    "segundos": 10.02
+   },
+   {
+    "semilla": 5006,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 14.3
+   },
+   {
+    "semilla": 5007,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.1 m de la siguiente",
+    "segundos": 2.54
+   },
+   {
+    "semilla": 5008,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 5.2 m de la siguiente",
+    "segundos": 8.1
+   },
+   {
+    "semilla": 5009,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.7 m de la siguiente",
+    "segundos": 3.8
+   },
+   {
+    "semilla": 5010,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 2.48
+   },
+   {
+    "semilla": 5011,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.1 m de la siguiente",
+    "segundos": 7.02
+   },
+   {
+    "semilla": 5012,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.2 m de la siguiente",
+    "segundos": 14.44
+   },
+   {
+    "semilla": 5013,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 6.12
+   },
+   {
+    "semilla": 5014,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.5 m de la siguiente",
+    "segundos": 1.94
+   },
+   {
+    "semilla": 5015,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 4.46
+   },
+   {
+    "semilla": 5016,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.4 m de la siguiente",
+    "segundos": 14.56
+   },
+   {
+    "semilla": 5017,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 3.4 m de la siguiente",
+    "segundos": 4.76
+   },
+   {
+    "semilla": 5018,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.1 m de la siguiente",
+    "segundos": 5.78
+   },
+   {
+    "semilla": 5019,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 2 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 22.22
+   },
+   {
+    "semilla": 5020,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.9 m de la siguiente",
+    "segundos": 3.58
+   },
+   {
+    "semilla": 5021,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 3.6 m de la siguiente",
+    "segundos": 3.8
+   },
+   {
+    "semilla": 5022,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.0 m de la siguiente",
+    "segundos": 5.84
+   },
+   {
+    "semilla": 5023,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 3.6 m de la siguiente",
+    "segundos": 14.0
+   }
+  ],
+  "robusto-s1": [
+   {
+    "semilla": 5000,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 3.2 m de la siguiente",
+    "segundos": 4.1
+   },
+   {
+    "semilla": 5001,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.4 m de la siguiente",
+    "segundos": 43.84
+   },
+   {
+    "semilla": 5002,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 4.0 m de la siguiente",
+    "segundos": 23.02
+   },
+   {
+    "semilla": 5003,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 2 de 3 balizas · quedó a 3.4 m de la siguiente",
+    "segundos": 53.96
+   },
+   {
+    "semilla": 5004,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.5 m de la siguiente",
+    "segundos": 1.94
+   },
+   {
+    "semilla": 5005,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 0.9 m de la siguiente",
+    "segundos": 9.28
+   },
+   {
+    "semilla": 5006,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 0.8 m de la siguiente",
+    "segundos": 18.28
+   },
+   {
+    "semilla": 5007,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.1 m de la siguiente",
+    "segundos": 2.54
+   },
+   {
+    "semilla": 5008,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 0.8 m de la siguiente",
+    "segundos": 18.28
+   },
+   {
+    "semilla": 5009,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 0.9 m de la siguiente",
+    "segundos": 18.94
+   },
+   {
+    "semilla": 5010,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 3.4 m de la siguiente",
+    "segundos": 45.58
+   },
+   {
+    "semilla": 5011,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 1.5 m de la siguiente",
+    "segundos": 11.42
+   },
+   {
+    "semilla": 5012,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 1.1 m de la siguiente",
+    "segundos": 19.8
+   },
+   {
+    "semilla": 5013,
+    "exito": false,
+    "motivo": "se inclinó demasiado",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.2 m de la siguiente",
+    "segundos": 3.0
+   },
+   {
+    "semilla": 5014,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 3.0 m de la siguiente",
+    "segundos": 3.0
+   },
+   {
+    "semilla": 5015,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 4.4 m de la siguiente",
+    "segundos": 16.36
+   },
+   {
+    "semilla": 5016,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.9 m de la siguiente",
+    "segundos": 11.2
+   },
+   {
+    "semilla": 5017,
+    "exito": true,
+    "motivo": "llegó a todas las balizas",
+    "detalle": "llegó a 3 de 3 balizas",
+    "segundos": 37.02
+   },
+   {
+    "semilla": 5018,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.6 m de la siguiente",
+    "segundos": 11.4
+   },
+   {
+    "semilla": 5019,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.7 m de la siguiente",
+    "segundos": 35.4
+   },
+   {
+    "semilla": 5020,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 4.6 m de la siguiente",
+    "segundos": 9.48
+   },
+   {
+    "semilla": 5021,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 0 de 3 balizas · quedó a 2.4 m de la siguiente",
+    "segundos": 3.36
+   },
+   {
+    "semilla": 5022,
+    "exito": false,
+    "motivo": "se agachó o cayó",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 3.8 m de la siguiente",
+    "segundos": 17.08
+   },
+   {
+    "semilla": 5023,
+    "exito": false,
+    "motivo": "chocó con una roca",
+    "detalle": "llegó a 1 de 3 balizas · quedó a 2.8 m de la siguiente",
+    "segundos": 19.06
+   }
+  ]
+ }
+}

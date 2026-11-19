@@ -189,6 +189,11 @@ function dibujarBalizas(balizas, radio) {
     aro.rotation.x = -Math.PI / 2;
     aro.position.y = 0.015;
     g.add(poste, foco, aro);
+    if ((balizas || []).length > 1) {  // número de orden: las balizas cuentan en orden (1, 2, 3)
+      const n = rotulo(String(k + 1), 0.42, "#ffffff");
+      n.position.set(0, 1.75, 0);
+      g.add(n);
+    }
     grupoBalizas.add(g);
     grupoBalizas.userData.postes.push({ luz, aro: aro.material, k });
   });

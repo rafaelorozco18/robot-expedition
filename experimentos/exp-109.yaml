@@ -5,8 +5,9 @@ tarea: exploracion
 parte_de: exp-108
 pregunta: ¿Llega a tres balizas en un campo de rocas que no puede cruzar, eligiendo
   por dónde rodearlas y caminando sobre arena, grava y barro?
-agrega: 'Rocas infranqueables y sensores de distancia: un navegador aprende la ruta
-  y el caminante del Exp 8 la ejecuta'
+agrega: 'Rocas infranqueables en un campo de 7 m × 7 m, parches de arena, grava y
+  barro sobre la ruta y balizas repartidas: un navegador aprende la ruta y el caminante
+  del Exp 8 la ejecuta'
 criterio: Llega a las 3 balizas en 90 s sin caerse ni chocar con una roca, en ≥ 60
   %
 ambiente:
@@ -44,28 +45,28 @@ parametros:
   calidad_min: null
   erguido_estricto: true
   balizas: 3
-  distancia_m:
-  - 4.0
-  - 6.0
   radio_m: 0.6
   giro_rad: 0.6
-  lado_m: 7.0
-  rocas: 18
-  rocas_en_ruta: 2
+  lado_m: 3.5
+  rocas: 9
+  rocas_en_ruta: 1
   radio_roca_m:
   - 0.35
   - 0.7
   alto_roca_m: 0.6
   despeje_meta_m: 0.8
-  parches: 5
   lado_parche_m:
-  - 2.0
-  - 3.5
+  - 1.2
+  - 1.6
   tipos_piso:
   - arena
   - grava
-  - barro
   decision_s: 1.0
+  separacion_balizas_m: 3.5
+  despeje_salida_m: 2.0
+  parche_en_tramo:
+  - 0.72
+  - 0.85
 pisos:
   tramos: []
   inicio_m: 0
@@ -102,6 +103,13 @@ navegador:
         baliza aprende a rodear rocas en el simulador cinemático calibrado y transfiere
         a MuJoCo. (Entrenada con un alcance del robot de 0,32 m, antes de medir que
         un pie llega a 0,67 m.)'
+    mapa-medio:
+      parte_de: models/exp-109/navegadores/robusto-s1/experto.zip
+      learning_rate: 0.0001
+      pasos: 1500000
+      hipotesis: En el campo de 7 m × 7 m con balizas repartidas y pisos sobre la
+        ruta, seguir entrenando el navegador robusto (sin empezar de cero) lo adapta
+        al mapa nuevo sin perder lo aprendido.
   inversion: 1.0
   giro: 0.05
   margen: 0.15
@@ -176,4 +184,13 @@ pendiente: 'Experimento pedido por el usuario el 2026-11-19: llegar a balizas en
   mismo caminante): regla «ir directo» 0 (21 choques), aleatorio 0, base 1, suave
   5 (caídas de 12 a 3), robusto semillas 1/2/3: 6, 3 y 2. Navegador oficial: robusto
   semilla 1; confirmación 3000+: 5 de 24. Semilla 2 del caminante (ajuste fino, entrenada
-  con el navegador base): 1 de 24 con ese navegador; no reduce las caídas.'
+  con el navegador base): 1 de 24 con ese navegador; no reduce las caídas. Cambio
+  de mundo pedido por el usuario (2026-11-19, 09:10): campo a la mitad (7 m × 7 m),
+  balizas separadas al menos 3,5 m entre sí y 2 m de la salida, ordenadas por cercanía
+  (antes la última podía caer sobre la salida), y parches de piso sobre la ruta (antes
+  quedaban donde el robot no pasaba). El navegador sigue entrenando desde el anterior:
+  no pierde lo aprendido. Pisos medidos en el mapa nuevo con el navegador sin reentrenar
+  (24 episodios): firme 3 llegadas (14 choques), arena y grava 3 (12 caídas), barro
+  0 (16 caídas). Girar sobre barro es el límite conocido del caminante (Exp 7): el
+  barro sale y la arena y la grava van en el tramo de llegada a cada baliza, casi
+  recto.'

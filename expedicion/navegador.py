@@ -115,6 +115,98 @@ class Explorador(gym.Env):
         return np.zeros(M.N_OBS, np.float32)
 
 
+class ExploradorMuJoCo(gym.Env):
+    """El mismo problema del navegador, pero con la física real: cada decisión avanza `decision_s` de MuJoCo con el
+    caminante del Exp 8 (actor exportado a numpy, con su ruido sembrado por episodio). Caerse o chocar termina el
+    episodio y se castiga, así el navegador aprende qué órdenes hacen caer o chocar al robot de verdad."""
+
+    CAMINANTE = "models/exp-108/semilla-1/experto.npz"
+
+    def __init__(self, exp):
+        from .ambiente import BipedoEnv
+        from .evaluar import PoliticaNumpy
+        self.n = exp["navegador"]
+        self.exp = {**exp, "navegador": {**exp["navegador"], "modelo": "externo"}}
+        self.env = BipedoEnv(self.exp, entrenando=False)
+        self.caminante = PoliticaNumpy(RAIZ / self.CAMINANTE)
+        self.observation_space = spaces.Box(-1.0, 1.0, shape=(M.N_OBS,), dtype=np.float32)
+        self.action_space = spaces.Discrete(len(M.DIRECCIONES))
+
+    def _obs(self):
+        t = self.env.tarea
+        return M.observacion(self.env.data.qpos[:2].copy(), self.env.rumbo(), self.env.destino, t.rocas,
+                             t.mundo["lado"], t.direccion)
+
+    def reset(self, seed=None, options=None):
+        super().reset(seed=seed)
+        s = int(self.np_random.integers(1 << 30))
+        self.o, _ = self.env.reset(seed=s)
+        self.actor = self.caminante.para_episodio(s)
+        t = self.env.tarea
+        self.dist = np.linalg.norm(self.env.destino - self.env.data.qpos[:2])
+        self.alcanzadas = t.alcanzadas
+        return self._obs(), {}
+
+    def step(self, accion):
+        t = self.env.tarea
+        cambio = int(accion) != t.direccion
+        t.elegir(self.env, accion)
+        recompensa = -self.n["tiempo"] - (self.n["cambio"] if cambio else 0.0)
+        fin = trunc = False
+        for _ in range(t.cada):
+            self.o, _, fin, trunc, info = self.env.step(self.actor.actuar(self.o, self.env))
+            if fin or trunc:
+                break
+        if t.alcanzadas > self.alcanzadas:
+            recompensa += self.n["meta"] * (t.alcanzadas - self.alcanzadas)
+            self.alcanzadas = t.alcanzadas
+            self.dist = np.linalg.norm(self.env.destino - self.env.data.qpos[:2])
+        else:
+            dist = np.linalg.norm(self.env.destino - self.env.data.qpos[:2])
+            recompensa += self.n["progreso"] * (self.dist - dist)
+            self.dist = dist
+        exito = bool(fin and t.exito(self.env, False))
+        if fin and not exito:
+            recompensa -= self.n["choque"]  # caerse o chocar
+        return self._obs(), recompensa, fin, trunc, {"exito": exito, "motivo": self.env.motivo}
+
+
+def ajustar_en_mujoco(exp, semilla, parte_de, pasos, salida, procesos=8):
+    """Sigue entrenando un navegador con la física real (ExploradorMuJoCo)."""
+    from stable_baselines3 import PPO
+    from stable_baselines3.common.env_util import make_vec_env
+    from stable_baselines3.common.vec_env import SubprocVecEnv
+    import mlflow
+    import torch
+    from .entrenar import URI_MLFLOW, git_commit
+
+    torch.set_num_threads(1)
+    venv = make_vec_env(ExploradorMuJoCo, n_envs=procesos, seed=semilla, vec_env_cls=SubprocVecEnv, env_kwargs={"exp": exp})
+    modelo = PPO.load(RAIZ / parte_de, env=venv, device="cpu", seed=semilla,
+                      custom_objects={"learning_rate": 1e-4, "n_steps": 64, "batch_size": 256})
+    salida = RAIZ / salida
+    (salida / "fotos").mkdir(parents=True, exist_ok=True)
+    mlflow.set_tracking_uri(URI_MLFLOW)
+    mlflow.set_experiment(f"{exp['id']}-navegador")
+    t0 = time.time()
+    with mlflow.start_run(run_name=f"navegador-mujoco-semilla-{semilla}") as run:
+        mlflow.set_tags({"git_commit": git_commit(), "variante": "mujoco", "parte_de": parte_de,
+                         "hipotesis": "Ajustar el navegador con la física real (caminante en el circuito) le enseña qué "
+                                      "órdenes hacen caer o chocar al robot y cierra la brecha del simulador cinemático."})
+        mlflow.log_params({"pasos": pasos, "procesos": procesos, "learning_rate": 1e-4, "parte_de": parte_de})
+        tramo = max(pasos // 6, 1)
+        for _ in range(6):
+            modelo.learn(tramo, reset_num_timesteps=False)
+            modelo.save(salida / "fotos" / f"paso-{int(modelo.num_timesteps):09d}.zip")
+            print({"paso": int(modelo.num_timesteps), "segundos": round(time.time() - t0)}, flush=True)
+        modelo.save(salida / "experto.zip")
+        corrida = {"semilla": semilla, "pasos": int(modelo.num_timesteps), "segundos": round(time.time() - t0, 1),
+                   "parte_de": parte_de, "mlflow_run_id": run.info.run_id}
+    (salida / "corrida.json").write_text(json.dumps(corrida, indent=1, ensure_ascii=False))
+    venv.close()
+    return corrida
+
+
 def evaluar_cinematico(exp, modelo, episodios=200, semilla=9000):
     env = Explorador(exp)
     exitos, motivos = 0, {}
@@ -145,9 +237,13 @@ def entrenar_navegador(exp, semilla=0, usar_mlflow=True, variante=None):
     salida.mkdir(parents=True, exist_ok=True)
     from stable_baselines3.common.vec_env import SubprocVecEnv
     venv = make_vec_env(Explorador, n_envs=8, seed=semilla, vec_env_cls=SubprocVecEnv, env_kwargs={"exp": exp})
-    modelo = PPO("MlpPolicy", venv, seed=semilla, verbose=0, device="cpu", n_steps=256, batch_size=512, n_epochs=8,
-                 learning_rate=3e-4, gamma=0.99, gae_lambda=0.95, ent_coef=0.01,
-                 policy_kwargs={"net_arch": n["red"]})
+    if n.get("parte_de"):  # sigue entrenando un navegador anterior: no pierde lo aprendido
+        modelo = PPO.load(RAIZ / n["parte_de"], env=venv, device="cpu", seed=semilla,
+                          custom_objects={"learning_rate": n.get("learning_rate", 1e-4)})
+    else:
+        modelo = PPO("MlpPolicy", venv, seed=semilla, verbose=0, device="cpu", n_steps=256, batch_size=512, n_epochs=8,
+                     learning_rate=3e-4, gamma=0.99, gae_lambda=0.95, ent_coef=0.01,
+                     policy_kwargs={"net_arch": n["red"]})
     run = None
     if usar_mlflow:
         import mlflow

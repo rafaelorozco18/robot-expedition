@@ -67,18 +67,30 @@ def _radio(rng, t):
     return float(validos[int(rng.integers(len(validos)))])
 
 
+def _balizas_separadas(rng, t, lado):
+    """Balizas repartidas por el campo: lejos de la salida y lejos entre sí. El orden de visita es el del vecino más
+    cercano desde la salida, así la ruta tiene sentido y nunca termina donde empezó."""
+    margen = 0.8
+    for _ in range(20000):  # cada intento es barato; con 500 a veces no alcanzaba (falló una vez en 2 M de mundos)
+        cand = [rng.uniform(-lado + margen, lado - margen, 2) for _ in range(t["balizas"])]
+        if any(np.linalg.norm(c) < t["despeje_salida_m"] for c in cand):
+            continue
+        if any(np.linalg.norm(a - b) < t["separacion_balizas_m"] for i, a in enumerate(cand) for b in cand[i + 1:]):
+            continue
+        orden, actual, resto = [], np.zeros(2), list(cand)
+        while resto:
+            k = int(np.argmin([np.linalg.norm(c - actual) for c in resto]))
+            actual = resto.pop(k)
+            orden.append(actual)
+        return orden
+    raise RuntimeError("no se pudieron separar las balizas")
+
+
 def generar(rng, t):
     """Un mundo al azar con solución. t: parámetros de la tarea (yaml del experimento)."""
     lado = t["lado_m"]
     for _ in range(200):
-        balizas, previo = [], np.zeros(2)
-        while len(balizas) < t["balizas"]:
-            ang = rng.uniform(-np.pi, np.pi)
-            d = rng.uniform(*t["distancia_m"])
-            p = previo + d * np.array([np.cos(ang), np.sin(ang)])
-            if np.all(np.abs(p) <= lado - 1.0):
-                balizas.append(p)
-                previo = p
+        balizas = _balizas_separadas(rng, t, lado)
         puntos = [np.zeros(2), *balizas]
         rocas = []
         # Rocas que tapan la línea recta entre metas: obligan a elegir rodear por un lado o por el otro.
@@ -91,16 +103,19 @@ def generar(rng, t):
         while len(rocas) < t["rocas"]:
             c = rng.uniform(-lado, lado, 2)
             rocas.append((c[0], c[1], _radio(rng, t)))
-        # Ninguna roca encima del inicio ni de una baliza.
+        # Ninguna roca encima de la salida ni de una baliza.
         rocas = [(x, y, r) for x, y, r in rocas
                  if all(np.hypot(x - p[0], y - p[1]) > r + t["despeje_meta_m"] for p in puntos)]
         if hay_camino(rocas, puntos, lado):
+            # Parches de piso sobre la ruta, en el tramo de llegada a cada baliza (casi recto, lejos de las rocas que
+            # obligan a girar): el robot los tiene que pisar para llegar. Girar sobre pisos sueltos es el límite
+            # conocido del caminante (Exp 7 de terreno).
             parches = []
-            for _ in range(t["parches"]):
+            for a, b in zip(puntos[:-1], puntos[1:]):
                 tipo = t["tipos_piso"][int(rng.integers(len(t["tipos_piso"])))]
-                c = rng.uniform(-lado + 1, lado - 1, 2)
-                a = rng.uniform(*t["lado_parche_m"])
-                parches.append((c[0] - a / 2, c[0] + a / 2, tipo, c[1] - a / 2, c[1] + a / 2))
+                c = a + rng.uniform(*t.get("parche_en_tramo", [0.3, 0.7])) * (b - a)
+                ancho = rng.uniform(*t["lado_parche_m"])
+                parches.append((c[0] - ancho / 2, c[0] + ancho / 2, tipo, c[1] - ancho / 2, c[1] + ancho / 2))
             return {"balizas": [p for p in balizas], "rocas": rocas, "parches": parches, "lado": lado}
     raise RuntimeError("no se encontró un mundo con solución")
 
