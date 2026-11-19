@@ -115,6 +115,11 @@ navegador:
   margen: 0.15
   robusto: true
   semilla: 1
+  origen: Navegador oficial = foto paso-002319872 del ajuste en MuJoCo (models/exp-109/navegadores/mujoco-s1),
+    que partió del robusto adaptado al mapa nuevo en el simulador (navegadores/mapa-medio-s1,
+    que a su vez partió de navegadores/robusto-s1). Se reproduce con `python -m expedicion
+    navegador exp-109 --variante mapa-medio --semilla 1` y el ajuste `expedicion.navegador.ajustar_en_mujoco`
+    (semilla 1, 120 mil decisiones desde la foto 2,24 M).
 aprobar:
   tasa_exito: 0.6
   perturbacion: ninguna
@@ -193,4 +198,8 @@ pendiente: 'Experimento pedido por el usuario el 2026-11-19: llegar a balizas en
   (24 episodios): firme 3 llegadas (14 choques), arena y grava 3 (12 caídas), barro
   0 (16 caídas). Girar sobre barro es el límite conocido del caminante (Exp 7): el
   barro sale y la arena y la grava van en el tramo de llegada a cada baliza, casi
-  recto.'
+  recto. Mapa nuevo (24 episodios 5000+): regla «ir directo» 0 (22 choques); robusto
+  del mapa viejo sin reentrenar 0; adaptado en el simulador 3; ajustado en MuJoCo
+  (foto 2,32 M) 6 y su foto final 4. Navegador oficial: la foto 2,32 M; confirmación
+  3000+: 4 de 24. El ajuste en MuJoCo duplicó las llegadas del mismo navegador en
+  el mapa nuevo (3 → 6). La semilla 1 del caminante sigue congelada.'

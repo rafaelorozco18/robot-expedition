@@ -979,8 +979,8 @@ stages:
       size: 1411
     - path: experimentos/exp-109.yaml
       hash: md5
-      md5: f97aaf5715454c505ade55049a2a4475
-      size: 5709
+      md5: f9ce75c27f1a0bf67535d2faff5a14d7
+      size: 7734
     outs:
     - path: data/exp-109/escenarios.json
       hash: md5
@@ -2436,26 +2436,26 @@ stages:
     deps:
     - path: expedicion/mundo.py
       hash: md5
-      md5: 9a4c980c09cdaab670863f7bf8af6da0
-      size: 6877
+      md5: 0850a1f4c24581960a89d819994147dd
+      size: 7940
     - path: expedicion/navegador.py
       hash: md5
-      md5: b989546f0d7ec0b93e6fc36713c52a49
-      size: 10587
+      md5: 8e8c9f0b8ccaf3594ca1e9e75d9f773d
+      size: 15664
     - path: experimentos/calibracion-caminante.json
       hash: md5
       md5: 9459e1b2e5edee6f768ed68d40acfc89
       size: 1060
     - path: experimentos/exp-109.yaml
       hash: md5
-      md5: f97aaf5715454c505ade55049a2a4475
-      size: 5709
+      md5: f9ce75c27f1a0bf67535d2faff5a14d7
+      size: 7734
     outs:
     - path: models/exp-109/navegador
       hash: md5
-      md5: 550919206cc198b3ab2be9b6f14423fc.dir
-      size: 2003250
-      nfiles: 14
+      md5: 758813ae253f6196d318f2cdfb952c21.dir
+      size: 206780
+      nfiles: 3
   entrenar-exp-109-s1:
     cmd: nice -n 10 python -m expedicion entrenar exp-109 --semilla 1
     deps:
@@ -2465,17 +2465,17 @@ stages:
       size: 1411
     - path: experimentos/exp-109.yaml
       hash: md5
-      md5: f97aaf5715454c505ade55049a2a4475
-      size: 5709
+      md5: f9ce75c27f1a0bf67535d2faff5a14d7
+      size: 7734
     - path: metrics/exp-108/evaluacion.json
       hash: md5
       md5: 4aabdd3c37dc268bbc7db6a3bf4d2fd0
       size: 4862
     - path: models/exp-109/navegador
       hash: md5
-      md5: 550919206cc198b3ab2be9b6f14423fc.dir
-      size: 2003250
-      nfiles: 14
+      md5: 758813ae253f6196d318f2cdfb952c21.dir
+      size: 206780
+      nfiles: 3
     - path: robots/bipedo-v2.xml
       hash: md5
       md5: 743df1e7c398e937d0b441f383fcd6a3
@@ -2495,17 +2495,17 @@ stages:
       size: 1411
     - path: experimentos/exp-109.yaml
       hash: md5
-      md5: f97aaf5715454c505ade55049a2a4475
-      size: 5709
+      md5: f9ce75c27f1a0bf67535d2faff5a14d7
+      size: 7734
     - path: metrics/exp-108/evaluacion.json
       hash: md5
       md5: 4aabdd3c37dc268bbc7db6a3bf4d2fd0
       size: 4862
     - path: models/exp-109/navegador
       hash: md5
-      md5: 550919206cc198b3ab2be9b6f14423fc.dir
-      size: 2003250
-      nfiles: 14
+      md5: 758813ae253f6196d318f2cdfb952c21.dir
+      size: 206780
+      nfiles: 3
     - path: robots/bipedo-v2.xml
       hash: md5
       md5: 743df1e7c398e937d0b441f383fcd6a3
