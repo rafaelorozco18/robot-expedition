@@ -4,12 +4,12 @@ titulo: Exploración entre rocas
 tarea: exploracion
 parte_de: exp-108
 pregunta: ¿Llega a tres balizas en un campo de rocas que no puede cruzar, eligiendo
-  por dónde rodearlas y caminando sobre arena, grava y barro?
+  por dónde rodearlas y pisando arena y grava?
 agrega: 'Rocas infranqueables en un campo de 7 m × 7 m, parches de arena, grava y
   barro sobre la ruta y balizas repartidas: un navegador aprende la ruta y el caminante
   del Exp 8 la ejecuta'
-criterio: Llega a las 3 balizas en 90 s sin caerse ni chocar con una roca, en ≥ 60
-  %
+criterio: Llega a las 3 balizas, en orden, en 90 s sin caerse ni chocar con una roca,
+  en ≥ 60 %
 ambiente:
   altura_minima: 0.75
   inclinacion_maxima: 40
