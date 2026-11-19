@@ -120,7 +120,7 @@ class ExploradorMuJoCo(gym.Env):
     caminante del Exp 8 (actor exportado a numpy, con su ruido sembrado por episodio). Caerse o chocar termina el
     episodio y se castiga, así el navegador aprende qué órdenes hacen caer o chocar al robot de verdad."""
 
-    CAMINANTE = "models/exp-108/semilla-1/experto.npz"
+    CAMINANTE = "models/exp-109/caminante/exp-108-semilla-1.npz"  # fuera de las salidas de DVC del Exp 8
 
     def __init__(self, exp):
         from .ambiente import BipedoEnv

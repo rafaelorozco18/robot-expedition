@@ -7,7 +7,7 @@
  "papel": "en_curso",
  "environment_version": "robots/bipedo-v2.xml (sha256 c543e04fed5add10) + tarea «exploracion»",
  "git_commit": "23cdb9361e5c14f226579193f0b557d3077a6270",
- "config_sha256": "2e05677bf6a65b77c6c3b63575395c48346867a7b256243de49fd782c5dd19b9",
+ "config_sha256": "fc367af0e0d4a5da7644f4e4fb77ec8f23e562a43fce47acb2fb123c8fbc1aa5",
  "config_publicada": "publicado/exp-109/exp.json",
  "model_uri": "dvc://models/exp-109/semilla-1/experto.zip",
  "model_sha256": "ebc113f9e2b076131c718bf4e93b3ef969cfb4586abf226fa6fc7bcaab0e9426",

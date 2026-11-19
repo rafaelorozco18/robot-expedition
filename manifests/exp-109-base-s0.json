@@ -5,7 +5,7 @@
  "titulo": "Navegador · base-s0",
  "papel": "navegador_variante",
  "seed": 0,
- "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+ "git_commit": "1f0ebfccd6f7abe41fa9800fd5f271bc07ec4e2c",
  "model_uri": "dvc://models/exp-109/navegadores/base-s0/experto.zip",
  "model_sha256": "963412bc37b26faec2eb598c765f57b9f97e9bfda474c030aa6093b5c1bf9699",
  "parent_run_id": null,

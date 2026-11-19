@@ -96,9 +96,10 @@ y el registro de modelos; las métricas y parámetros siguen en git.
 - MLflow completo en la release `mlflow-registro`; exportado para la web con `scripts/registro_mlflow.py`.
 - Pendiente humano: grupo y nombres en el correo, acceso del docente al repo privado, contribuciones en el informe.
 - **Exp 9 (`exp-109`, Exploración entre rocas, pedido del usuario el 2026-11-19):** jerárquico. Navegador PPO (familia
-  nueva: 25 obs, 7 direcciones, 1 decisión/s) entrenado en un simulador cinemático (`expedicion/navegador.py`,
-  `expedicion/mundo.py`) + caminante del Exp 8 congelado. Mejor navegador (robusto, semilla 1): 6/24 y 5/24 en MuJoCo;
-  criterio 60 % → no aprueba. Variantes en `models/exp-109/navegadores/` (DVC) y en MLflow `exp-109-navegador`.
+  nueva: 25 obs, 7 direcciones, 1 decisión/s) + caminante del Exp 8 congelado. Mapa de 7 m × 7 m, balizas repartidas
+  (≥ 3,5 m, en orden de cercanía), arena y grava en el tramo de llegada (barro fuera: girar sobre barro tumba al caminante).
+  Navegador oficial: ajustado dentro de MuJoCo (`ExploradorMuJoCo`, foto 2,32 M). Examen 33 % (4/12), ~21 % en 48 nuevos;
+  criterio 60 % → no aprueba. Variantes en `models/exp-109/navegadores/` (DVC) y MLflow `exp-109-navegador`.
   Lecciones: rocas como cuerpos mocap (geoms fijos movidos se atraviesan); el alcance real del robot es ~0,67 m;
   `pgrep -f` en un bucle de espera coincide consigo mismo (esperar por PID).
 - Receta para no olvidar: PPO aprende lo nuevo; después se destila (`entrenamiento.destilar`) **partiendo del

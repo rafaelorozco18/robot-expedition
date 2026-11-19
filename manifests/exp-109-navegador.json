@@ -1,19 +1,19 @@
 {
- "run_id": "4cc587f2046441caa2027d77dfa0ca98",
+ "run_id": "70de96fbb1214741a8642987cc3e237b",
  "level_id": "N3",
  "experimento": "exp-109",
  "titulo": "Navegador · navegador",
  "papel": "navegador_oficial",
  "seed": 1,
- "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+ "git_commit": "1f0ebfccd6f7abe41fa9800fd5f271bc07ec4e2c",
  "model_uri": "dvc://models/exp-109/navegador/experto.zip",
- "model_sha256": "1dad7b64ea2cc22a376b7bbd413aafb0ae950c17bfdce8f9bef1ba3580f99e8b",
+ "model_sha256": "d8dfe61fae2ae44e9f95efd7e72ed3892f572027249f18eacef86a1752937568",
  "parent_run_id": null,
  "presupuesto": {
-  "pasos": 2007040,
-  "segundos": 1107.5
+  "pasos": 2319872,
+  "segundos": 1685.8
  },
- "evaluacion_cinematica_300": 0.3233333333333333,
+ "evaluacion_cinematica_300": null,
  "normalization_uri": null,
  "origen": {
   "tipo": "desde_cero"

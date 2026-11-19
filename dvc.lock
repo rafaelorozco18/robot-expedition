@@ -1028,8 +1028,8 @@ stages:
       size: 7734
     - path: models/exp-109/navegador
       hash: md5
-      md5: 758813ae253f6196d318f2cdfb952c21.dir
-      size: 206780
+      md5: cd299f1d9f37221e99befbcf448012ed.dir
+      size: 206801
       nfiles: 3
     - path: models/exp-109/semilla-1
       hash: md5
@@ -2453,8 +2453,8 @@ stages:
       size: 7940
     - path: expedicion/navegador.py
       hash: md5
-      md5: 8e8c9f0b8ccaf3594ca1e9e75d9f773d
-      size: 15664
+      md5: 58af9a011bb39e4fbfb5a7178b20b938
+      size: 15715
     - path: experimentos/calibracion-caminante.json
       hash: md5
       md5: 9459e1b2e5edee6f768ed68d40acfc89
@@ -2466,8 +2466,8 @@ stages:
     outs:
     - path: models/exp-109/navegador
       hash: md5
-      md5: 758813ae253f6196d318f2cdfb952c21.dir
-      size: 206780
+      md5: cd299f1d9f37221e99befbcf448012ed.dir
+      size: 206801
       nfiles: 3
   entrenar-exp-109-s1:
     cmd: nice -n 10 python -m expedicion entrenar exp-109 --semilla 1
@@ -2486,8 +2486,8 @@ stages:
       size: 4862
     - path: models/exp-109/navegador
       hash: md5
-      md5: 758813ae253f6196d318f2cdfb952c21.dir
-      size: 206780
+      md5: cd299f1d9f37221e99befbcf448012ed.dir
+      size: 206801
       nfiles: 3
     - path: robots/bipedo-v2.xml
       hash: md5
@@ -2516,8 +2516,8 @@ stages:
       size: 4862
     - path: models/exp-109/navegador
       hash: md5
-      md5: 758813ae253f6196d318f2cdfb952c21.dir
-      size: 206780
+      md5: cd299f1d9f37221e99befbcf448012ed.dir
+      size: 206801
       nfiles: 3
     - path: robots/bipedo-v2.xml
       hash: md5

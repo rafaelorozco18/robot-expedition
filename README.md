@@ -118,7 +118,7 @@ No hay secretos en el repositorio. Ver [.env.example](.env.example).
 
 | Qué | Herramienta | Dónde |
 |---|---|---|
-| Código | git | Un commit y un tag por experimento (`exp-101` … `exp-109`); release final `entrega-final-v2` (`entrega-final`: solo Exps 1 a 8) |
+| Código | git | Un commit y un tag por experimento (`exp-101` … `exp-109`); release final `entrega-final-v3` (`entrega-final`: solo Exps 1 a 8) |
 | Pipeline | DVC + Prefect | `dvc.yaml`/`dvc.lock` (una etapa por semilla); `pipelines/flujo.py` |
 | Escenarios y trayectorias | DVC | `data/exp-NNN/escenarios.json` (suite fija) y `trayectorias.jsonl` (resultado por episodio) |
 | Experimento | MLflow | Un experimento por pregunta, un run por semilla, con hipótesis, parámetros y commit |

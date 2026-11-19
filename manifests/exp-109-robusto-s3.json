@@ -5,7 +5,7 @@
  "titulo": "Navegador · robusto-s3",
  "papel": "navegador_variante",
  "seed": 3,
- "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+ "git_commit": "1f0ebfccd6f7abe41fa9800fd5f271bc07ec4e2c",
  "model_uri": "dvc://models/exp-109/navegadores/robusto-s3/experto.zip",
  "model_sha256": "f5a471218c105bff09f92f827c72cd99fd38c7036a9b1fdab5dfe0114b2f6b83",
  "parent_run_id": null,

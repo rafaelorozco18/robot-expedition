@@ -22,6 +22,7 @@ publicado/
 /models/exp-1*/semilla-*
 /models/exp-1*/navegador
 /models/exp-1*/navegadores
+/models/exp-1*/caminante
 /data/exp-1*/*.json*
 
 # Visor estático generado por `expedicion exportar`

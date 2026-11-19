@@ -5,7 +5,7 @@
  "titulo": "Navegador · robusto-s2",
  "papel": "navegador_variante",
  "seed": 2,
- "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+ "git_commit": "1f0ebfccd6f7abe41fa9800fd5f271bc07ec4e2c",
  "model_uri": "dvc://models/exp-109/navegadores/robusto-s2/experto.zip",
  "model_sha256": "0bbf5d4610f78ce45be1246e2822ff42fe9bc7c73ad5a1701555f4aec81479e2",
  "parent_run_id": null,

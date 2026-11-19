@@ -5,7 +5,7 @@
  "titulo": "Navegador · robusto-s1",
  "papel": "navegador_variante",
  "seed": 1,
- "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+ "git_commit": "1f0ebfccd6f7abe41fa9800fd5f271bc07ec4e2c",
  "model_uri": "dvc://models/exp-109/navegadores/robusto-s1/experto.zip",
  "model_sha256": "1dad7b64ea2cc22a376b7bbd413aafb0ae950c17bfdce8f9bef1ba3580f99e8b",
  "parent_run_id": null,
