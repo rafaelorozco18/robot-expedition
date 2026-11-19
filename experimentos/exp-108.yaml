@@ -64,6 +64,9 @@ entrenamiento:
   procesos: 4
   semillas:
   - 1
+  - 2
+  - 3
+  - 4
   log_std_init: -2.5
   log_std_final: -3.0
   learning_rate: 0.0001
@@ -75,6 +78,37 @@ entrenamiento:
     - exp-107a
     fraccion: 0.3
   calentar_critico: 300000
+  continuar_de:
+    2: 1
+    3: 1
+    4: 1
+  por_semilla:
+    2:
+      pasos: 1000000
+      pasos_minimos: 1000000
+      calentar_critico: 0
+      learning_rate: 3.0e-05
+      hipotesis: 'Candidato: ajustar con PPO en la tarea de balizas (tasa 3e-5, 1
+        M de pasos, con repaso) reduce las caídas de la línea base sin olvidar los
+        exámenes anteriores.'
+    3:
+      pasos: 1000000
+      pasos_minimos: 1000000
+      calentar_critico: 0
+      learning_rate: 3.0e-05
+      hipotesis: 'Candidato: ajustar con PPO en la tarea de balizas (tasa 3e-5, 1
+        M de pasos, con repaso) reduce las caídas de la línea base sin olvidar los
+        exámenes anteriores.'
+    4:
+      pasos: 1000000
+      pasos_minimos: 1000000
+      calentar_critico: 0
+      learning_rate: 3.0e-05
+      hipotesis: 'Candidato: ajustar con PPO en la tarea de balizas (tasa 3e-5, 1
+        M de pasos, con repaso) reduce las caídas de la línea base sin olvidar los
+        exámenes anteriores.'
+  hipotesis: 'Línea base: el campeón del Exp 7a ya sabe llegar a las balizas; la política
+    queda congelada.'
 trampa: 'Rodear la baliza sin llegar: solo cuenta entrar en un radio de 0,5 m de cada
   una, en orden.'
 control:
@@ -86,4 +120,8 @@ pendiente: 'Experimento final de la serie (pedido del usuario, 2026-11-18): la m
   balizas no exige aprender movimientos nuevos. Sin entrenar, llega a las 3 balizas
   en 37 de 40 episodios nuevos (5000+); los 3 fallos son caídas por inclinarse. Semilla
   1 (línea base): el campeón del 7a con la política congelada (solo aprende el crítico,
-  300 mil pasos).'
+  300 mil pasos). Semilla 1: aprueba (83 % sin perturbación; no olvida nada). Semillas
+  2 a 4 (candidato, tres semillas de entrenamiento): Candidato: ajustar con PPO en
+  la tarea de balizas (tasa 3e-5, 1 M de pasos, con repaso) reduce las caídas de la
+  línea base sin olvidar los exámenes anteriores. Se comparan con la línea base en
+  el examen y en 40 episodios nuevos.'

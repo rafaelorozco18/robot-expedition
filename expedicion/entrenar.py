@@ -31,6 +31,10 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
     from stable_baselines3.common.callbacks import BaseCallback
 
     p = exp["entrenamiento"]
+    # `por_semilla`: una corrida puede probar otra configuración (hipótesis) sin reescribir la de las anteriores.
+    extra = (p.get("por_semilla") or {}).get(semilla) or {}
+    p = {**{k: v for k, v in p.items() if k != "por_semilla"}, **extra}
+    exp = {**exp, "entrenamiento": p}
     torch.set_num_threads(p["hilos"])
     total = pasos or p["pasos"]
     salida = carpeta_modelos(exp) / f"semilla-{semilla}"
@@ -47,7 +51,9 @@ def entrenar(exp, semilla, pasos=None, usar_mlflow=True):
         mlflow.set_tracking_uri(URI_MLFLOW)
         mlflow.set_experiment(f"{exp['id']}-{exp['titulo'].lower().replace(' ', '-')}")
         run = mlflow.start_run(run_name=f"semilla-{semilla}")
-        mlflow.log_params({f"ent.{k}": v for k, v in p.items() if k != "semillas"})
+        mlflow.log_params({f"ent.{k}": v for k, v in p.items() if k not in ("semillas", "hipotesis")})
+        if p.get("hipotesis"):
+            mlflow.set_tag("hipotesis", p["hipotesis"])
         mlflow.log_params({f"amb.{k}": v for k, v in exp["ambiente"].items()})
         mlflow.log_params({f"rec.{k}": v for k, v in exp["recompensa"].items()})
         mlflow.log_param("semilla", semilla)

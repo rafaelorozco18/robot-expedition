@@ -1212,8 +1212,8 @@ stages:
       size: 1411
     - path: experimentos/exp-108.yaml
       hash: md5
-      md5: 3c7ab110099190a2002e8f47efd27eb5
-      size: 2093
+      md5: c30c5b96e94917dda162a93f3145022f
+      size: 3576
     - path: metrics/exp-107a/evaluacion.json
       hash: md5
       md5: a8e1c198e960f10cd9faa97f7b55b87d
@@ -2322,8 +2322,8 @@ stages:
     outs:
     - path: metrics/exp-107a/regresion.json
       hash: md5
-      md5: 9157aadb28af130fbf7daeb9ec002676
-      size: 146
+      md5: 70f7bedd827113552ffd7b0a15433db9
+      size: 127
   evolucion-exp-107a:
     cmd: nice -n 10 python -m expedicion evolucion exp-107a
     deps:
