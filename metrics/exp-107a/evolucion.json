@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1003451250,
+   "hitos": [
+    {
+     "agente": "foto:exp-103:4515648",
+     "paso": 4515648,
+     "origen": "exp-103",
+     "exito": false,
+     "segundos": 1.76,
+     "distancia": 0.56,
+     "calidad": 53.5,
+     "avance": 0.073,
+     "puntaje": 0.0684,
+     "texto": "A los 1.8 s: se agachó o cayó · recorrió 0.7 m · error de velocidad 0.45 m/s",
+     "clip": [
+      0.0,
+      1.76,
+      1
+     ],
+     "tasa": null,
+     "indice": 11,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "foto:exp-105:0",
+     "paso": 0,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 10.3,
+     "distancia": 1.83,
+     "calidad": 73.9,
+     "avance": 0.429,
+     "puntaje": 0.4075,
+     "texto": "A los 10.3 s: se agachó o cayó · recorrió 5.1 m · error de velocidad 0.24 m/s",
+     "clip": [
+      4.3,
+      10.3,
+      1
+     ],
+     "tasa": null,
+     "indice": 17,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "foto:exp-105:44480",
+     "paso": 44480,
+     "origen": "exp-105",
+     "exito": false,
+     "segundos": 18.36,
+     "distancia": 2.38,
+     "calidad": 76.0,
+     "avance": 0.765,
+     "puntaje": 0.7268,
+     "texto": "A los 18.4 s: se agachó o cayó · recorrió 5.1 m · error de velocidad 0.18 m/s",
+     "clip": [
+      12.36,
+      18.36,
+      1
+     ],
+     "tasa": null,
+     "indice": 18,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "foto:exp-106:0",
+     "paso": 0,
+     "origen": "exp-106",
+     "exito": true,
+     "segundos": 24.0,
+     "distancia": 2.75,
+     "calidad": 73.3,
+     "avance": 1.0,
+     "puntaje": 1.0733,
+     "texto": "Completó el recorrido · calidad 73/100 · recorrió 3.5 m · error de velocidad 0.17 m/s",
+     "clip": [
+      0.0,
+      24.0,
+      2.5
+     ],
+     "tasa": null,
+     "indice": 21,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:401408",
+     "paso": 401408,
+     "origen": "exp-107a",
+     "exito": true,
+     "segundos": 24.0,
+     "distancia": 1.95,
+     "calidad": 76.3,
+     "avance": 1.0,
+     "puntaje": 1.5763,
+     "texto": "Completó el recorrido · calidad 76/100 · recorrió 3.4 m · error de velocidad 0.14 m/s",
+     "clip": [
+      0.0,
+      24.0,
+      2.5
+     ],
+     "tasa": 1.0,
+     "indice": 50,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 1.508
+  }
+ },
+ "recomendado": "marte"
+}

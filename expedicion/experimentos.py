@@ -21,7 +21,9 @@ def _leer(ruta):
 
 def listar():
     base = _leer(CARPETA / "base.yaml")
-    return [_mezclar(base, _leer(r)) for r in sorted(CARPETA.glob("exp-*.yaml"))]
+    exps = [_mezclar(base, _leer(r)) for r in sorted(CARPETA.glob("exp-*.yaml"))]
+    # `orden` (opcional) intercala un experimento entre otros: exp-107a va después del 106 y antes del 107.
+    return sorted(exps, key=lambda e: float(e.get("orden", e["id"].split("-")[1].rstrip("abcdefghijklmnopqrstuvwxyz"))))
 
 
 def cargar(identificador):

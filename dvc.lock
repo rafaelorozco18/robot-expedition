@@ -2183,3 +2183,161 @@ stages:
       md5: f248c3c825e6024713e2339292c7945b.dir
       size: 89254252
       nfiles: 47
+  entrenar-exp-107a-s1:
+    cmd: nice -n 10 python -m expedicion entrenar exp-107a --semilla 1
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-107a.yaml
+      hash: md5
+      md5: 3377121d90aff57e7014047a4046d490
+      size: 2781
+    - path: metrics/exp-106/evaluacion.json
+      hash: md5
+      md5: e16465027edf1078980e077c70f190b5
+      size: 5475
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-107a/semilla-1
+      hash: md5
+      md5: 49b7af7d2f1d5b8fb044d5ea868f9d3b.dir
+      size: 54988532
+      nfiles: 29
+  entrenar-exp-107a-s2:
+    cmd: nice -n 10 python -m expedicion entrenar exp-107a --semilla 2
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-107a.yaml
+      hash: md5
+      md5: 3377121d90aff57e7014047a4046d490
+      size: 2781
+    - path: metrics/exp-106/evaluacion.json
+      hash: md5
+      md5: e16465027edf1078980e077c70f190b5
+      size: 5475
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-107a/semilla-2
+      hash: md5
+      md5: c4c58db71cc9b022d2a12f61e0f86361.dir
+      size: 81184433
+      nfiles: 43
+  escenarios-exp-107a:
+    cmd: python -m expedicion escenarios exp-107a
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-107a.yaml
+      hash: md5
+      md5: 3377121d90aff57e7014047a4046d490
+      size: 2781
+    outs:
+    - path: data/exp-107a/escenarios.json
+      hash: md5
+      md5: a2e2b03f1b7ebcd125e950de6d2f7c84
+      size: 2237
+  evaluar-exp-107a:
+    cmd: nice -n 10 python -m expedicion evaluar exp-107a
+    deps:
+    - path: data/exp-107a/escenarios.json
+      hash: md5
+      md5: a2e2b03f1b7ebcd125e950de6d2f7c84
+      size: 2237
+    - path: models/exp-107a/semilla-1
+      hash: md5
+      md5: 49b7af7d2f1d5b8fb044d5ea868f9d3b.dir
+      size: 54988532
+      nfiles: 29
+    - path: models/exp-107a/semilla-2
+      hash: md5
+      md5: c4c58db71cc9b022d2a12f61e0f86361.dir
+      size: 81184433
+      nfiles: 43
+    - path: models/exp-107a/semilla-3
+      hash: md5
+      md5: 43510e77e1e039b466ad1fc4cdd9b012.dir
+      size: 81184639
+      nfiles: 43
+    outs:
+    - path: data/exp-107a/trayectorias.jsonl
+      hash: md5
+      md5: e666da0c8f7145bdb540006403f62876
+      size: 68299
+    - path: metrics/exp-107a/evaluacion.json
+      hash: md5
+      md5: a8e1c198e960f10cd9faa97f7b55b87d
+      size: 3939
+  entrenar-exp-107a-s3:
+    cmd: nice -n 10 python -m expedicion entrenar exp-107a --semilla 3
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-107a.yaml
+      hash: md5
+      md5: a505b3e6585adbc1da3f90f5f4dd122b
+      size: 2787
+    - path: metrics/exp-106/evaluacion.json
+      hash: md5
+      md5: e16465027edf1078980e077c70f190b5
+      size: 5475
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-107a/semilla-3
+      hash: md5
+      md5: 43510e77e1e039b466ad1fc4cdd9b012.dir
+      size: 81184639
+      nfiles: 43
+  progreso-exp-107a:
+    cmd: nice -n 10 python -m expedicion progreso exp-107a
+    deps:
+    - path: metrics/exp-107a/evaluacion.json
+      hash: md5
+      md5: a8e1c198e960f10cd9faa97f7b55b87d
+      size: 3939
+    outs:
+    - path: metrics/exp-107a/progreso.json
+      hash: md5
+      md5: d3e025101bb6f01f8a247f3517cfee7b
+      size: 5505
+  regresion-exp-107a:
+    cmd: nice -n 10 python -m expedicion regresion exp-107a
+    deps:
+    - path: metrics/exp-107a/evaluacion.json
+      hash: md5
+      md5: a8e1c198e960f10cd9faa97f7b55b87d
+      size: 3939
+    outs:
+    - path: metrics/exp-107a/regresion.json
+      hash: md5
+      md5: 9157aadb28af130fbf7daeb9ec002676
+      size: 146
+  evolucion-exp-107a:
+    cmd: nice -n 10 python -m expedicion evolucion exp-107a
+    deps:
+    - path: metrics/exp-107a/progreso.json
+      hash: md5
+      md5: d3e025101bb6f01f8a247f3517cfee7b
+      size: 5505
+    outs:
+    - path: metrics/exp-107a/evolucion.json
+      hash: md5
+      md5: 739c74bb6e76fa2016125f641a75c67e
+      size: 2434

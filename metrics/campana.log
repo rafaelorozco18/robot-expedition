@@ -155,3 +155,6 @@
 09:36 exp-107 semilla 10: aprobado=False
 09:39 exp-107: robot-exp-107 v6
 09:39 exp-107 no aprobó: campaña detenida
+19:23 exp-107a semilla 2: aprobado=False
+20:25 exp-107a semilla 3: aprobado=True
+20:29 exp-107a: robot-exp-107a v1

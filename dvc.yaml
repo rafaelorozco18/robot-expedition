@@ -541,6 +541,73 @@ stages:
     metrics:
     - metrics/exp-106/evolucion.json:
         cache: false
+  escenarios-exp-107a:
+    cmd: python -m expedicion escenarios exp-107a
+    deps:
+    - experimentos/exp-107a.yaml
+    - experimentos/base.yaml
+    outs:
+    - data/exp-107a/escenarios.json
+  entrenar-exp-107a-s1:
+    cmd: nice -n 10 python -m expedicion entrenar exp-107a --semilla 1
+    deps:
+    - experimentos/exp-107a.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-106/evaluacion.json
+    outs:
+    - models/exp-107a/semilla-1
+  entrenar-exp-107a-s2:
+    cmd: nice -n 10 python -m expedicion entrenar exp-107a --semilla 2
+    deps:
+    - experimentos/exp-107a.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-106/evaluacion.json
+    outs:
+    - models/exp-107a/semilla-2
+  entrenar-exp-107a-s3:
+    cmd: nice -n 10 python -m expedicion entrenar exp-107a --semilla 3
+    deps:
+    - experimentos/exp-107a.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-106/evaluacion.json
+    outs:
+    - models/exp-107a/semilla-3
+  evaluar-exp-107a:
+    cmd: nice -n 10 python -m expedicion evaluar exp-107a
+    deps:
+    - data/exp-107a/escenarios.json
+    - models/exp-107a/semilla-1
+    - models/exp-107a/semilla-2
+    - models/exp-107a/semilla-3
+    outs:
+    - data/exp-107a/trayectorias.jsonl
+    metrics:
+    - metrics/exp-107a/evaluacion.json:
+        cache: false
+  progreso-exp-107a:
+    cmd: nice -n 10 python -m expedicion progreso exp-107a
+    deps:
+    - metrics/exp-107a/evaluacion.json
+    metrics:
+    - metrics/exp-107a/progreso.json:
+        cache: false
+  regresion-exp-107a:
+    cmd: nice -n 10 python -m expedicion regresion exp-107a
+    deps:
+    - metrics/exp-107a/evaluacion.json
+    metrics:
+    - metrics/exp-107a/regresion.json:
+        cache: false
+  evolucion-exp-107a:
+    cmd: nice -n 10 python -m expedicion evolucion exp-107a
+    deps:
+    - metrics/exp-107a/progreso.json
+    metrics:
+    - metrics/exp-107a/evolucion.json:
+        cache: false
   escenarios-exp-107:
     cmd: python -m expedicion escenarios exp-107
     deps:

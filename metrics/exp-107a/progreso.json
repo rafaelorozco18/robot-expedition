@@ -1,0 +1,266 @@
+{
+ "semilla": 3,
+ "episodios_por_foto": 3,
+ "fotos": [
+  {
+   "paso": 0,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1855.1,
+   "inclinacion_max_media": 20.0,
+   "calidad_media": 74.5,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 704,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1855.1,
+   "inclinacion_max_media": 20.0,
+   "calidad_media": 74.5,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 2816,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1855.1,
+   "inclinacion_max_media": 20.0,
+   "calidad_media": 74.5,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 6272,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 17.98,
+   "energia_media_j": 1398.0,
+   "inclinacion_max_media": 25.7,
+   "calidad_media": 69.2,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 11136,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 17.88,
+   "energia_media_j": 1388.4,
+   "inclinacion_max_media": 24.9,
+   "calidad_media": 69.0,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 17408,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 17.91,
+   "energia_media_j": 1395.0,
+   "inclinacion_max_media": 27.1,
+   "calidad_media": 70.2,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 25024,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1854.5,
+   "inclinacion_max_media": 19.5,
+   "calidad_media": 74.6,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 34048,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1866.6,
+   "inclinacion_max_media": 19.5,
+   "calidad_media": 74.8,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 44480,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1864.6,
+   "inclinacion_max_media": 19.2,
+   "calidad_media": 74.7,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 56256,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1865.1,
+   "inclinacion_max_media": 19.7,
+   "calidad_media": 74.7,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 69504,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 23.56,
+   "energia_media_j": 1828.1,
+   "inclinacion_max_media": 26.4,
+   "calidad_media": 74.7,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 84032,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1852.2,
+   "inclinacion_max_media": 19.6,
+   "calidad_media": 75.0,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 100032,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 18.06,
+   "energia_media_j": 1398.0,
+   "inclinacion_max_media": 22.5,
+   "calidad_media": 70.8,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 117376,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1862.2,
+   "inclinacion_max_media": 19.6,
+   "calidad_media": 74.9,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 136128,
+   "episodios": 3,
+   "tasa_exito": 0.667,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1858.4,
+   "inclinacion_max_media": 19.7,
+   "calidad_media": 75.2,
+   "exito_marte": 0.667
+  },
+  {
+   "paso": 156288,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1851.9,
+   "inclinacion_max_media": 19.3,
+   "calidad_media": 75.3,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 177792,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1854.8,
+   "inclinacion_max_media": 19.2,
+   "calidad_media": 75.4,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 200704,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1852.3,
+   "inclinacion_max_media": 19.3,
+   "calidad_media": 75.2,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 225024,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1853.5,
+   "inclinacion_max_media": 19.2,
+   "calidad_media": 75.4,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 250752,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1850.4,
+   "inclinacion_max_media": 19.2,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 277824,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1855.9,
+   "inclinacion_max_media": 18.9,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 306304,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1849.3,
+   "inclinacion_max_media": 19.1,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 336128,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1849.3,
+   "inclinacion_max_media": 19.1,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 367424,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1849.3,
+   "inclinacion_max_media": 19.1,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 400000,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1849.3,
+   "inclinacion_max_media": 19.1,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  },
+  {
+   "paso": 401408,
+   "episodios": 3,
+   "tasa_exito": 1.0,
+   "segundos_medios": 24.0,
+   "energia_media_j": 1849.3,
+   "inclinacion_max_media": 19.1,
+   "calidad_media": 75.6,
+   "exito_marte": 1.0
+  }
+ ]
+}

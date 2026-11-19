@@ -1,0 +1,107 @@
+id: exp-107a
+orden: 106.5
+estado: activo
+titulo: Recorrido
+tarea: recorrido
+parte_de: exp-106
+pregunta: ¿Encadena rectas, giros y curvas sobre piso firme?
+agrega: Órdenes que cambian cada pocos segundos (recto, giro y curva), en orden al
+  azar
+criterio: 24 s siguiendo velocidad y rumbo, calidad ≥ 55/100, en ≥ 70 %
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 24
+  velocidad_inicial: 0.0
+  ruido_inicial: 0.02
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 1.5
+  rumbo: 1.0
+  reloj: 4.0
+  paso: 1.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+  suavidad: 15.0
+  vel_articular: 1.0
+  zancada: 15.0
+  deslizamiento: 2.0
+  guinada: 1.0
+  vuelo: 15.0
+parametros:
+  vx:
+  - 0.45
+  - 0.55
+  distancia_m: 0
+  periodo_s: 0.68
+  despeje_m: 0.07
+  zancada_m: 0.5
+  sigma_v: 0.05
+  calidad_min: 55
+  tramo_s: 4
+  error_ms: 0.25
+  error_rumbo: 0.4
+  erguido_estricto: true
+aprobar:
+  tasa_exito: 0.7
+  sin_olvidar:
+  - exp-101
+  - exp-103
+  - exp-104
+  - exp-105
+  - exp-106
+entrenamiento:
+  pasos: 400000
+  pasos_minimos: 400000
+  reintentos: 2
+  procesos: 4
+  semillas:
+  - 1
+  - 2
+  - 3
+  log_std_init: -2.5
+  log_std_final: -3.0
+  learning_rate: 0.0001
+  repaso:
+    experimentos:
+    - exp-101
+    - exp-105
+    - exp-106
+    fraccion: 0.3
+  calentar_critico: 400000
+  destilar:
+    maestros:
+      exp-107a: models/exp-107/semilla-4/experto.zip
+      exp-106: models/exp-106/semilla-5/experto.zip
+      exp-105: models/exp-106/semilla-5/experto.zip
+      exp-103: models/exp-106/semilla-5/experto.zip
+      exp-104: models/exp-106/semilla-5/experto.zip
+      exp-101: models/exp-106/semilla-5/experto.zip
+    episodios:
+      exp-107a: 48
+      exp-106: 12
+      exp-105: 12
+      exp-103: 6
+      exp-104: 24
+      exp-101: 16
+    rondas: 12
+    validar: 40
+    procesos: 4
+trampa: 'Memorizar una secuencia: el orden de las órdenes cambia en cada episodio.'
+control:
+  rango: 0.8
+  filtro: 0.6
+pendiente: 'Primera mitad del antiguo Exp 7 (pedido del usuario, 2026-11-18): el mismo
+  recorrido y el mismo criterio, sin pisos sueltos. Antecedente: modelos del Exp 7
+  entrenados con pisos suaves cumplen 34 a 36 de 40 recorridos sobre piso firme. Semilla
+  1: PPO desde el campeón del Exp 6 (tasa 1e-4, 3 M, con repaso); será el maestro
+  del recorrido para destilar. Semilla 1 (3 M de PPO): la foto final hace 28 de 40
+  recorridos nuevos (5000+). Como maestro del recorrido rinde más la semilla 4 del
+  Exp 7 (entrenada con pisos suaves, del mismo linaje): 38 y 35 de 40 sobre piso firme
+  (91 %). Semilla 2: parte del campeón del Exp 6 y destila (48 recorridos por ronda,
+  12 rondas) con la semilla 4 del Exp 7 en el recorrido y el campeón del Exp 6 en
+  lo anterior; luego PPO con la política congelada (400 mil pasos).'
