@@ -822,3 +822,71 @@ stages:
     metrics:
     - metrics/exp-108/evolucion.json:
         cache: false
+  escenarios-exp-109:
+    cmd: python -m expedicion escenarios exp-109
+    deps:
+    - experimentos/exp-109.yaml
+    - experimentos/base.yaml
+    outs:
+    - data/exp-109/escenarios.json
+  navegador-exp-109:
+    cmd: nice -n 10 python -m expedicion navegador exp-109
+    deps:
+    - experimentos/exp-109.yaml
+    - experimentos/calibracion-caminante.json
+    - expedicion/mundo.py
+    - expedicion/navegador.py
+    outs:
+    - models/exp-109/navegador
+  entrenar-exp-109-s1:
+    cmd: nice -n 10 python -m expedicion entrenar exp-109 --semilla 1
+    deps:
+    - experimentos/exp-109.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-108/evaluacion.json
+    - models/exp-109/navegador
+    outs:
+    - models/exp-109/semilla-1
+  entrenar-exp-109-s2:
+    cmd: nice -n 10 python -m expedicion entrenar exp-109 --semilla 2
+    deps:
+    - experimentos/exp-109.yaml
+    - experimentos/base.yaml
+    - robots/bipedo-v2.xml
+    - metrics/exp-108/evaluacion.json
+    - models/exp-109/navegador
+    outs:
+    - models/exp-109/semilla-2
+  evaluar-exp-109:
+    cmd: nice -n 10 python -m expedicion evaluar exp-109
+    deps:
+    - data/exp-109/escenarios.json
+    - models/exp-109/semilla-1
+    - models/exp-109/semilla-2
+    outs:
+    - data/exp-109/trayectorias.jsonl
+    metrics:
+    - metrics/exp-109/evaluacion.json:
+        cache: false
+  progreso-exp-109:
+    cmd: nice -n 10 python -m expedicion progreso exp-109
+    deps:
+    - metrics/exp-109/evaluacion.json
+    metrics:
+    - metrics/exp-109/progreso.json:
+        cache: false
+  regresion-exp-109:
+    cmd: nice -n 10 python -m expedicion regresion exp-109
+    deps:
+    - metrics/exp-109/evaluacion.json
+    metrics:
+    - metrics/exp-109/regresion.json:
+        cache: false
+  evolucion-exp-109:
+    cmd: nice -n 10 python -m expedicion evolucion exp-109
+    deps:
+    - metrics/exp-109/progreso.json
+    metrics:
+    - metrics/exp-109/evolucion.json:
+        cache: false

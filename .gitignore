@@ -20,6 +20,8 @@ publicado/
 
 # Salidas de la serie Marte: las versiona DVC, nunca git
 /models/exp-1*/semilla-*
+/models/exp-1*/navegador
+/models/exp-1*/navegadores
 /data/exp-1*/*.json*
 
 # Visor estático generado por `expedicion exportar`

@@ -159,6 +159,13 @@ def cmd_exportar(args):
     print(f"{n} episodios en {destino}")
 
 
+def cmd_navegador(args):
+    from .navegador import entrenar_navegador
+    exp = X.cargar(args.exp)
+    semilla = args.semilla if args.semilla is not None else exp["navegador"].get("semilla", 0)
+    print(entrenar_navegador(exp, semilla=semilla, variante=args.variante))
+
+
 def cmd_servir(args):
     from .servidor import servir
     servir(args.puerto)
@@ -209,6 +216,11 @@ def main(argv=None):
     s.add_argument("exps", nargs="+")
     s.add_argument("--seguir", action="store_true", help="continúa aunque un experimento no apruebe")
     s.add_argument("--hasta", help="hora HH:MM a partir de la cual no se inicia otro experimento")
+    nav = sub.add_parser("navegador")
+    nav.add_argument("exp")
+    nav.add_argument("--semilla", type=int, default=None)
+    nav.add_argument("--variante", default=None)
+    nav.set_defaults(f=cmd_navegador)
     comando("servir", cmd_servir).add_argument("--puerto", type=int, default=None)
 
     args = ap.parse_args(argv)

@@ -95,6 +95,12 @@ y el registro de modelos; las métricas y parámetros siguen en git.
   `pipelines/ejecuciones/`. Rollback probado (promoción por error de la semilla 2 y vuelta a la 1).
 - MLflow completo en la release `mlflow-registro`; exportado para la web con `scripts/registro_mlflow.py`.
 - Pendiente humano: grupo y nombres en el correo, acceso del docente al repo privado, contribuciones en el informe.
+- **Exp 9 (`exp-109`, Exploración entre rocas, pedido del usuario el 2026-11-19):** jerárquico. Navegador PPO (familia
+  nueva: 25 obs, 7 direcciones, 1 decisión/s) entrenado en un simulador cinemático (`expedicion/navegador.py`,
+  `expedicion/mundo.py`) + caminante del Exp 8 congelado. Mejor navegador (robusto, semilla 1): 6/24 y 5/24 en MuJoCo;
+  criterio 60 % → no aprueba. Variantes en `models/exp-109/navegadores/` (DVC) y en MLflow `exp-109-navegador`.
+  Lecciones: rocas como cuerpos mocap (geoms fijos movidos se atraviesan); el alcance real del robot es ~0,67 m;
+  `pgrep -f` en un bucle de espera coincide consigo mismo (esperar por PID).
 - Receta para no olvidar: PPO aprende lo nuevo; después se destila (`entrenamiento.destilar`) **partiendo del
   campeón anterior** (que sabe lo viejo) con maestros del mismo linaje: el modelo de PPO para lo nuevo y el
   campeón anterior para lo viejo. Política congelada en la fase de PPO y cada ronda validada con 40 episodios.

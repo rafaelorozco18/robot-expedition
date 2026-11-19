@@ -324,6 +324,52 @@ mismos exámenes sin olvidar que el Exp 7. El Exp 7 de terreno (`exp-107`) queda
   Recorrido 75 %, De pie 92 %, Caminar bien 100 %, Terreno 75 %, esquina 100 % y curva 100 % en sus exámenes.
 - Para ordenar el catálogo, cada experimento acepta `orden` (opcional): el 7a usa 106.5.
 
+## 2026-11-19: Exp 9 (Exploración entre rocas), diseño y primeros resultados
+
+Pedido del usuario: llegar a balizas en un campo de rocas que no se pueden cruzar, con parches de arena, grava y barro y
+varias rutas posibles. Configuración: `experimentos/exp-109.yaml`; mundo: `expedicion/mundo.py`; navegador:
+`expedicion/navegador.py`; tarea: `Exploracion` en `expedicion/tareas.py`.
+
+**Diseño jerárquico.** El caminante es el campeón del Exp 8 (no cambia). Lo nuevo lo aprende un **navegador** (nueva
+familia de modelos: 25 observaciones, 7 acciones): cada 1 s elige hacia dónde ir (de −90° a +90° respecto del robot)
+mirando 15 sensores de distancia (alcance 3 m, de −105° a +105°) y la baliza; el controlador del Exp 8 lo convierte en
+órdenes. El navegador entrena con PPO en un simulador cinemático del mismo mundo, calibrado con el caminante real
+(`experimentos/calibracion-caminante.json`), y se evalúa en MuJoCo completo.
+
+**Mundo.** 14 m × 14 m, 3 balizas a 4–6 m una de otra, 18 rocas de 0,35 a 0,70 m de radio y 0,6 m de alto (dos sobre la
+línea recta entre cada par de metas, para obligar a rodearlas por un lado u otro), 5 parches de arena, grava y barro.
+Cada mundo se verifica con una búsqueda en rejilla: siempre hay solución.
+
+**Lo que se aprendió en la noche:**
+
+- Con 5 maniobras bruscas (recto, curvas, giros) el caminante se caía en 10 de 12 episodios. Con 7 direcciones
+  ejecutadas por el controlador del Exp 8, sin rocas ni parches cae 2 de 12.
+- Las rocas de MuJoCo, como geoms fijos movidos en ejecución, **se atravesaban** (la jerarquía de envolventes de
+  MuJoCo quedaba vieja). Ahora son cuerpos mocap de radio fijo.
+- Un choque lo produce un **pie**, a 0,67 m del centro del robot: el alcance real del robot en planta es mucho mayor
+  que el supuesto (0,32 m). Se corrigió a 0,55 m más 0,15 m de margen.
+- Ajustar el caminante con PPO en la exploración (semilla 2, con repaso) no redujo las caídas: dependen de cómo
+  conduce el navegador.
+
+**Comparación en MuJoCo** (24 episodios nuevos, semillas 5000+, mismo caminante; `docs/evaluaciones/exp-109-navegadores-5000.json`):
+
+| Navegador | Hipótesis | Éxitos | Choques | Caídas |
+|---|---|---|---|---|
+| Regla «ir directo a la baliza» | referencia | 0 | 21 | 3 |
+| Aleatorio | referencia | 0 | 5 | 18 |
+| Base (alcance 0,32 m) | aprender a rodear rocas en el simulador transfiere | 1 | 11 | 12 |
+| Suave | castigar invertir giros reduce caídas | 5 | 16 | 3 |
+| **Robusto, semilla 1** | alcance real + margen + caminante aleatorizado reduce choques | **6** | 5 | 9 |
+| Robusto, semilla 2 | | 3 | 11 | 9 |
+| Robusto, semilla 3 | | 2 | 12 | 7 |
+
+El navegador aprendido supera a las referencias (que no llegan nunca) y cada hipótesis mejoró lo que atacaba: la
+suave bajó las caídas de 12 a 3 y la robusta los choques de 16 a 5. Pero el mejor llega en el 25 % de los episodios,
+lejos del 60 % fijado antes de entrenar: **el Exp 9 no aprueba**. El robusto queda como navegador oficial (semilla 1).
+
+**Siguiente hipótesis razonable:** juntar las dos mejoras (suave en caídas, robusto en choques) entrenando más tiempo
+y con el caminante en el circuito en lugar del simulador cinemático (ajuste fino del navegador en MuJoCo).
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.

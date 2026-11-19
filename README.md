@@ -16,7 +16,7 @@ versionado con git, DVC y MLflow, orquestado con Prefect y publicado en Vercel.
 
 El escenario asignado es **Robot Expedition**: un robot debe llegar a balizas. Elegimos un robot con patas, en 3D
 completo y con gravedad de Marte: es más difícil que uno con ruedas, pero el que puede ir donde no llega una rueda.
-La serie final tiene 8 experimentos (`experimentos/exp-101` a `exp-108`); cada uno parte del campeón del anterior
+La serie tiene 9 experimentos (`experimentos/exp-101` a `exp-109`; el 7 es `exp-107a`); cada uno parte del campeón del anterior
 y, desde el Exp 5, **solo aprueba si no olvida los exámenes anteriores**.
 
 | Exp | Pregunta | Nivel | Estado |
@@ -29,6 +29,7 @@ y, desde el Exp 5, **solo aprueba si no olvida los exámenes anteriores**.
 | 6 | ¿Camina en círculo (avanza y gira a la vez)? | N2 | aprobado |
 | 7 | ¿Encadena rectas, giros y curvas en orden al azar? (`exp-107a`) | N2 | aprobado |
 | 8 | ¿Llega, una tras otra, a tres balizas puestas al azar? | N3 | aprobado |
+| 9 | ¿Llega a tres balizas en un campo de rocas que no puede cruzar, sobre arena, grava y barro? | N3 | en curso: 25 % (mínimo 60 %) |
 
 Ficha del ambiente y niveles: [docs/ficha-ambiente.md](docs/ficha-ambiente.md) · comparación de todas las corridas:
 [docs/comparacion-experimentos.md](docs/comparacion-experimentos.md) · incidente y rollback:
@@ -54,6 +55,9 @@ bitácora completa: [docs/serie-marte.md](docs/serie-marte.md) · ficha de cada 
 
 - **Python es la autoridad**: la física la calcula MuJoCo. El visor Three.js solo dibuja los cuadros que devuelve la
   simulación (replays grabados o episodios corridos en vivo por la función de Vercel).
+- **Exp 9, dos niveles de control**: un navegador (PPO, 15 sensores de distancia + baliza → 7 direcciones) decide por
+  dónde rodear las rocas y el caminante del Exp 8 ejecuta. El navegador entrena en un simulador cinemático calibrado
+  con el caminante real (`expedicion/navegador.py`) y se evalúa en MuJoCo (`scripts/comparar_navegadores.py`).
 - **Evaluación en vivo sin PyTorch**: la función de Vercel carga el actor exportado a numpy (`.npz`). La equivalencia
   con Stable-Baselines3 está probada en `tests/test_politica_numpy.py` (media de la acción igual a 1e-5 y mismo
   resultado por episodio).

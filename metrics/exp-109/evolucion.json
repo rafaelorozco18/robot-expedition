@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1829338324,
+   "hitos": [
+    {
+     "agente": "foto:exp-101:0",
+     "paso": 0,
+     "origen": "exp-101",
+     "exito": false,
+     "segundos": 5.8,
+     "distancia": 0.35,
+     "calidad": 33.3,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "A los 5.8 s: se inclinó demasiado · llegó a 0 de 3 balizas · quedó a 4.9 m de la siguiente",
+     "clip": [
+      0.0,
+      5.8,
+      1
+     ],
+     "tasa": null,
+     "indice": 1,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "paso:8384",
+     "paso": 8384,
+     "origen": "exp-109",
+     "exito": false,
+     "segundos": 20.7,
+     "distancia": -1.9,
+     "calidad": 68.6,
+     "avance": 0.107,
+     "puntaje": 0.1016,
+     "texto": "A los 20.7 s: chocó con una roca · llegó a 0 de 3 balizas · quedó a 2.9 m de la siguiente",
+     "clip": [
+      14.7,
+      20.7,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 37,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "paso:13056",
+     "paso": 13056,
+     "origen": "exp-109",
+     "exito": false,
+     "segundos": 22.04,
+     "distancia": 1.74,
+     "calidad": 70.3,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "A los 22.0 s: se agachó o cayó · llegó a 0 de 3 balizas · quedó a 6.9 m de la siguiente",
+     "clip": [
+      16.04,
+      22.04,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 38,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "paso:18752",
+     "paso": 18752,
+     "origen": "exp-109",
+     "exito": false,
+     "segundos": 22.9,
+     "distancia": -0.36,
+     "calidad": 63.6,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "A los 22.9 s: chocó con una roca · llegó a 0 de 3 balizas · quedó a 5.7 m de la siguiente",
+     "clip": [
+      16.9,
+      22.9,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 39,
+     "etapa": "Casi lo logra"
+    },
+    {
+     "agente": "paso:25536",
+     "paso": 25536,
+     "origen": "exp-109",
+     "exito": false,
+     "segundos": 74.84,
+     "distancia": 1.31,
+     "calidad": 74.7,
+     "avance": 0.779,
+     "puntaje": 0.74,
+     "texto": "A los 74.8 s: chocó con una roca · llegó a 2 de 3 balizas · quedó a 3.1 m de la siguiente",
+     "clip": [
+      68.84,
+      74.84,
+      1
+     ],
+     "tasa": 0.0,
+     "indice": 40,
+     "etapa": "Mejor intento (aún no cumple)"
+    }
+   ],
+   "mejora": 0.74
+  }
+ },
+ "recomendado": "marte"
+}

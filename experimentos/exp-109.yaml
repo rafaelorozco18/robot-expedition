@@ -1,0 +1,179 @@
+id: exp-109
+estado: activo
+titulo: Exploración entre rocas
+tarea: exploracion
+parte_de: exp-108
+pregunta: ¿Llega a tres balizas en un campo de rocas que no puede cruzar, eligiendo
+  por dónde rodearlas y caminando sobre arena, grava y barro?
+agrega: 'Rocas infranqueables y sensores de distancia: un navegador aprende la ruta
+  y el caminante del Exp 8 la ejecuta'
+criterio: Llega a las 3 balizas en 90 s sin caerse ni chocar con una roca, en ≥ 60
+  %
+ambiente:
+  altura_minima: 0.75
+  inclinacion_maxima: 40
+  duracion_s: 90
+  velocidad_inicial: 0.0
+  ruido_inicial: 0.02
+recompensa:
+  velocidad: 2.0
+  altura: 0.5
+  erguido: 1.5
+  rumbo: 1.0
+  reloj: 4.0
+  paso: 1.5
+  giro: 0.02
+  vivo: 0.3
+  postura: 0
+  quieto: 0
+  caida: 30.0
+  suavidad: 15.0
+  vel_articular: 1.0
+  zancada: 15.0
+  deslizamiento: 2.0
+  guinada: 1.0
+  vuelo: 15.0
+parametros:
+  vx:
+  - 0.45
+  - 0.55
+  periodo_s: 0.68
+  despeje_m: 0.07
+  zancada_m: 0.5
+  sigma_v: 0.05
+  calidad_min: null
+  erguido_estricto: true
+  balizas: 3
+  distancia_m:
+  - 4.0
+  - 6.0
+  radio_m: 0.6
+  giro_rad: 0.6
+  lado_m: 7.0
+  rocas: 18
+  rocas_en_ruta: 2
+  radio_roca_m:
+  - 0.35
+  - 0.7
+  alto_roca_m: 0.6
+  despeje_meta_m: 0.8
+  parches: 5
+  lado_parche_m:
+  - 2.0
+  - 3.5
+  tipos_piso:
+  - arena
+  - grava
+  - barro
+  decision_s: 1.0
+pisos:
+  tramos: []
+  inicio_m: 0
+navegador:
+  modelo: models/exp-109/navegador/experto.zip
+  calibracion: experimentos/calibracion-caminante.json
+  pasos: 2000000
+  red:
+  - 64
+  - 64
+  cambio: 0.1
+  progreso: 1.0
+  meta: 5.0
+  choque: 10.0
+  tiempo: 0.05
+  hipotesis: 'La brecha con MuJoCo viene de una calibración demasiado exacta y de
+    un robot más ancho de lo supuesto (un paso lateral llega a 0,67 m del centro):
+    entrenar con alcance de 0,55 m más 15 cm de margen y un caminante aleatorizado
+    (retraso, velocidad, giro, ruido de rumbo) da un navegador que choca menos en
+    la física real.'
+  variantes:
+    suave:
+      inversion: 1.0
+      giro: 0.05
+      hipotesis: Castigar la inversión de giros (izquierda a derecha o al revés) y
+        el giro sobre el eje reduce las caídas del caminante en MuJoCo sin perder
+        llegadas. (Alcance de 0,32 m, como la base.)
+    base:
+      inversion: 0.0
+      giro: 0.0
+      margen: 0.0
+      robusto: false
+      hipotesis: 'Línea base del navegador: PPO con 15 sensores de distancia y la
+        baliza aprende a rodear rocas en el simulador cinemático calibrado y transfiere
+        a MuJoCo. (Entrenada con un alcance del robot de 0,32 m, antes de medir que
+        un pie llega a 0,67 m.)'
+  inversion: 1.0
+  giro: 0.05
+  margen: 0.15
+  robusto: true
+  semilla: 1
+aprobar:
+  tasa_exito: 0.6
+  perturbacion: ninguna
+  sin_olvidar:
+  - exp-101
+  - exp-103
+  - exp-104
+  - exp-105
+  - exp-106
+  - exp-107a
+  - exp-108
+entrenamiento:
+  pasos: 300000
+  pasos_minimos: 300000
+  calentar_critico: 300000
+  reintentos: 0
+  procesos: 4
+  semillas:
+  - 1
+  - 2
+  log_std_init: -2.5
+  log_std_final: -3.0
+  learning_rate: 0.0001
+  hipotesis: El caminante del Exp 8 no cambia (política congelada); lo nuevo lo aprende
+    el navegador.
+  repaso:
+    experimentos:
+    - exp-101
+    - exp-105
+    - exp-106
+    - exp-107a
+    - exp-108
+    fraccion: 0.3
+  por_semilla:
+    2:
+      pasos: 2000000
+      pasos_minimos: 2000000
+      calentar_critico: 0
+      learning_rate: 3.0e-05
+      hipotesis: Ajustar el caminante con PPO en la exploración, con el navegador
+        en el circuito y repaso de lo anterior, reduce sus caídas en episodios largos
+        con muchos giros sobre pisos sueltos.
+trampa: 'Pasar entre rocas demasiado juntas: el sensor ve el hueco pero el robot no
+  cabe (radio 0,32 m); chocar termina el episodio.'
+control:
+  rango: 0.8
+  filtro: 0.6
+pendiente: 'Experimento pedido por el usuario el 2026-11-19: llegar a balizas en un
+  campo de rocas que no se pueden cruzar, con parches de arena, grava y barro, y varias
+  rutas posibles. Diseño jerárquico: el caminante es el campeón del Exp 8 (congelado);
+  un navegador PPO aprende a elegir cada 1 s una de cinco maniobras (recto, curva
+  izq./der., giro izq./der.) a partir de 15 sensores de distancia y la baliza (nueva
+  familia de modelos: 23 observaciones, 5 acciones). El navegador entrena en un simulador
+  cinemático calibrado con el caminante real (experimentos/calibracion-caminante.json)
+  y se evalúa en MuJoCo completo. Calibración: con maniobras al azar cada 1 s el caminante
+  se cae en 2 a 3 de 12 episodios de 30 s; el giro a la izquierda real avanza 0,34
+  m/s. Hallazgo: las rocas de MuJoCo se movían como geoms fijos del mundo y el robot
+  las atravesaba (la jerarquía de envolventes quedaba vieja); ahora son cuerpos mocap
+  con radios fijos (0,35 a 0,70 m). Con rocas sólidas, en 16 episodios: la regla «ir
+  directo» choca 15 veces (0 éxitos); el navegador aprendido (800 mil pasos) esquiva
+  casi siempre (2 choques) pero el caminante se cae en 10. Un primer diseño con 5
+  maniobras bruscas hacía caer al caminante en 10 de 12; se cambió a 7 direcciones
+  ejecutadas con el controlador del Exp 8. Semilla 1: el campeón del Exp 8 congelado
+  (línea base). Semilla 2: ajuste fino del caminante en la exploración. Hallazgo:
+  un pie llegó a 0,67 m del centro del robot al chocar; el alcance del robot en planta
+  se corrigió de 0,32 a 0,55 m. Comparación en MuJoCo (24 episodios nuevos 5000+,
+  mismo caminante): regla «ir directo» 0 (21 choques), aleatorio 0, base 1, suave
+  5 (caídas de 12 a 3), robusto semillas 1/2/3: 6, 3 y 2. Navegador oficial: robusto
+  semilla 1; confirmación 3000+: 5 de 24. Semilla 2 del caminante (ajuste fino, entrenada
+  con el navegador base): 1 de 24 con ese navegador; no reduce las caídas.'

@@ -14,7 +14,7 @@
     "api/sim.py": {
       "maxDuration": 60,
       "memory": 2048,
-      "includeFiles": "{expedicion,experimentos,robots,publicado,COMMIT}/**"
+      "includeFiles": "{expedicion,experimentos,robots,publicado,models,COMMIT}/**"
     }
   },
   "headers": [

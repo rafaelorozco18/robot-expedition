@@ -114,7 +114,7 @@
     <tr><th>Nivel</th><th>Exp</th><th>Decisión nueva</th><th>Examen</th></tr>
     <tr><td>N1</td><td>1 De pie · 2 Caminar · 3 Caminar bien</td><td>Sostenerse, coordinar piernas, marcha humana</td><td class="ok">83 · 100 · 100 %</td></tr>
     <tr><td>N2</td><td>4 Terreno · 5 Esquina · 6 Curva · 7 Recorrido</td><td>Adaptar el paso al piso, girar, avanzar girando, cambiar de orden</td><td class="ok">75 · 100 · 75 · 100 %</td></tr>
-    <tr><td>N3</td><td>8 Balizas · incidente de pisos sueltos</td><td>Cuándo girar, caminar y detenerse según la meta</td><td class="ok">83 %</td></tr>
+    <tr><td>N3</td><td>8 Balizas · 9 Exploración entre rocas · incidente de pisos sueltos</td><td>Cuándo girar, caminar y detenerse según la meta; por dónde rodear rocas</td><td><span class="ok">83 %</span> · <span class="no">9: 25 %</span></td></tr>
   </table>
   <p>Cada uno parte del campeón anterior. <b style="color:var(--tinta)">Desde el Exp 5 solo aprueba si sigue aprobando los exámenes anteriores</b>: en los Exps 2 a 4 el campeón había perdido De pie (0 a 42 %), y así nació la regla.</p>
 </section>
@@ -163,7 +163,31 @@
 </section>
 
 <section class="diapo">
-  <p class="eyebrow">6 · Lo que no funcionó</p>
+  <p class="eyebrow">6 · Exp 9 · Exploración entre rocas</p>
+  <h2>Un navegador aprende la ruta; el caminante la ejecuta</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>Rocas que no se pueden cruzar, parches de arena, grava y barro, tres balizas y varias rutas posibles.</li>
+        <li><b>Navegador</b> (nueva familia de modelos): 15 sensores de distancia + baliza → una de 7 direcciones cada segundo.</li>
+        <li>Entrena en un simulador cinemático calibrado con el caminante real; se evalúa en MuJoCo.</li>
+        <li>Hallazgos: las rocas se atravesaban (MuJoCo) y un pie llega a 0,67 m del centro del robot.</li>
+        <li><b>No aprueba aún</b> (mínimo 60 %): siguiente hipótesis, combinar ambas mejoras y ajustar el navegador en MuJoCo.</li>
+      </ul>
+    </div>
+    <table>
+      <tr><th>Navegador (24 episodios en MuJoCo)</th><th>Llega</th><th>Choca</th></tr>
+      <tr><td>Regla: ir directo</td><td class="no">0</td><td>21</td></tr>
+      <tr><td>Aleatorio</td><td class="no">0</td><td>5</td></tr>
+      <tr><td>Base</td><td>1</td><td>11</td></tr>
+      <tr><td>Suave (no invierte giros)</td><td>5</td><td>16</td></tr>
+      <tr><td>Robusto (alcance real + física al azar)</td><td class="ok">6</td><td>5</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">7 · Lo que no funcionó</p>
   <h2>Incidente: el piso deja de ser firme</h2>
   <div class="cols3">
     <div class="caja"><div class="num verde">92 %</div><small>Recorrido sobre piso firme (campeón servido)</small></div>
@@ -178,7 +202,7 @@
 </section>
 
 <section class="diapo">
-  <p class="eyebrow">7 · Versionado</p>
+  <p class="eyebrow">8 · Versionado</p>
   <h2>Todo experimento deja una huella</h2>
   <table>
     <tr><th>Qué</th><th>Cómo</th></tr>
@@ -191,7 +215,7 @@
 </section>
 
 <section class="diapo">
-  <p class="eyebrow">8 · Pipeline, monitoreo y rollback</p>
+  <p class="eyebrow">9 · Pipeline, monitoreo y rollback</p>
   <h2>Prefect orquesta; DVC decide qué recalcular</h2>
   <div class="flujo">
     <span class="paso">validar</span><span class="flecha">→</span><span class="paso">pruebas</span><span class="flecha">→</span>
@@ -207,7 +231,7 @@
 </section>
 
 <section class="diapo">
-  <p class="eyebrow">9 · Despliegue</p>
+  <p class="eyebrow">10 · Despliegue</p>
   <h2>Una sola URL en Vercel</h2>
   <div class="cols">
     <ul>
@@ -221,7 +245,7 @@
 </section>
 
 <section class="diapo">
-  <p class="eyebrow">10 · Demostración</p>
+  <p class="eyebrow">11 · Demostración</p>
   <h2>Pruébenlo</h2>
   <ul class="grande">
     <li>Aplicación: <a href="./">el visor</a> → Exp 8 → «Lanzar episodio» con cualquier semilla.</li>
@@ -231,12 +255,12 @@
 </section>
 
 <section class="diapo">
-  <p class="eyebrow">11 · Cierre</p>
+  <p class="eyebrow">12 · Cierre</p>
   <h2>Límites, aprendizajes y siguiente hipótesis</h2>
   <div class="cols">
     <div class="caja"><b>Límites</b>
       <ul>
-        <li>Sin sensores de obstáculos: la ruta a la baliza la calcula el ambiente.</li>
+        <li>Exp 9: el navegador llega en 25 % de los mundos con rocas; el criterio es 60 %.</li>
         <li>Girar en barro sigue sin resolverse.</li>
         <li>Pisos como fuerzas sobre los pies, no suelo deformable.</li>
         <li>Exámenes pequeños (12 episodios): por eso validamos con 80 nuevos.</li>
@@ -246,7 +270,7 @@
       <ul>
         <li>Aprender sin olvidar exige medirlo: regresión en cada modelo.</li>
         <li>Una cosa por experimento: cuando el Exp 7 agregó dos, se estancó.</li>
-        <li>Siguiente hipótesis: sensores de distancia (nueva familia de modelos) para esquivar obstáculos camino a la baliza.</li>
+        <li>Separar navegar de caminar permitió agregar sensores sin reentrenar el cuerpo: nueva familia de modelos, mismo caminante.</li>
       </ul>
     </div>
   </div>

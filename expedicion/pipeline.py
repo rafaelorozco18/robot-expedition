@@ -16,6 +16,13 @@ def generar():
         etapas[f"escenarios-{i}"] = {
             "cmd": f"python -m expedicion escenarios {i}", "deps": config[:2],
             "outs": [f"data/{i}/escenarios.json"]}
+        if exp.get("navegador"):  # Exp 9: el navegador se entrena antes que el caminante, que lo usa
+            nav = exp["navegador"]
+            etapas[f"navegador-{i}"] = {
+                "cmd": f"nice -n 10 python -m expedicion navegador {i}",
+                "deps": [f"experimentos/{i}.yaml", nav["calibracion"], "expedicion/mundo.py", "expedicion/navegador.py"],
+                "outs": [f"models/{i}/navegador"]}
+            padre = padre + [f"models/{i}/navegador"]
         modelos = []
         for s in exp["entrenamiento"]["semillas"]:
             carpeta = f"models/{i}/semilla-{s}"

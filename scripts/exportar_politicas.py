@@ -17,9 +17,13 @@ def exportar(ruta):
         sd = torch.load(io.BytesIO(z.read("policy.pth")), map_location="cpu")
     f = lambda k: sd[k].detach().numpy().astype(np.float32)  # noqa: E731
     destino = ruta.with_suffix(".npz")
-    np.savez(destino, w0=f("mlp_extractor.policy_net.0.weight"), b0=f("mlp_extractor.policy_net.0.bias"),
+    import os
+    tmp = destino.with_name(f".{destino.stem}-{os.getpid()}.npz")  # escritura atómica: varios procesos a la vez
+    np.savez(tmp, w0=f("mlp_extractor.policy_net.0.weight"), b0=f("mlp_extractor.policy_net.0.bias"),
              w1=f("mlp_extractor.policy_net.2.weight"), b1=f("mlp_extractor.policy_net.2.bias"),
-             w2=f("action_net.weight"), b2=f("action_net.bias"), log_std=f("log_std"))
+             w2=f("action_net.weight"), b2=f("action_net.bias"),
+             log_std=f("log_std") if "log_std" in sd else np.zeros(sd["action_net.bias"].shape[0], np.float32))
+    os.replace(tmp, destino)
     return destino
 
 

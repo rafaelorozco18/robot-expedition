@@ -47,6 +47,21 @@ class BipedoEnv(gym.Env):
                             f'pos="{200 + k} 0 0" rgba="0.55 0.35 0.2 1" friction="0.9 0.05 0.01"/>'
                             for k in range(self.conf_listones["cantidad"]))
             xml = xml.replace("</worldbody>", slots + "</worldbody>", 1)
+        self.n_rocas = 0
+        if exp["tarea"] == "exploracion":
+            # Rocas como cuerpos mocap (MuJoCo los espera móviles; mover geoms fijos del mundo deja vieja su jerarquía
+            # de envolventes y el robot las atraviesa). Un juego de huecos por cada radio posible, lejos del campo.
+            from .mundo import RADIOS_ROCA
+            t = exp["parametros"]
+            self.n_rocas = t["rocas"] + t["rocas_en_ruta"] * t["balizas"]
+            alto = t["alto_roca_m"]
+            cuerpos = []
+            for j, r in enumerate(RADIOS_ROCA):
+                for k in range(self.n_rocas):
+                    cuerpos.append(f'<body name="roca_{j}_{k}" mocap="true" pos="{300 + 3 * k} {3 * j} {alto / 2}">'
+                                   f'<geom name="roca_{j}_{k}" type="cylinder" size="{r} {alto / 2}" '
+                                   f'rgba="0.45 0.22 0.13 1" friction="0.9 0.05 0.01"/></body>')
+            xml = xml.replace("</worldbody>", "".join(cuerpos) + "</worldbody>", 1)
         self.model = mujoco.MjModel.from_xml_string(xml)
         self.data = mujoco.MjData(self.model)
         self.frame_skip = exp["ambiente"]["frame_skip"]
@@ -63,6 +78,14 @@ class BipedoEnv(gym.Env):
         self.id_piso = m.geom("piso").id
         self.ids_listones = [m.geom(f"liston_{k}").id for k in range(self.conf_listones["cantidad"])] if self.conf_listones else []
         self.ids_suelo = np.array([self.id_piso, *self.ids_listones])
+        if self.n_rocas:
+            from .mundo import RADIOS_ROCA
+            self.huecos_roca = {r: [int(m.body_mocapid[m.body(f"roca_{j}_{k}").id]) for k in range(self.n_rocas)]
+                                for j, r in enumerate(RADIOS_ROCA)}
+            self.ids_rocas = np.array([m.geom(f"roca_{j}_{k}").id for j in range(len(RADIOS_ROCA))
+                                       for k in range(self.n_rocas)], dtype=int)
+        else:
+            self.huecos_roca, self.ids_rocas = {}, np.array([], dtype=int)
         self.ids_pies = [m.geom("pie_i").id, m.geom("pie_d").id]
 
         self.adversidad = dict(exp.get("adversidad", {}))
@@ -138,6 +161,18 @@ class BipedoEnv(gym.Env):
 
     def torques_relativos(self):
         return self.data.actuator_force / self.torque_max
+
+    def choca_con_roca(self):
+        if not len(self.ids_rocas):
+            return False
+        pares = self.data.contact.geom[:self.data.ncon]
+        return bool(np.isin(pares, self.ids_rocas).any())
+
+    def parche(self, tipo):
+        """Propiedades de un piso a intensidad completa (para parches de la tarea de exploración)."""
+        p = PISOS[tipo]
+        return {"friccion": float(self.np_random.uniform(*p["friccion"])), "arrastre": float(self.np_random.uniform(*p["arrastre"])),
+                "succion": p["succion"], "sacudida": p["sacudida"]}
 
     def toca_piso_con_cuerpo(self):
         return self.contactos()[2]
@@ -382,7 +417,8 @@ class BipedoEnv(gym.Env):
         base = PISOS["suelo"]
         for lado in (0, 1):
             pos = self.posicion_pie(lado)
-            piso = next((t for t in self.tramos if t["x0"] <= pos[0] < t["x1"]), None)
+            piso = next((t for t in self.tramos if t["x0"] <= pos[0] < t["x1"]
+                         and t.get("y0", -np.inf) <= pos[1] < t.get("y1", np.inf)), None)
             self.model.geom_friction[self.ids_pies[lado], 0] = piso["friccion"] if piso else base["friccion"][0]
             fuerza = np.zeros(3)
             if piso and pos[2] < 0.08:
@@ -396,8 +432,9 @@ class BipedoEnv(gym.Env):
             self.pie_previo[lado] = pos.copy()
 
     def piso_bajo_torso(self):
-        x = self.data.qpos[0]
-        return next((t["tipo"] for t in self.tramos if t["x0"] <= x < t["x1"]), "suelo")
+        x, y = self.data.qpos[0], self.data.qpos[1]
+        return next((t["tipo"] for t in self.tramos if t["x0"] <= x < t["x1"]
+                     and t.get("y0", -np.inf) <= y < t.get("y1", np.inf)), "suelo")
 
     def _observar(self):
         d = self.data

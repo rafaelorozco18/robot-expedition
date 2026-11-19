@@ -107,7 +107,7 @@ y ahí se corrigió para no castigar la llegada.
 |---|---|---|---|
 | **N1 · Misión base** | 1 De pie · 2 Caminar · 3 Caminar bien | Sostener el cuerpo; coordinar las piernas con un reloj; marcha de calidad | % de episodios que aguantan 10 s o caminan 10 m (con calidad ≥ 55) |
 | **N2 · Más decisiones** | 4 Terreno difícil · 5 Esquina · 6 Curva · 7 Recorrido | Adaptar el paso al piso que siente; detenerse, girar y retomar; avanzar y girar a la vez; cambiar de modo cuando cambia la orden | % de éxito en cada examen, sin olvidar los anteriores |
-| **N3 · Operación exigente** | 8 Llegar a las balizas · incidente: recorrido sobre pisos sueltos (Exp 7 de terreno) | Decidir cuándo girar, caminar y detenerse según dónde está la meta; operar con pisos sueltos (perturbación) | % de episodios que llegan a las 3 balizas; degradación del campeón al cambiar el piso |
+| **N3 · Operación exigente** | 8 Llegar a las balizas · 9 Exploración entre rocas · incidente: recorrido sobre pisos sueltos (Exp 7 de terreno) | Decidir cuándo girar, caminar y detenerse según dónde está la meta; **elegir por dónde rodear rocas que no se pueden cruzar**, sobre arena, grava y barro; operar con pisos sueltos (perturbación) | % de episodios que llegan a las 3 balizas sin caerse ni chocar; degradación del campeón al cambiar el piso |
 
 **Regla de la serie:** cada experimento parte del campeón del anterior (`parte_de`). Desde el Exp 5, para aprobar, el
 campeón debe seguir aprobando los exámenes anteriores (`aprobar.sin_olvidar`): en los Exps 2 a 4 los campeones habían
@@ -115,11 +115,29 @@ perdido De pie (0 a 42 %), y la regla se adoptó por eso. El examen del Exp 2 no
 en la API. Todos los modelos de la serie son de la **misma familia compatible**: mismo robot, 58 observaciones y 12
 acciones con el mismo significado, así que cualquier modelo antiguo se puede evaluar en el ambiente de su experimento.
 
-## 4. Simplificaciones y límites
+## 4. Exp 9: segunda familia de modelos, el navegador
+
+El Exp 9 agrega rocas que no se pueden cruzar. Para esquivarlas hace falta **ver**, y el caminante no tiene sensores: por
+eso el Exp 9 es jerárquico. El caminante (familia anterior, 58 observaciones y 12 acciones) no cambia; lo nuevo es un
+**navegador**, una familia de modelos distinta:
+
+| | Navegador (`models/exp-109/navegador/`) |
+|---|---|
+| Observación (25, en [-1, 1]) | 15 sensores de distancia (de −105° a +105° respecto del robot, alcance 3 m, en fracción del alcance) · seno y coseno del ángulo a la baliza · distancia a la baliza / 8 m · dirección elegida antes (7, one-hot) |
+| Acción (discreta, 7) | rumbo deseado relativo al robot: −90°, −60°, −30°, 0°, +30°, +60°, +90° |
+| Frecuencia | una decisión por segundo; entre decisiones, el controlador del Exp 8 convierte el rumbo en órdenes de velocidad y giro |
+| Fin del episodio | éxito: llega a las 3 balizas (radio 0,6 m) · fallo: choca con una roca, se cae o sale del campo · truncado: 90 s |
+| Recompensa (simulador cinemático) | +1 por metro de progreso hacia la baliza, +5 por baliza, −10 por choque, −0,05 por segundo, −0,1 por cambiar de dirección, −1 por invertir un giro, −0,05 por segundo girando sobre el eje |
+| Normalización | ninguna (las escalas fijas de la tabla son parte del contrato) |
+
+El navegador entrena en un simulador cinemático del mismo mundo (`expedicion/navegador.py`), calibrado con el caminante
+real, y se evalúa en MuJoCo. Sin PyTorch se ejecuta exportado a numpy, igual que el caminante en Vercel.
+
+## 5. Simplificaciones y límites
 
 - Arena, grava y barro son fuerzas sobre los pies (fricción, arrastre, succión, sacudida), no suelo deformable.
-- El robot no tiene sensores de obstáculos: el Exp 8 no tiene obstáculos y la ruta hacia la baliza la calcula el
-  ambiente (rumbo directo). El robot aprende a ejecutar giros, rectas y curvas; no a planificar.
+- Exp 8: no hay obstáculos y la ruta hacia la baliza la calcula el ambiente (rumbo directo). Exp 9: el navegador
+  aprende la ruta entre rocas con sensores de distancia; sus sensores son ideales (sin ruido) y planos (2D).
 - Solo Marte. La serie anterior (plan de 50, tres planetas) quedó archivada en los tags `exp-001` a `exp-028`.
 - El examen oficial tiene 24 episodios por experimento (12 por examen previo): con una tasa real cerca del mínimo,
   aprobar depende en parte del azar. Por eso cada candidato se valida antes con 40 episodios nuevos (semillas 5000+)

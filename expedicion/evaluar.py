@@ -169,11 +169,13 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
                "detalle": env.tarea.resumen(env), "recompensa": round(total, 1),
                "energia_j": round(env.energia, 1), "inclinacion_max": round(inclinacion_max, 1),
                "distancia": round(env.distancia(), 2),
-               "tramos": [[t["x0"], t["x1"], t["tipo"]] for t in env.tramos],
+               "tramos": [[t["x0"], t["x1"], t["tipo"], *([t["y0"], t["y1"]] if "y0" in t else [])] for t in env.tramos],
                "altura_final": round(env.altura_torso() / env.altura_pie, 3),
                "avance": round(float(env.tarea.avance(env)), 3),
                "listones": env.listones,
                "balizas": [[round(float(v), 3) for v in b] for b in getattr(env.tarea, "balizas", [])],
+               "rocas": [[round(float(v), 3) for v in r] for r in getattr(env.tarea, "rocas", [])],
+               "alto_roca": env.tarea.t.get("alto_roca_m") if hasattr(env.tarea, "rocas") else None,
                "radio_baliza": env.tarea.t.get("radio_m") if hasattr(env.tarea, "balizas") else None,
                **env.estadisticas()}
     return resumen, cuadros

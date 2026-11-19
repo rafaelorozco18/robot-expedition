@@ -24,7 +24,7 @@ from expedicion import publicar as P  # noqa: E402
 from expedicion import servidor as S  # noqa: E402
 from expedicion.evaluar import paso_de  # noqa: E402
 
-SERIE = ["exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107a", "exp-108"]
+SERIE = [e["id"] for e in X.listar() if e["estado"] == "activo" and (RAIZ / "publicado" / e["id"] / "exp.json").exists()]
 METRICAS = ("exp.json", "evaluacion.json", "regresion.json", "progreso.json", "evolucion.json", "curva.json")
 
 
@@ -103,6 +103,11 @@ def main():
                 if ruta.exists():
                     copiar_npz(ruta, destino / "linaje" / f"{o}-{paso}.npz")
                     n += 1
+        if exp.get("navegador"):  # Exp 9: el navegador viaja exportado a numpy, en la ruta que lee la tarea
+            nav = salida / exp["navegador"]["modelo"]
+            copiar_npz(RAIZ / exp["navegador"]["modelo"], nav)
+            (salida / "experimentos" / "calibracion-caminante.json").write_bytes(
+                (RAIZ / exp["navegador"]["calibracion"]).read_bytes())
         ev_json = json.loads((origen / "evaluacion.json").read_text())
         (destino / "servido.json").write_text(json.dumps({
             "version": origen.name, "campeon": ev_json.get("campeon"),

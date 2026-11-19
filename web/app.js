@@ -148,6 +148,28 @@ function dibujarListones(listones) {
   }
 }
 
+// Exp 9: rocas que no se pueden cruzar (cilindros del simulador, dibujados como rocas facetadas).
+const grupoRocas = new THREE.Group();
+function dibujarRocas(rocas, alto) {
+  grupoRocas.traverse((o) => { o.geometry?.dispose(); });
+  grupoRocas.clear();
+  const mat = new THREE.MeshStandardMaterial({ color: 0x6b3a22, roughness: 0.92, flatShading: true });
+  (rocas || []).forEach(([x, y, r], k) => {
+    const geo = new THREE.CylinderGeometry(r * 0.9, r, alto || 0.6, 9, 2);
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {  // relieve irregular, igual en cada carga (semilla = índice)
+      const f = 1 + 0.12 * Math.sin(i * 12.9898 + k * 78.233);
+      pos.setX(i, pos.getX(i) * f); pos.setZ(i, pos.getZ(i) * f);
+    }
+    geo.computeVertexNormals();
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, (alto || 0.6) / 2, -y);
+    m.rotation.y = k * 1.7;
+    m.castShadow = m.receiveShadow = true;
+    grupoRocas.add(m);
+  });
+}
+
 // Exp 8: balizas. MuJoCo usa z arriba: (x, y) del simulador va a (x, -y) en el plano de Three.js.
 const grupoBalizas = new THREE.Group();
 function dibujarBalizas(balizas, radio) {
@@ -258,7 +280,7 @@ function construirMeta(x) {
 const grupoTramos = new THREE.Group();
 rampa.add(grupoTramos);
 rampa.add(grupoListones);
-scene.add(grupoBalizas);
+scene.add(grupoBalizas, grupoRocas);
 const texturasPiso = {};
 function texturaPiso(tipo) {
   if (texturasPiso[tipo]) return texturasPiso[tipo];
@@ -313,16 +335,19 @@ function dibujarTramos(tramos) {
   const tema = planeta.tema();
   const color = { arena: tema.colores.a, barro: tema.colores.b, barro_profundo: tema.charco.color, hielo: tema.colores.h, grava: tema.roca };
   const nombre = { arena: "ARENA", barro: "BARRO", barro_profundo: "BARRO PROFUNDO", hielo: "HIELO", grava: "GRAVA" };
-  for (const [x0, x1, tipo] of tramos) {
+  for (const [x0, x1, tipo, y0, y1] of tramos) {
+    // Franjas (x0, x1) o, en el Exp 9, parches con límites en y. MuJoCo: y del simulador = -z de Three.js.
+    const parche = y0 !== undefined;
     const largo = x1 - x0;
+    const ancho = parche ? y1 - y0 : estado.mundo?.tarea === "recorrido" ? 14 : 5.2;
+    const zc = parche ? -(y0 + y1) / 2 : 0;
     const tex = texturaPiso(tipo).clone();
-    tex.repeat.set(largo / 2, 2.6);
+    tex.repeat.set(largo / 2, ancho / 2);
     tex.needsUpdate = true;
-    const ancho = estado.mundo?.tarea === "recorrido" ? 14 : 5.2;
     const malla = new THREE.Mesh(new THREE.BoxGeometry(largo, 0.02, ancho), new THREE.MeshStandardMaterial({
       color: color[tipo], map: tex, roughness: tipo === "hielo" ? 0.12 : 0.95, metalness: tipo === "hielo" ? 0.25 : 0,
     }));
-    malla.position.set((x0 + x1) / 2, 0.0, 0);
+    malla.position.set((x0 + x1) / 2, parche ? 0.004 : 0.0, zc);
     malla.receiveShadow = true;
     grupoTramos.add(malla);
     if (tipo === "grava") {
@@ -331,14 +356,14 @@ function dibujarTramos(tramos) {
       const m = new THREE.Matrix4();
       for (let i = 0; i < n; i++) {
         const e = 0.5 + Math.random();
-        m.makeScale(e, e * 0.6, e).setPosition(x0 + Math.random() * largo, 0.015, (Math.random() - 0.5) * 5);
+        m.makeScale(e, e * 0.6, e).setPosition(x0 + Math.random() * largo, 0.015, zc + (Math.random() - 0.5) * Math.min(ancho, 5));
         piedras.setMatrixAt(i, m);
       }
       piedras.castShadow = true;
       grupoTramos.add(piedras);
     }
     const r = rotulo(nombre[tipo], 0.3, "#ffffff");
-    r.position.set((x0 + x1) / 2, 0.3, -2.75);
+    r.position.set((x0 + x1) / 2, 0.3, parche ? zc : -2.75);
     grupoTramos.add(r);
   }
 }
@@ -662,6 +687,7 @@ async function lanzar(clip = null, { replay = false } = {}) {
   dibujarTramos(datos.resumen.tramos || []);
   dibujarListones(datos.resumen.listones);
   dibujarBalizas(datos.resumen.balizas, datos.resumen.radio_baliza);
+  dibujarRocas(datos.resumen.rocas, datos.resumen.alto_roca);
   estado.i = 0; estado.tiempo = 0; estado.play = true;
   $("barra").max = datos.cuadros.length - 1;
   if (clip) {

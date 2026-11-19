@@ -616,6 +616,107 @@ class Balizas(Marcha):
         return f"{nombres[self.modo]} {self.alcanzadas + 1} de {len(self.balizas)}"
 
 
+class Exploracion(Balizas):
+    """Exp 9: balizas en un campo de rocas que no se pueden cruzar, con parches de arena, grava y barro.
+
+    Jerárquico: cada `decision_s` el navegador (red PPO de la familia «navegador»: 15 sensores de distancia + meta,
+    7 direcciones) elige hacia dónde ir; el controlador del Exp 8 convierte esa dirección en órdenes y el caminante
+    (la política evaluada, campeón del Exp 8) las ejecuta. El mundo (rocas, parches, balizas) lo genera expedicion/mundo.py igual que en el
+    simulador cinemático donde se entrena el navegador."""
+    titulo_exito = "Llegó a todas las balizas entre las rocas"
+    _navegadores = {}
+
+    class _ReglaDirecta:
+        """Referencia de regla: ir siempre hacia la baliza, sin mirar las rocas."""
+        def media(self, obs):
+            from .mundo import DIRECCIONES, N_RAYOS
+            ang = np.arctan2(obs[N_RAYOS], obs[N_RAYOS + 1])
+            return -np.abs(DIRECCIONES - np.clip(ang, DIRECCIONES[0], DIRECCIONES[-1]))
+
+    class _Aleatoria:
+        """Referencia aleatoria: cualquier dirección."""
+        def __init__(self):
+            self.rng = np.random.default_rng(0)
+
+        def media(self, obs):
+            from .mundo import DIRECCIONES
+            return self.rng.random(len(DIRECCIONES))
+
+    def _navegador(self):
+        ruta = self.exp["navegador"]["modelo"]
+        if ruta == "regla:directo":
+            return Exploracion._ReglaDirecta()
+        if ruta == "regla:aleatorio":
+            return Exploracion._Aleatoria()
+        if ruta not in Exploracion._navegadores:
+            from .experimentos import RAIZ
+            from .evaluar import PoliticaNumpy
+            npz = (RAIZ / ruta).with_suffix(".npz")
+            if not npz.exists():  # con PyTorch disponible se exporta en el momento
+                import sys
+                sys.path.insert(0, str(RAIZ / "scripts"))
+                from exportar_politicas import exportar
+                exportar(RAIZ / ruta)
+            Exploracion._navegadores[ruta] = PoliticaNumpy(npz)
+        return Exploracion._navegadores[ruta]
+
+    def iniciar(self, env):
+        Marcha.iniciar(self, env)
+        from . import mundo as M
+        self.M = M
+        self.mundo = M.generar(env.np_random, self.t)
+        self.balizas = self.mundo["balizas"]
+        self.rocas = self.mundo["rocas"]
+        self.alcanzadas, self.modo = 0, "recto"
+        self.direccion = int(np.argmin(np.abs(M.DIRECCIONES)))
+        self.deseado = 0.0
+        env.destino = self.balizas[0]
+        env.tramos = [{"x0": x0, "x1": x1, "y0": y0, "y1": y1, "tipo": tipo, **env.parche(tipo)}
+                      for x0, x1, tipo, y0, y1 in self.mundo["parches"]]
+        alto = self.t["alto_roca_m"]
+        libres = {r: list(h) for r, h in env.huecos_roca.items()}
+        for x, y, r in self.rocas:  # cada roca ocupa un cuerpo mocap de su radio; los sobrantes quedan lejos
+            hueco = libres[min(libres, key=lambda q: abs(q - r))].pop()
+            env.data.mocap_pos[hueco] = [x, y, alto / 2]
+        import mujoco
+        mujoco.mj_forward(env.model, env.data)
+        self.cada = max(1, int(round(self.t["decision_s"] / env.dt)))
+
+    def actualizar(self, env):
+        if self.alcanzadas < len(self.balizas):
+            if np.linalg.norm(env.destino - env.data.qpos[:2]) < self.t["radio_m"]:
+                self.alcanzadas += 1
+                if self.alcanzadas < len(self.balizas):
+                    env.destino = self.balizas[self.alcanzadas]
+        if self.alcanzadas >= len(self.balizas):
+            env.comando[:] = [0.0, 0.0, 1.0, 0.0]
+            self.modo = "detenido"
+            return
+        if env.pasos % self.cada == 0:  # el navegador elige hacia dónde ir
+            obs = self.M.observacion(env.data.qpos[:2].copy(), env.rumbo(), env.destino, self.rocas, self.mundo["lado"],
+                                     self.direccion)
+            self.direccion = int(np.argmax(self._navegador().media(obs)))
+            self.deseado = env.rumbo() + self.M.DIRECCIONES[self.direccion]
+        e = np.arctan2(np.sin(self.deseado - env.rumbo_objetivo), np.cos(self.deseado - env.rumbo_objetivo))
+        self.modo, v, w = self.M.controlador(e, self.modo)  # el mismo controlador del Exp 8
+        env.comando[:] = [v, 0.0, 1.0, w]
+        env.rumbo_objetivo += w * env.dt
+
+    def fin(self, env):
+        if env.choca_con_roca():
+            return "chocó con una roca"
+        if np.max(np.abs(env.data.qpos[:2])) > self.mundo["lado"] + 0.5:
+            return "salió del campo"
+        return super().fin(env)
+
+    def orden(self, env):
+        if self.modo == "detenido":
+            return "detenerse: llegó a todas las balizas"
+        return (f"navegador: {self.M.NOMBRES_DIRECCION[self.direccion]} ({self.modo}) · "
+                f"baliza {self.alcanzadas + 1} de {len(self.balizas)}")
+
+
 TAREAS = {"de_pie": DePie, "sentadilla": Sentadilla, "pasar_peso": PasarPeso, "un_pie": UnPie,
           "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto, "salto": Salto,
-          "esquina": Esquina, "curva": Curva, "recorrido": Recorrido, "balizas": Balizas}
+          "esquina": Esquina, "curva": Curva, "recorrido": Recorrido, "balizas": Balizas,
+          "exploracion": Exploracion}
