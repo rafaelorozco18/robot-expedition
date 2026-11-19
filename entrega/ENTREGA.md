@@ -46,6 +46,13 @@ repositorio `rafaelorozco18/robot-expedition` o en la aplicación publicada.
 6. **Restaurar una versión anterior.** `~/.venvs/prefect/bin/python pipelines/flujo.py exp-108 --rollback`; la prueba
    ejecutada está en `docs/incidente-y-rollback.md`. A nivel de código: `git checkout exp-107a` (tag de cada experimento).
 
+## Reproducción verificada
+
+El 2026-11-19 se clonó el tag `entrega-final` en una carpeta limpia y se corrió `bash scripts/bajar_modelos.sh`: se
+descargaron 1690 archivos de DVC, el modelo recomendado tiene el SHA-256 de su manifiesto
+(`2083930f7bb0c766082d1f83f0b760bdfc9540f773a1220bf3b0681ed1f1f460`), `dvc status` está al día y
+`scripts/medir40.py` vuelve a dar 37 de 40 balizas, igual que la medición original.
+
 ## Lo que requiere al equipo antes de enviar
 
 - Completar en `entrega/CORREO.md` el grupo (A o B) y los nombres completos.
