@@ -109,8 +109,9 @@ y ahí se corrigió para no castigar la llegada.
 | **N2 · Más decisiones** | 4 Terreno difícil · 5 Esquina · 6 Curva · 7 Recorrido | Adaptar el paso al piso que siente; detenerse, girar y retomar; avanzar y girar a la vez; cambiar de modo cuando cambia la orden | % de éxito en cada examen, sin olvidar los anteriores |
 | **N3 · Operación exigente** | 8 Llegar a las balizas · incidente: recorrido sobre pisos sueltos (Exp 7 de terreno) | Decidir cuándo girar, caminar y detenerse según dónde está la meta; operar con pisos sueltos (perturbación) | % de episodios que llegan a las 3 balizas; degradación del campeón al cambiar el piso |
 
-**Regla de la serie:** cada experimento parte del campeón del anterior (`parte_de`) y, para aprobar, el campeón debe
-seguir aprobando los exámenes anteriores (`aprobar.sin_olvidar`). Los niveles anteriores siguen accesibles en el visor y
+**Regla de la serie:** cada experimento parte del campeón del anterior (`parte_de`). Desde el Exp 5, para aprobar, el
+campeón debe seguir aprobando los exámenes anteriores (`aprobar.sin_olvidar`): en los Exps 2 a 4 los campeones habían
+perdido De pie (0 a 42 %), y la regla se adoptó por eso. El examen del Exp 2 no entra: su ritmo lo reemplazó la marcha del Exp 3. Los niveles anteriores siguen accesibles en el visor y
 en la API. Todos los modelos de la serie son de la **misma familia compatible**: mismo robot, 58 observaciones y 12
 acciones con el mismo significado, así que cualquier modelo antiguo se puede evaluar en el ambiente de su experimento.
 

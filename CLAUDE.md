@@ -78,25 +78,33 @@ Sus artefactos de MLflow están en `archivo/mlruns-navegacion/` (ignorado por gi
 y el registro de modelos; las métricas y parámetros siguen en git.
 **No borres archivos ignorados por git sin revisarlos: no tienen copia.**
 
-## Estado actual (2026-11-18, 20:30)
+## Estado actual (2026-11-19, madrugada: entrega final)
 
-- Serie en orden (ver `docs/serie-marte.md`). **Aprobados: 1 a 6 y el 7a** (`exp-107a`, «Recorrido» sobre piso firme,
-  semilla 3). El usuario partió el Exp 7: el 7a está aprobado y el Exp 7 de terreno (`exp-107`) queda guardado, sin aprobar.
-- **Los Exps 8 y 9 van a cambiar (pedido del usuario, 2026-11-18):** no entrenar `exp-108` ni `exp-109` hasta que el usuario
-  diga cuáles son.
+- **Serie final de 8 experimentos, todos aprobados:** 1 a 6, 7 = `exp-107a` (Recorrido, piso firme) y 8 = `exp-108`
+  (Llegar a las balizas, tarea `balizas`). El Exp 7 de terreno (`exp-107`) quedó `estado: descartado`: fuera del visor,
+  conservado como incidente controlado. El viejo `exp-109` (viento) se borró: nunca se entrenó.
+- Exp 8: campeón = línea base (semilla 1, campeón del 7a con política congelada): 37 de 40 balizas nuevas, examen 83 %.
+  Candidatos de ajuste fino (semillas 2–4) rechazados: 24/25/34 de 40 y olvidan el terreno.
+- **Entrega:** `entrega/ENTREGA.md` (mapa), `entrega/CORREO.md` (borrador), `docs/informe.md`, `docs/ficha-ambiente.md`,
+  `docs/incidente-y-rollback.md`, `docs/comparacion-experimentos.md`, `manifests/`, presentación `web/presentacion.html`.
+- **Despliegue:** Vercel https://robot-expedition-tawny.vercel.app (proyecto `robot-expedition`, cuenta del usuario).
+  `bash despliegue/desplegar_vercel.sh` arma la carpeta (`despliegue/armar_vercel.py`) y despliega con el commit en los
+  metadatos. Evaluación en vivo: función `api/sim.py` (MuJoCo en Python, actor en numpy; sin PyTorch).
+  Hugging Face Spaces Docker exige PRO: descartado.
+- **Prefect:** `~/.venvs/prefect/bin/python pipelines/flujo.py exp-108 [--rollback|--monitorear]`. Ejecuciones en
+  `pipelines/ejecuciones/`. Rollback probado (promoción por error de la semilla 2 y vuelta a la 1).
+- MLflow completo en la release `mlflow-registro`; exportado para la web con `scripts/registro_mlflow.py`.
+- Pendiente humano: grupo y nombres en el correo, acceso del docente al repo privado, contribuciones en el informe.
 - Receta para no olvidar: PPO aprende lo nuevo; después se destila (`entrenamiento.destilar`) **partiendo del
   campeón anterior** (que sabe lo viejo) con maestros del mismo linaje: el modelo de PPO para lo nuevo y el
   campeón anterior para lo viejo. Política congelada en la fase de PPO y cada ronda validada con 40 episodios.
-- **El Exp 7 no aprueba, pero subió de 15 a 30 de 40 recorridos** con `pisos.intensidad_entrenando` (pisos de
-  intensidad al azar solo al entrenar; semillas 4 a 7). Maestro de PPO (semilla 7): ~70 %. Alumno destilado que no
-  olvida: semilla 8, 50–67 %; semilla 10 (48 recorridos por ronda), 70 % en episodios nuevos pero 50 % en el examen
-  oficial y De pie 75 %. Sobre piso firme sale 36 de 40; el cuello de botella es **girar en el barro**
-  (solo barro: 9 de 40; se inclina o va lento). Sigue pendiente la decisión del usuario de partir el Exp 7.
+- Exp 7 de terreno (descartado): con `pisos.intensidad_entrenando` subió de 15 a 30 de 40 recorridos; el cuello de
+  botella es **girar en el barro** (solo barro: 9 de 40). Ver `docs/incidente-y-rollback.md`.
 - Equipo: tres integrantes entrenan con el repositorio de GitHub; modelos por releases (ver Forma de trabajar).
 - El terreno sigue siendo el punto débil (~76–89 % real frente a un mínimo de 75 %).
 - `scripts/medir40.py` acepta `TAREAS`, `CONTROL` y `BASE` (5000 para elegir, 3000 para confirmar).
-- Enlace para compartir: https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x (privado; se comparte desde su menú).
-  Se actualiza con `expedicion exportar` y publicando `exportado/robot-expedition.html` con sus archivos.
+- Enlace de Claude (privado, cuenta anterior): https://claude.ai/artifact/Ruy6W73UXNamsQyjnRkz5x. La versión oficial
+  para el docente es la de Vercel.
 
 ### Lecciones que no hay que volver a aprender
 

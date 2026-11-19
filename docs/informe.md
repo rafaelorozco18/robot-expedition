@@ -16,7 +16,7 @@ dificultad nueva por experimento**, siempre partiendo del campeón anterior y si
 | MuJoCo + Gymnasium; Python es la autoridad | Física de contacto realista; la web solo dibuja cuadros | `expedicion/ambiente.py`, `docs/ficha-ambiente.md` |
 | La red pide ángulos y un servo PD da el torque | Con torque directo PPO no aprendió a sostenerse en 500 mil pasos | `docs/serie-marte.md` |
 | PPO (Stable-Baselines3), CPU, 4 procesos | Referencia del curso; recompensa escalada ×0,05 para que el crítico no sature | `experimentos/base.yaml` |
-| Aprobar exige no olvidar (`sin_olvidar`) | PPO desarma lo viejo al aprender lo nuevo (el Exp 6 bajó el terreno a 42 %) | `docs/comparacion-experimentos.md` |
+| Aprobar exige no olvidar (`sin_olvidar`), **desde el Exp 5** | En los Exps 2 a 4 los campeones perdían De pie (0 a 42 %), y PPO desarma lo viejo al aprender lo nuevo (el Exp 6 bajó el terreno a 42 %). El examen del Exp 2 queda fuera: la marcha del Exp 3 reemplazó su ritmo | `metrics/exp-NNN/regresion.json`, `docs/comparacion-experimentos.md` |
 | Destilación DAgger desde el campeón anterior | Partir del modelo que sabe lo viejo y enseñarle lo nuevo con maestros del mismo linaje | Exps 5, 6 y 7: aprueban sin olvidar |
 | Elegir con episodios nuevos (5000+), confirmar con otros (3000+) | El examen fijo de 12 episodios es ruidoso; nunca se usa para elegir | `scripts/medir40.py` |
 | Evaluar con el ruido de la política, sembrado por episodio | En la serie la media sola no se sostiene; cada episodio es repetible | `expedicion/evaluar.py` |

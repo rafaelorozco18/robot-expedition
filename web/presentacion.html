@@ -65,7 +65,7 @@
   <h1>Robot Expedition</h1>
   <p class="grande">Un robot bípedo de 12 articulaciones aprende, en Marte y de a una dificultad por vez, a caminar y a llegar a balizas, sin olvidar nada de lo anterior.</p>
   <div class="cols3" style="margin-top:auto">
-    <div class="caja"><div class="num verde">8 de 8</div><small>experimentos aprobados en su examen y sin olvidar los anteriores</small></div>
+    <div class="caja"><div class="num verde">8 de 8</div><small>experimentos aprobados; el campeón final sigue aprobando todos los exámenes vigentes</small></div>
     <div class="caja"><div class="num cian">37 / 40</div><small>episodios nuevos en que el campeón llega a las tres balizas</small></div>
     <div class="caja"><div class="num naranja">69</div><small>corridas de la serie en MLflow, con sus intentos fallidos e interrumpidos</small></div>
   </div>
@@ -116,7 +116,7 @@
     <tr><td>N2</td><td>4 Terreno · 5 Esquina · 6 Curva · 7 Recorrido</td><td>Adaptar el paso al piso, girar, avanzar girando, cambiar de orden</td><td class="ok">75 · 100 · 75 · 100 %</td></tr>
     <tr><td>N3</td><td>8 Balizas · incidente de pisos sueltos</td><td>Cuándo girar, caminar y detenerse según la meta</td><td class="ok">83 %</td></tr>
   </table>
-  <p>Cada uno parte del campeón anterior y <b style="color:var(--tinta)">solo aprueba si sigue aprobando los exámenes anteriores</b>.</p>
+  <p>Cada uno parte del campeón anterior. <b style="color:var(--tinta)">Desde el Exp 5 solo aprueba si sigue aprobando los exámenes anteriores</b>: en los Exps 2 a 4 el campeón había perdido De pie (0 a 42 %), y así nació la regla.</p>
 </section>
 
 <section class="diapo">
@@ -143,7 +143,7 @@
 <section class="diapo">
   <p class="eyebrow">5 · Hipótesis del Exp 8</p>
   <h2>La línea base gana: el candidato se rechaza</h2>
-  <div class="cols">
+  <div class="cols" style="flex:0">
     <div>
       <p><b style="color:var(--tinta)">Línea base:</b> el campeón del Exp 7 ya sabe girar, caminar recto y en curva; llegar a balizas no exige movimientos nuevos. Política congelada.</p>
       <p style="margin-top:12px"><b style="color:var(--tinta)">Candidato:</b> ajuste fino con PPO en la tarea (1 M de pasos, tasa 3e-5), <b>tres semillas</b> de entrenamiento.</p>

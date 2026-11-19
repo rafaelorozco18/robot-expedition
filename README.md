@@ -17,7 +17,7 @@ versionado con git, DVC y MLflow, orquestado con Prefect y publicado en Vercel.
 El escenario asignado es **Robot Expedition**: un robot debe llegar a balizas. Elegimos un robot con patas, en 3D
 completo y con gravedad de Marte: es más difícil que uno con ruedas, pero el que puede ir donde no llega una rueda.
 La serie final tiene 8 experimentos (`experimentos/exp-101` a `exp-108`); cada uno parte del campeón del anterior
-y **solo aprueba si no olvida los exámenes anteriores**.
+y, desde el Exp 5, **solo aprueba si no olvida los exámenes anteriores**.
 
 | Exp | Pregunta | Nivel | Estado |
 |---|---|---|---|

@@ -9,10 +9,10 @@ repositorio `rafaelorozco18/robot-expedition` o en la aplicación publicada.
 |---|---|
 | Aplicación (Vercel) | https://robot-expedition-tawny.vercel.app |
 | Release / tag | `entrega-final` |
-| Commit entregado | `{{SHA}}` |
+| Commit entregado | el del tag `entrega-final` (`git rev-parse entrega-final`); el SHA completo está en la descripción de la release y en `/sim/api/estado` |
 | Deployment de Vercel | lleva el mismo commit en sus metadatos y en https://robot-expedition-tawny.vercel.app/sim/api/estado (`commit`) |
-| Modelo recomendado | `exp-108` semilla 1 · run `{{RUN108}}` · `robot-exp-108` alias `campeon` · [manifiesto](../manifests/exp-108-semilla-1.json) |
-| Modelo histórico (ejemplo) | `exp-103` semilla 1 · run `{{RUN103}}` · ambiente `robots/bipedo-v2.xml` + tarea «marcha» · [manifiesto](../manifests/exp-103-semilla-1.json) |
+| Modelo recomendado | `exp-108` semilla 1 · run `a6328691a8d14623a3b879d2b365f7c4` · `robot-exp-108` alias `campeon` · [manifiesto](../manifests/exp-108-semilla-1.json) |
+| Modelo histórico (ejemplo) | `exp-103` semilla 1 · run `5288517fb4ff4dd58116e3ae442017c7` · ambiente `robots/bipedo-v2.xml` + tarea «marcha» · [manifiesto](../manifests/exp-103-semilla-1.json) |
 | Presentación | https://robot-expedition-tawny.vercel.app/presentacion.html |
 
 ## Paquete final (sección 17 del enunciado)
