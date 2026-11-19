@@ -864,6 +864,9 @@ stages:
     - data/exp-109/escenarios.json
     - models/exp-109/semilla-1
     - models/exp-109/semilla-2
+    - models/exp-109/navegador
+    - experimentos/exp-109.yaml
+    - expedicion/mundo.py
     outs:
     - data/exp-109/trayectorias.jsonl
     metrics:

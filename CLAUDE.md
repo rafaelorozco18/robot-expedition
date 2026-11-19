@@ -122,6 +122,8 @@ y el registro de modelos; las métricas y parámetros siguen en git.
   comando de la etapa directamente y después `dvc commit -f`.
 - Después de `dvc commit -f` no tocar `experimentos/exp-NNN.yaml` (ni siquiera `pendiente`) antes de la campaña: el yaml es
   dependencia de cada etapa y `dvc repro` vuelve a entrenar la semilla (y borra su salida). Anotar antes de registrar.
+- Si el examen depende de algo fuera del modelo (navegador, mundo), declararlo en las deps de `evaluar-*`: si no, DVC se salta
+  el examen y deja métricas viejas (pasó con el Exp 9 al cambiar el mapa). Revisar la hora de `metrics/<exp>/evaluacion.json`.
 - En Marte el servo solo ya sostiene al robot: el Exp 101 arranca desequilibrado para que haya algo que aprender.
 
 - DVC borra las salidas al reentrenar: nada que se muestre al usuario debe leer `models/` o `metrics/` en vivo.

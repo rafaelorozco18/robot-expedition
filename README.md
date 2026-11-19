@@ -29,7 +29,7 @@ y, desde el Exp 5, **solo aprueba si no olvida los exámenes anteriores**.
 | 6 | ¿Camina en círculo (avanza y gira a la vez)? | N2 | aprobado |
 | 7 | ¿Encadena rectas, giros y curvas en orden al azar? (`exp-107a`) | N2 | aprobado |
 | 8 | ¿Llega, una tras otra, a tres balizas puestas al azar? | N3 | aprobado |
-| 9 | ¿Llega a tres balizas en un campo de rocas que no puede cruzar, sobre arena, grava y barro? | N3 | en curso: 25 % (mínimo 60 %) |
+| 9 | ¿Llega a tres balizas en un campo de rocas que no puede cruzar, pisando arena y grava? | N3 | en curso: 33 % (4 de 12) en el examen (mínimo 60 %) |
 
 Ficha del ambiente y niveles: [docs/ficha-ambiente.md](docs/ficha-ambiente.md) · comparación de todas las corridas:
 [docs/comparacion-experimentos.md](docs/comparacion-experimentos.md) · incidente y rollback:

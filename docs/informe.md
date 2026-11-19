@@ -55,19 +55,19 @@ aprendido del Exp 1 lo logra 20 de 24.
 
 ### Exp 9: exploración entre rocas (en curso)
 
-Rocas de 0,35 a 0,70 m que no se pueden cruzar, parches de arena, grava y barro y tres balizas. Diseño jerárquico: un
-**navegador** nuevo (15 sensores de distancia y la baliza → 7 direcciones, una decisión por segundo) aprende la ruta y el
-caminante del Exp 8 la ejecuta. En MuJoCo, con 24 episodios nuevos:
+Campo de 7 m × 7 m con rocas que no se pueden cruzar, arena y grava sobre la ruta y tres balizas repartidas que se
+visitan en orden. Diseño jerárquico: un **navegador** nuevo (15 sensores de distancia y la baliza → 7 direcciones, una
+decisión por segundo) aprende la ruta y el caminante del Exp 8 la ejecuta sin cambios.
 
-- Referencias: ir directo a la baliza **0 de 24** (21 choques); navegador aleatorio **0 de 24**.
-- Navegador base 1 de 24 → variante «suave» (castiga invertir giros) 5 de 24, las caídas bajan de 12 a 3 → variante
-  «robusta» (alcance real del robot y física aleatorizada) **6 de 24**, los choques bajan de 16 a 5. Tres semillas de la
-  robusta: 6, 3 y 2 de 24.
-- Ajustar el caminante con PPO en la exploración no redujo las caídas.
-- Dos hallazgos de la noche: las rocas se atravesaban (MuJoCo no actualiza las envolventes de geoms fijos movidos;
-  ahora son cuerpos mocap) y el robot ocupa más de lo supuesto (un pie llegó a 0,67 m del centro).
-- **No aprueba** (25 % frente a un mínimo de 60 % fijado antes de entrenar). Siguiente hipótesis: combinar las dos
-  mejoras y ajustar el navegador directamente en MuJoCo.
+- Referencia «ir directo a la baliza»: **0 de 24** (22 choques).
+- Navegador entrenado en el simulador cinemático y adaptado al mapa nuevo: 3 de 24. **Ajustado dentro de MuJoCo con el
+  caminante real: 6 de 24**; confirmación con otros 24 episodios: 4. Examen oficial: **33 % (4 de 12)**, sin olvidar nada.
+- Hipótesis probadas en la noche (mapa anterior): castigar la inversión de giros bajó las caídas de 12 a 3; entrenar con
+  el alcance real del robot y física aleatorizada bajó los choques de 16 a 5; ajustar el caminante no ayudó.
+- Hallazgos: las rocas se atravesaban (MuJoCo no actualiza las envolventes de geoms fijos movidos; ahora son cuerpos
+  mocap) y el robot ocupa más de lo supuesto (un pie llegó a 0,67 m del centro). Girar sobre barro hace caer al
+  caminante (0 de 24 llegadas): el barro salió del mapa y queda como límite.
+- **No aprueba** (criterio 60 %, fijado antes de entrenar). Siguiente hipótesis: seguir el ajuste dentro de MuJoCo.
 
 ### Incidente controlado
 

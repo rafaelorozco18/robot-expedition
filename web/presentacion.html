@@ -114,7 +114,7 @@
     <tr><th>Nivel</th><th>Exp</th><th>Decisión nueva</th><th>Examen</th></tr>
     <tr><td>N1</td><td>1 De pie · 2 Caminar · 3 Caminar bien</td><td>Sostenerse, coordinar piernas, marcha humana</td><td class="ok">83 · 100 · 100 %</td></tr>
     <tr><td>N2</td><td>4 Terreno · 5 Esquina · 6 Curva · 7 Recorrido</td><td>Adaptar el paso al piso, girar, avanzar girando, cambiar de orden</td><td class="ok">75 · 100 · 75 · 100 %</td></tr>
-    <tr><td>N3</td><td>8 Balizas · 9 Exploración entre rocas · incidente de pisos sueltos</td><td>Cuándo girar, caminar y detenerse según la meta; por dónde rodear rocas</td><td><span class="ok">83 %</span> · <span class="no">9: ~21 %</span></td></tr>
+    <tr><td>N3</td><td>8 Balizas · 9 Exploración entre rocas · incidente de pisos sueltos</td><td>Cuándo girar, caminar y detenerse según la meta; por dónde rodear rocas</td><td><span class="ok">83 %</span> · <span class="no">9: 33 %</span></td></tr>
   </table>
   <p>Cada uno parte del campeón anterior. <b style="color:var(--tinta)">Desde el Exp 5 solo aprueba si sigue aprobando los exámenes anteriores</b>: en los Exps 2 a 4 el campeón había perdido De pie (0 a 42 %), y así nació la regla.</p>
 </section>
@@ -182,6 +182,7 @@
       <tr><td>Adaptado en el simulador</td><td>3</td><td>11</td></tr>
       <tr><td>Ajustado en MuJoCo</td><td class="ok">6</td><td>9</td></tr>
       <tr><td>Confirmación (otros 24)</td><td>4</td><td>13</td></tr>
+      <tr><td><b>Examen oficial (12)</b></td><td><b>33 % (4 de 12)</b></td><td>—</td></tr>
     </table>
   </div>
 </section>
@@ -260,7 +261,7 @@
   <div class="cols">
     <div class="caja"><b>Límites</b>
       <ul>
-        <li>Exp 9: el navegador llega en ~21 % de los mundos con rocas (10 de 48); el criterio es 60 %.</li>
+        <li>Exp 9: el navegador llega en 33 % del examen (4 de 12) y ~21 % de 48 episodios nuevos; el criterio es 60 %.</li>
         <li>Girar en barro sigue sin resolverse.</li>
         <li>Pisos como fuerzas sobre los pies, no suelo deformable.</li>
         <li>Exámenes pequeños (12 episodios): por eso validamos con 80 nuevos.</li>

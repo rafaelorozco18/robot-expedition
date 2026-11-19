@@ -53,7 +53,7 @@ tres balizas en 37 de 40 episodios. Probamos un candidato con tres semillas de a
 «El noveno agrega rocas que no se pueden cruzar, arena y grava en la ruta y tres balizas repartidas en un campo de 7 por 7
 metros. Para esquivar hay que ver: separamos navegar de caminar. Un navegador nuevo, con 15 sensores de distancia y la
 baliza, elige cada segundo hacia dónde ir, y el caminante del experimento 8 lo ejecuta. Es una familia de modelos nueva.
-Ir directo a la baliza choca casi siempre: 0 de 24. Nuestro mejor navegador llega en alrededor del 21 % (10 de 48 episodios nuevos) de los mundos. Encontramos
+Ir directo a la baliza choca casi siempre: 0 de 24. Nuestro mejor navegador llega en el 33 % del examen oficial, 4 de 12, y en alrededor del 21 % de 48 episodios nuevos. Encontramos
 dos errores que corregimos: las rocas se podían atravesar en MuJoCo y el pie del robot llega a 0,67 m de su centro.
 No aprueba aún: el criterio es 60 %.»
 
@@ -94,7 +94,7 @@ si es evaluación en vivo, replay grabado o error del servicio.»
 4. Mostrar la página de registro: cada modelo con su run, commit y SHA-256.
 
 **Diapositiva 13 · Cierre.**
-«Límites: el navegador llega en alrededor del 21 % (10 de 48 episodios nuevos) de los mundos con rocas; girar sobre barro sigue sin resolverse; los pisos son
+«Límites: el navegador llega en el 33 % del examen oficial (4 de 12) y alrededor del 21 % de 48 episodios nuevos; girar sobre barro sigue sin resolverse; los pisos son
 fuerzas sobre los pies, no suelo deformable. Aprendizajes: aprender sin olvidar hay que medirlo en cada modelo, y agregar
 una sola cosa por experimento importa: cuando el experimento 7 agregó dos, se estancó. Siguiente hipótesis: seguir
 ajustando el navegador dentro de MuJoCo, que ya duplicó sus llegadas en el mapa nuevo. Gracias.»

@@ -382,6 +382,10 @@ y con el caminante en el circuito en lugar del simulador cinemático (ajuste fin
   conocido desde el Exp 7); la arena y la grava van en el tramo de llegada a cada baliza.
 - **Sin perder lo aprendido:** el navegador sigue entrenando desde el anterior (`parte_de`), primero en el simulador del
   mapa nuevo y después **dentro de MuJoCo con el caminante real** (`ExploradorMuJoCo`), donde caerse o chocar se castiga.
+- **Resultados en el mapa nuevo** (24 episodios 5000+, `docs/evaluaciones/exp-109-navegadores-mapa-medio-5000.json`):
+  regla «ir directo» 0 (22 choques); robusto del mapa viejo sin reentrenar 0; adaptado en el simulador 3; **ajustado en
+  MuJoCo 6** (foto de 2,32 M; la foto final, 4). Confirmación 3000+: 4 de 24. Examen oficial: **33 % (4 de 12)**, sin
+  olvidar ningún examen anterior. El ajuste con la física real duplicó las llegadas del mismo navegador. No aprueba (60 %).
 
 ## Limitaciones conocidas
 

@@ -30,9 +30,12 @@ def generar():
             etapas[f"entrenar-{i}-s{s}"] = {
                 "cmd": f"nice -n 10 python -m expedicion entrenar {i} --semilla {s}",
                 "deps": config + padre, "outs": [carpeta]}
+        extra = []
+        if exp.get("navegador"):  # Exp 9: el examen depende también del navegador y del mundo (yaml y generador)
+            extra = [f"models/{i}/navegador", f"experimentos/{i}.yaml", "expedicion/mundo.py"]
         etapas[f"evaluar-{i}"] = {
             "cmd": f"nice -n 10 python -m expedicion evaluar {i}",
-            "deps": [f"data/{i}/escenarios.json", *modelos],
+            "deps": [f"data/{i}/escenarios.json", *modelos, *extra],
             "outs": [f"data/{i}/trayectorias.jsonl"],
             "metrics": [{f"metrics/{i}/evaluacion.json": {"cache": False}}]}
         etapas[f"progreso-{i}"] = {
