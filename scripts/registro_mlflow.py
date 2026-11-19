@@ -15,7 +15,7 @@ RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ))
 from expedicion.entrenar import URI_MLFLOW  # noqa: E402
 
-PREFIJOS = ("exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107", "exp-108")
+PREFIJOS = ("exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107", "exp-108", "exp-109")
 
 
 def main():

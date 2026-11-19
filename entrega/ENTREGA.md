@@ -15,6 +15,14 @@ repositorio `rafaelorozco18/robot-expedition` o en la aplicación publicada.
 | Modelo histórico (ejemplo) | `exp-103` semilla 1 · run `5288517fb4ff4dd58116e3ae442017c7` · ambiente `robots/bipedo-v2.xml` + tarea «marcha» · [manifiesto](../manifests/exp-103-semilla-1.json) |
 | Presentación | https://robot-expedition-tawny.vercel.app/presentacion.html |
 
+## Experimento 9 (extra, en curso)
+
+El Exp 9 «Exploración entre rocas» agrega rocas que no se pueden cruzar y parches de arena, grava y barro, con un
+navegador aprendido (segunda familia de modelos) sobre el caminante del Exp 8. Llega en el 25 % de los mundos (mínimo
+60 %): **no aprueba**, y se entrega como intento documentado con sus hipótesis, variantes, referencias y hallazgos
+(`docs/serie-marte.md`, `docs/informe.md`, `manifests/exp-109-*.json`, MLflow `exp-109-navegador`). Se puede ver y
+evaluar en vivo en la aplicación (Exp 9). La versión sin el Exp 9 queda en el tag `entrega-final-8-experimentos`.
+
 ## Paquete final (sección 17 del enunciado)
 
 | Pide | Dónde |

@@ -51,7 +51,9 @@ Le enviamos la entrega final del proyecto de MLOps.
 
 **6. Presentación y limitaciones**
 - Presentación: https://robot-expedition-tawny.vercel.app/presentacion.html
-- Limitaciones conocidas: el robot no tiene sensores de obstáculos (la ruta a la baliza la calcula el ambiente); girar
+- Experimento 9 (extra, en curso): exploración entre rocas con un navegador aprendido; llega en el 25 % de los mundos
+  y no aprueba (mínimo 60 %). Se entrega documentado como intento, con sus hipótesis y variantes.
+- Limitaciones conocidas: en el Exp 8 la ruta a la baliza la calcula el ambiente (no hay obstáculos); girar
   sobre barro sigue sin resolverse (documentado como incidente); el frontend es JavaScript con Three.js, sin Vite ni
   TypeScript; el monitoreo de la función de Vercel se reinicia cuando Vercel recicla la instancia.
 

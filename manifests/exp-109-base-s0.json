@@ -1,0 +1,64 @@
+{
+ "run_id": "af16ac7a0e5d4048af2c1941584cae0a",
+ "level_id": "N3",
+ "experimento": "exp-109",
+ "titulo": "Navegador · base-s0",
+ "papel": "navegador_variante",
+ "seed": 0,
+ "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+ "model_uri": "dvc://models/exp-109/navegadores/base-s0/experto.zip",
+ "model_sha256": "963412bc37b26faec2eb598c765f57b9f97e9bfda474c030aa6093b5c1bf9699",
+ "parent_run_id": null,
+ "presupuesto": {
+  "pasos": 2007040,
+  "segundos": 1727.1
+ },
+ "evaluacion_cinematica_300": 0.8266666666666667,
+ "normalization_uri": null,
+ "origen": {
+  "tipo": "desde_cero"
+ },
+ "algoritmo": "PPO (Stable-Baselines3), red 64×64, acciones discretas",
+ "contrato": {
+  "observacion": {
+   "dimension": 25,
+   "orden": [
+    {
+     "nombre": "sensores_distancia",
+     "dimension": 15,
+     "unidades": "fracción de 3.0 m, de −105° a +105°"
+    },
+    {
+     "nombre": "baliza_seno_coseno",
+     "dimension": 2,
+     "unidades": "ángulo a la baliza en ejes del robot"
+    },
+    {
+     "nombre": "baliza_distancia",
+     "dimension": 1,
+     "unidades": "m / 8, recortado a 1"
+    },
+    {
+     "nombre": "direccion_previa",
+     "dimension": 7,
+     "unidades": "one-hot"
+    }
+   ]
+  },
+  "accion": {
+   "tipo": "discreta",
+   "valores": [
+    "90° a la derecha",
+    "60° a la derecha",
+    "30° a la derecha",
+    "de frente",
+    "30° a la izquierda",
+    "60° a la izquierda",
+    "90° a la izquierda"
+   ],
+   "significado": "rumbo deseado relativo al robot; lo ejecuta el controlador del Exp 8"
+  },
+  "normalizacion": "ninguna",
+  "frecuencia_hz": 1.0
+ }
+}

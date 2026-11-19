@@ -96,6 +96,18 @@
   "parent_run_id": "d88c5a3dabc94031a3dfe5b80ab21ea2"
  },
  {
+  "experimento": "exp-109",
+  "titulo": "Exploración entre rocas",
+  "level_id": "N3",
+  "seed": 1,
+  "papel": "en_curso",
+  "run_id": "560b02017aff4071960e0e97868083c6",
+  "git_commit": "23cdb9361e5c14f226579193f0b557d3077a6270",
+  "model_sha256": "ebc113f9e2b076131c718bf4e93b3ef969cfb4586abf226fa6fc7bcaab0e9426",
+  "model_uri": "dvc://models/exp-109/semilla-1/experto.zip",
+  "parent_run_id": "a6328691a8d14623a3b879d2b365f7c4"
+ },
+ {
   "experimento": "exp-107",
   "titulo": "Dominio en terreno duro",
   "level_id": "N3",
@@ -166,5 +178,65 @@
   "model_sha256": "f2f1d54e8298b9f2a321880ad44e001aec981b165706074054e64f09efd14681",
   "model_uri": "dvc://models/exp-108/semilla-4/experto.zip",
   "parent_run_id": "a6328691a8d14623a3b879d2b365f7c4"
+ },
+ {
+  "experimento": "exp-109",
+  "titulo": "Navegador · navegador",
+  "level_id": "N3",
+  "seed": 1,
+  "papel": "navegador_oficial",
+  "run_id": "4cc587f2046441caa2027d77dfa0ca98",
+  "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+  "model_sha256": "1dad7b64ea2cc22a376b7bbd413aafb0ae950c17bfdce8f9bef1ba3580f99e8b",
+  "model_uri": "dvc://models/exp-109/navegador/experto.zip",
+  "parent_run_id": null
+ },
+ {
+  "experimento": "exp-109",
+  "titulo": "Navegador · base-s0",
+  "level_id": "N3",
+  "seed": 0,
+  "papel": "navegador_variante",
+  "run_id": "af16ac7a0e5d4048af2c1941584cae0a",
+  "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+  "model_sha256": "963412bc37b26faec2eb598c765f57b9f97e9bfda474c030aa6093b5c1bf9699",
+  "model_uri": "dvc://models/exp-109/navegadores/base-s0/experto.zip",
+  "parent_run_id": null
+ },
+ {
+  "experimento": "exp-109",
+  "titulo": "Navegador · robusto-s1",
+  "level_id": "N3",
+  "seed": 1,
+  "papel": "navegador_variante",
+  "run_id": "4cc587f2046441caa2027d77dfa0ca98",
+  "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+  "model_sha256": "1dad7b64ea2cc22a376b7bbd413aafb0ae950c17bfdce8f9bef1ba3580f99e8b",
+  "model_uri": "dvc://models/exp-109/navegadores/robusto-s1/experto.zip",
+  "parent_run_id": null
+ },
+ {
+  "experimento": "exp-109",
+  "titulo": "Navegador · robusto-s2",
+  "level_id": "N3",
+  "seed": 2,
+  "papel": "navegador_variante",
+  "run_id": "932efa1021094e3ba49b84c1fa77d31e",
+  "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+  "model_sha256": "0bbf5d4610f78ce45be1246e2822ff42fe9bc7c73ad5a1701555f4aec81479e2",
+  "model_uri": "dvc://models/exp-109/navegadores/robusto-s2/experto.zip",
+  "parent_run_id": null
+ },
+ {
+  "experimento": "exp-109",
+  "titulo": "Navegador · robusto-s3",
+  "level_id": "N3",
+  "seed": 3,
+  "papel": "navegador_variante",
+  "run_id": "30487809f1734aa6a7ad0bd4f9210dee",
+  "git_commit": "12cfc53e612243b487fb4671f48e720873487edc",
+  "model_sha256": "f5a471218c105bff09f92f827c72cd99fd38c7036a9b1fdab5dfe0114b2f6b83",
+  "model_uri": "dvc://models/exp-109/navegadores/robusto-s3/experto.zip",
+  "parent_run_id": null
  }
 ]

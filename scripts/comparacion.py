@@ -12,9 +12,9 @@ RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ))
 from expedicion import experimentos as X  # noqa: E402
 
-SERIE = ["exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107a", "exp-108", "exp-107"]
+SERIE = ["exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107a", "exp-108", "exp-109", "exp-107"]
 NUM = {"exp-101": "1", "exp-102": "2", "exp-103": "3", "exp-104": "4", "exp-105": "5", "exp-106": "6",
-       "exp-107a": "7", "exp-108": "8", "exp-107": "7 (terreno, descartado)"}
+       "exp-107a": "7", "exp-108": "8", "exp-109": "9", "exp-107": "7 (terreno, descartado)"}
 
 
 def pct(v):

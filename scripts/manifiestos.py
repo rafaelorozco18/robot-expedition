@@ -19,9 +19,10 @@ from expedicion.ambiente import BipedoEnv  # noqa: E402
 from expedicion.evaluar import campeon  # noqa: E402
 from expedicion.entrenar import URI_MLFLOW  # noqa: E402
 
-SERIE = ["exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107a", "exp-108"]
+SERIE = ["exp-101", "exp-102", "exp-103", "exp-104", "exp-105", "exp-106", "exp-107a", "exp-108", "exp-109"]
+RECOMENDADO = "exp-108"
 NIVEL = {"exp-101": "N1", "exp-102": "N1", "exp-103": "N1", "exp-104": "N2", "exp-105": "N2", "exp-106": "N2",
-         "exp-107a": "N2", "exp-108": "N3", "exp-107": "N3"}
+         "exp-107a": "N2", "exp-108": "N3", "exp-107": "N3", "exp-109": "N3"}
 # Modelos históricos que la entrega cita además de los campeones: (exp, semilla, papel, motivo)
 EXTRA = [
     ("exp-107", 6, "rechazado", "Cumple el recorrido sobre terreno (71 %) pero olvida la curva (25 %): no aprueba."),
@@ -148,6 +149,38 @@ def manifiesto(id_exp, semilla, papel, motivo=None):
     }
 
 
+def manifiestos_navegador():
+    """Exp 9: el navegador es otra familia de modelos (25 observaciones, 7 direcciones)."""
+    from expedicion import mundo as M
+    out = []
+    exp = X.cargar("exp-109")
+    for carpeta, papel in [(X.carpeta_modelos(exp) / "navegador", "navegador_oficial"),
+                           *[(c, "navegador_variante") for c in sorted((X.carpeta_modelos(exp) / "navegadores").glob("*"))]]:
+        if not (carpeta / "experto.zip").exists():
+            continue
+        corrida = json.loads((carpeta / "corrida.json").read_text())
+        ruta_rel = str(carpeta.relative_to(RAIZ))
+        out.append({
+            "run_id": corrida.get("mlflow_run_id"), "level_id": "N3", "experimento": "exp-109",
+            "titulo": f"Navegador · {carpeta.name}", "papel": papel, "seed": corrida["semilla"],
+            "git_commit": sha_completo("HEAD"), "model_uri": f"dvc://{ruta_rel}/experto.zip",
+            "model_sha256": sha256(carpeta / "experto.zip"), "parent_run_id": None,
+            "presupuesto": {"pasos": corrida["pasos"], "segundos": corrida["segundos"]},
+            "evaluacion_cinematica_300": corrida.get("tasa_cinematico_300"),
+            "normalization_uri": None, "origen": {"tipo": "desde_cero"},
+            "algoritmo": "PPO (Stable-Baselines3), red 64×64, acciones discretas",
+            "contrato": {"observacion": {"dimension": M.N_OBS, "orden": [
+                {"nombre": "sensores_distancia", "dimension": M.N_RAYOS, "unidades": f"fracción de {M.ALCANCE} m, de −105° a +105°"},
+                {"nombre": "baliza_seno_coseno", "dimension": 2, "unidades": "ángulo a la baliza en ejes del robot"},
+                {"nombre": "baliza_distancia", "dimension": 1, "unidades": "m / 8, recortado a 1"},
+                {"nombre": "direccion_previa", "dimension": len(M.DIRECCIONES), "unidades": "one-hot"}]},
+                "accion": {"tipo": "discreta", "valores": M.NOMBRES_DIRECCION,
+                           "significado": "rumbo deseado relativo al robot; lo ejecuta el controlador del Exp 8"},
+                "normalizacion": "ninguna", "frecuencia_hz": 1.0},
+        })
+    return out
+
+
 def main():
     salida = RAIZ / "manifests"
     salida.mkdir(exist_ok=True)
@@ -155,15 +188,19 @@ def main():
     for i in SERIE:
         exp = X.cargar(i)
         s = campeon(exp)
-        papel = "recomendado" if i == SERIE[-1] else "historico"
+        papel = "recomendado" if i == RECOMENDADO else ("en_curso" if not json.loads(
+            (X.carpeta_metricas(exp) / "evaluacion.json").read_text())["aprobado"] else "historico")
         m = manifiesto(i, s, papel)
         filas.append(m)
     for i, s, papel, motivo in EXTRA:
         filas.append(manifiesto(i, s, papel, motivo))
+    filas.extend(manifiestos_navegador())
     for m in filas:
-        (salida / f"{m['experimento']}-semilla-{m['seed']}.json").write_text(json.dumps(m, indent=1, ensure_ascii=False))
-    catalogo = [{k: m[k] for k in ("experimento", "titulo", "level_id", "seed", "papel", "run_id", "git_commit",
-                                   "model_sha256", "model_uri", "parent_run_id")} for m in filas]
+        nombre = (f"{m['experimento']}-semilla-{m['seed']}" if "Navegador" not in m.get("titulo", "")
+                  else f"exp-109-{m['titulo'].split('· ')[1]}")
+        (salida / f"{nombre}.json").write_text(json.dumps(m, indent=1, ensure_ascii=False))
+    catalogo = [{k: m.get(k) for k in ("experimento", "titulo", "level_id", "seed", "papel", "run_id", "git_commit",
+                                       "model_sha256", "model_uri", "parent_run_id")} for m in filas]
     (salida / "catalogo.json").write_text(json.dumps(catalogo, indent=1, ensure_ascii=False))
     print(f"{len(filas)} manifiestos en {salida}")
 

@@ -19,6 +19,7 @@ tabla por semilla en CSV: `docs/evaluaciones/<exp>-semillas.csv`.
 | 6 | Caminar en curva | 5 | semilla 5 | aprobado |
 | 7 | Recorrido | 3 | semilla 3 | aprobado |
 | 8 | Llegar a las balizas | 4 | semilla 1 | aprobado |
+| 9 | Exploración entre rocas | 2 | semilla 1 | no aprobado |
 | 7 (terreno, descartado) | Dominio en terreno duro | 10 | semilla 6 | no aprobado |
 
 ## Todas las corridas
@@ -64,6 +65,8 @@ tabla por semilla en CSV: `docs/evaluaciones/<exp>-semillas.csv`.
 | 8 | 2 | continúa semilla 1 | 1,003,520 | 9 min | 50 % | 33 % | 101 75 % · 103 100 % · 104 8 % · 105 92 % · 106 100 % · 107a 75 % | rechazado: no llega al mínimo; olvida exp-101, exp-104 | `87a38abf` |
 | 8 | 3 | continúa semilla 1 | 1,003,520 | 11 min | 75 % | 50 % | 101 75 % · 103 100 % · 104 33 % · 105 92 % · 106 75 % · 107a 75 % | rechazado: olvida exp-101, exp-104 | `175793b0` |
 | 8 | 4 | continúa semilla 1 | 1,003,520 | 8 min | 58 % | 42 % | 101 83 % · 103 100 % · 104 0 % · 105 100 % · 106 100 % · 107a 92 % | rechazado: no llega al mínimo; olvida exp-104 | `98a73a9a` |
+| 9 | 1 | campeón de exp-108 | 303,104 | 4 min | 25 % | 17 % | 101 92 % · 103 100 % · 104 75 % · 105 100 % · 106 100 % · 107a 100 % · 108 83 % | campeón (no aprueba): no llega al mínimo | `560b0201` |
+| 9 | 2 | campeón de exp-108 | 2,002,944 | 27 min | 0 % | 17 % | 101 83 % · 103 100 % · 104 58 % · 105 100 % · 106 83 % · 107a 83 % · 108 50 % | rechazado: no llega al mínimo; olvida exp-104, exp-108 | `27001d93` |
 | 7 (terreno, descartado) | 1 | campeón de exp-106 | 6,000,640 | 47 min | 0 % | 17 % | 101 75 % · 103 17 % · 104 0 % · 105 17 % · 106 8 % | rechazado: no llega al mínimo; olvida exp-101, exp-103, exp-104, exp-105, exp-106 | `807e24cc` |
 | 7 (terreno, descartado) | 2 | campeón de exp-106 | 3,002,368 | 21 min | 17 % | 8 % | 101 83 % · 103 100 % · 104 17 % · 105 83 % · 106 83 % | rechazado: no llega al mínimo; olvida exp-104 | `51a01ac5` |
 | 7 (terreno, descartado) | 3 | continúa semilla 2 | 6,000,640 | 42 min | 17 % | 8 % | 101 92 % · 103 8 % · 104 0 % · 105 25 % · 106 33 % | rechazado: no llega al mínimo; olvida exp-103, exp-104, exp-105, exp-106 | `18726350` |
