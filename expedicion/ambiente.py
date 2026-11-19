@@ -228,7 +228,7 @@ class BipedoEnv(gym.Env):
         self.accion_previa = accion
         self.motivo = self.tarea.fin(self)
         terminated = self.motivo is not None
-        if terminated:
+        if terminated and not self.tarea.exito(self, False):  # terminar por éxito (Exp 8: última baliza) no es caída
             recompensa -= self.exp["recompensa"]["caida"]
             desglose["caida"] = -self.exp["recompensa"]["caida"]
         truncated = not terminated and self.pasos >= self.max_pasos

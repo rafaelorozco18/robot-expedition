@@ -14,3 +14,4 @@ Los resultados de la serie anterior, con tres planetas, están en el tag `exp-02
 | 6 | [Caminar en curva](experimentos/exp-106.md) | Aprobado | 75 % | 73.0 | 75 % | 0.4 M | 42 min |
 | 7 | [Recorrido](experimentos/exp-107a.md) | Aprobado | 100 % | 75.6 | 70 % | 0.4 M | 57 min |
 | 8 | [Dominio en terreno duro](experimentos/exp-107.md) | No aprobado | 75 % | 71.8 | 70 % | 6.0 M | 42 min |
+| 9 | [Llegar a las balizas](experimentos/exp-108.md) | Aprobado | 83 % | 72.2 | 70 % | 0.3 M | 4 min |

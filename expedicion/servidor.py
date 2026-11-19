@@ -1,7 +1,10 @@
 """Servidor local: sirve el visor Three.js y una API que corre episodios reales en MuJoCo."""
 
+import hashlib
 import json
 import mimetypes
+import os
+import time
 from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -49,6 +52,8 @@ def aprobado_visor(exp, ev):
 def catalogo():
     lista = []
     for exp in X.listar():
+        if exp["estado"] == "descartado":
+            continue  # intento conservado en git, DVC y MLflow, fuera de la serie que muestra el visor
         visible = P.cargar(exp["id"]) or exp
         ev = _archivo_json(pub(exp) / "evaluacion.json")
         fila = {k: visible.get(k) for k in ("id", "titulo", "pregunta", "agrega", "criterio")}
@@ -181,21 +186,59 @@ def episodio(id_exp, agente, planeta, perturbacion, semilla, version):
     return json.dumps({"resumen": resumen, "cuadros": cuadros}).encode()
 
 
+MONITOR = {"inicio": time.strftime("%Y-%m-%dT%H:%M:%S"), "episodios": 0, "errores": 0, "latencias_ms": []}
+
+
+@lru_cache(maxsize=64)
+def _sha(ruta):
+    return hashlib.sha256(Path(ruta).read_bytes()).hexdigest()
+
+
+def estado():
+    """Monitoreo mínimo: versión servida de cada experimento, latencia y errores de inferencia."""
+    servidas = {}
+    for exp in X.listar():
+        c = pub(exp)
+        if (c / "experto.zip").exists() and exp["estado"] != "descartado":
+            ev = _archivo_json(c / "evaluacion.json") or {}
+            marca = c / "version.txt"  # en el Space de Hugging Face la carpeta es una copia: guarda su nombre original
+            version = marca.read_text().strip() if marca.exists() else c.resolve().name
+            servidas[exp["id"]] = {"version": version, "campeon": ev.get("campeon"),
+                                   "model_sha256": _sha(str((c / "experto.zip").resolve()))}
+    lat = MONITOR["latencias_ms"][-200:]
+    return {"servidor": "MuJoCo + Stable-Baselines3 (Python)", "inicio": MONITOR["inicio"],
+            "episodios_servidos": MONITOR["episodios"], "errores": MONITOR["errores"],
+            "latencia_ms": {"media": round(sum(lat) / len(lat), 1) if lat else None, "max": max(lat) if lat else None},
+            "versiones_servidas": servidas, "commit": os.environ.get("COMMIT_ENTREGA")}
+
+
 class Manejador(BaseHTTPRequestHandler):
     def _json(self, datos, codigo=200):
         self._bytes(json.dumps(datos).encode(), codigo)
+
+    def _cors(self):
+        self.send_header("Access-Control-Allow-Origin", os.environ.get("CORS_ORIGEN", "*"))
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
 
     def _bytes(self, cuerpo, codigo=200):
         self.send_response(codigo)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(cuerpo)))
+        self._cors()
         self.end_headers()
         self.wfile.write(cuerpo)
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self._cors()
+        self.end_headers()
 
     def _api(self, url):
         partes = url.path.strip("/").split("/")
         if partes == ["api", "experimentos"]:
             return self._json(catalogo())
+        if partes == ["api", "estado"]:
+            return self._json(estado())
         if len(partes) != 4 or partes[:2] != ["api", "exp"]:
             return self._json({"error": "ruta desconocida"}, 404)
         exp = P.cargar(partes[2])
@@ -213,8 +256,12 @@ class Manejador(BaseHTTPRequestHandler):
                    "semilla": int(q.get("semilla", 0))}
             if esc["planeta"] not in PLANETAS_VISOR or esc["perturbacion"] not in PERTURBACIONES:
                 raise ValueError("condición desconocida")
-            return self._bytes(episodio(exp["id"], q.get("agente", "experto"), esc["planeta"],
-                                        esc["perturbacion"], esc["semilla"], _version(exp)))
+            t0 = time.perf_counter()
+            cuerpo = episodio(exp["id"], q.get("agente", "experto"), esc["planeta"],
+                              esc["perturbacion"], esc["semilla"], _version(exp))
+            MONITOR["episodios"] += 1
+            MONITOR["latencias_ms"].append(round((time.perf_counter() - t0) * 1000, 1))
+            return self._bytes(cuerpo)
         return self._json({"error": "ruta desconocida"}, 404)
 
     def do_GET(self):
@@ -223,7 +270,11 @@ class Manejador(BaseHTTPRequestHandler):
             try:
                 return self._api(url)
             except (ValueError, FileNotFoundError) as e:
+                MONITOR["errores"] += 1
                 return self._json({"error": str(e)}, 400)
+            except Exception as e:  # noqa: BLE001 — un fallo del servicio se informa como error, no como replay
+                MONITOR["errores"] += 1
+                return self._json({"error": f"Error del servidor: {e}"}, 500)
         ruta = WEB / "index.html" if url.path == "/" else (WEB / url.path.lstrip("/")).resolve()
         if not ruta.is_file() or WEB not in ruta.parents:
             return self.send_error(404)
@@ -241,7 +292,9 @@ class Manejador(BaseHTTPRequestHandler):
         pass
 
 
-def servir(puerto=8765, host="127.0.0.1"):
+def servir(puerto=None, host=None):
+    puerto = int(puerto or os.environ.get("PORT", 8765))
+    host = host or os.environ.get("HOST", "127.0.0.1")
     print(f"Robot Expedition en http://localhost:{puerto}  (Ctrl+C para salir)", flush=True)
     try:
         ThreadingHTTPServer((host, puerto), Manejador).serve_forever()

@@ -541,6 +541,81 @@ class Recorrido(Marcha):
         return nombres[self.modo]
 
 
+class Balizas(Marcha):
+    """Llega, una tras otra, a balizas puestas al azar alrededor del robot (también atrás o a un lado).
+
+    El ambiente traduce la baliza activa a las órdenes que el robot ya conoce: si queda a más de `giro_rad`
+    del rumbo pedido, gira sobre su eje; si no, camina hacia ella corrigiendo en curva. La política ve el rumbo
+    pedido (que apunta a la baliza) y la velocidad pedida; no planifica la ruta (no hay obstáculos)."""
+    titulo_exito = "Llegó a todas las balizas"
+
+    def iniciar(self, env):
+        super().iniciar(env)
+        self.balizas, origen = [], np.zeros(2)
+        for _ in range(int(self.t["balizas"])):
+            ang = env.np_random.uniform(-np.pi, np.pi)
+            d = env.np_random.uniform(*self.t["distancia_m"])
+            origen = origen + d * np.array([np.cos(ang), np.sin(ang)])
+            self.balizas.append(origen.copy())
+        self.alcanzadas = 0
+        self.modo = "giro"
+        env.destino = self.balizas[0]
+
+    def _error(self, env):
+        hacia = env.destino - env.data.qpos[:2]
+        e = np.arctan2(hacia[1], hacia[0]) - env.rumbo_objetivo
+        return float(np.arctan2(np.sin(e), np.cos(e))), float(np.linalg.norm(hacia))
+
+    def actualizar(self, env):
+        if self.alcanzadas < len(self.balizas):
+            e, lejos = self._error(env)
+            if lejos < self.t["radio_m"]:
+                self.alcanzadas += 1
+                if self.alcanzadas < len(self.balizas):
+                    env.destino = self.balizas[self.alcanzadas]
+                    e, lejos = self._error(env)
+        if self.alcanzadas >= len(self.balizas):
+            env.comando[:] = [0.0, 0.0, 1.0, 0.0]
+            self.modo = "detenido"
+            return
+        giro = self.t["giro_rad"]
+        if abs(e) > giro or (self.modo == "giro" and abs(e) > 0.1):
+            self.modo = "giro"
+            env.comando[:] = [0.0, 0.0, 1.0, np.sign(e) * 0.8]
+        else:
+            self.modo = "recto" if abs(e) < 0.05 else "curva"
+            env.comando[:] = [0.5 if self.modo == "recto" else 0.45, 0.0, 1.0, float(np.clip(1.5 * e, -0.25, 0.25))]
+        env.rumbo_objetivo += env.comando[3] * env.dt
+
+    def fin(self, env):
+        motivo = super().fin(env)
+        if motivo is None and self.alcanzadas >= len(self.balizas):
+            return "llegó a todas las balizas"
+        return motivo
+
+    def exito(self, env, truncado):
+        return self.alcanzadas >= len(self.balizas) and self.calidad_ok(env)
+
+    def avance(self, env):
+        if self.alcanzadas >= len(self.balizas):
+            return 1.0
+        _, lejos = self._error(env)
+        tramo = np.linalg.norm(self.balizas[self.alcanzadas] - (self.balizas[self.alcanzadas - 1] if self.alcanzadas else 0))
+        return float((self.alcanzadas + max(0.0, 1 - lejos / max(tramo, 1e-6))) / len(self.balizas))
+
+    def resumen(self, env):
+        texto = f"llegó a {self.alcanzadas} de {len(self.balizas)} balizas"
+        if self.alcanzadas < len(self.balizas):
+            texto += f" · quedó a {self._error(env)[1]:.1f} m de la siguiente"
+        return texto
+
+    def orden(self, env):
+        if self.modo == "detenido":
+            return "detenerse: llegó a todas las balizas"
+        nombres = {"giro": "girar hacia la baliza", "recto": "caminar hacia la baliza", "curva": "corregir en curva"}
+        return f"{nombres[self.modo]} {self.alcanzadas + 1} de {len(self.balizas)}"
+
+
 TAREAS = {"de_pie": DePie, "sentadilla": Sentadilla, "pasar_peso": PasarPeso, "un_pie": UnPie,
           "marcha": Marcha, "levantarse": Levantarse, "girar": Girar, "ir_a_punto": IrAPunto, "salto": Salto,
-          "esquina": Esquina, "curva": Curva, "recorrido": Recorrido}
+          "esquina": Esquina, "curva": Curva, "recorrido": Recorrido, "balizas": Balizas}

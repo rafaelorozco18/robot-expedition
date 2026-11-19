@@ -1,0 +1,2 @@
+experimento,semilla,origen,pasos,segundos,git_commit,mlflow_run_id,tasa_exito_examen,episodios_examen,tasa_con_empujon,calidad_media,segundos_medios,decision
+exp-104,0,campeón de exp-103,5001216,2904.0,3d2358a,b16c16556ea34432a40d6238a0b309cf,0.75,12,0.667,77.5,22.65,campeón · aprobado

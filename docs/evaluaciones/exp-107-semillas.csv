@@ -1,0 +1,11 @@
+experimento,semilla,origen,pasos,segundos,git_commit,mlflow_run_id,tasa_exito_examen,episodios_examen,tasa_con_empujon,calidad_media,segundos_medios,previo_exp-101,previo_exp-103,previo_exp-104,previo_exp-105,previo_exp-106,decision
+exp-107,1,campeón de exp-106,6000640,2823.8,3787349,807e24cc187141bc924f08fec07f19d9,0.0,12,0.167,56.9,11.58,0.75,0.167,0.0,0.167,0.083,"rechazado: no llega al mínimo; olvida exp-101, exp-103, exp-104, exp-105, exp-106"
+exp-107,2,campeón de exp-106,3002368,1276.5,76599f5,51a01ac53c694bb68427b9c84c98963a,0.167,12,0.083,66.5,19.82,0.833,1.0,0.167,0.833,0.833,rechazado: no llega al mínimo; olvida exp-104
+exp-107,3,continúa semilla 2,6000640,2490.2,76599f5,18726350fa1149c28eedb76c931187f9,0.167,12,0.083,63.2,16.29,0.917,0.083,0.0,0.25,0.333,"rechazado: no llega al mínimo; olvida exp-103, exp-104, exp-105, exp-106"
+exp-107,4,campeón de exp-106,6000640,3008.0,6960722,030a101ae66642539d6a958c19ab2624,0.167,12,0.167,66.7,20.66,0.833,1.0,0.5,0.917,0.083,"rechazado: no llega al mínimo; olvida exp-104, exp-106"
+exp-107,5,continúa semilla 4,6000640,2545.8,6960722,92bb7e0e6e7446b2b5fcf6430eb0c82e,0.333,12,0.333,65.8,16.7,0.583,1.0,0.75,0.75,0.0,"rechazado: no llega al mínimo; olvida exp-101, exp-105, exp-106"
+exp-107,6,continúa semilla 5,6000640,2541.0,6960722,5b4ad57cf1224d57b00c466e560ba0f9,0.75,12,0.667,71.8,21.86,0.833,1.0,0.667,1.0,0.25,"campeón (no aprueba): olvida exp-104, exp-106"
+exp-107,7,continúa semilla 6,6000640,2657.9,6960722,e1086303a68043b3bcaab718e7b3ca71,0.667,12,0.583,72.6,24.0,0.833,1.0,0.5,1.0,0.417,"rechazado: no llega al mínimo; olvida exp-104, exp-106"
+exp-107,8,campeón de exp-106,401408,2825.3,6960722,b9cbe585bac9454aa90e1013e2e3c88e,0.417,12,0.417,71.5,21.61,0.917,1.0,0.833,0.917,1.0,rechazado: no llega al mínimo
+exp-107,9,continúa semilla 8,2002944,881.0,6960722,31524ad387b3426d9d2e7df6729a44bb,0.5,12,0.333,68.6,18.35,0.75,1.0,0.833,0.917,0.333,"rechazado: no llega al mínimo; olvida exp-101, exp-106"
+exp-107,10,campeón de exp-106,401408,4779.1,9756445,a867d31dce294dc3837ed013c4830577,0.5,12,0.5,71.5,22.27,0.75,1.0,0.75,0.917,0.917,rechazado: no llega al mínimo; olvida exp-101

@@ -209,7 +209,7 @@ def main(argv=None):
     s.add_argument("exps", nargs="+")
     s.add_argument("--seguir", action="store_true", help="continúa aunque un experimento no apruebe")
     s.add_argument("--hasta", help="hora HH:MM a partir de la cual no se inicia otro experimento")
-    comando("servir", cmd_servir).add_argument("--puerto", type=int, default=8765)
+    comando("servir", cmd_servir).add_argument("--puerto", type=int, default=None)
 
     args = ap.parse_args(argv)
     args.f(args)

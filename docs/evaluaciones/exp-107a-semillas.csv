@@ -1,0 +1,4 @@
+experimento,semilla,origen,pasos,segundos,git_commit,mlflow_run_id,tasa_exito_examen,episodios_examen,tasa_con_empujon,calidad_media,segundos_medios,previo_exp-101,previo_exp-103,previo_exp-104,previo_exp-105,previo_exp-106,decision
+exp-107a,1,campeón de exp-106,3002368,1393.1,441dbef,4af5039a43444895935f05f633ddb5f7,0.5,12,0.333,63.5,16.7,0.75,0.0,0.0,0.583,0.0,"rechazado: no llega al mínimo; olvida exp-101, exp-103, exp-104, exp-105, exp-106"
+exp-107a,2,campeón de exp-106,401408,3452.5,441dbef,b17082c6eb3f48a8801cca3596ad9265,1.0,12,0.417,75.4,24.0,0.833,1.0,0.583,1.0,1.0,rechazado: olvida exp-104
+exp-107a,3,campeón de exp-106,401408,3407.7,441dbef,d88c5a3dabc94031a3dfe5b80ab21ea2,1.0,12,0.5,75.6,24.0,0.917,1.0,0.75,1.0,1.0,campeón · aprobado

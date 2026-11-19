@@ -6,6 +6,7 @@ de las cinco etapas y de las cuatro versiones del robot en el escenario de las e
 """
 
 import json
+import os
 import shutil
 
 from . import experimentos as X
@@ -23,8 +24,11 @@ def exportar(destino=None):
     shutil.rmtree(destino, ignore_errors=True)
     shutil.copytree(S.WEB, destino)
     indice = (destino / "index.html").read_text()
+    # API_REMOTA (opcional): servidor Python con MuJoCo para evaluar en vivo desde la versión estática.
+    remota = os.environ.get("API_REMOTA", "")
+    extra = f"\n  <script>window.API_REMOTA = {json.dumps(remota)};</script>" if remota else ""
     (destino / "index.html").write_text(indice.replace(
-        "<head>", "<head>\n  <script>window.VISOR_ESTATICO = true;</script>", 1))
+        "<head>", "<head>\n  <script>window.VISOR_ESTATICO = true;</script>" + extra, 1))
     # Variante para publicar como artifact de claude.ai: sin doctype/html/head/body propios.
     import re
     cuerpo = re.sub(r"<!doctype html>|</?html[^>]*>|</?head>|</?body>", "", (destino / "index.html").read_text(), flags=re.I)
@@ -34,7 +38,7 @@ def exportar(destino=None):
     episodios = 0
     for exp_actual in X.listar():
         exp = P.cargar(exp_actual["id"])
-        if exp is None:
+        if exp is None or exp_actual["estado"] == "descartado":
             continue
         i = exp["id"]
         paquete = {"mundo": S.mundo(exp), "progreso": S.progreso(exp)}

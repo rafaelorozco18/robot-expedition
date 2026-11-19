@@ -3,7 +3,7 @@
 //   entrenamiento → éxito con exploración, últimos 100 episodios
 //   prueba        → éxito sin exploración de cada foto, en escenarios fijos
 
-import { api, ESTATICO } from "./api.js";
+import { api, vivo } from "./api.js";
 const $ = (id) => document.getElementById(id);
 const SERIE = { entrenamiento: "#1f9fae", prueba: "#dd6a24" };
 const W = 360, H = 200, M = { t: 22, r: 14, b: 34, l: 34 };
@@ -82,7 +82,7 @@ export function crearProgreso({ alElegir }) {
       tip.style.left = `${Math.min(r.width - 150, Math.max(0, (x(p) / W) * r.width - 75))}px`;
     };
     zona.onpointerleave = () => { cruz.setAttribute("visibility", "hidden"); tip.hidden = true; };
-    zona.onclick = (e) => elegir(pasoDesdeEvento(e), !ESTATICO);
+    zona.onclick = (e) => elegir(pasoDesdeEvento(e), vivo());
   }
 
   function describir(p) {
@@ -118,7 +118,7 @@ export function crearProgreso({ alElegir }) {
       const barra = $("checkpoint");
       barra.max = datos.fotos.length - 1;
       barra.oninput = () => elegir(datos.fotos[Number(barra.value)].paso, false);
-      barra.onchange = () => { if (!ESTATICO) alElegir(datos.fotos[Number(barra.value)].paso); };
+      barra.onchange = () => { if (vivo()) alElegir(datos.fotos[Number(barra.value)].paso); };
       tabla();
       this.soltar();
     },

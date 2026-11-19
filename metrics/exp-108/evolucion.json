@@ -1,0 +1,112 @@
+{
+ "perturbacion": "ninguna",
+ "planetas": {
+  "marte": {
+   "semilla": 1374203058,
+   "hitos": [
+    {
+     "agente": "sin_entrenar",
+     "paso": null,
+     "origen": "exp-108",
+     "exito": false,
+     "segundos": 45.0,
+     "distancia": -0.0,
+     "calidad": 39.9,
+     "avance": 0.0,
+     "puntaje": 0.0,
+     "texto": "No cumple el objetivo · calidad 40/100 · llegó a 0 de 3 balizas · quedó a 3.1 m de la siguiente",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": null,
+     "indice": 0,
+     "etapa": "Fracaso absoluto"
+    },
+    {
+     "agente": "foto:exp-103:1000000",
+     "paso": 1000000,
+     "origen": "exp-103",
+     "exito": false,
+     "segundos": 12.1,
+     "distancia": 3.84,
+     "calidad": 32.4,
+     "avance": 0.223,
+     "puntaje": 0.1683,
+     "texto": "A los 12.1 s: se agachó o cayó · llegó a 0 de 3 balizas · quedó a 1.0 m de la siguiente",
+     "clip": [
+      6.1,
+      12.1,
+      1
+     ],
+     "tasa": null,
+     "indice": 10,
+     "etapa": "Fracaso, pero mejor"
+    },
+    {
+     "agente": "foto:exp-106:0",
+     "paso": 0,
+     "origen": "exp-106",
+     "exito": false,
+     "segundos": 9.9,
+     "distancia": 2.78,
+     "calidad": 65.5,
+     "avance": 0.497,
+     "puntaje": 0.4721,
+     "texto": "A los 9.9 s: se inclinó demasiado · llegó a 1 de 3 balizas · quedó a 1.9 m de la siguiente",
+     "clip": [
+      3.9,
+      9.9,
+      1
+     ],
+     "tasa": null,
+     "indice": 21,
+     "etapa": "Punto de inflexión"
+    },
+    {
+     "agente": "foto:exp-106:200704",
+     "paso": 200704,
+     "origen": "exp-106",
+     "exito": true,
+     "segundos": 22.16,
+     "distancia": 1.45,
+     "calidad": 75.1,
+     "avance": 1.0,
+     "puntaje": 1.0751,
+     "texto": "Llegó a todas las balizas · calidad 75/100 · llegó a 3 de 3 balizas",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": null,
+     "indice": 23,
+     "etapa": "Cumplido"
+    },
+    {
+     "agente": "paso:188032",
+     "paso": 188032,
+     "origen": "exp-108",
+     "exito": true,
+     "segundos": 22.7,
+     "distancia": 1.27,
+     "calidad": 76.3,
+     "avance": 1.0,
+     "puntaje": 1.5763,
+     "texto": "Llegó a todas las balizas · calidad 76/100 · llegó a 3 de 3 balizas",
+     "clip": [
+      0.0,
+      8.0,
+      1
+     ],
+     "tasa": 1.0,
+     "indice": 48,
+     "etapa": "Perfeccionado"
+    }
+   ],
+   "mejora": 1.576
+  }
+ },
+ "recomendado": "marte"
+}

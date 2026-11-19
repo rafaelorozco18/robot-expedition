@@ -1,0 +1,3 @@
+experimento,semilla,origen,pasos,segundos,git_commit,mlflow_run_id,tasa_exito_examen,episodios_examen,tasa_con_empujon,calidad_media,segundos_medios,decision
+exp-103,0,campeón de exp-102,6000640,3210.7,a7f6065,c848ab0e4e0543fd94462c04bcede3e2,0.75,12,0.417,80.5,22.64,rechazado: no llega al mínimo
+exp-103,1,campeón de exp-102,9003008,4445.7,617cdc5,5288517fb4ff4dd58116e3ae442017c7,1.0,12,0.5,81.6,26.0,campeón · aprobado

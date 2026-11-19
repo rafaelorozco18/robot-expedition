@@ -1,5 +1,5 @@
 id: exp-107
-estado: activo
+estado: descartado
 titulo: Dominio en terreno duro
 tarea: recorrido
 parte_de: exp-106
@@ -189,4 +189,8 @@ pendiente: 'Calidad ≥ 55/100, la del Exp 3: no puede empeorar la marcha mientr
   25 %, y el Terreno, 67 %). Semilla 10: repite la destilación de la 8 desde el campeón
   del Exp 6 con el doble de recorridos por ronda (48) y 16 rondas. Semilla 10: mejor
   ronda 8; en 40 episodios nuevos (3000+): recorrido 28, curva 37, esquina 39, De
-  pie 30, Caminar bien 40 y Terreno 35 de 40.'
+  pie 30, Caminar bien 40 y Terreno 35 de 40. Descartado de la serie (decisión del
+  usuario, 2026-11-18): se partió en dos; la primera mitad es el Exp 7a (aprobado)
+  y el terreno durante giros quedó como intento conservado (mejor: 30 de 40 recorridos).
+  Se usa como incidente controlado: degradación del campeón del 7a sobre pisos sueltos
+  e intervención (intensidad de pisos al entrenar).'

@@ -7,7 +7,7 @@ import { crearPlaneta, TEMAS } from "./planetas.js";
 import { crearRobot, gestoDe } from "./robot3d.js";
 import { crearEfectos, crearSonido } from "./efectos.js";
 import { crearViento } from "./viento.js";
-import { api, ESTATICO } from "./api.js";
+import { api, ESTATICO, API_REMOTA, conectar, servidor, vivo } from "./api.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -148,6 +148,36 @@ function dibujarListones(listones) {
   }
 }
 
+// Exp 8: balizas. MuJoCo usa z arriba: (x, y) del simulador va a (x, -y) en el plano de Three.js.
+const grupoBalizas = new THREE.Group();
+function dibujarBalizas(balizas, radio) {
+  grupoBalizas.clear();
+  grupoBalizas.userData.postes = [];
+  (balizas || []).forEach(([x, y], k) => {
+    const g = new THREE.Group();
+    g.position.set(x, 0, -y);
+    const luz = new THREE.MeshStandardMaterial({ color: 0x3fd0e0, emissive: 0x3fd0e0, emissiveIntensity: 0.9 });
+    const poste = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 1.3, 12), new THREE.MeshStandardMaterial({ color: 0x2b3440, metalness: 0.5 }));
+    poste.position.y = 0.65;
+    poste.castShadow = true;
+    const foco = new THREE.Mesh(new THREE.SphereGeometry(0.09, 20, 16), luz);
+    foco.position.y = 1.36;
+    const aro = new THREE.Mesh(new THREE.RingGeometry((radio || 0.5) - 0.04, (radio || 0.5), 48),
+      new THREE.MeshBasicMaterial({ color: 0x3fd0e0, transparent: true, opacity: 0.8, side: THREE.DoubleSide }));
+    aro.rotation.x = -Math.PI / 2;
+    aro.position.y = 0.015;
+    g.add(poste, foco, aro);
+    grupoBalizas.add(g);
+    grupoBalizas.userData.postes.push({ luz, aro: aro.material, k });
+  });
+}
+function colorearBalizas(alcanzadas) {
+  for (const { luz, aro, k } of grupoBalizas.userData.postes || []) {
+    const c = k < alcanzadas ? 0x3ad06b : k === alcanzadas ? 0xff8a2a : 0x3fd0e0;
+    luz.color.setHex(c); luz.emissive.setHex(c); aro.color.setHex(c);
+  }
+}
+
 // Experimentos sin distancia: una plataforma circular donde demostrar el control del cuerpo.
 function construirCirculo() {
   const piso = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.46, 0.02, 64), new THREE.MeshStandardMaterial({ color: 0x2b3440, roughness: 0.45, metalness: 0.4 }));
@@ -228,6 +258,7 @@ function construirMeta(x) {
 const grupoTramos = new THREE.Group();
 rampa.add(grupoTramos);
 rampa.add(grupoListones);
+scene.add(grupoBalizas);
 const texturasPiso = {};
 function texturaPiso(tipo) {
   if (texturasPiso[tipo]) return texturasPiso[tipo];
@@ -455,6 +486,7 @@ function mostrar(i) {
   $("v-velocidad").textContent = `${f.velocidad.toFixed(2)} m/s`;
   $("v-pies").textContent = [f.pies[0] && "izquierdo", f.pies[1] && "derecho"].filter(Boolean).join(" y ") || "ninguno";
   $("v-comando").textContent = f.orden;
+  if (f.alcanzadas !== undefined) colorearBalizas(f.alcanzadas);
   $("v-distancia").textContent = `${f.distancia.toFixed(2)} m`;
   $("v-piso").textContent = planeta.tema().terrenos[f.piso] || f.piso.replace("_", " ");
   const fv = Math.hypot(...(f.viento || [0, 0]));
@@ -565,7 +597,7 @@ async function abrirExperimento(id) {
   $("planeta").closest(".campo").hidden = true;  // la serie se trabaja solo en Marte
   if (ESTATICO) {
     $("perturbacion").closest(".campo").hidden = true;
-    $("semilla").closest(".campo").hidden = true;
+    $("semilla").closest(".campo").hidden = !vivo();  // con servidor en vivo se elige la semilla del episodio
   }
   await cargarAprendizaje(id);
   if (estado.exp !== id) return;
@@ -581,18 +613,43 @@ async function abrirExperimento(id) {
   $("pie").innerHTML = ev
     ? `Modelo <code>${id}</code> · campeón: semilla ${ev.campeon} · robot <code>${estado.mundo.robot.modelo}</code>`
     : `Robot <code>${estado.mundo.robot.modelo}</code>`;
-  await lanzar();
+  await lanzar(null, { replay: true });
 }
 
-async function lanzar(clip = null) {
+const TIPO_AGENTE = {
+  aleatorio: "referencia aleatoria", sin_entrenar: "referencia de regla (servo sin red)",
+  experto: "evaluación del modelo campeón", aprendiz: "evaluación de un modelo histórico (mitad del entrenamiento)",
+};
+const tipoAgente = (a) => TIPO_AGENTE[a] || (a.startsWith("paso:") ? `evaluación de la foto de ${Number(a.slice(5)).toLocaleString("es")} pasos`
+  : a.startsWith("foto:") ? "evaluación de un modelo del linaje" : a);
+
+function mostrarModo(clase, texto) {
+  const m = $("modo");
+  m.className = `modo ${clase}`;
+  m.textContent = texto;
+  m.hidden = false;
+}
+
+async function lanzar(clip = null, { replay = false } = {}) {
   estado.finClip = null;
   const semilla = Number($("semilla").value) || 0;
   const q = new URLSearchParams({ agente: estado.agente, planeta: estado.planeta, perturbacion: estado.perturbacion, semilla });
   const pedido = estado.exp;
-  const resp = await api(`/api/exp/${pedido}/episodio?${q}`);
+  const enVivo = ESTATICO && vivo() && !replay && !clip;
+  if (enVivo) mostrarModo("cargando", `Corriendo en MuJoCo (servidor Python)… ${pedido} · ${tipoAgente(estado.agente)} · semilla ${semilla}`);
+  const t0 = performance.now();
+  const resp = await api(`/api/exp/${pedido}/episodio?${q}`, { replay: replay || Boolean(clip) });
   const datos = await resp.json();
   if (estado.exp !== pedido) return;  // respuesta de un experimento que ya no está abierto
-  if (!resp.ok) { alert(datos.error); return; }
+  if (!resp.ok) {
+    mostrarModo("error", `Error del servicio: ${datos.error}`);
+    if (!enVivo) alert(datos.error);
+    return;
+  }
+  const seg = ((performance.now() - t0) / 1000).toFixed(1);
+  mostrarModo(enVivo || !ESTATICO ? "vivo" : "replay", enVivo || !ESTATICO
+    ? `● Evaluación en vivo · ${pedido} · ${tipoAgente(estado.agente)} · semilla ${semilla} · simulado en ${seg} s`
+    : `⟲ Replay grabado al publicar · ${pedido} · ${tipoAgente(estado.agente)} · semilla ${semilla}`);
   estado.episodio = datos;
   // Cada episodio empieza en el origen: la cámara vuelve a él en vez de recorrer la pista.
   controls.target.sub(previo);
@@ -604,6 +661,7 @@ async function lanzar(clip = null) {
   ocultarBurbuja();
   dibujarTramos(datos.resumen.tramos || []);
   dibujarListones(datos.resumen.listones);
+  dibujarBalizas(datos.resumen.balizas, datos.resumen.radio_baliza);
   estado.i = 0; estado.tiempo = 0; estado.play = true;
   $("barra").max = datos.cuadros.length - 1;
   if (clip) {
@@ -720,7 +778,7 @@ async function reproducirEtapa(plan, i, seguir) {
   $("resultado").hidden = true;
   estado.hito = h;
   controls.autoRotate = Boolean(seguir);
-  await lanzar(h.clip);
+  await lanzar(h.clip, { replay: true });
   decir("Aquí voy…", 1.4);
   if (seguir && reel) reel.i = i;
 }
@@ -855,7 +913,7 @@ async function iniciarCarrera(plan) {
   mostrarEtapa("Carrera de versiones", "Preparando los carriles…", "Cada carril es un momento del aprendizaje, en la misma prueba.", true);
   const episodios = await Promise.all(hitos.map(async (h) => {
     const q = new URLSearchParams({ agente: h.agente, planeta: estado.planeta, perturbacion: aprendizaje.perturbacion, semilla: plan.semilla });
-    return (await api(`/api/exp/${estado.exp}/episodio?${q}`)).json();
+    return (await api(`/api/exp/${estado.exp}/episodio?${q}`, { replay: true })).json();
   }));
   if (episodios.some((e) => e.error) || !aprendizaje) { $("etapa").hidden = true; return; }
   estado.play = false;
@@ -989,6 +1047,17 @@ function bucle() {
 }
 
 async function iniciar() {
+  if (ESTATICO && API_REMOTA) {
+    mostrarModo("cargando", "Conectando con el servidor de evaluación (puede tardar si estaba dormido)…");
+    conectar().then((ok) => {
+      const s = servidor();
+      $("servidor").innerHTML = ok
+        ? `Servidor de evaluación: <b>conectado</b> · ${Object.keys(s.versiones_servidas).length} modelos servidos · <a href="${API_REMOTA}/api/estado" target="_blank" rel="noopener">estado y versiones</a>`
+        : `Servidor de evaluación: <b>no disponible</b>. Se muestran replays grabados.`;
+      if (ok && estado.exp) $("semilla").closest(".campo").hidden = false;
+      mostrarModo(ok ? "vivo" : "replay", ok ? "● Servidor conectado: «Lanzar episodio» corre una evaluación nueva en MuJoCo" : "⟲ Sin servidor: replays grabados");
+    });
+  }
   estado.catalogo = await (await api("/api/experimentos")).json();
   botonPlay(false);
   aplicarPlaneta();

@@ -111,6 +111,7 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
             "piso": env.piso_bajo_torso(),
             "viento": [round(float(v), 1) for v in env.viento_actual[:2]],
             "rumbo_orden": round(float(env.rumbo_objetivo), 3),
+            **({"alcanzadas": int(env.tarea.alcanzadas)} if hasattr(env.tarea, "balizas") else {}),
         }
 
     if grabar:
@@ -137,6 +138,8 @@ def correr_episodio(exp, agente, escenario, grabar=False, cada=2):
                "altura_final": round(env.altura_torso() / env.altura_pie, 3),
                "avance": round(float(env.tarea.avance(env)), 3),
                "listones": env.listones,
+               "balizas": [[round(float(v), 3) for v in b] for b in getattr(env.tarea, "balizas", [])],
+               "radio_baliza": env.tarea.t.get("radio_m") if hasattr(env.tarea, "balizas") else None,
                **env.estadisticas()}
     return resumen, cuadros
 
@@ -254,7 +257,9 @@ def olvidados(tasas):
 def regresion(exp):
     """Prueba al campeón en las pruebas de los experimentos anteriores."""
     from . import experimentos as X
-    ids = [p["id"] for p in X.listar() if p["id"] <= exp["id"] and p["estado"] != "pendiente"]
+    lista = X.listar()  # en el orden de la serie (campo `orden`), no alfabético: exp-107a va antes que exp-107
+    hasta = [p["id"] for p in lista].index(exp["id"])
+    ids = [p["id"] for p in lista[:hasta + 1] if p["estado"] not in ("pendiente", "descartado")]
     resultado = examen_previo(exp, carpeta_modelos(exp) / f"semilla-{campeon(exp)}" / "experto.zip", ids)
     (carpeta_metricas(exp) / "regresion.json").write_text(json.dumps(resultado, indent=1))
     return resultado

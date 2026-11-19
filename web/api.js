@@ -24,6 +24,35 @@ async function desdePaquete(ruta) {
     : new Response(JSON.stringify(datos), { status: 200 });
 }
 
-export function api(ruta) {
-  return ESTATICO ? desdePaquete(ruta) : fetch(ruta);
+// Evaluación en vivo: si la página define window.API_REMOTA (servidor Python con MuJoCo, p. ej. el Space de
+// Hugging Face), los episodios que pide el usuario se corren allí. Todo lo demás sale del paquete estático.
+export const API_REMOTA = (window.API_REMOTA || "").replace(/\/$/, "");
+let enVivo = !ESTATICO;
+let estadoRemoto = null;
+export const vivo = () => enVivo;
+export const servidor = () => estadoRemoto;
+
+export async function conectar() {
+  if (!ESTATICO || !API_REMOTA) return enVivo;
+  try {
+    const r = await fetch(`${API_REMOTA}/api/estado`, { signal: AbortSignal.timeout(25000) });
+    enVivo = r.ok;
+    estadoRemoto = r.ok ? await r.json() : null;
+  } catch {
+    enVivo = false;
+  }
+  return enVivo;
+}
+
+// replay: true pide la versión grabada aunque haya servidor (etapas de aprendizaje, apertura).
+export async function api(ruta, { replay = false } = {}) {
+  if (!ESTATICO) return fetch(ruta);
+  if (enVivo && !replay && ruta.includes("/episodio")) {
+    try {
+      return await fetch(API_REMOTA + ruta, { signal: AbortSignal.timeout(180000) });
+    } catch (e) {
+      return new Response(JSON.stringify({ error: `El servidor de evaluación no respondió (${e.message}). No se muestra un replay en su lugar.` }), { status: 503 });
+    }
+  }
+  return desdePaquete(ruta);
 }

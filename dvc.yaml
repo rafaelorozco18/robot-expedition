@@ -752,20 +752,20 @@ stages:
     - experimentos/base.yaml
     outs:
     - data/exp-108/escenarios.json
-  entrenar-exp-108-s0:
-    cmd: nice -n 10 python -m expedicion entrenar exp-108 --semilla 0
+  entrenar-exp-108-s1:
+    cmd: nice -n 10 python -m expedicion entrenar exp-108 --semilla 1
     deps:
     - experimentos/exp-108.yaml
     - experimentos/base.yaml
     - robots/bipedo-v2.xml
-    - metrics/exp-107/evaluacion.json
+    - metrics/exp-107a/evaluacion.json
     outs:
-    - models/exp-108/semilla-0
+    - models/exp-108/semilla-1
   evaluar-exp-108:
     cmd: nice -n 10 python -m expedicion evaluar exp-108
     deps:
     - data/exp-108/escenarios.json
-    - models/exp-108/semilla-0
+    - models/exp-108/semilla-1
     outs:
     - data/exp-108/trayectorias.jsonl
     metrics:
@@ -791,51 +791,4 @@ stages:
     - metrics/exp-108/progreso.json
     metrics:
     - metrics/exp-108/evolucion.json:
-        cache: false
-  escenarios-exp-109:
-    cmd: python -m expedicion escenarios exp-109
-    deps:
-    - experimentos/exp-109.yaml
-    - experimentos/base.yaml
-    outs:
-    - data/exp-109/escenarios.json
-  entrenar-exp-109-s0:
-    cmd: nice -n 10 python -m expedicion entrenar exp-109 --semilla 0
-    deps:
-    - experimentos/exp-109.yaml
-    - experimentos/base.yaml
-    - robots/bipedo-v2.xml
-    - metrics/exp-108/evaluacion.json
-    outs:
-    - models/exp-109/semilla-0
-  evaluar-exp-109:
-    cmd: nice -n 10 python -m expedicion evaluar exp-109
-    deps:
-    - data/exp-109/escenarios.json
-    - models/exp-109/semilla-0
-    outs:
-    - data/exp-109/trayectorias.jsonl
-    metrics:
-    - metrics/exp-109/evaluacion.json:
-        cache: false
-  progreso-exp-109:
-    cmd: nice -n 10 python -m expedicion progreso exp-109
-    deps:
-    - metrics/exp-109/evaluacion.json
-    metrics:
-    - metrics/exp-109/progreso.json:
-        cache: false
-  regresion-exp-109:
-    cmd: nice -n 10 python -m expedicion regresion exp-109
-    deps:
-    - metrics/exp-109/evaluacion.json
-    metrics:
-    - metrics/exp-109/regresion.json:
-        cache: false
-  evolucion-exp-109:
-    cmd: nice -n 10 python -m expedicion evolucion exp-109
-    deps:
-    - metrics/exp-109/progreso.json
-    metrics:
-    - metrics/exp-109/evolucion.json:
         cache: false

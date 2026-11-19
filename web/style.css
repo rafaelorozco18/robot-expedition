@@ -386,3 +386,11 @@ button.secundario { margin-top: 6px; background: var(--panel-2); color: var(--ti
 .panel { scroll-padding-top: 170px; }
 .resultado .calidad { color: var(--verde); font-size: 15px; }
 .h-cuerpo small:first-of-type { color: var(--cian); }
+
+/* Qué se está mostrando: evaluación en vivo, replay grabado o error del servicio */
+.modo { position: absolute; left: 24px; bottom: 84px; z-index: 5; margin: 0; padding: 6px 12px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; color: #fff; background: rgba(20, 24, 30, 0.72); max-width: calc(100% - 48px); }
+.modo.vivo { background: rgba(31, 122, 63, 0.92); }
+.modo.replay { background: rgba(60, 70, 84, 0.88); }
+.modo.cargando { background: rgba(180, 110, 20, 0.92); }
+.modo.error { background: rgba(170, 38, 42, 0.95); }
