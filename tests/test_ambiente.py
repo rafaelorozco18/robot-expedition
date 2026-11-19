@@ -115,14 +115,31 @@ def test_el_linaje_recorre_los_antecesores_desde_la_raiz():
     assert [e["id"] for e in linaje(X.cargar("exp-105"))] == ["exp-101", "exp-102", "exp-103", "exp-104"]
 
 
-def test_solo_marte_y_viento_registrado():
-    env = BipedoEnv(X.cargar("exp-108"))
+def test_balizas_contrato_y_exito_sin_castigo():
+    """Exp 8: balizas en el rango pedido, el rumbo pedido apunta a la activa y llegar a todas es éxito sin caída."""
+    exp = X.cargar("exp-108")
+    env = BipedoEnv(exp)
     for s in range(5):
         env.reset(seed=s)
         assert env.planeta == "marte"
-        assert 3 <= np.linalg.norm(env.viento_actual[:2]) <= 8
-
-
+        t = env.tarea
+        previo = np.zeros(2)
+        for b in t.balizas:
+            assert exp["parametros"]["distancia_m"][0] - 1e-9 <= np.linalg.norm(b - previo) <= exp["parametros"]["distancia_m"][1] + 1e-9
+            previo = b
+    sin_calidad = {**exp, "parametros": {**exp["parametros"], "calidad_min": None}}  # la calidad no se mide en un paso
+    env = BipedoEnv(sin_calidad)
+    env.reset(seed=0)
+    env.step(np.zeros(env.action_space.shape))
+    e, _ = env.tarea._error(env)
+    assert abs(e) <= np.pi
+    # Simula la llegada: con todas las balizas alcanzadas el episodio termina con éxito y sin el castigo por caída.
+    env.tarea.alcanzadas = len(env.tarea.balizas) - 1
+    env.destino = env.data.qpos[:2].copy()
+    env.tarea.balizas[-1] = env.destino
+    _, r, term, trunc, info = env.step(np.zeros(env.action_space.shape))
+    assert term and env.motivo == "llegó a todas las balizas"
+    assert info["exito"] and "caida" not in info["desglose"]
 def test_la_esquina_pasa_a_girar_al_llegar():
     e = X.cargar("exp-105")
     env = BipedoEnv(e)

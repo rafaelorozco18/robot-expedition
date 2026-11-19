@@ -1,6 +1,6 @@
 // Acceso a los datos del visor. Con servidor, cada episodio lo corre MuJoCo al pedirlo.
 // En la versión estática (expedicion exportar) cada experimento viene en un solo archivo
-// api/<id>.json con todas sus respuestas ya calculadas.
+// datos/<id>.json con todas sus respuestas ya calculadas.
 export const ESTATICO = Boolean(window.VISOR_ESTATICO);
 
 const paquetes = {};
@@ -17,7 +17,7 @@ export function claveEstatica(ruta) {
 
 async function desdePaquete(ruta) {
   const [paquete, clave] = claveEstatica(ruta);
-  paquetes[paquete] ??= fetch(`api/${paquete}.json`).then((r) => (r.ok ? r.json() : {}));
+  paquetes[paquete] ??= fetch(`datos/${paquete}.json`).then((r) => (r.ok ? r.json() : {}));
   const datos = (await paquetes[paquete])[clave];
   return datos === undefined
     ? new Response(JSON.stringify({ error: "Esta vista no está incluida en la versión publicada." }), { status: 404 })

@@ -33,9 +33,11 @@ def cargar(id_exp):
     return json.loads(ruta.read_text()) if ruta.exists() else None
 
 
-def publicar(exp, config=None):
+def publicar(exp, config=None, semilla=None):
+    """Publica una versión nueva. Por omisión, el campeón; `semilla` promueve otra corrida (queda como versión
+    nueva explícita: nunca se sobrescribe una versión anterior, y se puede volver a ella con el rollback)."""
     i = exp["id"]
-    semilla = campeon(exp)
+    semilla = campeon(exp) if semilla is None else semilla
     origen = X.carpeta_modelos(exp) / f"semilla-{semilla}"
     destino = VERSIONES / f"{i}-{time.time_ns()}"
     (destino / "linaje").mkdir(parents=True)

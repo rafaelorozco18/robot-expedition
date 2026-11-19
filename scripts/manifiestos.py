@@ -27,6 +27,9 @@ EXTRA = [
     ("exp-107", 6, "rechazado", "Cumple el recorrido sobre terreno (71 %) pero olvida la curva (25 %): no aprueba."),
     ("exp-107", 10, "rechazado", "Intervención del incidente: no olvida, pero el recorrido sobre terreno queda en 50 %."),
     ("exp-107a", 2, "historico", "Misma receta que el campeón; falló solo el examen de Terreno (58 %)."),
+    ("exp-108", 2, "rechazado", "Candidato de ajuste fino con PPO: 24 de 40 balizas en episodios nuevos (línea base: 37)."),
+    ("exp-108", 3, "rechazado", "Candidato de ajuste fino con PPO: 25 de 40 balizas en episodios nuevos (línea base: 37)."),
+    ("exp-108", 4, "rechazado", "Candidato de ajuste fino con PPO: 34 de 40 balizas en episodios nuevos (línea base: 37)."),
 ]
 
 

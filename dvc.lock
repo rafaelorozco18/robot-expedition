@@ -866,8 +866,8 @@ stages:
       size: 1411
     - path: experimentos/exp-108.yaml
       hash: md5
-      md5: 3c7ab110099190a2002e8f47efd27eb5
-      size: 2093
+      md5: c30c5b96e94917dda162a93f3145022f
+      size: 3576
     outs:
     - path: data/exp-108/escenarios.json
       hash: md5
@@ -910,22 +910,37 @@ stages:
       md5: 4cb65fcfe30ccd9d183c8315013acd2c.dir
       size: 54953663
       nfiles: 29
+    - path: models/exp-108/semilla-2
+      hash: md5
+      md5: d0fc45d71b942a9e4468c6f25408c8f5.dir
+      size: 54975226
+      nfiles: 29
+    - path: models/exp-108/semilla-3
+      hash: md5
+      md5: 81eb5b608e92060546065e9882b1936f.dir
+      size: 54975050
+      nfiles: 29
+    - path: models/exp-108/semilla-4
+      hash: md5
+      md5: e7a421ca2a0eed0e49d0b698ce7f37fd.dir
+      size: 54975603
+      nfiles: 29
     outs:
     - path: data/exp-108/trayectorias.jsonl
       hash: md5
-      md5: 7195dc0b95ad0e36094df7a2822284be
-      size: 47850
+      md5: 4641450dd92ebc26470d9d6ec684754e
+      size: 95123
     - path: metrics/exp-108/evaluacion.json
       hash: md5
-      md5: 642d9c90ad66bea7c9d144d5a736ac97
-      size: 2339
+      md5: 4aabdd3c37dc268bbc7db6a3bf4d2fd0
+      size: 4862
   progreso-exp-108:
     cmd: nice -n 10 python -m expedicion progreso exp-108
     deps:
     - path: metrics/exp-108/evaluacion.json
       hash: md5
-      md5: 642d9c90ad66bea7c9d144d5a736ac97
-      size: 2339
+      md5: 4aabdd3c37dc268bbc7db6a3bf4d2fd0
+      size: 4862
     outs:
     - path: metrics/exp-108/progreso.json
       hash: md5
@@ -936,8 +951,8 @@ stages:
     deps:
     - path: metrics/exp-108/evaluacion.json
       hash: md5
-      md5: 642d9c90ad66bea7c9d144d5a736ac97
-      size: 2339
+      md5: 4aabdd3c37dc268bbc7db6a3bf4d2fd0
+      size: 4862
     outs:
     - path: metrics/exp-108/regresion.json
       hash: md5
@@ -2336,3 +2351,78 @@ stages:
       hash: md5
       md5: 739c74bb6e76fa2016125f641a75c67e
       size: 2434
+  entrenar-exp-108-s2:
+    cmd: nice -n 10 python -m expedicion entrenar exp-108 --semilla 2
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-108.yaml
+      hash: md5
+      md5: c30c5b96e94917dda162a93f3145022f
+      size: 3576
+    - path: metrics/exp-107a/evaluacion.json
+      hash: md5
+      md5: a8e1c198e960f10cd9faa97f7b55b87d
+      size: 3939
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-108/semilla-2
+      hash: md5
+      md5: d0fc45d71b942a9e4468c6f25408c8f5.dir
+      size: 54975226
+      nfiles: 29
+  entrenar-exp-108-s3:
+    cmd: nice -n 10 python -m expedicion entrenar exp-108 --semilla 3
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-108.yaml
+      hash: md5
+      md5: c30c5b96e94917dda162a93f3145022f
+      size: 3576
+    - path: metrics/exp-107a/evaluacion.json
+      hash: md5
+      md5: a8e1c198e960f10cd9faa97f7b55b87d
+      size: 3939
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-108/semilla-3
+      hash: md5
+      md5: 81eb5b608e92060546065e9882b1936f.dir
+      size: 54975050
+      nfiles: 29
+  entrenar-exp-108-s4:
+    cmd: nice -n 10 python -m expedicion entrenar exp-108 --semilla 4
+    deps:
+    - path: experimentos/base.yaml
+      hash: md5
+      md5: 26a9556bd293f8b09c605f2fc8d86e0d
+      size: 1411
+    - path: experimentos/exp-108.yaml
+      hash: md5
+      md5: c30c5b96e94917dda162a93f3145022f
+      size: 3576
+    - path: metrics/exp-107a/evaluacion.json
+      hash: md5
+      md5: a8e1c198e960f10cd9faa97f7b55b87d
+      size: 3939
+    - path: robots/bipedo-v2.xml
+      hash: md5
+      md5: 743df1e7c398e937d0b441f383fcd6a3
+      size: 4247
+    outs:
+    - path: models/exp-108/semilla-4
+      hash: md5
+      md5: e7a421ca2a0eed0e49d0b698ce7f37fd.dir
+      size: 54975603
+      nfiles: 29

@@ -1,128 +1,132 @@
 # Robot Expedition
 
-Proyecto final de MLOps Autonomous Lab. Un robot bípedo de 12 articulaciones aprende a moverse en Marte,
-subiendo la dificultad de a una cosa por experimento: sostenerse, caminar, resistir el viento, caminar con
-buena técnica, girar en una esquina, caminar en curva y dominar todo eso en terreno difícil.
+Proyecto final de MLOps (Universidad Externado de Colombia · Visualización 2). Un robot bípedo de 12 articulaciones
+aprende, en Marte y de a una dificultad por experimento, a sostenerse, caminar, caminar bien, cruzar terreno difícil,
+girar, caminar en curva, encadenar órdenes y, al final, **llegar a balizas**. Física en MuJoCo, agente PPO, todo
+versionado con git, DVC y MLflow, orquestado con Prefect y publicado en Vercel.
 
-- Serie vigente: [docs/serie-marte.md](docs/serie-marte.md) (experimentos `exp-101` a `exp-109`)
-- Ficha de cada experimento: [docs/experimentos/](docs/experimentos/)
-- Resultados: [docs/resultados.md](docs/resultados.md)
-- Contexto de trabajo: [CLAUDE.md](CLAUDE.md)
-- Serie anterior (plan de 50, tres planetas): [docs/plan-50-experimentos.md](docs/plan-50-experimentos.md)
+| | |
+|---|---|
+| **Aplicación (Vercel)** | https://robot-expedition-tawny.vercel.app |
+| **Registro de experimentos y modelos** | https://robot-expedition-tawny.vercel.app/registro.html |
+| **API de evaluación (estado y versión servida)** | https://robot-expedition-tawny.vercel.app/sim/api/estado |
+| **Entrega** | [entrega/ENTREGA.md](entrega/ENTREGA.md): qué se entrega y dónde está cada cosa |
+
+## Misión
+
+El escenario asignado es **Robot Expedition**: un robot debe llegar a balizas. Elegimos un robot con patas, en 3D
+completo y con gravedad de Marte: es más difícil que uno con ruedas, pero el que puede ir donde no llega una rueda.
+La serie final tiene 8 experimentos (`experimentos/exp-101` a `exp-108`); cada uno parte del campeón del anterior
+y **solo aprueba si no olvida los exámenes anteriores**.
+
+| Exp | Pregunta | Nivel | Estado |
+|---|---|---|---|
+| 1 | ¿Se mantiene de pie en Marte, arrancando desequilibrado? | N1 | aprobado |
+| 2 | ¿Camina 10 m sin caer? | N1 | aprobado |
+| 3 | ¿Camina como una persona (zancada, ritmo, sin vibrar)? | N1 | aprobado |
+| 4 | ¿Mantiene la marcha sobre arena, grava, barro y listones? | N2 | aprobado |
+| 5 | ¿Camina recto, gira 90° sobre su eje y sigue? | N2 | aprobado |
+| 6 | ¿Camina en círculo (avanza y gira a la vez)? | N2 | aprobado |
+| 7 | ¿Encadena rectas, giros y curvas en orden al azar? (`exp-107a`) | N2 | aprobado |
+| 8 | ¿Llega, una tras otra, a tres balizas puestas al azar? | N3 | aprobado |
+
+Ficha del ambiente y niveles: [docs/ficha-ambiente.md](docs/ficha-ambiente.md) · comparación de todas las corridas:
+[docs/comparacion-experimentos.md](docs/comparacion-experimentos.md) · incidente y rollback:
+[docs/incidente-y-rollback.md](docs/incidente-y-rollback.md) · informe: [docs/informe.md](docs/informe.md) ·
+bitácora completa: [docs/serie-marte.md](docs/serie-marte.md) · ficha de cada experimento: [docs/experimentos/](docs/experimentos/).
+
+## Arquitectura
+
+```
+                 entrenamiento (PC del equipo, CPU)                         despliegue (Vercel)
+ experimentos/*.yaml ─► expedicion (Gymnasium + MuJoCo) ─► PPO / destilación ─► models/  (DVC)
+        │                       │                                │
+        │                 dvc.yaml / dvc.lock              MLflow (mlflow.db): runs, métricas,
+        │                 (una etapa por semilla)          Model Registry con alias «campeon»
+        ▼                       ▼                                ▼
+ pipelines/flujo.py (Prefect): validar → pruebas → entrenar → evaluar → registrar → seleccionar → publicar → verificar
+                                                                 │
+                                       publicado/<exp> (copia autosuficiente, versionada en .versiones/)
+                                                                 │
+                    despliegue/armar_vercel.py ─► sitio estático (visor Three.js + replays + registro)
+                                                 + función Python api/sim.py (MuJoCo + política en numpy)
+```
+
+- **Python es la autoridad**: la física la calcula MuJoCo. El visor Three.js solo dibuja los cuadros que devuelve la
+  simulación (replays grabados o episodios corridos en vivo por la función de Vercel).
+- **Evaluación en vivo sin PyTorch**: la función de Vercel carga el actor exportado a numpy (`.npz`). La equivalencia
+  con Stable-Baselines3 está probada en `tests/test_politica_numpy.py` (media de la acción igual a 1e-5 y mismo
+  resultado por episodio).
 
 ## Instalación
 
+Probado con Python 3.14 en Linux (WSL2), CPU, sin GPU.
+
 ```bash
+git clone https://github.com/rafaelorozco18/robot-expedition.git
+cd robot-expedition
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt && pip install -e .
+bash scripts/bajar_modelos.sh      # modelos y escenarios de DVC (releases datos-dvc-*; pide `gh auth login`)
 ```
 
-## Visor 3D
+MLflow completo (`mlflow.db` y `mlruns/`): release `mlflow-registro` del repositorio. Se abre con
+`mlflow ui --backend-store-uri sqlite:///mlflow.db`.
+
+## Ejecución
 
 ```bash
-expedicion servir        # http://localhost:8765
-expedicion exportar      # versión estática en exportado/, para compartir sin servidor
+expedicion lista                               # experimentos y su estado
+expedicion info exp-108                        # espacios de observación y acción
+expedicion servir                              # visor y API local en http://localhost:8765
+expedicion campana exp-108                     # entrena la última semilla, evalúa, registra, documenta, commit y tag
+~/.venvs/prefect/bin/python pipelines/flujo.py exp-108             # pipeline completo con Prefect
+~/.venvs/prefect/bin/python pipelines/flujo.py exp-108 --rollback  # vuelve a la versión publicada anterior
+python scripts/medir40.py models/exp-108/semilla-1/experto.zip     # 40 episodios nuevos por tarea (TAREAS, BASE)
+pytest -q                                      # reglas, contrato del ambiente y equivalencia numpy
 ```
 
-El selector superior recorre los experimentos de la serie. El botón **Ver cómo aprendió** reproduce cinco
-etapas de cada uno: fracaso absoluto, fracaso pero mejor, punto de inflexión, cumplido y perfeccionado, todas
-en el mismo escenario de Marte. En los experimentos con viento se ven las estelas de polvo y una manga de viento
-que siguen la fuerza que aplica el simulador.
+Prefect se instala aparte para no tocar las dependencias del entrenamiento:
+`python3 -m venv ~/.venvs/prefect && ~/.venvs/prefect/bin/pip install prefect`.
 
-Además se ven las versiones del robot, la curva de aprendizaje, el torque de cada articulación y si el
-modelo olvidó pruebas anteriores. MuJoCo corre cada episodio en Python y el navegador solo lo dibuja.
-Three.js está incluido en `web/vendor/`, así que no requiere internet.
+## Variables
 
-## CLI
+| Variable | Dónde | Para qué |
+|---|---|---|
+| `MLFLOW_TRACKING_URI` | entrenamiento | Servidor de MLflow compartido; sin ella, `sqlite:///mlflow.db` |
+| `API_REMOTA` | `expedicion exportar` | Dirección de la API para evaluar en vivo desde la web estática (`/sim` en Vercel) |
+| `PORT`, `HOST` | `expedicion servir` | Puerto y host del servidor (8765 y 127.0.0.1 por omisión) |
+| `CORS_ORIGEN` | servidor | Origen permitido (por omisión `*`; la API solo lee) |
+| `TAREAS`, `CONTROL`, `BASE` | `scripts/medir40.py` | Tareas a medir, control y semilla inicial (5000 para elegir, 3000 para confirmar) |
 
-```bash
-expedicion lista                           # experimentos y su estado
-expedicion info exp-001                    # espacios de observación y acción
-expedicion entrenar exp-001 --semilla 0    # una corrida con PPO
-expedicion evaluar exp-001                 # compara semillas y elige al campeón
-expedicion progreso exp-001                # prueba cada foto del entrenamiento
-expedicion regresion exp-001               # repite las pruebas anteriores
-expedicion evolucion exp-001               # calcula las etapas de aprendizaje del visor
-expedicion ver exp-001 --planeta luna      # imprime un episodio en la terminal
-expedicion campana exp-002 exp-003         # corre, registra, documenta y versiona en cadena
-```
+No hay secretos en el repositorio. Ver [.env.example](.env.example).
 
-## Cómo agregar un experimento
+## Reproducir un resultado
 
-1. Edita `experimentos/exp-NNN.yaml`. Solo escribe lo que cambia frente a `experimentos/base.yaml`.
-2. Si hace falta una tarea nueva, agrégala en `expedicion/tareas.py`.
-3. Ejecuta `expedicion campana exp-NNN`.
+1. `git checkout exp-108` (o el tag del experimento) y `bash scripts/bajar_modelos.sh` (equivale a `dvc pull`).
+2. `dvc repro evaluar-exp-108` reconstruye el examen; `dvc status` muestra qué cambió.
+3. Cada modelo tiene un manifiesto en [manifests/](manifests/) con run, commit, SHA-256 del modelo y de la
+   configuración, contrato de observación y acción, suite de evaluación, semilla y modelo de origen.
+4. `python scripts/manifiestos.py` y `python scripts/comparacion.py` regeneran manifiestos y la tabla de comparación.
 
 ## Versionado
 
 | Qué | Herramienta | Dónde |
 |---|---|---|
-| **Código** | git | Un commit y un tag por experimento: `exp-001`, `exp-002`… |
-| **Pipeline** | DVC | `dvc.yaml`, generado por `expedicion pipeline`, y `dvc.lock` con los hashes |
-| **Dataset** | DVC | `data/exp-NNN/`: escenarios de prueba congelados y trayectorias grabadas |
-| **Experimento** | MLflow | Un experimento por pregunta y una corrida por semilla, en `mlflow.db` |
-| **Modelo** | DVC y MLflow Model Registry | `models/exp-NNN/`, con el alias `campeon` en `robot-exp-NNN` |
-| **Robot** | git | `robots/bipedo-vN.xml`, con versión propia |
+| Código | git | Un commit y un tag por experimento (`exp-101` … `exp-108`); release final `entrega-final` |
+| Pipeline | DVC + Prefect | `dvc.yaml`/`dvc.lock` (una etapa por semilla); `pipelines/flujo.py` |
+| Escenarios y trayectorias | DVC | `data/exp-NNN/escenarios.json` (suite fija) y `trayectorias.jsonl` (resultado por episodio) |
+| Experimento | MLflow | Un experimento por pregunta, un run por semilla, con hipótesis, parámetros y commit |
+| Modelo | DVC + MLflow Model Registry | `models/exp-NNN/semilla-N/`, alias `campeon` en `robot-exp-NNN`; manifiestos en `manifests/` |
+| Robot | git | `robots/bipedo-v2.xml` |
+| Despliegue | Vercel | Cada deployment lleva el commit (`/sim/api/estado` → `commit`) |
 
-```bash
-mlflow ui --backend-store-uri sqlite:///mlflow.db    # http://localhost:5000
-dvc metrics show
-```
+## Equipo
 
-El código vive en GitHub (`rafaelorozco18/robot-expedition`, privado). Los modelos y escenarios (DVC) se
-comparten como releases `datos-dvc-*` del mismo repositorio (ver abajo).
+Trabajo en GitHub (`rafaelorozco18/robot-expedition`, privado). Para entrenar: rama propia, `nice -n 19` y
+`procesos: 4`, y al terminar `git push` y `bash scripts/subir_modelos.sh`. Reglas completas en
+[docs/serie-marte.md](docs/serie-marte.md) y [CLAUDE.md](CLAUDE.md).
 
-## Para el equipo: cómo empezar
-
-1. Clonar e instalar:
-
-   ```bash
-   git clone https://github.com/rafaelorozco18/robot-expedition.git
-   cd robot-expedition
-   python -m venv .venv && source .venv/bin/activate
-   pip install -r requirements.txt && pip install -e .
-   ```
-
-2. Bajar los modelos y escenarios (DVC). Están en las releases `datos-dvc-*` del repositorio; el script las
-   baja, arma el remoto de DVC en `~/robot-expedition-dvc` y corre `dvc pull`. Pide `gh auth login` una vez:
-
-   ```bash
-   bash scripts/bajar_modelos.sh
-   ```
-
-3. Visor:
-
-   ```bash
-   expedicion publicar
-   expedicion servir          # http://localhost:8765
-   ```
-
-> DagsHub (`dagshub.com/rafaelorozco18/robot-expedition`) queda como remoto futuro de DVC y MLflow; mientras
-> no esté conectado, se usan las releases. Con DagsHub listo: credenciales con
-> `dvc remote modify origin --local user/password` y `MLFLOW_TRACKING_URI=https://dagshub.com/rafaelorozco18/robot-expedition.mlflow`.
-
-### Reglas para entrenar
-
-- **Los experimentos van en cadena.** Cada uno parte del campeón del anterior (`parte_de`): el Exp 8 no se puede
-  entrenar hasta que el Exp 7 esté aprobado y su campeón esté en DVC (`dvc pull`).
-- Antes de tocar un experimento, lee su `pendiente` en `experimentos/exp-NNN.yaml` y la bitácora
-  `docs/serie-marte.md`: ahí está lo que ya se probó y falló.
-- Trabaja en una rama propia (`git switch -c exp-107-nombre`) y cambia **una cosa por intento**.
-- Entrenar ocupa la CPU por horas. Con el equipo en uso: `nice -n 19 ionice -c3` y `procesos: 4` en el yaml.
-- Para correr un experimento completo: `expedicion campana exp-NNN` (entrena, evalúa, documenta, hace commit y tag).
-- Al terminar, subir **las dos cosas**: `git push origin TU_RAMA --tags` (código y lock) y
-  `bash scripts/subir_modelos.sh` (modelos nuevos). Si solo se sube git, los demás tienen un `dvc.lock` que
-  apunta a modelos que no pueden bajar. Para traer lo de los demás: `git pull` y `bash scripts/bajar_modelos.sh`.
-- La campaña mueve el tag `exp-NNN` (`git tag -f`). Si dos personas corren el mismo experimento, sube tu rama
-  sin `--tags` y acuerden quién publica el tag del campeón.
-- Aprobar exige no olvidar: el campeón debe seguir pasando los exámenes anteriores (`aprobar.sin_olvidar`).
-  No bajes los criterios de aprobación sin acordarlo con el grupo.
-
-La navegación en rejilla con Q-learning, primera versión del proyecto, está archivada en el tag
-`legado-navegacion`.
-
-## Pruebas
-
-```bash
-pytest -q
-```
+La primera versión del proyecto (navegación en rejilla con Q-learning) está archivada en el tag `legado-navegacion`;
+la serie anterior de tres planetas, en los tags `exp-001` a `exp-028`.

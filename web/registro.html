@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de experimentos</title>
+  <style>
+    :root {
+      --fondo: #0a131d; --panel: #0f1c29; --panel-2: #142536; --borde: #1f3448;
+      --tinta: #e9eff4; --tinta-2: #b4c4d2; --apagado: #7b91a6;
+      --cian: #3fd0e0; --verde: #39c16c; --rojo: #ff5a5f; --amarillo: #f2b632;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--fondo); color: var(--tinta);
+      font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+    a { color: var(--cian); }
+    h1 { font-size: 28px; margin: 0 0 6px; }
+    h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--cian); margin: 36px 0 10px; }
+    .sub { color: var(--tinta-2); margin: 0 0 18px; max-width: 760px; }
+    nav { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; font-size: 13px; }
+    .tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .tarjeta { background: var(--panel); border: 1px solid var(--borde); border-radius: 10px; padding: 14px; }
+    .tarjeta b { display: block; font-size: 15px; }
+    .tarjeta small { color: var(--apagado); }
+    .envoltura { overflow-x: auto; border: 1px solid var(--borde); border-radius: 10px; }
+    table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+    th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+    th { background: var(--panel-2); color: var(--tinta-2); font-weight: 600; position: sticky; top: 0; }
+    td code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: var(--tinta-2); }
+    .estado { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+    .FINISHED { background: color-mix(in srgb, var(--verde) 22%, transparent); color: var(--verde); }
+    .KILLED, .interrumpido { background: color-mix(in srgb, var(--amarillo) 22%, transparent); color: var(--amarillo); }
+    .FAILED { background: color-mix(in srgb, var(--rojo) 22%, transparent); color: var(--rojo); }
+    .campeon { color: var(--verde); font-weight: 700; }
+    details { background: var(--panel); border: 1px solid var(--borde); border-radius: 10px; margin: 8px 0; }
+    summary { cursor: pointer; padding: 10px 14px; font-weight: 600; }
+    summary small { color: var(--apagado); font-weight: 400; margin-left: 8px; }
+    details .envoltura { border: 0; border-top: 1px solid var(--borde); border-radius: 0 0 10px 10px; }
+    .hip { color: var(--tinta-2); max-width: 380px; }
+    @media (max-width: 640px) { main { padding-top: 20px; } h1 { font-size: 22px; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav><a href="./">← Visor 3D</a><a href="manifests/catalogo.json">Catálogo de manifiestos (JSON)</a><a href="datos/registro-mlflow.json">Registro completo (JSON)</a><a href="sim/api/estado">Estado del servidor y versiones servidas</a></nav>
+  <h1>Registro de experimentos y modelos</h1>
+  <p class="sub">Exportado de MLflow (<code>mlflow.db</code>) con <code>scripts/registro_mlflow.py</code>. Cada experimento de MLflow agrupa las
+    corridas (semillas) de una pregunta. Se conservan los intentos fallidos e interrumpidos. Los nombres de experimentos
+    que no están en la serie final vienen de un orden anterior de la Serie Marte (reordenada el 2026-11-13).</p>
+
+  <h2>Modelos de la entrega</h2>
+  <div class="tarjetas" id="modelos"></div>
+
+  <h2>Model Registry de MLflow</h2>
+  <div class="envoltura"><table id="registro"></table></div>
+
+  <h2>Experimentos y corridas</h2>
+  <div id="experimentos"></div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pct = (v) => (v === undefined || v === null ? "—" : `${Math.round(v * 100)} %`);
+const fecha = (ms) => (ms ? new Date(Number(ms)).toLocaleString("es-CO", { dateStyle: "short", timeStyle: "short" }) : "—");
+const min = (a, b) => (a && b ? `${Math.round((b - a) / 60000)} min` : "—");
+const PAPEL = { recomendado: "Recomendado", historico: "Histórico", rechazado: "Rechazado" };
+
+async function cargar() {
+  const [reg, cat] = await Promise.all([
+    fetch("datos/registro-mlflow.json").then((r) => r.json()),
+    fetch("manifests/catalogo.json").then((r) => r.json()).catch(() => []),
+  ]);
+  $("modelos").innerHTML = cat.map((m) => `<div class="tarjeta">
+    <small>${esc(PAPEL[m.papel] || m.papel)} · nivel ${esc(m.level_id)}</small>
+    <b>${esc(m.titulo)}</b>
+    <small>${esc(m.experimento)} · semilla ${esc(m.seed)}</small><br>
+    <span class="mono">run ${esc(m.run_id.slice(0, 12))} · commit ${esc(m.git_commit.slice(0, 8))}<br>sha256 ${esc(m.model_sha256.slice(0, 16))}…</span><br>
+    <a href="manifests/${esc(m.experimento)}-semilla-${esc(m.seed)}.json">Manifiesto</a></div>`).join("");
+  const filas = reg.modelos.flatMap((m) => m.versiones.map((v) => `<tr><td>${esc(m.nombre)}</td><td>v${v.version}</td>
+    <td>${v.alias.includes("campeon") ? '<span class="campeon">campeon</span>' : ""}</td><td><code>${esc(v.run_id)}</code></td>
+    <td>${esc(v.tags.aprobado ?? "")}</td><td>${esc(v.tags.parte_de ?? "")}</td><td>${fecha(v.creado)}</td></tr>`));
+  $("registro").innerHTML = `<tr><th>Modelo</th><th>Versión</th><th>Alias</th><th>Run</th><th>Aprobado</th><th>Parte de</th><th>Registrado</th></tr>${filas.join("")}`;
+  $("experimentos").innerHTML = reg.experimentos.map((e) => {
+    const runs = e.runs.map((r) => {
+      const estado = r.estado === "RUNNING" ? "interrumpido" : r.estado;
+      const m = r.metricas, p = r.params, t = r.tags;
+      return `<tr><td>${esc(r.nombre)}</td><td><span class="estado ${esc(estado)}">${esc(estado)}</span></td>
+        <td>${pct(m["prueba.marte.ninguna.tasa_exito"])}</td><td>${esc(p["ent.pasos"] ?? "")}</td><td>${esc(p["ent.learning_rate"] ?? "")}</td>
+        <td>${t.campeon === "si" ? '<span class="campeon">sí</span>' : ""}</td><td class="hip">${esc(t.hipotesis ?? "")}</td>
+        <td><code>${esc((t.git_commit || "").slice(0, 8))}</code></td><td><code>${esc(r.run_id.slice(0, 12))}</code></td>
+        <td>${fecha(r.inicio)}</td><td>${min(r.inicio, r.fin)}</td></tr>`;
+    }).join("");
+    return `<details><summary>${esc(e.nombre)}<small>${e.runs.length} corridas</small></summary><div class="envoltura"><table>
+      <tr><th>Corrida</th><th>Estado</th><th>Éxito examen</th><th>Pasos</th><th>Tasa de aprendizaje</th><th>Campeón</th><th>Hipótesis</th><th>Commit</th><th>Run</th><th>Inicio</th><th>Duración</th></tr>
+      ${runs}</table></div></details>`;
+  }).join("");
+}
+cargar();
+</script>
+</body>
+</html>

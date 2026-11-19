@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robot Expedition · Presentación</title>
+  <style>
+    :root {
+      --fondo: #0a131d; --panel: #0f1c29; --panel-2: #142536; --borde: #1f3448;
+      --tinta: #e9eff4; --tinta-2: #b4c4d2; --apagado: #7b91a6;
+      --cian: #3fd0e0; --naranja: #ff7a1a; --verde: #39c16c; --rojo: #ff5a5f; --amarillo: #f2b632;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--fondo); color: var(--tinta);
+      font: 18px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
+    .diapo { position: absolute; inset: 0; padding: 56px 72px 72px; display: none; flex-direction: column; gap: 18px; }
+    .diapo.activa { display: flex; animation: entra .35s ease; }
+    @keyframes entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .eyebrow { color: var(--cian); letter-spacing: .14em; text-transform: uppercase; font-size: 13px; font-weight: 700; margin: 0; }
+    h1 { font-size: 64px; line-height: 1.02; margin: 0; letter-spacing: -.01em; }
+    h2 { font-size: 38px; line-height: 1.15; margin: 0; }
+    p { margin: 0; color: var(--tinta-2); max-width: 980px; }
+    .grande { font-size: 24px; color: var(--tinta); }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; flex: 1; min-height: 0; }
+    .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .caja { background: var(--panel); border: 1px solid var(--borde); border-radius: 12px; padding: 16px 18px; }
+    .caja b { color: var(--tinta); display: block; margin-bottom: 4px; }
+    .caja small { color: var(--apagado); font-size: 14px; }
+    ul { margin: 0; padding-left: 22px; color: var(--tinta-2); }
+    li { margin: 6px 0; }
+    li b { color: var(--tinta); }
+    table { border-collapse: collapse; width: 100%; font-size: 16px; }
+    th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--borde); }
+    th { color: var(--apagado); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+    .ok { color: var(--verde); font-weight: 700; }
+    .no { color: var(--rojo); font-weight: 700; }
+    .num { font-size: 46px; font-weight: 800; line-height: 1; }
+    .num.verde { color: var(--verde); } .num.rojo { color: var(--rojo); } .num.cian { color: var(--cian); } .num.naranja { color: var(--naranja); }
+    img { max-width: 100%; max-height: 100%; border-radius: 10px; border: 1px solid var(--borde); object-fit: contain; }
+    .figura { min-height: 0; display: flex; align-items: flex-start; justify-content: center; }
+    .flujo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .paso { background: var(--panel-2); border: 1px solid var(--borde); border-radius: 999px; padding: 6px 14px; font-size: 15px; }
+    .flecha { color: var(--apagado); }
+    a { color: var(--cian); }
+    code { font-family: ui-monospace, Menlo, monospace; font-size: .88em; color: var(--tinta-2); }
+    nav { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; display: flex; align-items: center; gap: 12px;
+      padding: 0 24px; background: rgba(10, 19, 29, .9); border-top: 1px solid var(--borde); font-size: 14px; color: var(--apagado); z-index: 2; }
+    nav button { background: var(--panel-2); color: var(--tinta); border: 1px solid var(--borde); border-radius: 8px; padding: 4px 12px; cursor: pointer; font: inherit; }
+    .barra { flex: 1; height: 4px; background: var(--panel-2); border-radius: 4px; overflow: hidden; }
+    .barra i { display: block; height: 100%; background: var(--cian); width: 0; transition: width .3s; }
+    @media (max-width: 860px) {
+      html, body { overflow: auto; font-size: 16px; }
+      .diapo { position: static; display: flex; padding: 28px 16px 40px; border-bottom: 1px solid var(--borde); }
+      .cols, .cols3 { grid-template-columns: 1fr; }
+      h1 { font-size: 40px; } h2 { font-size: 28px; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="diapo">
+  <p class="eyebrow">MLOps · Universidad Externado de Colombia · Escenario Robot Expedition</p>
+  <h1>Robot Expedition</h1>
+  <p class="grande">Un robot bípedo de 12 articulaciones aprende, en Marte y de a una dificultad por vez, a caminar y a llegar a balizas, sin olvidar nada de lo anterior.</p>
+  <div class="cols3" style="margin-top:auto">
+    <div class="caja"><div class="num verde">8 de 8</div><small>experimentos aprobados en su examen y sin olvidar los anteriores</small></div>
+    <div class="caja"><div class="num cian">37 / 40</div><small>episodios nuevos en que el campeón llega a las tres balizas</small></div>
+    <div class="caja"><div class="num naranja">≈ 65</div><small>corridas registradas en MLflow, con sus intentos fallidos</small></div>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">1 · Problema</p>
+  <h2>Llegar a una baliza… con patas</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>El escenario asignado pide un robot que <b>llegue a balizas</b>.</li>
+        <li>Elegimos un <b>bípedo en 3D con gravedad de Marte</b>: más difícil que uno con ruedas, pero es el que puede explorar terreno donde una rueda no pasa.</li>
+        <li>Valor: un robot de exploración que aprende habilidades nuevas <b>sin perder las que ya tenía</b>, y un proceso donde cada modelo se puede reproducir, comparar y restaurar.</li>
+        <li>Regla del docente que guió todo: <b>una dificultad nueva por experimento</b>.</li>
+      </ul>
+    </div>
+    <div class="figura"><img src="img/exp8-en-vivo.png" alt="El robot camina hacia una baliza naranja en Marte"></div>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">2 · Ambiente</p>
+  <h2>MuJoCo decide; la web solo dibuja</h2>
+  <div class="cols">
+    <table>
+      <tr><th>Elemento</th><th>Valor</th></tr>
+      <tr><td>Observación</td><td>58 valores: postura, velocidades, ángulos, contacto de pies, gravedad, comando, reloj de marcha</td></tr>
+      <tr><td>Acción</td><td>12 ángulos objetivo en [-1, 1] → servo PD por articulación</td></tr>
+      <tr><td>Paso</td><td>Física cada 0,004 s · decisión a 50 Hz</td></tr>
+      <tr><td>Fallo (<code>terminated</code>)</td><td>Toca el piso, se agacha o se inclina más de 40°</td></tr>
+      <tr><td>Éxito</td><td>Cumple la tarea con calidad de marcha ≥ 55/100</td></tr>
+      <tr><td>Truncado</td><td>Se acaba el tiempo (10 a 45 s)</td></tr>
+    </table>
+    <div>
+      <p><b style="color:var(--tinta)">Recompensa versionada:</b> seguir la velocidad y el rumbo pedidos, torso erguido, alternar las piernas, zancada humana; castigos por vibrar, arrastrar el pie, gastar torque y caer (−30).</p>
+      <p style="margin-top:14px">El robot ve la gravedad pero no el piso: el terreno lo descubre por cómo responden sus pies. En el Exp 8 la baliza llega como rumbo pedido.</p>
+    </div>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">3 · Evolución de la dificultad</p>
+  <h2>Ocho experimentos, tres niveles</h2>
+  <table>
+    <tr><th>Nivel</th><th>Exp</th><th>Decisión nueva</th><th>Examen</th></tr>
+    <tr><td>N1</td><td>1 De pie · 2 Caminar · 3 Caminar bien</td><td>Sostenerse, coordinar piernas, marcha humana</td><td class="ok">83 · 100 · 100 %</td></tr>
+    <tr><td>N2</td><td>4 Terreno · 5 Esquina · 6 Curva · 7 Recorrido</td><td>Adaptar el paso al piso, girar, avanzar girando, cambiar de orden</td><td class="ok">75 · 100 · 75 · 100 %</td></tr>
+    <tr><td>N3</td><td>8 Balizas · incidente de pisos sueltos</td><td>Cuándo girar, caminar y detenerse según la meta</td><td class="ok">83 %</td></tr>
+  </table>
+  <p>Cada uno parte del campeón anterior y <b style="color:var(--tinta)">solo aprueba si sigue aprobando los exámenes anteriores</b>.</p>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">4 · Algoritmo</p>
+  <h2>PPO aprende; la destilación evita olvidar</h2>
+  <div class="cols">
+    <ul>
+      <li><b>PPO</b> (Stable-Baselines3), red 256×256, CPU, 4 procesos, recompensa ×0,05.</li>
+      <li>Problema real: al aprender la curva, PPO bajó el terreno de 83 % a <b>42 %</b>.</li>
+      <li><b>Receta:</b> partir del campeón anterior y destilar (DAgger) con maestros del mismo linaje: el modelo de PPO enseña lo nuevo y el campeón anterior, lo viejo.</li>
+      <li>Elegir con <b>40 episodios nuevos</b> (semillas 5000+) y confirmar con otros 40: el examen fijo nunca se usa para elegir.</li>
+    </ul>
+    <div class="caja">
+      <b>Referencias del Exp 1 (24 episodios)</b>
+      <table>
+        <tr><td>Aleatorio</td><td class="no">0 / 24</td></tr>
+        <tr><td>Regla: servo sin red</td><td class="no">3 / 24</td></tr>
+        <tr><td>Modelo aprendido</td><td class="ok">20 / 24</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">5 · Hipótesis del Exp 8</p>
+  <h2>La línea base gana: el candidato se rechaza</h2>
+  <div class="cols">
+    <div>
+      <p><b style="color:var(--tinta)">Línea base:</b> el campeón del Exp 7 ya sabe girar, caminar recto y en curva; llegar a balizas no exige movimientos nuevos. Política congelada.</p>
+      <p style="margin-top:12px"><b style="color:var(--tinta)">Candidato:</b> ajuste fino con PPO en la tarea (1 M de pasos, tasa 3e-5), <b>tres semillas</b> de entrenamiento.</p>
+      <p style="margin-top:12px">Decisión: <span class="ok">quedarse con la línea base</span>. El ajuste perturba una marcha que ya era buena. Todo queda conservado en MLflow y DVC.</p>
+    </div>
+    <table>
+      <tr><th>Modelo</th><th>Balizas, 40 episodios nuevos</th></tr>
+      <tr><td>Línea base (semilla 1)</td><td class="ok">37 / 40</td></tr>
+      <tr><td>Candidato semilla 2</td><td class="no">24 / 40</td></tr>
+      <tr><td>Candidato semilla 3</td><td class="no">25 / 40</td></tr>
+      <tr><td>Candidato semilla 4</td><td class="no">34 / 40</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">6 · Lo que no funcionó</p>
+  <h2>Incidente: el piso deja de ser firme</h2>
+  <div class="cols3">
+    <div class="caja"><div class="num verde">92 %</div><small>Recorrido sobre piso firme (campeón servido)</small></div>
+    <div class="caja"><div class="num rojo">25 %</div><small>El mismo recorrido con grava, arena y barro: degradación</small></div>
+    <div class="caja"><div class="num naranja">65–70 %</div><small>Intervención: pisos de intensidad variable al entrenar</small></div>
+  </div>
+  <ul>
+    <li>Causa medida: <b>girar en el barro</b> (solo barro: 9 de 40). Se inclina o va lento.</li>
+    <li>Ningún candidato cumple el examen y a la vez no olvida: <b>se rechaza</b> y se documenta como límite.</li>
+    <li>Decisión del equipo: partir el Exp 7 en dos (primero piso firme). Así aprobó.</li>
+  </ul>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">7 · Versionado</p>
+  <h2>Todo experimento deja una huella</h2>
+  <table>
+    <tr><th>Qué</th><th>Cómo</th></tr>
+    <tr><td>Código y ambiente</td><td>git: un tag por experimento (<code>exp-101</code> … <code>exp-108</code>) y release final; robot MJCF versionado</td></tr>
+    <tr><td>Configuración</td><td>Un yaml por experimento; snapshot inmutable publicado con cada modelo</td></tr>
+    <tr><td>Escenarios</td><td>DVC: suite fija de examen y trayectorias por episodio</td></tr>
+    <tr><td>Experimentos</td><td>MLflow: una corrida por semilla con hipótesis, parámetros y commit</td></tr>
+    <tr><td>Modelos</td><td>DVC + Model Registry (alias <code>campeon</code>) + manifiestos con SHA-256 y contrato</td></tr>
+  </table>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">8 · Pipeline, monitoreo y rollback</p>
+  <h2>Prefect orquesta; DVC decide qué recalcular</h2>
+  <div class="flujo">
+    <span class="paso">validar</span><span class="flecha">→</span><span class="paso">pruebas</span><span class="flecha">→</span>
+    <span class="paso">entrenar o reutilizar</span><span class="flecha">→</span><span class="paso">evaluar</span><span class="flecha">→</span>
+    <span class="paso">registrar</span><span class="flecha">→</span><span class="paso">seleccionar</span><span class="flecha">→</span>
+    <span class="paso">publicar</span><span class="flecha">→</span><span class="paso">verificar</span>
+  </div>
+  <ul>
+    <li>Cada publicación es una <b>versión nueva</b>; nunca se sobrescribe la anterior.</li>
+    <li><b>Prueba de rollback:</b> se promovió por error el candidato rechazado; la verificación lo detectó y el flujo de rollback volvió a la versión anterior y comprobó su SHA-256 y su desempeño.</li>
+    <li>Monitoreo en <code>/sim/api/estado</code>: versión servida, SHA-256, latencia y errores.</li>
+  </ul>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">9 · Despliegue</p>
+  <h2>Una sola URL en Vercel</h2>
+  <div class="cols">
+    <ul>
+      <li><b>Visor Three.js</b>: catálogo de los 8 experimentos, «Cómo aprendió» en 5 etapas, curva de aprendizaje, regresión.</li>
+      <li><b>Evaluación en vivo</b>: función Python con MuJoCo; corre el episodio que el docente pide, de cualquier modelo histórico o del recomendado.</li>
+      <li>PyTorch no cabe en Vercel: el actor se exporta a numpy y una prueba comprueba que actúa igual.</li>
+      <li>Cada episodio se marca como <b>evaluación en vivo</b>, <b>replay grabado</b> o <b>error del servicio</b>.</li>
+    </ul>
+    <div class="figura"><img src="img/exp3-historico.png" alt="Visor con el panel de experimentos"></div>
+  </div>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">10 · Demostración</p>
+  <h2>Pruébenlo</h2>
+  <ul class="grande">
+    <li>Aplicación: <a href="./">el visor</a> → Exp 8 → «Lanzar episodio» con cualquier semilla.</li>
+    <li>Modelo histórico: Exp 3 → «Lanzar episodio» (campeón del Exp 3, con sus reglas).</li>
+    <li><a href="registro.html">Registro de experimentos y modelos</a> · <a href="sim/api/estado">versión servida</a></li>
+  </ul>
+</section>
+
+<section class="diapo">
+  <p class="eyebrow">11 · Cierre</p>
+  <h2>Límites, aprendizajes y siguiente hipótesis</h2>
+  <div class="cols">
+    <div class="caja"><b>Límites</b>
+      <ul>
+        <li>Sin sensores de obstáculos: la ruta a la baliza la calcula el ambiente.</li>
+        <li>Girar en barro sigue sin resolverse.</li>
+        <li>Pisos como fuerzas sobre los pies, no suelo deformable.</li>
+        <li>Exámenes pequeños (12 episodios): por eso validamos con 80 nuevos.</li>
+      </ul>
+    </div>
+    <div class="caja"><b>Aprendizajes</b>
+      <ul>
+        <li>Aprender sin olvidar exige medirlo: regresión en cada modelo.</li>
+        <li>Una cosa por experimento: cuando el Exp 7 agregó dos, se estancó.</li>
+        <li>Siguiente hipótesis: sensores de distancia (nueva familia de modelos) para esquivar obstáculos camino a la baliza.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<nav><button id="ant" aria-label="Anterior">←</button><span id="n"></span><div class="barra"><i id="barra"></i></div><button id="sig" aria-label="Siguiente">→</button></nav>
+<script>
+const d = [...document.querySelectorAll(".diapo")];
+let i = Math.min(Math.max(0, Number(location.hash.slice(1)) - 1 || 0), d.length - 1);
+function ir(k) {
+  i = Math.min(Math.max(0, k), d.length - 1);
+  d.forEach((x, j) => x.classList.toggle("activa", j === i));
+  document.getElementById("n").textContent = `${i + 1} / ${d.length}`;
+  document.getElementById("barra").style.width = `${((i + 1) / d.length) * 100}%`;
+  history.replaceState(null, "", `#${i + 1}`);
+}
+document.getElementById("ant").onclick = () => ir(i - 1);
+document.getElementById("sig").onclick = () => ir(i + 1);
+addEventListener("keydown", (e) => {
+  if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); ir(i + 1); }
+  if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); ir(i - 1); }
+});
+ir(i);
+</script>
+</body>
+</html>

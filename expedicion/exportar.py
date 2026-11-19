@@ -33,7 +33,7 @@ def exportar(destino=None):
     import re
     cuerpo = re.sub(r"<!doctype html>|</?html[^>]*>|</?head>|</?body>", "", (destino / "index.html").read_text(), flags=re.I)
     (destino / "robot-expedition.html").write_text(cuerpo.strip() + "\n")
-    api = destino / "api"
+    api = destino / "datos"  # no «api/»: en Vercel esa carpeta es de funciones
     _guardar(api / "catalogo.json", {"experimentos": S.catalogo()})
     episodios = 0
     for exp_actual in X.listar():

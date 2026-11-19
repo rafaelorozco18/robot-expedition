@@ -147,6 +147,10 @@ def evolucion(exp):
 
 @lru_cache(maxsize=32)
 def _politica(ruta):
+    npz = Path(ruta).with_suffix(".npz")
+    if npz.exists():  # servidor sin PyTorch (Vercel): el actor exportado a numpy
+        from .evaluar import PoliticaNumpy
+        return PoliticaNumpy(npz)
     return Politica(ruta)
 
 
@@ -156,7 +160,7 @@ def crear_agente(exp, nombre, semilla):
     if nombre == "aleatorio":
         return Aleatorio(semilla)
     carpeta = pub(exp)
-    fotos = {paso_de(r): r for r in (carpeta / "fotos").glob("paso-*.zip")}
+    fotos = {paso_de(r): r.with_suffix(".zip") for r in (carpeta / "fotos").glob("paso-*.*")}  # .zip o .npz
     if nombre == "experto":
         ruta = carpeta / "experto.zip"
     elif nombre == "aprendiz":
@@ -168,8 +172,8 @@ def crear_agente(exp, nombre, semilla):
         ruta = fotos.get(int(nombre[5:]))
     else:
         raise ValueError(f"Agente desconocido: {nombre}")
-    if ruta is None or not ruta.exists():
-        raise FileNotFoundError(f"No existe el modelo {nombre}.")
+    if ruta is None or not (ruta.exists() or ruta.with_suffix(".npz").exists()):
+        raise FileNotFoundError(f"El modelo {nombre} no está en este servidor.")
     return _politica(str(ruta.resolve()))
 
 
@@ -199,17 +203,20 @@ def estado():
     servidas = {}
     for exp in X.listar():
         c = pub(exp)
-        if (c / "experto.zip").exists() and exp["estado"] != "descartado":
+        if exp["estado"] == "descartado":
+            continue
+        if (c / "experto.zip").exists():
             ev = _archivo_json(c / "evaluacion.json") or {}
-            marca = c / "version.txt"  # en el Space de Hugging Face la carpeta es una copia: guarda su nombre original
-            version = marca.read_text().strip() if marca.exists() else c.resolve().name
-            servidas[exp["id"]] = {"version": version, "campeon": ev.get("campeon"),
+            servidas[exp["id"]] = {"version": c.resolve().name, "campeon": ev.get("campeon"),
                                    "model_sha256": _sha(str((c / "experto.zip").resolve()))}
+        elif (c / "servido.json").exists():  # despliegue sin .zip (Vercel): copia con su identidad original
+            servidas[exp["id"]] = json.loads((c / "servido.json").read_text())
     lat = MONITOR["latencias_ms"][-200:]
-    return {"servidor": "MuJoCo + Stable-Baselines3 (Python)", "inicio": MONITOR["inicio"],
+    commit = os.environ.get("COMMIT_ENTREGA") or ((X.RAIZ / "COMMIT").read_text().strip() if (X.RAIZ / "COMMIT").exists() else None)
+    return {"servidor": "MuJoCo en Python con la política PPO publicada", "inicio": MONITOR["inicio"],
             "episodios_servidos": MONITOR["episodios"], "errores": MONITOR["errores"],
             "latencia_ms": {"media": round(sum(lat) / len(lat), 1) if lat else None, "max": max(lat) if lat else None},
-            "versiones_servidas": servidas, "commit": os.environ.get("COMMIT_ENTREGA")}
+            "versiones_servidas": servidas, "commit": commit}
 
 
 class Manejador(BaseHTTPRequestHandler):

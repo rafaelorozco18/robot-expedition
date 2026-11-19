@@ -40,6 +40,41 @@ class Politica:
         return self.modelo.predict(obs, deterministic=False)[0]
 
 
+class PoliticaNumpy:
+    """La misma política sin PyTorch: el actor (58 → 256 → 256 → 12, tanh) exportado a .npz.
+
+    Sirve para el servidor de evaluación en Vercel, donde PyTorch no cabe. `scripts/exportar_politicas.py` la crea
+    desde el .zip de Stable-Baselines3 y comprueba que la media de la acción coincide (tests/test_politica_numpy.py).
+    El ruido se siembra por episodio igual que en `Politica`, así que un episodio da la misma trayectoria salvo
+    diferencias de redondeo de float32."""
+    def __init__(self, ruta):
+        d = np.load(ruta)
+        self.capas = [(d["w0"], d["b0"]), (d["w1"], d["b1"])]
+        self.salida = (d["w2"], d["b2"])
+        self.desvio = np.exp(d["log_std"]).astype(np.float32)
+
+    def media(self, obs):
+        x = np.asarray(obs, dtype=np.float32)
+        for w, b in self.capas:
+            x = np.tanh(w @ x + b)
+        return self.salida[0] @ x + self.salida[1]
+
+    def para_episodio(self, semilla):
+        return _ActorNumpy(self, np.random.default_rng(semilla))
+
+    def actuar(self, obs, env):
+        return np.clip(self.media(obs), -1.0, 1.0)
+
+
+class _ActorNumpy:
+    def __init__(self, politica, rng):
+        self.politica, self.rng = politica, rng
+
+    def actuar(self, obs, env):
+        media = self.politica.media(obs)
+        return np.clip(media + self.politica.desvio * self.rng.standard_normal(media.shape), -1.0, 1.0)
+
+
 class _ActorEstocastico:
     def __init__(self, politica, rng):
         self.politica, self.rng = politica, rng

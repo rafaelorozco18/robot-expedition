@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/sim/:ruta*",
+      "destination": "/api/sim?ruta=:ruta*"
+    }
+  ],
+  "functions": {
+    "api/sim.py": {
+      "maxDuration": 60,
+      "memory": 2048,
+      "includeFiles": "{expedicion,experimentos,robots,publicado,COMMIT}/**"
+    }
+  },
+  "headers": [
+    {
+      "source": "/datos/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        }
+      ]
+    }
+  ]
+}

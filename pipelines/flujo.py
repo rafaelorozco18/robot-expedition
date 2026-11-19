@@ -109,18 +109,24 @@ def publicar(exp):
 
 
 @task(name="8 · verificar la versión servida")
-def verificar(exp):
+def verificar(exp, episodios=10):
+    """Identidad (carpeta, semilla, SHA-256) y salud (éxito en episodios nuevos, semillas 7000+) de lo servido."""
     datos = _py(f"""
-import hashlib, json
-from pathlib import Path
+import hashlib, json, multiprocessing
+from concurrent.futures import ProcessPoolExecutor
 from expedicion import publicar as P
 from expedicion.evaluar import Politica, correr_episodio
 c = P.carpeta({exp!r}).resolve()
-sha = hashlib.sha256((c / "experto.zip").read_bytes()).hexdigest()
 exp = P.cargar({exp!r})
-r, _ = correr_episodio(exp, Politica(c / "experto.zip"), {{"planeta": "marte", "perturbacion": "ninguna", "semilla": 7}})
-print(json.dumps({{"servida": c.name, "model_sha256": sha, "episodio_prueba": r["motivo"], "exito": r["exito"]}}))""")
-    get_run_logger().info(f"Versión servida {datos['servida']} · sha256 {datos['model_sha256'][:12]} · episodio: {datos['episodio_prueba']}")
+def uno(k):
+    return correr_episodio(exp, Politica(c / "experto.zip"), {{"planeta": "marte", "perturbacion": "ninguna", "semilla": 7000 + k}})[0]["exito"]
+with ProcessPoolExecutor(4, mp_context=multiprocessing.get_context("fork")) as pool:
+    exitos = list(pool.map(uno, range({episodios})))
+print(json.dumps({{"servida": c.name, "semilla_servida": json.loads((c / "corrida.json").read_text())["semilla"],
+                  "model_sha256": hashlib.sha256((c / "experto.zip").read_bytes()).hexdigest(),
+                  "exito": sum(exitos), "episodios": len(exitos)}}))""")
+    get_run_logger().info(f"Versión servida {datos['servida']} (semilla {datos['semilla_servida']}) · sha256 "
+                          f"{datos['model_sha256'][:12]} · {datos['exito']}/{datos['episodios']} episodios nuevos con éxito")
     return datos
 
 

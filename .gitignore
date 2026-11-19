@@ -28,3 +28,9 @@ exportado/
 # Maestros en prueba y registros de entrenamiento locales (los maestros elegidos van a models/maestros, con DVC)
 /models/prueba-*/
 registros/
+
+# Variables locales (el ejemplo sí va a git)
+.env
+.env.*
+!.env.example
+.vercel/

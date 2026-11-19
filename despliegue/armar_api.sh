@@ -20,6 +20,6 @@ done
 echo "$(git rev-parse HEAD)" > "$SALIDA/COMMIT"
 sed -i "s/^ENV PIP_NO_CACHE_DIR=1/ENV COMMIT_ENTREGA=$(git rev-parse HEAD) PIP_NO_CACHE_DIR=1/" "$SALIDA/Dockerfile"
 du -sh "$SALIDA"
-"$HF" repo create "$SPACE" --repo-type space --space-sdk docker --exist-ok >/dev/null
+"$HF" repos create "$SPACE" --type space --sdk docker --public --exist-ok >/dev/null
 "$HF" upload "$SPACE" "$SALIDA" . --repo-type space --commit-message "API $(git rev-parse --short HEAD)"
 echo "Space: https://huggingface.co/spaces/$SPACE"
