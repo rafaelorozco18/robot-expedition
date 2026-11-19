@@ -168,40 +168,53 @@ class ExploradorMuJoCo(gym.Env):
         exito = bool(fin and t.exito(self.env, False))
         if fin and not exito:
             recompensa -= self.n["choque"]  # caerse o chocar
+        cerca = self.n.get("proximidad_m", 0.0)
+        if cerca and not fin:  # deja margen: castiga pasar a menos de `proximidad_m` de una roca (según sus sensores)
+            d = float(self._obs()[:M.N_RAYOS].min()) * M.ALCANCE
+            recompensa -= self.n.get("proximidad", 0.0) * max(0.0, cerca - d)
         return self._obs(), recompensa, fin, trunc, {"exito": exito, "motivo": self.env.motivo}
 
 
-def ajustar_en_mujoco(exp, semilla, parte_de, pasos, salida, procesos=8):
+def ajustar_en_mujoco(exp, semilla, parte_de, pasos, salida, procesos=8, extra=None, n_steps=64, fotos=6):
     """Sigue entrenando un navegador con la física real (ExploradorMuJoCo)."""
     from stable_baselines3 import PPO
     from stable_baselines3.common.env_util import make_vec_env
     from stable_baselines3.common.vec_env import SubprocVecEnv
-    import mlflow
     import torch
-    from .entrenar import URI_MLFLOW, git_commit
+    try:  # en el VPS de entrenamiento no hay MLflow: la corrida se registra después en el MLflow del proyecto
+        import mlflow
+        from .entrenar import URI_MLFLOW, git_commit
+    except ImportError:
+        mlflow = None
 
     torch.set_num_threads(1)
+    exp = {**exp, "navegador": {**exp["navegador"], **(extra or {})}}
     venv = make_vec_env(ExploradorMuJoCo, n_envs=procesos, seed=semilla, vec_env_cls=SubprocVecEnv, env_kwargs={"exp": exp})
     modelo = PPO.load(RAIZ / parte_de, env=venv, device="cpu", seed=semilla,
-                      custom_objects={"learning_rate": 1e-4, "n_steps": 64, "batch_size": 256})
+                      custom_objects={"learning_rate": 1e-4, "n_steps": n_steps, "batch_size": 256})
     salida = RAIZ / salida
     (salida / "fotos").mkdir(parents=True, exist_ok=True)
-    mlflow.set_tracking_uri(URI_MLFLOW)
-    mlflow.set_experiment(f"{exp['id']}-navegador")
     t0 = time.time()
-    with mlflow.start_run(run_name=f"navegador-mujoco-semilla-{semilla}") as run:
-        mlflow.set_tags({"git_commit": git_commit(), "variante": "mujoco", "parte_de": parte_de,
-                         "hipotesis": "Ajustar el navegador con la física real (caminante en el circuito) le enseña qué "
-                                      "órdenes hacen caer o chocar al robot y cierra la brecha del simulador cinemático."})
-        mlflow.log_params({"pasos": pasos, "procesos": procesos, "learning_rate": 1e-4, "parte_de": parte_de})
-        tramo = max(pasos // 6, 1)
-        for _ in range(6):
+    import contextlib
+    if mlflow:
+        mlflow.set_tracking_uri(URI_MLFLOW)
+        mlflow.set_experiment(f"{exp['id']}-navegador")
+    with (mlflow.start_run(run_name=f"navegador-mujoco-semilla-{semilla}") if mlflow else contextlib.nullcontext()) as run:
+        if mlflow:
+            mlflow.set_tags({"git_commit": git_commit(), "variante": "mujoco", "parte_de": parte_de,
+                             "hipotesis": "Ajustar el navegador con la física real (caminante en el circuito) le enseña qué "
+                                          "órdenes hacen caer o chocar al robot y cierra la brecha del simulador cinemático."})
+            mlflow.log_params({"pasos": pasos, "procesos": procesos, "learning_rate": 1e-4, "parte_de": parte_de,
+                               "n_steps": n_steps, **{f"extra.{k}": v for k, v in (extra or {}).items()}})
+        tramo = max(pasos // fotos, 1)
+        for _ in range(fotos):
             modelo.learn(tramo, reset_num_timesteps=False)
             modelo.save(salida / "fotos" / f"paso-{int(modelo.num_timesteps):09d}.zip")
             print({"paso": int(modelo.num_timesteps), "segundos": round(time.time() - t0)}, flush=True)
         modelo.save(salida / "experto.zip")
         corrida = {"semilla": semilla, "pasos": int(modelo.num_timesteps), "segundos": round(time.time() - t0, 1),
-                   "parte_de": parte_de, "mlflow_run_id": run.info.run_id}
+                   "parte_de": parte_de, "extra": extra or {}, "n_steps": n_steps,
+                   "mlflow_run_id": run.info.run_id if mlflow else None}
     (salida / "corrida.json").write_text(json.dumps(corrida, indent=1, ensure_ascii=False))
     venv.close()
     return corrida

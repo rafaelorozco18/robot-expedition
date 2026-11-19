@@ -387,6 +387,24 @@ y con el caminante en el circuito en lugar del simulador cinemático (ajuste fin
   MuJoCo 6** (foto de 2,32 M; la foto final, 4). Confirmación 3000+: 4 de 24. Examen oficial: **33 % (4 de 12)**, sin
   olvidar ningún examen anterior. El ajuste con la física real duplicó las llegadas del mismo navegador. No aprueba (60 %).
 
+### Mediodía del 2026-11-19: último empujón (sin mejora)
+
+Corrido en un servidor aparte (4 núcleos), mismos 24 episodios 5000+ y el mismo caminante:
+
+- **Ajuste más largo en MuJoCo** desde el navegador oficial (semilla 2, +280 mil decisiones, 74 min) castigando pasar a
+  menos de 0,9 m de una roca según sus sensores (`proximidad_m`). Las 7 fotos llegan en 3, 3, 4, 4, 6, 3 y 3 de 24; el
+  oficial, medido en esa máquina, 5. Diferencias dentro del ruido: **no se promueve**. Queda en
+  `models/exp-109/navegadores/mujoco-s2/` (DVC), con su `corrida.json`.
+- **Escudo sobre los sensores** (vetar direcciones con menos de 0,8–1,6 m libres en el pasillo del robot): 1 a 4 de 24.
+  Peor: al desviarse choca con otras rocas o sale del campo.
+- **Girar hacia la baliza cuando queda a la espalda** (como en el Exp 8): 0 a 1 de 24.
+- Diagnóstico de los fallos (navegador oficial): la mitad son choques a lo largo de todo el recorrido y la otra mitad,
+  caídas entre los 9 y los 15 s, justo después de la baliza 1, cuando la siguiente queda atrás y el navegador gira 90° cada
+  segundo mientras camina. Siguiente hipótesis: entrenar el navegador con una acción de «girar en el sitio» y un
+  caminante que repase giros cerrados entre rocas, una cosa por vez.
+- Ambos filtros (escudo y giro) eran opciones apagadas por defecto y se retiraron del código; el resultado oficial sigue
+  siendo **33 % (4 de 12)**.
+
 ## Limitaciones conocidas
 
 - El viento es una fuerza horizontal sobre el torso: no hay aerodinámica.
