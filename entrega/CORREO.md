@@ -1,7 +1,6 @@
 # Correo de entrega (borrador para enviar al docente)
 
-Los campos entre corchetes los completa el equipo antes de enviar (grupo, nombres completos y el usuario de GitHub
-del docente, si lo pide). Todo lo demás ya está verificado.
+Los campos entre corchetes los completa el equipo antes de enviar (grupo y nombres completos). Todo lo demás ya está verificado.
 
 ---
 
@@ -19,8 +18,7 @@ Le enviamos la entrega final del proyecto de MLOps.
 
 **2. Repositorio**
 - https://github.com/rafaelorozco18/robot-expedition
-- Es privado. [Ya lo invitamos como colaborador de lectura con su usuario de GitHub «[usuario]»] / [Si nos indica su
-  usuario de GitHub, lo invitamos de inmediato.]
+- Es público: se puede abrir y clonar sin cuenta ni invitación.
 
 **3. Aplicación y registro de experimentos**
 - Aplicación (Vercel): https://robot-expedition-tawny.vercel.app
