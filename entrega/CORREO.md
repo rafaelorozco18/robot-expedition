@@ -31,8 +31,8 @@ Le enviamos la entrega final del proyecto de MLOps.
 - No hace falta instalar nada ni usar contraseñas para revisar la aplicación.
 
 **4. Versión entregada**
-- Release y tag: `entrega-final`
-- Commit: `[SHA completo: descripción de la release entrega-final]`
+- Release y tag: `entrega-final-v2`
+- Commit: `[SHA completo: descripción de la release entrega-final-v2]`
 - Modelo recomendado: Exp 8 «Llegar a las balizas», `exp-108` semilla 1, run de MLflow `a6328691a8d14623a3b879d2b365f7c4`, `robot-exp-108` alias
   `campeon`. Manifiesto: `manifests/exp-108-semilla-1.json`.
 - Modelo histórico (ejemplo): Exp 3 «Caminar bien», `exp-103` semilla 1, run `5288517fb4ff4dd58116e3ae442017c7`, ambiente `robots/bipedo-v2.xml`
